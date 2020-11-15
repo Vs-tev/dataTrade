@@ -37,7 +37,7 @@
                         
                             <div class="d-flex flex-column align-items-around mx-auto mt-3 mt-sm-0 m-md-0">
                                 <div class="d-flex">
-                                    <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#modal_create">Deposit/Withdrawal</button>
+                                    <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#transactions">Deposit/Withdrawal</button>
                                     <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal_edit">Edit</button>
                                 </div>
                                 
@@ -95,8 +95,7 @@
                     </div>
                 </div>
             </div>
-
-
+            
             <div class="col-sm-12 pb-3 px-3 ">
                 <div class="dashboard_container_content">
                     Portfolio 2

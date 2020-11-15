@@ -55,7 +55,8 @@
                     <div class="dropdown-menu">
                         <span class="material-icons lighter icon-sm">search</span>
                         <input type="text" class="search-input-dropdown-menu">
-                    </div></li>
+                    </div>
+                </li>
                 <li class=""><a href="#" class=""><span class="material-icons cyan icon-md">
                     language
                     </span></a> </li>

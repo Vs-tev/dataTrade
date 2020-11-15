@@ -79,7 +79,7 @@ section {
 body {
     margin: 0;
     font-family: 'Poppins', sans-serif !important;
-    font-size: 0.8rem;
+    font-size: var(--font-normal);
     font-weight: 400;
     line-height: 1.6;
     color: var(--primary-color);
@@ -1941,6 +1941,7 @@ pre code {
     padding: 0.75rem;
     vertical-align: top;
     border-top: 1px solid #dee2e6;
+    font-size: var(--font-normal);
 }
 
 .table thead th {
@@ -1959,7 +1960,7 @@ pre code {
 }
 
 .table-sm td {
-    padding: 0.17rem 0 0.17rem 0.6rem;
+    padding: 0.35rem 0 0.35rem 0.6rem;
     vertical-align: middle;
     color: var(--primary-color);
 }
@@ -11109,6 +11110,7 @@ a.text-dark:focus {
     .table td,
     .table th {
         background-color: #fff !important;
+
     }
 
     .table-bordered th,
