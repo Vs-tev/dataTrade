@@ -186,7 +186,7 @@
                 var MaxAllowed = $this.data("max");
                 if ($checked_items >= MaxAllowed && MaxAllowed !== "") {
                     checkItem.not(":checked").attr("disabled", "disabled");
-                    $maindiv.hide();
+                   // $maindiv.hide();
                      $divSearch.hide();
                     $hiddenli.show();
                 } else {

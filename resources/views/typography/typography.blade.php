@@ -75,7 +75,7 @@
                     </li>
                     <li class="mt-4 pt-2 border-top">
                         <div class="form-group">
-                            <select id="demo" data-max="1" multiple="multiple">
+                            <select id="demo" data-max="2" multiple="multiple">
                                 <option value="Volvo">Volvo</option>
                                 <option value="Opel">Opel</option>
                                 <option value="Audi">Audi</option>
@@ -298,7 +298,7 @@
     });
 
     $("#demo").easySelect({
-        buttons: false,
+        buttons: true,
         search: true,
         placeholder: 'Choose Country',
         placeholderColor: '#6c757d',
