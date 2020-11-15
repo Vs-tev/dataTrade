@@ -1,0 +1,13 @@
+.dashboard_container_content .portfolio_container .sparkline {
+    height: 100px;
+    width: 100px;
+    border: 1px solid var(--light);
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 0px 18px -17px rgba(0, 0, 0, 1);
+    -moz-box-shadow: 0px 0px 18px -17px rgba(0, 0, 0, 1);
+    box-shadow: 0px 0px 18px -17px rgba(0, 0, 0, 1);
+}
+
+.inactive_portfolio {
+    opacity: 0.5;
+}

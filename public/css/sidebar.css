@@ -1,0 +1,88 @@
+.sidebar {
+    top: 0;
+    left: 0;
+    width: 265px;
+    background-color: #1e1e2d;
+    height: 100%;
+    position: fixed;
+}
+
+.sidebar .scroll {
+    scrollbar-width: thin;
+    margin: 0;
+    padding: 0;
+    height: calc(100% - 80px);
+    width: calc(100% - 10px);
+    overflow: auto;
+    position: absolute;
+}
+
+.sidebar-title {
+    padding: 0.6rem 0 0.6rem 1.8rem;
+    background-color: #1a1a27;
+}
+
+.sidebar .scroll ul {
+    width: 100%;
+    margin-top: 25px
+}
+
+.sidebar .scroll ul li a.separator {
+    text-transform: uppercase;
+    margin-top: 15px;
+    margin-bottom: -8px;
+    color: #3f4254 !important;
+    font-size: 0.8rem;
+    cursor: auto;
+}
+
+.sidebar .scroll ul li a.separator:hover {
+    background-color: transparent !important;
+    color: #3f4254 !important;
+}
+
+.sidebar .scroll li a span {
+    margin-right: 10px
+}
+
+.sidebar .scroll ul li a {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1rem 0.8rem 1.5rem !important;
+    font-weight: 200;
+    color: #a2a3b7 !important;
+    transition: 0.2s ease !important;
+
+}
+
+.sidebar .scroll ul li a span {
+    font-size: 22px !important;
+}
+
+.sidebar .scroll ul li a:hover {
+    background-color: #1a1a27;
+    color: #ffffff !important;
+    transition: 0.2s ease !important;
+}
+
+.sidebar .scroll ul li a:hover span {
+    color: var(--cyan);
+    transition: 0.2s ease !important;
+}
+
+
+.hide-show-sidebar {
+    left: 0 !important;
+}
+
+@media screen and (max-width: 992px) {
+    .sidebar {
+        top: 0;
+        left: -265px;
+        z-index: 999;
+        transition: 0.35s ease !important;
+        --webkit-box-shadow: 0px 0px 18px -20px rgba(0, 0, 9, 9);
+        -moz-box-shadow: 0px 0px 18px -20px rgba(0, 0, 9, 9);
+        box-shadow: 0px 0px 18px -20px rgba(0, 0, 9, 9);
+    }
+}

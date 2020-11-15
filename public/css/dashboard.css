@@ -1,0 +1,17 @@
+.dashboard_container_content>svg {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+
+}
+
+.dashboard_container_content {
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard_container_content>span,
+.dashboard_container_content>div {
+    z-index: 1
+}
