@@ -15,3 +15,24 @@
 .dashboard_container_content>div {
     z-index: 1
 }
+
+
+
+
+.buy-sell-div .buy,
+.buy-sell-div .sell {
+    text-align: center;
+    font-weight: 500;
+    padding: 0.5rem;
+    font-size: 0.9rem
+}
+
+
+.buy.focus,
+.buy:focus,
+.sell.focus,
+.sell:focus {
+    outline-offset: 0 !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}

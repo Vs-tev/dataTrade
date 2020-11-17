@@ -29,14 +29,16 @@ $(function (){
         $('#rightbar_container').toggleClass('hide_rightbar');
     })
 
-    var activate_portfolio = $("#activate_portfolio");
-    activate_portfolio.on('click', function(){
-    if(activate_portfolio.prop('checked')==false){ 
-       $('.portfolio_container, .portfolio_info').addClass('inactive_portfolio');
-       activate_portfolio.next('label').html('Inactive');
+    
+    //var activate_portfolio = $("input[type=checkbox]");
+    $('.activate_portfolio').on('click', function(){
+        var main = $( this ).parents( "main" );
+    if($(this).prop('checked')==false){ 
+      main.addClass('inactive_portfolio');
+      $(this).next('label').html('Inactive');
     }else{
-        $('.portfolio_container, .portfolio_info').removeClass('inactive_portfolio');
-        activate_portfolio.next('label').html('Active');
+        main.removeClass('inactive_portfolio');
+        $(this).next('label').html('Active');
     }
 })
 

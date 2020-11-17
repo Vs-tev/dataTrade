@@ -19,7 +19,7 @@
     --indigo: #6574cd;
     --purple: #9561e2;
     --pink: #f66d9b;
-    --red: #e3342f;
+    --red: #ed5249;
     --orange: #f6993f;
     --yellow: #ffed4a;
     --green: #38c172;
@@ -3199,40 +3199,29 @@ fieldset:disabled a.btn {
     box-shadow: 0 0 0 0.2rem rgba(82, 88, 93, 0.5);
 }
 
-.btn-outline-primary {
-    color: #3490dc;
-    border-color: #3490dc;
+
+
+.btn-type-buy {
+    color: var(--lighter);
+    border-radius: 0px !important;
+    background: none !important;
+    border: none;
 }
 
-.btn-outline-primary:hover {
-    color: #fff;
-    background-color: #3490dc;
-    border-color: #3490dc;
+.btn-type-buy:hover {
+    color: #3699ff;
+    background-color: #3699ff;
+    border-color: #3699ff;
 }
 
-.btn-outline-primary:focus,
-.btn-outline-primary.focus {
-    box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.5);
-}
 
-.btn-outline-primary.disabled,
-.btn-outline-primary:disabled {
-    color: #3490dc;
-    background-color: transparent;
-}
-
-.btn-outline-primary:not(:disabled):not(.disabled):active,
-.btn-outline-primary:not(:disabled):not(.disabled).active,
-.show>.btn-outline-primary.dropdown-toggle {
-    color: #fff;
-    background-color: #3490dc;
-    border-color: #3490dc;
-}
-
-.btn-outline-primary:not(:disabled):not(.disabled):active:focus,
-.btn-outline-primary:not(:disabled):not(.disabled).active:focus,
-.show>.btn-outline-primary.dropdown-toggle:focus {
-    box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.5);
+.btn-type-buy:not(:disabled):not(.disabled):active,
+.btn-type-buy:not(:disabled):not(.disabled).active,
+.show>.btn-type-buy.dropdown-toggle {
+    color: #3699ff;
+    background-color: #fff;
+    border: none;
+    border-bottom: 1px solid #3699ff !important;
 }
 
 .btn-outline-secondary {
@@ -3379,41 +3368,33 @@ fieldset:disabled a.btn {
     box-shadow: 0 0 0 0.2rem rgba(255, 237, 74, 0.5);
 }
 
-.btn-outline-danger {
-    color: #e3342f;
-    border-color: #e3342f;
+.btn-type-sell {
+    color: var(--lighter);
+    border-radius: 0px !important;
+    background: none !important;
+    border: none !important;
 }
 
-.btn-outline-danger:hover {
-    color: #fff;
-    background-color: #e3342f;
-    border-color: #e3342f;
+.btn-type-sell:hover {
+    color: var(--red) !important;
 }
 
-.btn-outline-danger:focus,
-.btn-outline-danger.focus {
+.btn-type-sell:not(:disabled):not(.disabled):active,
+.btn-type-sell:not(:disabled):not(.disabled).active,
+.show>.btn-type-buy.dropdown-toggle {
+    color: var(--red);
+    background-color: #fff;
+    border: none;
+    border-bottom: 1px solid var(--red) !important;
+}
+
+.btn-type-sell:not(:disabled):not(.disabled):active:focus,
+.btn-type-sell:not(:disabled):not(.disabled).active:focus,
+.show>.btn-type-sell.dropdown-toggle:focus {
     box-shadow: 0 0 0 0.2rem rgba(227, 52, 47, 0.5);
+    border: none !important;
 }
 
-.btn-outline-danger.disabled,
-.btn-outline-danger:disabled {
-    color: #e3342f;
-    background-color: transparent;
-}
-
-.btn-outline-danger:not(:disabled):not(.disabled):active,
-.btn-outline-danger:not(:disabled):not(.disabled).active,
-.show>.btn-outline-danger.dropdown-toggle {
-    color: #fff;
-    background-color: #e3342f;
-    border-color: #e3342f;
-}
-
-.btn-outline-danger:not(:disabled):not(.disabled):active:focus,
-.btn-outline-danger:not(:disabled):not(.disabled).active:focus,
-.show>.btn-outline-danger.dropdown-toggle:focus {
-    box-shadow: 0 0 0 0.2rem rgba(227, 52, 47, 0.5);
-}
 
 .btn-outline-light {
     color: #f8f9fa;

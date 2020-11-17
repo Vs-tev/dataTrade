@@ -45,7 +45,21 @@ Route::get('/example2', function () {
 
 
 Route::view('/dashboardPages/portfolio', 'dashboardpages.portfolio.portfolio');
+Route::get('/dashboardPages/portfolio', function () {
+    return view('dashboardpages.portfolio.portfolio', [
+        'message' => 'Are you sure want to delete this item',
+        
+    ]);
+});
 Route::view('/dashboardPages/dashboard', 'dashboardpages.dashboard');
+Route::view('/dashboardPages/traderecord', 'dashboardpages.trading.trade_record');
+
+Route::get('/dashboardPages/traderecord', function () {
+    return view('dashboardpages.trading.trade_record', [
+        'message' => 'Are you sure want to delete this Trade?',
+        
+    ]);
+});
 
 Auth::routes();
 

@@ -108,7 +108,6 @@
                     <button type="submit" class="btn btn-primary">Save transaction</button>
                </div>
                 </form>
-
                 <p class="font-lg dark mt-5 mb-3">Transaction History:</p>
                 <div class="transactions_deteils">
                     <div class="form-group w-50 mb-2">
@@ -121,55 +120,44 @@
                         <thead class="">
                             <tr>
                                 <th>Action date <span class="unicode-arrow">&#8645;</span></th>
-                              
                                 <th>Transaction <span class="unicode-arrow">&#8645;</span></th>
-                                <th>Action <span class="unicode-arrow">&#8645;</span></th>
+                                <th>Action <span class="unicode-arrow"></span></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>2020-11-14</td>
-                               
                                 <td>950 USD</td>
                                 <td>
                                     <div class="d-flex">
-                                        <button class="btn btn-link"><span class="material-icons">settings</span></button>
-                                        <button class="btn btn-secondary"><span class="material-icons">edit</span></button>
+                                        <button class="btn btn-link"><span class="material-icons">delete</span></button>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td>2020-11-14</td>
-                               
                                 <td>950 USD</td>
                                 <td>
                                     <div class="d-flex">
-                                        <button class="btn btn-link"><span class="material-icons">settings</span></button>
-                                        <button class="btn btn-secondary"><span class="material-icons">edit</span></button>
+                                        <button class="btn btn-link"><span class="material-icons">delete</span></button>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                               
                                 <td>2020-11-14</td>
-                                
                                 <td>950 USD</td>
                                 <td>
                                     <div class="d-flex">
-                                        <button class="btn btn-link"><span class="material-icons">settings</span></button>
-                                        <button class="btn btn-secondary"><span class="material-icons">edit</span></button>
+                                        <button class="btn btn-link"><span class="material-icons">delete</span></button>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                
                                 <td>2020-11-14</td>
-                                
                                 <td>950 USD</td>
                                 <td>
                                     <div class="d-flex">
-                                        <button class="btn btn-link"><span class="material-icons">settings</span></button>
-                                        <button class="btn btn-secondary"><span class="material-icons">edit</span></button>
+                                        <button class="btn btn-link"><span class="material-icons">delete</span></button>
                                     </div>
                                 </td>
                             </tr>
