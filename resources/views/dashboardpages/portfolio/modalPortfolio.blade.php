@@ -22,7 +22,7 @@
                 </div>
                 <div class="form-group mb-4">
                     <label for="currency">Currency</label>
-                    <select id="currency" name="currency" data-max="1" multiple="multiple">
+                    <select id="currency" name="currency" class="form-control">
                         <option value="usd">EUR</option>
                         <option value="usd">USD</option>
                         <option value="chf">CHF</option>
@@ -63,7 +63,7 @@
                 </div>
                 <div class="form-group mb-4">
                     <label for="currency">Currency</label>
-                    <select id="currency" name="currency" data-max="1" multiple="multiple">
+                    <select id="currency" class="form-control" name="currency">
                         <option value="usd">EUR</option>
                         <option value="usd">USD</option>
                         <option value="chf">CHF</option>

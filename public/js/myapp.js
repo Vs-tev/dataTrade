@@ -4,14 +4,14 @@ $(function (){
     $('[data-toggle="tooltip"]').tooltip();
 
     /**Easy select plugin*/
-    $("select").easySelect({
+    $(".easySelect").easySelect({
         buttons: false,
         search: false,
         placeholderColor: '#6c757d',
         selectColor: '#495057',
         showEachItem: true,
         width: '100%',
-        dropdownMaxHeight: '450px',
+        dropdownMaxHeight: '255px',
     })
 
     /*Handle open/close rightbar and sidebar */
@@ -44,4 +44,24 @@ $(function (){
 
 
 })
+
+$(document).ready(function() {
+    $("#drop-container").on('dragenter', function(e) {
+        e.preventDefault();
+        $(this).css('border', '#39b311 2px dashed');
+        $(this).css('background', '#f1ffef');
+    });
+
+    $("#drop-container").on('dragover', function(e) {
+        e.preventDefault();
+    });
+
+    $("#drop-container").on('drop', function(e) {
+        $(this).css('border', '#07c6f1 2px dashed');
+        $(this).css('background', '#FFF');
+        e.preventDefault();
+        var image = e.originalEvent.dataTransfer.files;
+        createFormData(image);
+    });
+});
 

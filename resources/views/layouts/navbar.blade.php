@@ -19,10 +19,10 @@
             </div>
             <div class="top-right-bar">
                 <ul class="list-unstyled">
-                    <li class=""><a type="button" href="#" class="" data-toggle="dropdown"><span class="material-icons cyan icon-md">
+                    <li class="dropright"><a type="button" href="#" class="" data-toggle="dropdown"><span class="material-icons cyan icon-md">
                         search
                         </span></a> 
-                        <div class="dropdown-menu">
+                        <div class="dropdown-menu ">
                             <span class="material-icons lighter icon-sm">search</span>
                             <input type="text" class="search-input-dropdown-menu">
                         </div></li>
@@ -52,7 +52,7 @@
                 <li class=""><a type="button" href="#" class="" data-toggle="dropdown"><span class="material-icons cyan icon-md">
                     search
                     </span></a> 
-                    <div class="dropdown-menu">
+                    <div class="dropdown-menu dropdown-search">
                         <span class="material-icons lighter icon-sm">search</span>
                         <input type="text" class="search-input-dropdown-menu">
                     </div>
@@ -72,7 +72,7 @@
         <div class="down-left d-flex justify-content-between">
             <ul class="list-unstyled">
                 <li class="mr-3"><span class="font-lg dark">&#8226; Trade Record</span></li>
-                <li class=""><a href="#" class="lighter">the name of active portfolio</a> </li>
+                <li class=""><a href="#" class="lighter">the name of active portfolio (Actual Balance )</a> </li>
             </ul> 
         </div>
     </div>

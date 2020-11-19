@@ -190,6 +190,7 @@
                      $divSearch.hide();
                     $hiddenli.show();
                 } else {
+                    $hiddenli.hide();
                     // Enable the inputs again when he unchecks one
                     checkItem.removeAttr("disabled");
                 }
@@ -197,7 +198,7 @@
 
             var $optionRow = $list.find('.optionRow');
 
-            $optionRow.click(function (e) {
+            $optionRow.on('click',function (e) {
                 e.stopPropagation();
             });
             var $clearAll = $list.find('#clearAlleasySelect');
@@ -211,11 +212,11 @@
                 $maindiv.show();
                 $hiddenli.hide();
             }
-            $clearAll.click(function () {
+            $clearAll.on('click',function () {
                 clear.hide();
                 unselectAll()
             })
-            clear.click(function () {
+            clear.on('click', function () {
                 $(this).hide();
                 
                 unselectAll()

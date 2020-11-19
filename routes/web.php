@@ -61,6 +61,8 @@ Route::get('/dashboardPages/traderecord', function () {
     ]);
 });
 
+Route::view('/dashboardPages/tradehistory', 'dashboardpages.trading.trade_history');
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

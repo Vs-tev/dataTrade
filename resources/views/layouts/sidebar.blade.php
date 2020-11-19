@@ -13,7 +13,7 @@
 
                 <li class=""><a href="traderecord" class=""><span class="material-icons">
                             insert_chart_outlined</span>Trade Record</a></li>
-                <li class=""><a href="#" class=""><span class="material-icons">
+                <li class=""><a href="tradehistory" class=""><span class="material-icons">
                             history</span>Trades History</a></li>
 
                 <li class=""><a href="#" class="separator">Rules</a> </li>

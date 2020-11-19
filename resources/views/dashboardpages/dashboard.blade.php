@@ -47,7 +47,7 @@
                     </svg>
                     <span class="material-icons cyan icon-xl">restore</span>
                     <div class="ml-4">
-                        <a href="#" class="dark font-weight-bold m-0">
+                        <a href="tradehistory" class="dark font-weight-bold m-0">
                             <h4>Trade History</h4>
                         </a>
                         <p class="m-0 text-muted">Manage Trades History</p>
