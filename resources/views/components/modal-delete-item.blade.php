@@ -4,7 +4,7 @@
             <div {{$attributes->merge(['class' => 'modal-header'])}}>
                 <h5 {{$attributes->merge(['class' => 'modal-title'])}}>Delete "Test Portfolio"</h5>
                 <button type="button" {{$attributes->merge(['class' => 'close'])}} data-dismiss="modal" aria-label="Close">
-                    <span {{$attributes->merge(['class' => 'material-icons ml-auto close-btn'])}}>close</span>
+                    <span {{$attributes->merge(['class' => 'material-icons ml-auto close-btn icon-sm'])}}>close</span>
                 </button>
             </div>
             <div class="modal-body">

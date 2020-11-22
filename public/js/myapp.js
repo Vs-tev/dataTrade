@@ -26,7 +26,13 @@ $(function (){
     })
 
     $('.toggle-rightbar').on('click', function(){
-        $('#rightbar_container').toggleClass('hide_rightbar');
+        $('#rightbar_container').toggleClass('toggle-container');
+        $('#cover').toggleClass('backdrop-class');
+    })
+
+    $('.close-trade-deteils').on('click', function(){
+        $('#trade_deteils').toggleClass('toggle-container');
+        $('#cover').toggleClass('backdrop-class');
     })
 
     
@@ -45,23 +51,35 @@ $(function (){
 
 })
 
-$(document).ready(function() {
-    $("#drop-container").on('dragenter', function(e) {
-        e.preventDefault();
-        $(this).css('border', '#39b311 2px dashed');
-        $(this).css('background', '#f1ffef');
-    });
 
-    $("#drop-container").on('dragover', function(e) {
-        e.preventDefault();
-    });
 
-    $("#drop-container").on('drop', function(e) {
-        $(this).css('border', '#07c6f1 2px dashed');
-        $(this).css('background', '#FFF');
-        e.preventDefault();
-        var image = e.originalEvent.dataTransfer.files;
-        createFormData(image);
-    });
-});
+/* img slide  */
+
+var slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  var i;
+  var slides = $(".selected-img > img");
+  var img = $(".thumbnails-img > img");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+  }
+  for (i = 0; i < img.length; i++) {
+    img[i].className = img[i].className.replace("active-img", "");
+}
+    img[slideIndex-1].className += "active-img";
+    slides[slideIndex-1].style.display = "block";
+ 
+}
 

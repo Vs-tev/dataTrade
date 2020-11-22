@@ -47,21 +47,26 @@ Route::get('/example2', function () {
 Route::view('/dashboardPages/portfolio', 'dashboardpages.portfolio.portfolio');
 Route::get('/dashboardPages/portfolio', function () {
     return view('dashboardpages.portfolio.portfolio', [
-        'message' => 'Are you sure want to delete this item',
+        'message' => 'Are you sure want to delete this Portfolio',
         
     ]);
 });
 Route::view('/dashboardPages/dashboard', 'dashboardpages.dashboard');
+
+/* Trade Record */
 Route::view('/dashboardPages/traderecord', 'dashboardpages.trading.trade_record');
 
-Route::get('/dashboardPages/traderecord', function () {
-    return view('dashboardpages.trading.trade_record', [
+/* --- */
+
+
+/* Trade Hstori */
+Route::view('/dashboardPages/tradehistory', 'dashboardpages.trading.trade_history');
+Route::get('/dashboardPages/tradehistory', function () {
+    return view('dashboardpages.trading.trade_history', [
         'message' => 'Are you sure want to delete this Trade?',
-        
     ]);
 });
-
-Route::view('/dashboardPages/tradehistory', 'dashboardpages.trading.trade_history');
+/* --- */
 
 Auth::routes();
 

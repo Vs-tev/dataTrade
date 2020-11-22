@@ -1,6 +1,7 @@
 .rightbar_container {
     position: fixed;
     display: none;
+    z-index: 4 !important;
     right: 0;
     top: 0;
     width: 370px;
@@ -63,8 +64,4 @@
 
 .settings-container span {
     margin: auto 0;
-}
-
-.hide_rightbar {
-    display: block;
 }

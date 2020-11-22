@@ -1,7 +1,7 @@
 <div class="rightbar_container p-4" id="rightbar_container">
         <div class="d-flex align-items-center py-2">
             <h4>User Profile</h4>
-            <span class="material-icons toggle-rightbar ml-auto close-btn">close</span>
+            <span class="material-icons icon-sm toggle-rightbar ml-auto close-btn">close</span>
         </div>
     <div class="scroll_content">
             <div class="avatar_and_info d-flex mt-4">

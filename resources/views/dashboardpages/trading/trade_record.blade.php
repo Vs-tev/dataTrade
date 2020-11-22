@@ -72,7 +72,7 @@
                     <div class="row m-0 p-0 mb-0 mb-xl-5 align-items-center justify-content-between">
                         <div class="col-12 col-xl-6 mb-3 mb-xl-0">
                             <div class="form-group">
-                                <label for="symbol">Entry Rules<span class="material-icons" class="tooltip"
+                                <label for="symbol">Entry Rules<span class="material-icons icon-sm" class="tooltip"
                                     data-toggle="tooltip" data-placement="top"
                                     title="You can choose up to 3 entry rules per trade">info</span></label>
                                 <select class="easySelect" id="" data-max="2" multiple="multiple">
@@ -85,7 +85,7 @@
                         </div>
                         <div class="col-12 col-xl-6 mb-3 mb-xl-0">
                             <div class="form-group">
-                                <label for="symbol">Exit Rule<span class="material-icons" class="tooltip"
+                                <label for="symbol">Exit Rule<span class="material-icons icon-sm" class="tooltip"
                                     data-toggle="tooltip" data-placement="top"
                                     title="You can choose only 1 Exit rule per trade.">info</span></label>
                                 <select class="easySelect" id="" data-max="2" multiple="multiple">
@@ -125,7 +125,7 @@
 
                         <div class="col-12 col-xl-5 mb-3 mb-xl-0">
                             <div class="form-group">
-                                <label for="entry_date">Entry date <span>*</span><span class="material-icons" class="tooltip"
+                                <label for="entry_date">Entry date <span>*</span><span class="material-icons icon-sm" class="tooltip"
                                     data-toggle="tooltip" data-placement="top"
                                 title="Entry date must be greater than portfolio start date'{{ config('app.name', 'Laravel') }}'">info</span></label>
                                 <input id="entry_date" type="date" class="form-control" name="entry_date">
