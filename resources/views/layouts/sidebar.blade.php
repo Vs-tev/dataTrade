@@ -16,16 +16,12 @@
                 <li class=""><a href="tradehistory" class=""><span class="material-icons">
                             history</span>Trades History</a></li>
 
-                <li class=""><a href="#" class="separator">Rules</a> </li>
-                <li class=""><a href="#" class=""><span class="material-icons">
-                            settings_applications
-                        </span>Entry Rules</a> </li>
-                <li class=""><a href="#" class=""><span class="material-icons">
-                            settings_applications
-                        </span>Take Profit Rules</a></li>
-                <li class=""><a href="#" class=""><span class="material-icons">
-                            settings_applications
-                        </span>Strategy</a></li>
+                <li class=""><a href="#" class="separator">Trading Steup</a> </li>
+                <li class=""><a href="tradingrules" class="">
+                        <span class="material-icons">
+                            rule</span>Trading Rules</a> </li>
+                <li class=""><a href="strategy" class=""><span class="material-icons">
+                            settings_applications</span>Strategy</a></li>
             </ul>
         </div>
     </div>

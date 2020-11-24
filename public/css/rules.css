@@ -1,0 +1,28 @@
+.table-rules tbody tr td div div,
+.table-strategy tbody tr td div div {
+    position: relative;
+    margin-left: 55px;
+    word-wrap: break-word !important;
+    text-overflow: ellipsis
+}
+
+.td-action span {
+    cursor: pointer;
+}
+
+/*Strategy*/
+.table-strategy tbody .strategy-first-tr td {
+    padding-bottom: 0px !important;
+}
+
+.strategy-description td {
+    padding: 16px 0 16px !important;
+}
+
+.strategy-description td p {
+    margin: auto;
+}
+
+.strategy-description {
+    border-bottom: 1px solid var(--lighter)
+}

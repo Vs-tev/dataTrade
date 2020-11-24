@@ -4,12 +4,11 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class modalDeleteItem extends Component
+class modalEdititem extends Component
 {
 
     public $message;
     public $item;
-
     /**
      * Create a new component instance.
      *
@@ -28,6 +27,6 @@ class modalDeleteItem extends Component
      */
     public function render()
     {
-        return view('components.modal-delete-item');
+        return view('components.modal-edit-item');
     }
 }

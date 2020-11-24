@@ -11,6 +11,7 @@
     <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
     <link href="{{ asset('css/portfolio.css') }}" rel="stylesheet">
     <link href="{{ asset('css/trading.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/rules.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('material-icons/iconfont/material-icons.css') }}">
     {{-- EasySelect --}}
     <link rel="stylesheet" href="{{ asset('easySelect/easySelectStyle.css')}}">

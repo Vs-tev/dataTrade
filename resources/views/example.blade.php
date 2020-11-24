@@ -16,9 +16,11 @@
 </x-card> --}}
 
 <x-card :cardtext="$cardtext" :cardname="$cardname" :button="$button">
-
-    <div>content in div</div>
-    <x-slot name="sss">bla sss</x-slot> 
+    
+    <x-slot name="sss">
+        <input type="text" class="form-control">    
+        <h6>hello</h6>
+    </x-slot> 
 </x-card>
 <x-subview /> {{-- alle files that are in components can be shown hier --}}
 

@@ -95,11 +95,11 @@ body {
 
 /*Make background dark on rightbar show or trade deteils show*/
 .backdrop-class {
+    position: fixed;
     left: 0;
     top: 0;
-    position: absolute;
     width: 100%;
-    height: 100em;
+    height: 100%;
     overflow: hidden;
     background: rgba(10, 10, 10, 0.178);
     z-index: 3
@@ -128,6 +128,7 @@ h6 {
 p {
     margin-top: 0;
     margin-bottom: 1rem;
+
 }
 
 label {
@@ -139,11 +140,11 @@ label {
 }
 
 .font-sm {
-    font-size: 0.7rem;
+    font-size: 0.7rem !important;
 }
 
 .font-md {
-    font-size: 0.75rem;
+    font-size: 0.75rem !important;
 }
 
 .font-normal {
@@ -225,6 +226,17 @@ label {
 
 .bg-lighter {
     background-color: var(--lighter) !important;
+}
+
+.avatar-letter {
+    background-color: var(--badge-entry-rule);
+    position: absolute;
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
 }
 
 .main-content-container .content-container {
@@ -1987,7 +1999,7 @@ pre code {
 .table {
     width: 100%;
     margin-bottom: 1rem;
-    color: #212529;
+    color: var(--primary-color);
     background-color: #ffffff;
 }
 
@@ -2014,6 +2026,7 @@ pre code {
 
 .table th {
     border-top: 1px solid #dee2e6;
+    letter-spacing: 0.3px;
 }
 
 .table th,
@@ -2208,26 +2221,25 @@ pre code {
     background-color: #f4b0af;
 }
 
-.table-light,
-.table-light>th,
-.table-light>td {
-    background-color: #fdfdfe;
+.table-rules tbody tr td:first-of-type,
+.table-strategy tbody tr td:first-of-type {
+    padding-left: 0
 }
 
-.table-light th,
-.table-light td,
-.table-light thead th,
-.table-light tbody+tbody {
-    border-color: #fbfcfc;
+.table-rules thead tr th,
+.table-strategy thead tr th {
+    border: none;
+    background-color: var(--light);
+    padding: 1rem
 }
 
-.table-hover .table-light:hover {
-    background-color: #ececf6;
-}
-
-.table-hover .table-light:hover>td,
-.table-hover .table-light:hover>th {
-    background-color: #ececf6;
+.table-rules tbody tr td,
+.table-strategy tbody tr td {
+    padding: 1.5rem 0 1.5rem 1rem;
+    vertical-align: middle;
+    border: none;
+    font-weight: 600;
+    font-size: var(--font-normal);
 }
 
 .table-dark,
@@ -4716,7 +4728,7 @@ input[type=button].btn-block {
 }
 
 .nav-tabs {
-    border-bottom: 1px solid #dee2e6;
+    border-bottom: 0.1rem solid var(--lighter);
 }
 
 .nav-tabs .nav-item {
@@ -4724,15 +4736,10 @@ input[type=button].btn-block {
 }
 
 .nav-tabs .nav-link {
-    border: 1px solid transparent;
-    border-top-left-radius: 0.25rem;
-    border-top-right-radius: 0.25rem;
+    border: none
 }
 
-.nav-tabs .nav-link:hover,
-.nav-tabs .nav-link:focus {
-    border-color: #e9ecef #e9ecef #dee2e6;
-}
+
 
 .nav-tabs .nav-link.disabled {
     color: #6c757d;
@@ -4740,11 +4747,18 @@ input[type=button].btn-block {
     border-color: transparent;
 }
 
+.nav-tabs .nav-link {
+    color: var(--lighter);
+    font-size: 0.85rem;
+    padding: 0.55rem 0rem 0.55rem 0rem;
+    margin-right: 2rem
+}
+
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-item.show .nav-link {
-    color: #495057;
-    background-color: #f8fafc;
-    border-color: #dee2e6 #dee2e6 #f8fafc;
+    color: var(--indigo);
+    background-color: none;
+    border-bottom: 1px solid var(--indigo);
 }
 
 .nav-tabs .dropdown-menu {
@@ -5600,7 +5614,7 @@ input[type=button].btn-block {
 
 .badge {
     display: inline-block;
-    padding: 0.4rem 0.8rem !important;
+    padding: 0.2rem 0.65rem !important;
     font-size: var(--font-normal);
     font-weight: 500;
     line-height: 1;
@@ -5692,8 +5706,8 @@ a.badge-success.focus {
 }
 
 .badge-info {
-    color: #212529;
-    background-color: #6cb2eb;
+    color: var(--cyan);
+    background-color: #fff4de
 }
 
 a.badge-info:hover,

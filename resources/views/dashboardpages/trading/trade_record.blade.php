@@ -69,7 +69,7 @@
                             <input id="quantity" type="text" class="form-control" name="text" placeholder="10000">
                         </div>
                     </div>
-                    <div class="row m-0 p-0 mb-0 mb-xl-5 align-items-center justify-content-between">
+                    <div class="row m-0 p-0 mb-0 mb-xl-3 align-items-center justify-content-between">
                         <div class="col-12 col-xl-6 mb-3 mb-xl-0">
                             <div class="form-group">
                                 <label for="symbol">Entry Rules<span class="material-icons icon-sm" class="tooltip"
@@ -115,6 +115,14 @@
                         <div class="col-12 col-xl-3 mb-3 mb-xl-0">
                             <label for="quantity">Fees</label>
                             <input id="quantity" type="text" class="form-control" name="text" placeholder="10000">
+                        </div>
+                        <div class="col-12 col-xl-6 mb-3 mb-xl-0">
+                            <label for="quantity">Strategy</label>
+                            <select class="easySelect" id="" data-max="1" multiple="multiple">
+                                <option value="Strategy 1">Strategy 1</option>
+                                <option value="Strategy2">Strategy 1</option>
+                                <option value="">RStrategy 1</option>
+                            </select>
                         </div>
                       
                     </div>
@@ -167,7 +175,7 @@
                     <div class="row m-0 p-0 mb-0 mb-xl-0 align-items-center justify-content-between">
                         <div class="col-12 mb-xl-0">
                             <div class="form-group">
-                                <label for="textarea">Comment</label>
+                                <label for="textarea">Trade comment</label>
                                 <textarea name="textarea" class="form-control" id="" cols="30" rows="3"></textarea>
                             </div>
                         </div>

@@ -48,6 +48,7 @@ Route::view('/dashboardPages/portfolio', 'dashboardpages.portfolio.portfolio');
 Route::get('/dashboardPages/portfolio', function () {
     return view('dashboardpages.portfolio.portfolio', [
         'message' => 'Are you sure want to delete this Portfolio',
+        'item' => 'Portfolio 1'
         
     ]);
 });
@@ -59,14 +60,38 @@ Route::view('/dashboardPages/traderecord', 'dashboardpages.trading.trade_record'
 /* --- */
 
 
-/* Trade Hstori */
+/* Trade Hstory */
 Route::view('/dashboardPages/tradehistory', 'dashboardpages.trading.trade_history');
 Route::get('/dashboardPages/tradehistory', function () {
     return view('dashboardpages.trading.trade_history', [
         'message' => 'Are you sure want to delete this Trade?',
+        'item' => 'AUDCAD/15min'
     ]);
 });
 /* --- */
+
+
+/**Trading rules */
+Route::view('/dashboardPages/tradingrules', 'dashboardpages.trading_rules.trading_rules');
+Route::get('/dashboardPages/tradingrules', function () {
+    return view('dashboardpages.trading_rules.trading_rules', [
+        'message' => 'Are you sure want to delete this Entry rule?',
+        'item' => 'Entry Rule Name'
+    ]);
+});
+/* --- */
+
+/**Trading strategy */
+Route::view('/dashboardPages/stragey', 'dashboardpages.strategy.strategy');
+Route::get('/dashboardPages/strategy', function () {
+    return view('dashboardpages.strategy.strategy', [
+        'message' => 'Are you sure want to delete this Entry rule?',
+        'item' => 'Strategy 1'
+    ]);
+});
+/* --- */
+
+
 
 Auth::routes();
 

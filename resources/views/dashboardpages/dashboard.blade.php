@@ -29,9 +29,9 @@
                             d="M0,160L120,186.7C240,213,480,267,720,240C960,213,1200,107,1320,53.3L1440,0L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z">
                         </path>
                     </svg>
-                    <span class="material-icons cyan icon-xl">insert_chart</span>
+                    <span class="material-icons cyan icon-xl">insert_chart_outlined</span>
                     <div class="ml-4">
-                        <a href="#" class="dark font-weight-bold m-0">
+                        <a href="traderecord" class="dark font-weight-bold m-0">
                             <h4>Recording Trades</h4>
                         </a>
                         <p class="m-0 text-muted">Make a Record</p>
@@ -61,9 +61,9 @@
                             d="M0,32L120,69.3C240,107,480,181,720,218.7C960,256,1200,256,1320,256L1440,256L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z">
                         </path>
                     </svg>
-                    <span class="material-icons cyan icon-xl">settings_applications</span>
+                    <span class="material-icons cyan icon-xl">rule</span>
                     <div class="ml-4">
-                        <a href="#" class="dark font-weight-bold m-0">
+                        <a href="tradingrules" class="dark font-weight-bold m-0">
                             <h4>Trading Rules</h4>
                         </a>
                         <p class="m-0 text-muted">Manage Trading Rules</p>
@@ -79,7 +79,7 @@
                     </svg>
                     <span class="material-icons cyan icon-xl">settings_applications</span>
                     <div class="ml-4">
-                        <a href="#" class="dark font-weight-bold m-0">
+                        <a href="strategy" class="dark font-weight-bold m-0">
                             <h4>Strategy</h4>
                         </a>
                         <p class="m-0 text-muted">Manage Strategies</p>

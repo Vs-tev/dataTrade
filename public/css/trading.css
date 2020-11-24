@@ -216,3 +216,55 @@
 .large-row-view>div>div {
     padding: 1.6rem
 }
+
+.large-row-view img {
+    padding: 5px;
+    background-color: fafafa;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 0px 5px -1px rgba(217, 214, 217, 1);
+    -moz-box-shadow: 0px 0px 5px -1px rgba(217, 214, 217, 1);
+    box-shadow: 0px 0px 5px -1px rgba(217, 214, 217, 1);
+}
+
+.large-row-view .commentar-container {
+    height: 160px;
+    overflow: hidden;
+}
+
+.large-row-view .my-flex-view {
+    display: flex;
+}
+
+
+@media screen and (max-width: 1352px) {
+    .large-row-view .my-flex-view {
+        flex-direction: column;
+    }
+
+    .large-row-view .my-flex-view>div {
+        margin-left: 0px !important;
+        margin-top: 12px
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .large-row-view .my-flex-view {
+        flex-direction: row;
+    }
+
+    .large-row-view .my-flex-view>div {
+        margin-left: 12px !important;
+        margin-top: 0px
+    }
+}
+
+@media screen and (max-width: 385px) {
+    .large-row-view .my-flex-view {
+        flex-direction: column;
+    }
+
+    .large-row-view .my-flex-view>div {
+        margin-left: 0px !important;
+        margin-top: 12px
+    }
+}

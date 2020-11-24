@@ -46,12 +46,20 @@ $(function (){
         main.removeClass('inactive_portfolio');
         $(this).next('label').html('Active');
     }
+    })
+
+
+    //Trade History switch view 
+    $('#choose-table-view').on('click',function(){
+        $('#table-view').show();
+        $('#large-row-view').hide();
+    })
+    $('#choose-largerow-view').on('click',function(){
+        $('#table-view').hide();
+        $('#large-row-view').show();
+    })
+
 })
-
-
-})
-
-
 
 /* img slide  */
 

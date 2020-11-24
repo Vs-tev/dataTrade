@@ -47,10 +47,10 @@
                         </button>
                         <div class="dropdown-menu dropdown-menu-left">
                             <h5 class="dropdown-header indigo">CHOOSE VIEW</h5>
-                            <a class="dropdown-item" href="#"><span class="material-icons lighter icon-sm">
+                            <a class="dropdown-item" id="choose-table-view" href="#"><span class="material-icons lighter icon-sm">
                                     toc
                                 </span>Table</a>
-                            <a class="dropdown-item" href="#"><span class="material-icons lighter icon-sm">
+                            <a class="dropdown-item" id="choose-largerow-view" href="#"><span class="material-icons lighter icon-sm">
                                     calendar_view_day
                                 </span>Large Row</a>
                         </div>
@@ -73,6 +73,7 @@
         </section>
 
         <section class="dashboard_container_content">
+
             <div class="d-flex col-12 justify-content-start align-items-center">
                 <label for="">Show</label>
                 <div>
@@ -104,7 +105,8 @@
 
             </div>
             <div class="col px-0 px-md-3">
-                <table class="table table-sm table-hover" style="display:none">
+
+                <table class="table table-sm table-hover" id="table-view" style="display:none">
                     <thead class="">
                         <tr>
                             <th class="pl-3 pl-md-0">Symbol <span class="unicode-arrow">&#8645;</span></th>
@@ -291,30 +293,27 @@
                         </tr>
                     </tbody>
                 </table>
-                
-                <div class="row p-0 justify-content-start large-row-view">
+
+                <div class="row p-0 justify-content-start large-row-view" id="large-row-view">
 
                     <div class="col-12 col-md-6 col-lg-4 mb-4">
                         <div class="border rounded">
                             <div class="header-trade dropdown d-flex justify-content-between pb-3">
-                                <h4 class="font-500 dark">AUDCAD</h4>
+                                <h4 class="font-500 dark">EURJPY/15min</h4>
                                 <button type="button" class="btn btn-link text-muted border-0" data-toggle="dropdown"><span>&#8226;&#8226;&#8226;</span> </button>
                                 <div class="dropdown-menu dropdown-menu-left">
+                                    <h5 class="dropdown-header indigo">OPTIONS</h5>
                                     <a class="dropdown-item" href="#">Except trade</a>
                                     <a class="dropdown-item" href="#">Deteils</a>
                                 </div>
                             </div>
-                            <div class="d-flex">
-                                <img src="https://www.tradingview.com/x/NSwr4nQM/" alt="" style="height: 80px">
+                            <div class="my-flex-view">
+                                <img src="https://www.tradingview.com/x/ANOGgEdq/" alt="" style="height: 100px">
                                 <div class="d-flex flex-column justify-content-between ml-3">
                                     <span class=" font-500 lighter"><span class="red">SELL </span>12500 units</span>
-                                    <div class="font-500 lighter d-flex align-items-center"><span class="material-icons lighter icon-sm">
-                                        attach_money
-                                        </span>Profit: 185.50 Eur
+                                    <div class="font-500 text-muted d-flex align-items-center">Profit: +185.50 Eur
                                     </div>
-                                    <div class=" font-500 lighter d-flex align-items-center"><span class="material-icons lighter icon-sm">
-                                        calculate
-                                        </span>Return: 1.20%
+                                    <div class=" font-500 lighter d-flex align-items-center">Return: +1.20%
                                     </div>
                                    
                                 </div>
@@ -338,9 +337,9 @@
                             <div class="commentar-container mx-0  mb-4">
                                 <h5 class="px-3 pt-3">Trade commentar</h5>
                                 <p class="p-3">
+                                    {{-- max lengh show on trade comentar with if statement -> veche sym go pravil s project description  --}}
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, iste quibusdam ipsam ipsa
-                                    tempora sint blanditiis quo veritatis in velit doloribus reiciendis enim vel esse. Unde
-                                    incidunt nesciunt minus non.
+                                    tempora sint blanditiinonnsequatur, illum illo accusamus?
                                 </p>
                             </div>
                             <div class="d-flex justify-content-end">
@@ -353,24 +352,21 @@
                     <div class="col-12 col-md-6 col-lg-4 mb-4">
                         <div class="border rounded">
                             <div class="header-trade dropdown d-flex justify-content-between pb-3">
-                                <h4 class="font-500 dark">AUDCAD</h4>
+                                <h4 class="font-500 dark">EURJPY/15min</h4>
                                 <button type="button" class="btn btn-link text-muted border-0" data-toggle="dropdown"><span>&#8226;&#8226;&#8226;</span> </button>
                                 <div class="dropdown-menu dropdown-menu-left">
+                                    <h5 class="dropdown-header indigo">OPTIONS</h5>
                                     <a class="dropdown-item" href="#">Except trade</a>
                                     <a class="dropdown-item" href="#">Deteils</a>
                                 </div>
                             </div>
-                            <div class="d-flex">
-                                <img src="https://www.tradingview.com/x/NSwr4nQM/" alt="" style="height: 80px">
+                            <div class="my-flex-view">
+                                <img src="https://www.tradingview.com/x/ANOGgEdq/" alt="" style="height: 100px">
                                 <div class="d-flex flex-column justify-content-between ml-3">
                                     <span class=" font-500 lighter"><span class="red">SELL </span>12500 units</span>
-                                    <div class="font-500 lighter d-flex align-items-center"><span class="material-icons lighter icon-sm">
-                                        attach_money
-                                        </span>Profit: 185.50 Eur
+                                    <div class="font-500 text-muted d-flex align-items-center">Profit: +185.50 Eur
                                     </div>
-                                    <div class=" font-500 lighter d-flex align-items-center"><span class="material-icons lighter icon-sm">
-                                        calculate
-                                        </span>Return: 1.20%
+                                    <div class=" font-500 lighter d-flex align-items-center">Return: +1.20%
                                     </div>
                                    
                                 </div>
@@ -394,9 +390,9 @@
                             <div class="commentar-container mx-0  mb-4">
                                 <h5 class="px-3 pt-3">Trade commentar</h5>
                                 <p class="p-3">
+                                    {{-- max lengh show on trade comentar with if statement -> veche sym go pravil s project description  --}}
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, iste quibusdam ipsam ipsa
-                                    tempora sint blanditiis quo veritatis in velit doloribus reiciendis enim vel esse. Unde
-                                    incidunt nesciunt minus non.
+                                    tempora sint blanditiinonnsequatur, illum illo accusamus?
                                 </p>
                             </div>
                             <div class="d-flex justify-content-end">
@@ -409,24 +405,21 @@
                     <div class="col-12 col-md-6 col-lg-4 mb-4">
                         <div class="border rounded">
                             <div class="header-trade dropdown d-flex justify-content-between pb-3">
-                                <h4 class="font-500 dark">AUDCAD</h4>
+                                <h4 class="font-500 dark">EURJPY/15min</h4>
                                 <button type="button" class="btn btn-link text-muted border-0" data-toggle="dropdown"><span>&#8226;&#8226;&#8226;</span> </button>
                                 <div class="dropdown-menu dropdown-menu-left">
+                                    <h5 class="dropdown-header indigo">OPTIONS</h5>
                                     <a class="dropdown-item" href="#">Except trade</a>
                                     <a class="dropdown-item" href="#">Deteils</a>
                                 </div>
                             </div>
-                            <div class="d-flex">
-                                <img src="https://www.tradingview.com/x/NSwr4nQM/" alt="" style="height: 80px">
+                            <div class="my-flex-view">
+                                <img src="https://www.tradingview.com/x/ANOGgEdq/" alt="" style="height: 100px">
                                 <div class="d-flex flex-column justify-content-between ml-3">
                                     <span class=" font-500 lighter"><span class="red">SELL </span>12500 units</span>
-                                    <div class="font-500 lighter d-flex align-items-center"><span class="material-icons lighter icon-sm">
-                                        attach_money
-                                        </span>Profit: 185.50 Eur
+                                    <div class="font-500 text-muted d-flex align-items-center">Profit: +185.50 Eur
                                     </div>
-                                    <div class=" font-500 lighter d-flex align-items-center"><span class="material-icons lighter icon-sm">
-                                        calculate
-                                        </span>Return: 1.20%
+                                    <div class=" font-500 lighter d-flex align-items-center">Return: +1.20%
                                     </div>
                                    
                                 </div>
@@ -450,9 +443,9 @@
                             <div class="commentar-container mx-0  mb-4">
                                 <h5 class="px-3 pt-3">Trade commentar</h5>
                                 <p class="p-3">
+                                    {{-- max lengh show on trade comentar with if statement -> veche sym go pravil s project description  --}}
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, iste quibusdam ipsam ipsa
-                                    tempora sint blanditiis quo veritatis in velit doloribus reiciendis enim vel esse. Unde
-                                    incidunt nesciunt minus non.
+                                    tempora sint blanditiinonnsequatur, illum illo accusamus?
                                 </p>
                             </div>
                             <div class="d-flex justify-content-end">
@@ -465,24 +458,21 @@
                     <div class="col-12 col-md-6 col-lg-4 mb-4">
                         <div class="border rounded">
                             <div class="header-trade dropdown d-flex justify-content-between pb-3">
-                                <h4 class="font-500 dark">AUDCAD</h4>
+                                <h4 class="font-500 dark">EURJPY/15min</h4>
                                 <button type="button" class="btn btn-link text-muted border-0" data-toggle="dropdown"><span>&#8226;&#8226;&#8226;</span> </button>
                                 <div class="dropdown-menu dropdown-menu-left">
+                                    <h5 class="dropdown-header indigo">OPTIONS</h5>
                                     <a class="dropdown-item" href="#">Except trade</a>
                                     <a class="dropdown-item" href="#">Deteils</a>
                                 </div>
                             </div>
-                            <div class="d-flex">
-                                <img src="https://www.tradingview.com/x/NSwr4nQM/" alt="" style="height: 80px">
+                            <div class="my-flex-view">
+                                <img src="https://www.tradingview.com/x/ANOGgEdq/" alt="" style="height: 100px">
                                 <div class="d-flex flex-column justify-content-between ml-3">
                                     <span class=" font-500 lighter"><span class="red">SELL </span>12500 units</span>
-                                    <div class="font-500 lighter d-flex align-items-center"><span class="material-icons lighter icon-sm">
-                                        attach_money
-                                        </span>Profit: 185.50 Eur
+                                    <div class="font-500 text-muted d-flex align-items-center">Profit: +185.50 Eur
                                     </div>
-                                    <div class=" font-500 lighter d-flex align-items-center"><span class="material-icons lighter icon-sm">
-                                        calculate
-                                        </span>Return: 1.20%
+                                    <div class=" font-500 lighter d-flex align-items-center">Return: +1.20%
                                     </div>
                                    
                                 </div>
@@ -506,9 +496,9 @@
                             <div class="commentar-container mx-0  mb-4">
                                 <h5 class="px-3 pt-3">Trade commentar</h5>
                                 <p class="p-3">
+                                    {{-- max lengh show on trade comentar with if statement -> veche sym go pravil s project description  --}}
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, iste quibusdam ipsam ipsa
-                                    tempora sint blanditiis quo veritatis in velit doloribus reiciendis enim vel esse. Unde
-                                    incidunt nesciunt minus non.
+                                    tempora sint blanditiinonnsequatur, illum illo accusamus?
                                 </p>
                             </div>
                             <div class="d-flex justify-content-end">
@@ -518,11 +508,7 @@
                             </div>
                         </div>
                     </div>
-                    
-                    
-                    
-                    
-                    
+
                 </div>
             </div>
             {{-- Pagination --}}
@@ -536,10 +522,9 @@
                 </ul>
             </div>
         </section>
-      
-        
     </div>
     
+    {{-- Trade deteils --}}
 <section class="trade_deteils" id="trade_deteils">
     <div class="header_trade_deteils align-items-center d-flex px-4 py-4">
         <div class="my-auto">
@@ -553,7 +538,7 @@
     </div>
 
     <div class="scroll-content">
-            <div class="img-container d-flex flex-column flex-md-row align-content-center">
+            <div class="img-container d-flex flex-column flex-md-row align-content-center px-4">
                 <div class="selected-img d-flex  align-items-center mb-3 mb-md-0">
                     
                     <img src="https://www.tradingview.com/x/NSwr4nQM/" alt="">
@@ -696,5 +681,9 @@
 </div>
 
   {{-- modal delete trade --}}
-<x-modalDeleteItem :message="$message">
+<x-modalDeleteItem :message="$message" :item="$item">
+    <x-slot name="modal_body">
+        <p>Delete POrtfolio?</p>
+      <p>{{$item}}</p>
+      </x-slot> 
 </x-modalDeleteItem>

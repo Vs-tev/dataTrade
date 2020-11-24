@@ -174,6 +174,58 @@
         </div>
     </div>
 </div>
-<x-modalDeleteItem :message="$message">
-
+<x-modalDeleteItem :message="$message" :item="$item">
+    <x-slot name="modal_body">
+      <p>Delete POrtfolio?</p>
+    <p>{{$item}}</p>
+    </x-slot> 
 </x-modalDeleteItem>
+
+<x-modalEdititem :message="$message" :item="$item">
+    <x-slot name="modal_body">
+        <div class="form-group mb-4">
+            <label for="portfolio_name">Portfolio name</label>
+            <input type="text" name="portfolio_name" class="form-control" placeholder="Enter portfolio name"
+                id="portfolio_name">
+        </div>
+        <div class="form-group mb-4">
+            <label for="currency">Currency</label>
+            <select id="currency" class="form-control" name="currency">
+                <option value="usd">EUR</option>
+                <option value="usd">USD</option>
+                <option value="chf">CHF</option>
+                <option value="aud">AUD</option>
+                <option value="cad">CAD</option>
+            </select>
+        </div>
+    </x-slot> 
+</x-modalEdititem>
+
+<x-modalCreateItem :message="$message" :item="$item">
+    <x-slot name="modal_body">
+        <div class="form-group mb-4">
+            <label for="portfolio_name">Portfolio name</label>
+            <input type="text" name="portfolio_name" class="form-control" placeholder="Enter portfolio name"
+                id="portfolio_name">
+        </div>
+        <div class="form-group mb-4">
+            <label for="start_capital">Amount start capital</label>
+            <input type="text" name="start_capital" class="form-control" placeholder="Enter start capital"
+                id="start_capital">
+        </div>
+        <div class="form-group mb-4">
+            <label for="currency">Currency</label>
+            <select id="currency" name="currency" class="form-control">
+                <option value="usd">EUR</option>
+                <option value="usd">USD</option>
+                <option value="chf">CHF</option>
+                <option value="aud">AUD</option>
+                <option value="cad">CAD</option>
+            </select>
+        </div>
+        <div class="form-group mb-4">
+            <label for="start_date">Start date</label>
+            <input type="date" name="start_date" class="form-control" id="Start date">
+        </div>
+    </x-slot> 
+</x-modalCreateItem>
