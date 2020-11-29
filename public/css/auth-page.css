@@ -1,0 +1,123 @@
+.auth-page {
+    position: relative;
+    height: 100vh;
+
+}
+
+.left-side {
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 700px;
+    background-color: #fff
+}
+
+.right-side {
+    position: absolute;
+    left: 700px;
+    top: 0;
+    width: calc(100% - 700px);
+    background-color: #fff
+}
+
+@media screen and (max-width: 1400px) {
+    .left-side {
+        width: 500px;
+    }
+
+    .right-side {
+        left: 500px;
+        width: calc(100% - 500px)
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .left-side {
+        width: 300px;
+    }
+
+    .right-side {
+        left: 300px;
+        width: calc(100% - 300px)
+    }
+}
+
+@media screen and (max-width: 876px) {
+    .left-side {
+        position: relative;
+        width: 100%;
+    }
+
+    .right-side {
+        position: relative;
+        width: 100%;
+        left: 0;
+    }
+
+    .auth-page .auth-input {
+        width: 100% !important;
+    }
+}
+
+.auth-page .auth-input {
+    width: 430px;
+    padding: 28px 0px 28px 20px;
+    border: none;
+    background-color: var(--light);
+    border-radius: 10px;
+    font-size: var(--font-lg)
+}
+
+.auth-page .auth-input:focus {
+    background-color: #e7e7ee;
+    box-shadow: none;
+    transition: 0.4s ease
+}
+
+.auth-page .auth-btn {
+    padding: 0.7rem 1.5rem;
+    font-weight: 600;
+    font-size: 14.5px;
+    border-radius: 6px
+}
+
+.left-side .aside-img-container img:first-of-type {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    height: 45%
+}
+
+.left-side .aside-img-container .smartphone {
+    position: absolute;
+    width: 53%;
+    left: -10%;
+    bottom: -28px;
+    opacity: 1;
+
+}
+
+.left-side .aside-img-container::before {
+    content: "dataTrade";
+    position: absolute !important;
+    left: 73px;
+    bottom: 180px;
+    color: white !important;
+    z-index: 3 !important;
+    font-size: 16px;
+    font-weight: 600;
+    width: 50px !important;
+    height: 80px;
+}
+
+.left-side .aside-img-container::after {
+    position: absolute;
+    content: "";
+    left: 0;
+    bottom: 0px;
+    height: 100%;
+    width: 100%;
+    background-color: rgb(87, 87, 87);
+    opacity: 0.19;
+}

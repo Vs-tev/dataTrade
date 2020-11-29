@@ -86,8 +86,9 @@ function showSlides(n) {
   for (i = 0; i < img.length; i++) {
     img[i].className = img[i].className.replace("active-img", "");
 }
+    if(img[slideIndex-1] != undefined){
     img[slideIndex-1].className += "active-img";
     slides[slideIndex-1].style.display = "block";
- 
+}
 }
 

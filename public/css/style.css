@@ -88,6 +88,8 @@ body {
     background-color: #eef0f8;
 }
 
+
+
 /*Rightbar and current trade deteils*/
 .toggle-container {
     display: block !important;
@@ -152,7 +154,7 @@ label {
 }
 
 .font-lg {
-    font-size: 0.95rem;
+    font-size: 0.95rem !important;
 }
 
 .icon-xs {
@@ -4287,20 +4289,18 @@ input[type=button].btn-block {
     background-color: #e9ecef;
 }
 
-.custom-control-label {
-    position: relative;
+..custom-control-label {
     margin-bottom: 0;
-    vertical-align: top;
+    vertical-align: middle;
     cursor: pointer;
 }
 
 .custom-control-label::before {
     position: absolute;
-    top: 0.22rem;
-    left: -1.5rem;
+    left: 0rem;
     display: block;
-    width: 1rem;
-    height: 1rem;
+    width: 1.1rem;
+    height: 1.1rem;
     pointer-events: none;
     content: "";
     background-color: #fff;
@@ -4309,14 +4309,16 @@ input[type=button].btn-block {
 
 .custom-control-label::after {
     position: absolute;
-    top: 0.03rem;
-    left: -1.62rem;
+    left: 0;
+    bottom: 0px;
     display: block;
     width: 1.3rem;
     height: 1.3rem;
     content: "";
-    background: no-repeat 50%/50% 50%;
+    background: no-repeat 30%/50% 50%;
 }
+
+
 
 .custom-checkbox .custom-control-label::before {
     border-radius: 0.2rem;

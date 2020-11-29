@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+/* Route::view('/{path?}', 'welcome'); */ /* for React route*/
 
 Route::view('typography','typography.typography' );
 
@@ -96,3 +97,5 @@ Route::get('/dashboardPages/strategy', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
