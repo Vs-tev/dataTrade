@@ -6,7 +6,7 @@
     padding: 0rem;
     width: auto;
     background-color: white;
-    z-index: 2
+    z-index: 4
 }
 
 a {
@@ -51,7 +51,8 @@ a {
 }
 
 .navbar_top .top-left-bar ul li a,
-.navbar_top .top-right-bar ul li a {
+.navbar_top .top-right-bar ul li a,
+.navbar_top .top-right-bar ul li span.name_and_avatar {
     text-decoration: none;
     font-weight: 500;
     padding: 0.7rem 1rem 0.7rem 1rem;
@@ -60,11 +61,13 @@ a {
     white-space: nowrap;
 }
 
-.navbar_top .top-right-bar ul li a {
+.navbar_top .top-right-bar ul li a,
+.navbar_top .top-right-bar ul li span.name_and_avatar {
     padding: 0.7rem 0.8rem 0.7rem 0.8rem !important;
 }
 
-.navbar_top .top-right-bar ul li a:hover {
+.navbar_top .top-right-bar ul li a:hover,
+.navbar_top .top-right-bar ul li span.name_and_avatar:hover {
     padding: 0.7rem 0.8rem 0.7rem 0.8rem !important;
 }
 
@@ -74,6 +77,7 @@ a {
 
 .navbar_top .top-left-bar ul li a:hover,
 .navbar_top .top-right-bar ul li a:hover,
+.navbar_top .top-right-bar ul li span.name_and_avatar:hover,
 .active-btn {
     background-color: #f5f5f9;
     padding: 0.7rem 1rem 0.7rem 1rem;
@@ -88,8 +92,10 @@ a {
     background-color: #c9f7f5;
 }
 
-.navbar_top .top-right-bar ul li .name_and_avatar {
+.navbar_top .top-right-bar ul li span.name_and_avatar {
     padding: 0.6rem 0.3rem 0.6rem 0.3rem;
+    cursor: pointer;
+    font-weight: 500
 }
 
 .navbar_top .top-right-bar ul li .name_and_avatar:hover {

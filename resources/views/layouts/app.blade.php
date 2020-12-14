@@ -9,8 +9,7 @@
 
     <title>{{ config('app.name', 'Laravel') }}/Login</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+   
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -22,7 +21,7 @@
     <link href="{{ asset('css/auth-page.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div id="app" class="auth-page bg-white">
+    <div class="auth-page bg-white" >
         {{-- <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
@@ -76,10 +75,11 @@
                 </div>
             </div>
         </nav> --}}
-
-        <main class="">
+        <main id="">
             @yield('content')
         </main>
     </div>
+     <!-- Scripts -->
+ <script src="{{ asset('js/app.js') }}" async defer></script>
 </body>
 </html>

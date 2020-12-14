@@ -8,6 +8,36 @@
     box-shadow: 0px 0px 18px -17px rgba(0, 0, 0, 1);
 }
 
-.inactive_portfolio {
-    opacity: 0.5;
+.inactive_portfolio::before {
+    content: "";
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+    background-color: #fff;
+    opacity: 0.88;
+    position: absolute;
+}
+
+.inactive_portfolio::before {
+    content: "Inactive";
+    text-align: center;
+    padding-top: 6%;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--lighter)
+}
+
+.inactive_portfolio div.switch_portfolio label {
+    color: var(--indigo)
+}
+
+div.switch_portfolio {
+    z-index: 3;
+    font-weight: 600
+}
+
+.container-portfolio-action-buttons button {
+    z-index: 3
 }

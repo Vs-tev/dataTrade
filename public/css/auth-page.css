@@ -55,6 +55,10 @@
         left: 0;
     }
 
+    .left-side {
+        display: none
+    }
+
     .auth-page .auth-input {
         width: 100% !important;
     }
@@ -82,42 +86,21 @@
     border-radius: 6px
 }
 
+.left-side {
+    background-color: #e7d4b736;
+
+}
+
+.left-side .title-aside-container h5 {
+    z-index: 3
+}
+
 .left-side .aside-img-container img:first-of-type {
     width: 100%;
     position: absolute;
-    bottom: 0;
-    height: 45%
-}
-
-.left-side .aside-img-container .smartphone {
-    position: absolute;
-    width: 53%;
-    left: -10%;
-    bottom: -28px;
-    opacity: 1;
-
-}
-
-.left-side .aside-img-container::before {
-    content: "dataTrade";
-    position: absolute !important;
-    left: 73px;
-    bottom: 180px;
-    color: white !important;
-    z-index: 3 !important;
-    font-size: 16px;
-    font-weight: 600;
-    width: 50px !important;
-    height: 80px;
-}
-
-.left-side .aside-img-container::after {
-    position: absolute;
-    content: "";
-    left: 0;
-    bottom: 0px;
+    bottom: -25%;
     height: 100%;
-    width: 100%;
-    background-color: rgb(87, 87, 87);
-    opacity: 0.19;
+    opacity: 1;
+    z-index: 2 !important;
+
 }

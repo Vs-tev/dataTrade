@@ -35,19 +35,6 @@ $(function (){
         $('#cover').toggleClass('backdrop-class');
     })
 
-    
-    //var activate_portfolio = $("input[type=checkbox]");
-    $('.activate_portfolio').on('click', function(){
-        var main = $( this ).parents( "main" );
-    if($(this).prop('checked')==false){ 
-      main.addClass('inactive_portfolio');
-      $(this).next('label').html('Inactive');
-    }else{
-        main.removeClass('inactive_portfolio');
-        $(this).next('label').html('Active');
-    }
-    })
-
 
     //Trade History switch view 
     $('#choose-table-view').on('click',function(){
@@ -92,3 +79,26 @@ function showSlides(n) {
 }
 }
 
+$(function (){
+    var id;
+    $(document).on('click', '.delete-item', function() {
+        var id = (this.id);
+        $("#modal_delete").attr('data-id', id);
+        $('#modal_delete').modal('show');
+        
+        $("#btn-delete").on('click',function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+            });
+            $.ajax({
+                type:'GET',
+                url:"portfolio/d/"+id,
+                success: function() {
+                    $('#modal_delete').modal('hide');
+                }
+            })
+        })
+    });
+})

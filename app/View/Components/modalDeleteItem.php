@@ -15,10 +15,10 @@ class modalDeleteItem extends Component
      *
      * @return void
      */
-    public function __construct($message, $item)
+    public function __construct($message)
     {
         $this->message = $message;
-        $this->item = $item;
+       
     }
 
     /**

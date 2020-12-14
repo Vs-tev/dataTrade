@@ -60,10 +60,10 @@
                 <li class=""><a href="#" class=""><span class="material-icons cyan icon-md">
                     language
                     </span></a> </li>
-                <li class=""><a href="#" class="text-muted toggle-rightbar name_and_avatar">
-                    Vasil 
-                    <span class="avatar-name font-lg">V</span>
-                </a></li>
+                <li class=""><span class="text-muted toggle-rightbar name_and_avatar">
+                    {{strtok(Auth::user()->name, " ") }}
+                    <span class="avatar-name font-lg text-uppercase">{{ Auth::user()->name[0] }}</span>
+                </span></li>
                
             </ul> 
         </div>

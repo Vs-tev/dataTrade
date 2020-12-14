@@ -15,15 +15,16 @@
     <link rel="stylesheet" href="{{ asset('material-icons/iconfont/material-icons.css') }}">
     {{-- EasySelect --}}
     <link rel="stylesheet" href="{{ asset('easySelect/easySelectStyle.css')}}">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     {{-- Google fonts --}}
     <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
     <title>Trade Data</title>
 </head>
 <body>
     
-    
+    <div id="">
        @yield('content')  
+    </div>  
 
     
 </body>

@@ -14,13 +14,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 /* Route::view('/{path?}', 'welcome'); */ /* for React route*/
 
 Route::view('typography','typography.typography' );
 
-//Route::view('/example', 'example'); 
+//////////////////////////Route::view('/example', 'example'); 
 Route::get('/example', function () {
     return view('example', [
         'info' => 'Very bla bla bla'
@@ -34,7 +34,6 @@ Route::get('/example', function () {
         'button' => 'button1',
     ]);
 });
-
 Route::get('/example2', function () {
     return view('example', [
         'cardname' => 'card-name for page 2',
@@ -42,27 +41,27 @@ Route::get('/example2', function () {
         'button' => 'button2',
     ]);
 });
-//end example
-
-
-Route::view('/dashboardPages/portfolio', 'dashboardpages.portfolio.portfolio');
-Route::get('/dashboardPages/portfolio', function () {
-    return view('dashboardpages.portfolio.portfolio', [
-        'message' => 'Are you sure want to delete this Portfolio',
-        'item' => 'Portfolio 1'
-        
-    ]);
-});
+/////////////////////////////////////////////end example
 Route::view('/dashboardPages/dashboard', 'dashboardpages.dashboard');
 
+
+Route::view('/dashboardPages/portfolio', 'dashboardpages.portfolio.portfolio')->name('portfolio')->middleware('auth');
+Route::get('/dashboardPages/portfolio/g', 'PortfolioController@index');
+Route::post('/dashboardPages/portfolio/u/{id}', 'PortfolioController@update');
+Route::post('/dashboardPages/portfolio/store', 'PortfolioController@store')->middleware('auth');
+Route::post('/dashboardPages/portfolio/d/{id}', 'PortfolioController@destroy');
+Route::post('/dashboardPages/portfolio/toggle_active/{id}', 'PortfolioController@toggle_is_active_portfolio')->middleware('auth');
+
+
+
 /* Trade Record */
-Route::view('/dashboardPages/traderecord', 'dashboardpages.trading.trade_record');
+Route::view('/dashboardPages/traderecord', 'dashboardpages.trading.trade_record')->middleware('auth');
 
 /* --- */
 
 
 /* Trade Hstory */
-Route::view('/dashboardPages/tradehistory', 'dashboardpages.trading.trade_history');
+Route::view('/dashboardPages/tradehistory', 'dashboardpages.trading.trade_history')->middleware('auth');
 Route::get('/dashboardPages/tradehistory', function () {
     return view('dashboardpages.trading.trade_history', [
         'message' => 'Are you sure want to delete this Trade?',
@@ -73,7 +72,7 @@ Route::get('/dashboardPages/tradehistory', function () {
 
 
 /**Trading rules */
-Route::view('/dashboardPages/tradingrules', 'dashboardpages.trading_rules.trading_rules');
+Route::view('/dashboardPages/tradingrules', 'dashboardpages.trading_rules.trading_rules')->middleware('auth');
 Route::get('/dashboardPages/tradingrules', function () {
     return view('dashboardpages.trading_rules.trading_rules', [
         'message' => 'Are you sure want to delete this Entry rule?',
@@ -83,7 +82,7 @@ Route::get('/dashboardPages/tradingrules', function () {
 /* --- */
 
 /**Trading strategy */
-Route::view('/dashboardPages/stragey', 'dashboardpages.strategy.strategy');
+Route::view('/dashboardPages/stragey', 'dashboardpages.strategy.strategy')->middleware('auth');
 Route::get('/dashboardPages/strategy', function () {
     return view('dashboardpages.strategy.strategy', [
         'message' => 'Are you sure want to delete this Entry rule?',

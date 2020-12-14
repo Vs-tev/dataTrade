@@ -88,8 +88,6 @@ body {
     background-color: #eef0f8;
 }
 
-
-
 /*Rightbar and current trade deteils*/
 .toggle-container {
     display: block !important;
@@ -249,6 +247,10 @@ label {
     margin: 0px;
     padding: 1rem 5rem 1rem 5rem;
     width: calc(100% - 265px);
+}
+
+.pointer {
+    cursor: pointer;
 }
 
 @media screen and (max-width: 1500px) {
@@ -4251,7 +4253,7 @@ input[type=button].btn-block {
 }
 
 .custom-control-input {
-    position: absolute;
+    position: relative;
     left: 0;
     z-index: -1;
     width: 1rem;
@@ -4289,8 +4291,8 @@ input[type=button].btn-block {
     background-color: #e9ecef;
 }
 
-..custom-control-label {
-    margin-bottom: 0;
+.custom-control-label {
+    margin-left: 20px;
     vertical-align: middle;
     cursor: pointer;
 }
@@ -4358,21 +4360,22 @@ input[type=button].btn-block {
 }
 
 .custom-switch {
-    padding-left: 2.25rem;
+    padding-left: 0rem;
 }
 
 .custom-switch .custom-control-label::before {
-    left: -2.25rem;
-    width: 1.75rem;
+    left: 0rem;
+    width: 2rem;
     pointer-events: all;
-    border-radius: 0.5rem;
+    height: 1.2rem;
+    border-radius: 0.7rem;
 }
 
 .custom-switch .custom-control-label::after {
-    top: calc(0.22rem + 2px);
-    left: calc(-2.25rem + 2px);
-    width: calc(1rem - 4px);
-    height: calc(1rem - 4px);
+    top: calc(0.22rem + 0.18rem);
+    left: calc(0rem + 3px);
+    width: calc(0.9rem);
+    height: calc(0.9rem);
     background-color: var(--lighter);
     border-radius: 0.5rem;
     transition: transform 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
