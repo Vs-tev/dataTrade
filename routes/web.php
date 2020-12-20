@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('auth.login');
 });
-/* Route::view('/{path?}', 'welcome'); */ /* for React route*/
+
 
 Route::view('typography','typography.typography' );
 
@@ -42,16 +42,21 @@ Route::get('/example2', function () {
     ]);
 });
 /////////////////////////////////////////////end example
+
 Route::view('/dashboardPages/dashboard', 'dashboardpages.dashboard');
 
-
+//portfolio actions
 Route::view('/dashboardPages/portfolio', 'dashboardpages.portfolio.portfolio')->name('portfolio')->middleware('auth');
 Route::get('/dashboardPages/portfolio/g', 'PortfolioController@index');
 Route::post('/dashboardPages/portfolio/u/{id}', 'PortfolioController@update');
 Route::post('/dashboardPages/portfolio/store', 'PortfolioController@store')->middleware('auth');
-Route::post('/dashboardPages/portfolio/d/{id}', 'PortfolioController@destroy');
+Route::post('/dashboardPages/portfolio/d/{id}', 'PortfolioController@destroy')->middleware('auth');
 Route::post('/dashboardPages/portfolio/toggle_active/{id}', 'PortfolioController@toggle_is_active_portfolio')->middleware('auth');
 
+//transactions
+Route::get('/dashboardPages/portfolio/getTransactions/{id}', 'TransactionsController@index')->middleware('auth');
+Route::post('/dashboardPages/portfolio/storeTransactions', 'TransactionsController@store');
+Route::post('/dashboardPages/portfolio/deleteTransactions/{id}', 'TransactionsController@destroy');
 
 
 /* Trade Record */

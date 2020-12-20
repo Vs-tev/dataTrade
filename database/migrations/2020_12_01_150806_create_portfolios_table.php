@@ -17,6 +17,7 @@ class CreatePortfoliosTable extends Migration
             $table->id();
             $table->string('name');
             $table->decimal('start_equity', 14, 2);
+            $table->dateTime('started_at');
             $table->string('currency');
             $table->timestamps();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');

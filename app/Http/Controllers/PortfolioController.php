@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Portfolio;
+use App\Models\Balance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -51,17 +52,24 @@ class PortfolioController extends Controller
             'name' => ['required','unique:portfolios', 'string', 'min:2', 'max:80'],
             'start_equity' => ['required','numeric','max:99999999999'],
             'currency' => Rule::in(["EUR", "USD", "AUD", "CAD", "CHF"]),
+            'action_date' => ['required','date', 'before_or_equal: '.date("Y/m/d h:i:sa").''],
+        ],[
+            'before_or_equal' => 'The start date cannot be in the future'
         ]);
+            
+        $portfolio = new Portfolio;
+        $portfolio->name = $request->input('name');
+        $portfolio->start_equity = $request->input('start_equity');
+        $portfolio->user_id = auth()->id();
+        $portfolio->currency = $request->input('currency');
+        $portfolio->action_date = $request->input('action_date');
+        $portfolio->is_active = $active = Portfolio::where('user_id', auth()->id())->count() == 0 ? 1 : $active = 0;
+        
+        $portfolio->save();
 
-        Portfolio::create([
-            'user_id' => auth()->id(), //the same as auth()->user()->id;
-            'name' => request('name'),
-            'start_equity' => request('start_equity'),
-            'currency' => request('currency'),
-            'is_active' => $active = Portfolio::where('user_id', auth()->id())->count() == 0 ? 1 : $active = 0,
-        ]);
+        $portfolio->add_to_balance($portfolio);
 
-        return back();
+        //return response()->json('bravoo');
     }
 
     /**
@@ -152,6 +160,10 @@ class PortfolioController extends Controller
         }
     
         //return $data;
+    }
+
+    public function transactions(){
+        
     }
 
 }

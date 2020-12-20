@@ -5574,6 +5574,7 @@ input[type=button].btn-block {
     color: #fff;
     background-color: #3699ff;
     border-color: #3699ff;
+    border-radius: 3px;
 }
 
 .page-item.disabled .page-link {
@@ -5601,10 +5602,11 @@ input[type=button].btn-block {
 }
 
 .pagination-sm .page-link {
-    padding: 0.35rem 0.7rem;
+    padding: 0.4rem 0.8rem;
     font-size: var(--font-normal);
     line-height: 1.5;
-    margin: auto 0.13rem
+    margin: auto 0.13rem;
+    cursor: pointer;
 }
 
 .pagination-sm .page-item:first-child .page-link {

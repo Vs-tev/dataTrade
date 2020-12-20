@@ -2,7 +2,7 @@
     <div class="row justify-content-between">
         <div class="col-sm-12 pb-3 px-3">
             <div class="dashboard_container_content border d-flex align-items-center">
-                <span class="material-icons cyan icon-lg">add_circle_outline</span>
+                <img src="/storage/icons/create.svg" alt="">
                 <span v-on:click="create" data-target="#modal-form" data-toggle="modal"
                     class="font-lg ml-2 font-500 pointer">
                     Create Recording Portfolio
@@ -22,7 +22,7 @@
                             v-text="item.is_active == 0 ? 'Inactive' : 'Active' "></label>
                     </div>
                     <div class=" d-flex  justify-content-between">
-                          <button type="button" class="btn btn-primary mr-2" data-toggle="modal"
+                          <button type="button" @click="getId(item.id)" class="btn btn-primary mr-2" data-toggle="modal"
                                         data-target="#transactions"><img src="/storage/icons/wallet.svg" alt=""></button>
                           <button type="button" @click="getValues(item.id, item.name, item.currency)"
                                         class="btn btn-secondary mr-2" data-toggle="modal"
@@ -54,37 +54,37 @@
                         </div>
                       
                         <div
-                            class="portfolio_info row col-lg-12 justify-content-sm-between justify-content-start align-content-center">
+                            class="portfolio_info row col-lg-12 justify-content-between">
                             <div class="d-flex align-items-center mb-3 mb-lg-0">
-                                <span class="material-icons dark icon-lg">attach_money</span>
+                                 <img src="/storage/icons/cash.svg" alt="">
                                 <div class="ml-2">
                                     <p class="p-0 m-0">Start capital</p>
                                     <h5 class="text-uppercase">{{item.start_equity}} {{item.currency}}</h5>
                                 </div>
                             </div>
                             <div class="d-flex align-items-center mb-3 mr-3 mb-lg-0">
-                                <span class="material-icons dark icon-lg">attach_money</span>
+                                 <img src="/storage/icons/cash.svg" alt="">
                                 <div class="ml-2">
                                     <p class="p-0 m-0">Balance</p>
                                     <h5 class="indigo">8142,14 USD</h5>
                                 </div>
                             </div>
                             <div class="d-flex align-items-center mb-3 mr-3 mb-lg-0">
-                                <span class="material-icons dark icon-lg">trending_up</span>
+                                <img src="/storage/icons/trend-up.svg" alt="">
                                 <div class="ml-2">
                                     <p class="p-0 m-0">Win Rate</p>
                                     <h5 class="">61.70 %</h5>
                                 </div>
                             </div>
                             <div class="d-flex align-items-center mb-3 mr-3 mb-lg-0">
-                                <i class="material-icons dark icon-lg">list_alt</i>
+                                <img src="/storage/icons/archive.svg" alt="">
                                 <div class="ml-2">
                                     <p class="p-0 m-0">Recorded Trades</p>
                                     <h5 class="">&#35; 81</h5>
                                 </div>
                             </div>
                             <div class="d-flex align-items-center mb-3 mr-3 mb-lg-0">
-                                <span class="material-icons dark icon-lg">show_chart</span>
+                                <img src="/storage/icons/area-line.svg" alt="">
                                 <div class="ml-2">
                                     <p class="p-0 m-0">Return</p>
                                     <h5 class="">12.5 %</h5>
@@ -99,7 +99,7 @@
             </div>
         </main>
         <modal :item="form" v-on:edit="edit($event)" v-on:store="store($event)" v-on:destroy="destroy($event)"></modal>
-        <modal-transaction></modal-transaction>
+        <modal-transaction :transaction="transactions" :links="pagination" :item="form" v-on:setPage="setPage($event)" v-on:storeTransaction="storeTransaction($event)" v-on:delete_transaction="delete_transaction($event)"></modal-transaction>
     </div>
 </template>
 <script>
@@ -115,14 +115,20 @@ export default {
   data() {
     return {
       items: [],
+      transactions: [],
+      pagination: {
+        data: [],
+      },
       form: new Form({
         id: "",
         name: "",
         start_equity: "",
         currency: "",
-        created_at: "",
+        action_date: "",
         title: "",
         modal: "",
+        amount_transaction: "",
+        transaction_date: "",
       }),
       modal: "create",
       title: "",
@@ -169,17 +175,18 @@ export default {
     },
 
     create: function create() {
+      $("#modal-form").appendTo("body");
       this.form.reset();
       this.form.title = "Create Portfolio";
       this.form.modal = "create";
     },
 
     store: function store(value) {
-      console.log(value.name, value.start_equity, value.currency);
       let data = new FormData();
       data.append("name", value.name);
       data.append("start_equity", value.start_equity);
       data.append("currency", value.currency);
+      data.append("action_date", value.action_date);
       axios
         .post("/dashboardPages/portfolio/store", data)
         .then((res) => {
@@ -211,6 +218,7 @@ export default {
     },
 
     DeletePortfolio: function DeletePortfolio(value) {
+      $("#modal-form").appendTo("body");
       this.form.reset();
       this.form.title = "Delete Portfolio";
       this.form.modal = "delete";
@@ -224,6 +232,73 @@ export default {
         .then((res) => {
           $("#modal-form").modal("hide");
           this.fetchitems();
+        })
+        .catch((error) => {
+          this.form.errors.record(error.response.data.errors);
+        });
+    },
+
+    /* Transaction controller */
+    getId: function getId(value) {
+      {
+        this.form.id = value;
+        axios
+          .get("/dashboardPages/portfolio/getTransactions/" + value)
+          .then((res) => {
+            this.transactions = res.data;
+            this.pagination.data = res.data.links;
+            $("#transactions").appendTo("body");
+          })
+          .catch((error) => {
+            if (error.response.status === 401) {
+              window.location.href = "/login";
+            }
+          });
+      }
+    },
+
+    setPage: function setPage(page) {
+      console.log(page);
+      //this.currentPage = page;
+      if (page !== null) {
+        axios.get(page).then((res) => {
+          this.transactions = res.data;
+          this.pagination.data = res.data.links;
+        });
+      }
+    },
+    /*  getTransactions: function getTransactions() {
+     
+    }, */
+
+    storeTransaction: function storeTransaction(value) {
+      let data = new FormData();
+      data.append("amount_transaction", value.amount_transaction);
+      data.append("transaction_date", value.transaction_date);
+      data.append("portfolio_id", value.id);
+      axios
+        .post("/dashboardPages/portfolio/storeTransactions", data)
+        .then((res) => {
+          this.getId(this.form.id);
+          this.form.amount_transaction = "";
+          this.form.transaction_date = "";
+        })
+        .catch((error) => {
+          if (error.response.status === 401) {
+            window.location.href = "/login";
+          } else {
+            this.form.errors.record(error.response.data.errors);
+          }
+        });
+    },
+
+    delete_transaction: function delete_transaction(value, value1) {
+      console.log(value);
+      axios
+        .post("/dashboardPages/portfolio/deleteTransactions/" + value)
+        .then((res) => {
+          //$("#transactions").modal("hide");
+          this.getId(this.form.id);
         })
         .catch((error) => {
           this.form.errors.record(error.response.data.errors);

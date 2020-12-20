@@ -27,7 +27,8 @@
                             v-if="item.errors.has('start_equity')" v-text="item.errors.get('start_equity')"></p>
                         </div>
         
-                        <div class="form-group mt-2 mb-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                        <div class="form-group mb-4 col-6 pl-0">
                             <label for="currency">Currency</label>
                             <select id="currency" class="form-control" v-model="item.currency" name="currency">
                                 <option :value="item.currency" v-text="item.currency" selected hidden></option>
@@ -40,6 +41,16 @@
                             <span class="error-output"
                             v-if="item.errors.has('currency')" v-text="item.errors.get('currency')"></span>
                         </div>
+
+                         <div class="form-group mb-4  col-6 pr-0"  v-if="item.modal == 'create' ">
+                            <label for="start_equity">Start date</label>
+                            <input type="date" id="action_date" v-model="item.action_date" name="action_date" class="form-control">
+                                <p class="error-output"
+                            v-if="item.errors.has('action_date')" v-text="item.errors.get('action_date')"></p>
+                        </div>
+
+                    </div>
+
                     </div>
                     </div>
                       <div class="modal-body" v-if="item.modal == 'delete'">
@@ -47,7 +58,7 @@
                       </div>
                     <!-- Modal footer -->
                     <div class="modal-footer">
-                         <button type="button" class="btn btn-secondary" data-dismiss="moddeposal">Close</button>
+                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" @click="edit" class="btn btn-primary" v-if="item.modal == 'edit'">Save</button>
                         <button type="button" @click="store" class="btn btn-primary" v-if="item.modal == 'create'">Create</button>
                         <button type="button" @click="destroy" class="btn btn-danger" v-if="item.modal == 'delete'">Delete</button>
