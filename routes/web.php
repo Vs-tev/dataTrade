@@ -67,33 +67,28 @@ Route::view('/dashboardPages/traderecord', 'dashboardpages.trading.trade_record'
 
 /* Trade Hstory */
 Route::view('/dashboardPages/tradehistory', 'dashboardpages.trading.trade_history')->middleware('auth');
-Route::get('/dashboardPages/tradehistory', function () {
-    return view('dashboardpages.trading.trade_history', [
-        'message' => 'Are you sure want to delete this Trade?',
-        'item' => 'AUDCAD/15min'
-    ]);
-});
+
 /* --- */
 
 
 /**Trading rules */
 Route::view('/dashboardPages/tradingrules', 'dashboardpages.trading_rules.trading_rules')->middleware('auth');
-Route::get('/dashboardPages/tradingrules', function () {
-    return view('dashboardpages.trading_rules.trading_rules', [
-        'message' => 'Are you sure want to delete this Entry rule?',
-        'item' => 'Entry Rule Name'
-    ]);
-});
+Route::get('/dashboardPages/tradingrules/entry_rules/g', 'EntryRulesController@index');
+Route::get('/dashboardPages/tradingrules/exit_reasons/g', 'ExitReasonController@index');
+Route::post('/dashboardPages/tradingrules/entry_rules/p', 'EntryRulesController@store');
+Route::post('/dashboardPages/tradingrules/exit_reasons/p', 'ExitReasonController@store');
+Route::post('/dashboardPages/tradingrules/entry_rules/u/{id}', 'EntryRulesController@update');
+Route::post('/dashboardPages/tradingrules/exit_reasons/u/{id}', 'ExitReasonController@update');
+Route::post('/dashboardPages/tradingrules/entry_rules/d/{id}', 'EntryRulesController@destroy');
+Route::post('/dashboardPages/tradingrules/exit_reasons/d/{id}', 'ExitReasonController@destroy');
+
+
+
 /* --- */
 
 /**Trading strategy */
-Route::view('/dashboardPages/stragey', 'dashboardpages.strategy.strategy')->middleware('auth');
-Route::get('/dashboardPages/strategy', function () {
-    return view('dashboardpages.strategy.strategy', [
-        'message' => 'Are you sure want to delete this Entry rule?',
-        'item' => 'Strategy 1'
-    ]);
-});
+Route::view('/dashboardPages/strategy', 'dashboardpages.strategy.strategy')->middleware('auth');
+
 /* --- */
 
 

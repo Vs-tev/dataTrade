@@ -191,9 +191,6 @@ label {
     color: var(--success) !important;
 }
 
-.red {
-    color: var(--red) !important;
-}
 
 .dark {
     color: var(--dark);
@@ -207,12 +204,21 @@ label {
     color: var(--indigo) !important;
 }
 
+
 .blue {
     color: var(--blue);
 }
 
 .light {
     color: var(--light) !important;
+}
+
+.red {
+    color: var(--red) !important;
+}
+
+.bg-cyan {
+    background-color: var(--cyan) !important;
 }
 
 .bg-light {
@@ -241,7 +247,7 @@ label {
 
 .main-content-container .content-container {
     position: absolute;
-    top: 125;
+    top: 125px;
     left: 265px;
     right: 0px;
     margin: 0px;
@@ -2013,11 +2019,9 @@ pre code {
 }
 
 .table tr td div button {
-    border: none;
     display: flex;
     align-items: center;
     padding: 0.2rem;
-    background-color: transparent;
 }
 
 .table tr td div button:hover {
@@ -4764,6 +4768,12 @@ input[type=button].btn-block {
     color: var(--indigo);
     background-color: none;
     border-bottom: 1px solid var(--indigo);
+    color: var(--indigo);
+    background-color: none;
+    border-bottom: 1px solid var(--indigo);
+    -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 12px 12px -12px;
+    -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 12px 12px -12px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 12px 12px -12px;
 }
 
 .nav-tabs .dropdown-menu {

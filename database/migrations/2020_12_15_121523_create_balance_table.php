@@ -13,9 +13,9 @@ class CreateBalanceTable extends Migration
      */
     public function up()
     {
-        Schema::create('balance', function (Blueprint $table) {
+        Schema::create('balances', function (Blueprint $table) {
             $table->id();
-            $table->decimal('cash_flow', 14, 2);
+            $table->decimal('amount', 14, 2);
             $table->date('action_date');
             $table->string('action_type');
             $table->timestamps();

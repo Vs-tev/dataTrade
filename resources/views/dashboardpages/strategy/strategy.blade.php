@@ -1,172 +1,135 @@
+
 @extends('layouts.master')
+
+@section('content')
+
 <div class="main-content-container">
+
     
-    @include('layouts.sidebar')
-    @include('layouts.navbar')
-    @include('layouts.rightbar')
-  
     <div class="content-container">
-        <section class="dashboard_container_content col-12 col-xl-10 p-0 pb-4">
+        <section class="dashboard_container_content col-12 p-0 pb-4">
             <div class="d-flex border-bottom p-4">
-                <h4 class="font-weight-500 m-0">Trading Strategies</h4>
+                <h4 class="font-weight-500 m-0">Strategies</h4>
             </div>
-            <div class="d-flex justify-content-end align-items-center pt-4 pb-3 px-4">
-                <button type="button" class="btn btn-primary font-weight-500 mt-2 mt-md-0" data-target="#modal_create" data-toggle="modal">Add New Strategy</button>
-            </div>
-            <div class="col strategy-table-div px-2 px-sm-4">
-                <table class="table table-strategy">
-                    <thead >
-                        <tr>
-                        <th class="font-500 font-md">STRATEGY NAME</th>
-                        <th class="lighter font-md font-500 d-none d-md-flex"># TRADES</th>
-                        <th class="lighter font-md font-500 "><div class="d-none d-md-block">SUCCESS</div></th>
-                        <th class="lighter font-md font-500">ACTION</th>
-                        </tr>
-                        
-                    </thead>
-                    <tbody>
-                        {{-- strategy stat --}}
-                        <tr class="strategy-first-tr">
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <span class="avatar-letter m-0 h3 lighter">2</span>
-                                    <div class="">
-                                        <span class="m-0 p-0 font-normal font-weight-bold">2 Top</span>
-                                        <p class="m-0 p-0 lighter font-md font-500">Created: 12 Jun 19</p>
-                                    </div>
-                                </div>
-                                
-                            </td>
-                            <td class="d-none d-md-block">12 Trades
-                                <p class="m-0 p-0 lighter font-md font-500">Last: 6 days ago</p>
-                            </td>
-                            <td class="">
-                                <span class="d-none d-md-inline badge badge-light font-sm font-500 text-muted">28%</span>
-                            </td>
-                            <td>
-                                <div class="flex-inline td-action">
-                                    <span class="material-icons icon-sm indigo" data-target="#modal_edit" data-toggle="modal">edit</span>
-                                    <span class="material-icons icon-sm indigo ml-2 ml-sm-3" data-target="#modal_delete" data-toggle="modal">delete_outline</span>
-                                </div>
-                            </td>                           
-                        </tr>
-                        <tr class="strategy-description">
-                          <td colspan="4">
-                              <div class="description-container mx-0">
-                                    <p class="font-md font-500">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, iste quibusdam ipsam ipsa
-                                    tempora sint blanditiinonnsequatur, illum illo accusamus?
-                            </p>
-                            </div>
-                        </td> 
-                        </tr>
-                        {{--strategy end  --}}
-
-
-                       <tr class="strategy-first-tr">
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <span class="avatar-letter m-0 h3 lighter">9/5</span>
-                                <div class="">
-                                    <span class="m-0 p-0 font-normal font-weight-bold">9/5 buy stop strategy</span>
-                                    <p class="m-0 p-0 lighter font-md font-500">Created: 12 Jun 19</p>
-                                </div>
-                            </div>
-                            
-                        </td>
-                        <td class="d-none d-md-block">12 Trades
-                            <p class="m-0 p-0 lighter font-md font-500">Last: 6 days ago</p>
-                        </td>
-                        <td class="">
-                            <span class="d-none d-md-inline badge badge-light font-sm font-500 text-muted">28%</span>
-                        </td>
-                        <td>
-                            <div class="flex-inline td-action">
-                                <span class="material-icons icon-sm indigo" data-target="#modal_edit" data-toggle="modal">edit</span>
-                                <span class="material-icons icon-sm indigo ml-2 ml-sm-3" data-target="#modal_delete" data-toggle="modal">delete_outline</span>
-                            </div>
-                        </td>                           
-                    </tr>
-                   <tr class="strategy-description">
-                      <td colspan="4">
-                          <div class="description-container mx-0">
-                                <p class="font-md font-500">
-                                ssLorem ipsum dolor sit amet consectetur adipisicing elit. Autem, iste quibusdam ipsam ipsa
-                                tempora sint blanditiinonnsequatur, illum illo accusamus?
-                        </p>
-                        </div>
-                    </td> 
-                   </tr>
-
-                   <tr class="strategy-first-tr">
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <span class="avatar-letter m-0 h3 lighter">F</span>
-                            <div class="">
-                                <span class="m-0 p-0 font-normal font-weight-bold">9/5 buy stop strategy</span>
-                                <p class="m-0 p-0 lighter font-md font-500">Created: 12 Jun 19</p>
+            <div class="d-md-flex p-4">
+                <div class="name_description_container col-12 col-md-6 pl-0">
+                    <div class="">
+                        <div class="form-group">
+                            <label for="quantity">Strategy name</span></label>
+                            <input id="quantity" type="text" class="form-control" name="text" placeholder="Min 2 charachters">
+                        </div> 
+                        <div class="drop_img mt-3">
+                            <div class="img_list text-center mt-4">
+                                <span class="material-icons icon-xl indigo">cloud_upload</span>
+                                <h4>Drag and drop chart image here or click to upload</h4>
+                                <p class="text-muted">Upload up to 3 files</p>
                             </div>
                         </div>
-                        
-                    </td>
-                    <td class="d-none d-md-block">12 Trades
-                        <p class="m-0 p-0 lighter font-md font-500">Last: 6 days ago</p>
-                    </td>
-                    <td class="">
-                        <span class="d-none d-md-inline badge badge-light font-sm font-500 text-muted">28%</span>
-                    </td>
-                    <td>
-                        <div class="flex-inline td-action">
-                            <span class="material-icons icon-sm indigo" data-target="#modal_edit" data-toggle="modal">edit</span>
-                            <span class="material-icons icon-sm indigo ml-2 ml-sm-3" data-target="#modal_delete" data-toggle="modal">delete_outline</span>
-                        </div>
-                    </td>                           
-                </tr>
-               <tr class="strategy-description">
-                  <td colspan="4">
-                      <div class="description-container mx-0">
-                            <p class="font-md font-500">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, iste quibusdam ipsam ipsa
-                            tempora sint blanditiinonnsequatur, illum illo accusamus?
-                    </p>
                     </div>
-                </td> 
-               </tr>
-                    </tbody>
-            </table>
-        </div>
+                </div>
+                <div class="col-12 col-md-6 mt-md-0">
+                    <div class="form-group ">
+                        <label for="textarea">Strategy description</label>
+                        <textarea name="textarea" class="form-control" id="mytext" cols="30" rows="3"></textarea>
+                    </div>
+                   
+                </div>  
+            </div>
+            <div class="d-flex justify-content-start align-items-center pt-2 pb-3 px-4">
+                <button type="button" class="btn btn-primary font-weight-500 mt-2 mt-md-0" data-target="#modal_create"
+                    data-toggle="modal">Create Strategy</button>
+            </div>
+        
         </section>
+        <div class="row justify-content-between strategies_container">
+            <div class="col-12 col-md-6 strategy-container-from-here">
+                <div class="p-0">
+                    <div class="border-bottom p-4 d-flex justify-content-between align-items-center">
+                        <h4 class="font-500 m-0">My Forex test Strategy</h4>
+                        <button type="button" class="btn btn-link text-muted border-0" data-toggle="dropdown"><span>&#8226;&#8226;&#8226;</span> </button>
+                        <div class="dropdown-menu dropdown-menu-left">
+                            <h5 class="dropdown-header indigo">OPTIONS</h5>
+                            <a class="dropdown-item" href="#">Edit</a>
+                            <a class="dropdown-item" href="#">Delete</a>
+                            <a class="dropdown-item" href="#">Deteiled analysis</a>
+                        </div>
+                    </div>
+                    <div class="strategy_img_container p-4">
+                        <img src="https://www.tradingview.com/x/ANOGgEdq/" alt="">   
+                    </div>
+                    <div class="p-4 ">
+                        <span class="">
+                            1. Lorem, ipsum dolor sit amet <b>consectetur adipisicing elit. Praesentium nesciunt eos modi</b>  iste sapien
+                            2. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Praesentium nesciunt eos modi iste sapien
+                            3. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Praesentium nesciunt eos modi iste sapien
+                            
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos asperiores aliquid quis quo possimus. At possimus sed vero laudantiu
+                            m aperiam, magnam, molestias provident maiores in, facilis dolorum cum iusto distinctio!
+                        </span>
+                    </div>
+                    <div class="d-flex justify-content-around border-top p-3">
+                        <div class="d-flex align-items-center">
+                            <img src="/storage/icons/list.svg" alt="">
+                            <div class="ml-2">
+                                <p class="p-0 m-0">Trades</p>
+                                <h5 class="">&#35; 81</h5>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center ">
+                            <img src="/storage/icons/area-line.svg" alt="">
+                            <div class="ml-2">
+                                <p class="p-0 m-0">Success</p>
+                                <h5 class="">45,85 %</h5>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center ">
+                            <img src="/storage/icons/area-line.svg" alt="">
+                            <div class="ml-2">
+                                <p class="p-0 m-0">Used</p>
+                                <h5 class="">54.40 %</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="modal" id="modal_create">
+    <div class="modal-dialog ">
+        <form class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="material-icons ml-auto close-btn icon-sm">close</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group mb-4">
+                    <label for="portfolio_name">Strategy name</label>
+                    <input type="text" name="portfolio_name" class="form-control" placeholder="Enter portfolio name"
+                        id="portfolio_name">
+                </div>
+                <div class="form-group mb-4">
+                    <label for="description">Description</label>
+                    <textarea name="description" class="form-control" id="description" rows="4"></textarea>
+                </div>
+            </div>
+        
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Create</button>
+
+            </div>
+
+        </form>
     </div>
 </div>
-<x-modalDeleteItem :message="$message" :item="$item">
-    <x-slot name="modal_body">
-    <p>{{$message}}</p>
-        <h6>Delete strategy</h6>
-    </x-slot> 
-</x-modalDeleteItem>
-<x-modalEdititem :message="$message" :item="$item">
-    <x-slot name="modal_body">
-        <div class="form-group mb-4">
-            <label for="name">Strategy name</label>
-            <input type="text" name="name" class="form-control" placeholder="Enter portfolio name"
-                id="name">
-        </div>
-        <div class="form-group mb-4">
-            <label for="portfolio_name">Description</label>
-            <textarea name="description" class="form-control" id="description" rows="4"></textarea>
-        </div>
-    </x-slot> 
-</x-modalEdititem>
-<x-modalCreateItem :message="$message" :item="$item">
-    <x-slot name="modal_body">
-        <div class="form-group mb-4">
-            <label for="portfolio_name">Strategy name</label>
-            <input type="text" name="portfolio_name" class="form-control" placeholder="Enter portfolio name"
-                id="portfolio_name">
-        </div>
-        <div class="form-group mb-4">
-            <label for="portfolio_name">Description</label>
-            <textarea name="description" class="form-control" id="description" rows="4"></textarea>
-        </div>
-    </x-slot> 
-</x-modalCreateItem>
+
+@endsection

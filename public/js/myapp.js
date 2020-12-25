@@ -1,5 +1,21 @@
 
 $(function (){
+    tinymce.init({
+        selector:'textarea#mytext',
+        placeholder: 'Write description, or type somethin important about this strategy',
+        branding: false,
+        height: 248,
+        min_height: 150,
+        max_height: 350,
+        menubar: 'edit format table tools',
+        lineheight_formats: '0.5',
+        toolbar_mode: 'floating',
+        plugins: 'lists',
+        toolbar: 'numlist bullist | undo redo | styleselect | bold italic | alignleft aligncenter alignright',
+    
+    });
+
+
     /*Enabel tooltip bootstrap*/
     $('[data-toggle="tooltip"]').tooltip();
 

@@ -11,7 +11,7 @@ use Illuminate\Validation\Rule;
 
 class PortfolioController extends Controller
 {
-
+    
     public function __construct()
     {
         $this->middleware('auth');
@@ -23,11 +23,10 @@ class PortfolioController extends Controller
      */
     public function index()
     {
-        $portfolio = Portfolio::first();
-       
-        $portfolio = $portfolio->where('user_id', auth()->id())->get();
+        $portfolio = new Portfolio;
+
+        return $portfolio->fetch_portfolio();
         
-        return $portfolio;
     }
 
     /**
@@ -52,7 +51,7 @@ class PortfolioController extends Controller
             'name' => ['required','unique:portfolios', 'string', 'min:2', 'max:80'],
             'start_equity' => ['required','numeric','max:99999999999'],
             'currency' => Rule::in(["EUR", "USD", "AUD", "CAD", "CHF"]),
-            'action_date' => ['required','date', 'before_or_equal: '.date("Y/m/d h:i:sa").''],
+            'started_at' => ['required','date', 'before_or_equal: '.date("Y/m/d h:i:sa").''],
         ],[
             'before_or_equal' => 'The start date cannot be in the future'
         ]);
@@ -62,7 +61,7 @@ class PortfolioController extends Controller
         $portfolio->start_equity = $request->input('start_equity');
         $portfolio->user_id = auth()->id();
         $portfolio->currency = $request->input('currency');
-        $portfolio->action_date = $request->input('action_date');
+        $portfolio->started_at = $request->input('started_at');
         $portfolio->is_active = $active = Portfolio::where('user_id', auth()->id())->count() == 0 ? 1 : $active = 0;
         
         $portfolio->save();

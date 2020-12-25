@@ -26,7 +26,7 @@ class PortfolioDateOverlapping implements Rule
     public function passes($attribute, $value)
     {  
       
-        return Portfolio::where('id', request('portfolio_id'))->where('action_date', '>', $value)->count() == 0;
+        return Portfolio::where('id', request('portfolio_id'))->where('started_at', '>', $value)->count() == 0;
        
     }
 

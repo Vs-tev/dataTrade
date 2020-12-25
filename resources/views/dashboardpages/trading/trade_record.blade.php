@@ -1,9 +1,8 @@
 @extends('layouts.master')
 
+@section('content')
+
 <div class="main-content-container">
-    @include('layouts.sidebar')
-    @include('layouts.navbar')
-    @include('layouts.rightbar')
     <div class="content-container">
         <form action="">
         <section class="dashboard_container_content chart-container">
@@ -17,9 +16,6 @@
         </section>
 
         <section class="dashboard_container_content px-2 px-md-4">
-         
-
-            
             <div class="d-md-flex">
                 <div class="col-12 col-md-6 p-0">
                     <div class="row mx-0 mb-0 mb-xl-5 p-0 align-items-center justify-content-between">
@@ -176,7 +172,7 @@
                         <div class="col-12 mb-xl-0">
                             <div class="form-group">
                                 <label for="textarea">Trade comment</label>
-                                <textarea name="textarea" class="form-control" id="" cols="30" rows="3"></textarea>
+                                <textarea name="textarea" class="form-control" id="mytextarea" cols="30" rows="3"></textarea>
                             </div>
                         </div>
                     </div>    
@@ -188,17 +184,7 @@
             </div>
        
         </section>
-  
+        </form>
     </div>
-
-    {{-- 
-<a href="#modal_delete" data-toggle="modal" style="margin: 150px">Del<span class="material-icons icon-lg text-muted"
-    data-toggle="tooltip" data-placement="top"
-    title="Delete trade">delete_outline</span></a>
-
-<x-modalDeleteItem :message="$message">
-
-</x-modalDeleteItem>
- --}}
-</form>
 </div>
+@endsection

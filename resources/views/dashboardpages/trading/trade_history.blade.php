@@ -1,13 +1,13 @@
 @extends('layouts.master')
 
+@section('content')
+
+
 {{-- backdrop container--}}
 <div id="cover" class=""></div>
 <div class="main-content-container">
     
-    @include('layouts.sidebar')
-    @include('layouts.navbar')
-    @include('layouts.rightbar')
-    @include('dashboardpages.portfolio.modalPortfolio')
+  
     <div class="content-container" >
         <section class="dashboard_container_content">
             <div class="d-md-flex mb-3 ">
@@ -679,11 +679,4 @@
 </section>
 
 </div>
-
-  {{-- modal delete trade --}}
-<x-modalDeleteItem :message="$message" :item="$item">
-    <x-slot name="modal_body">
-        <p>Delete POrtfolio?</p>
-      <p>{{$item}}</p>
-      </x-slot> 
-</x-modalDeleteItem>
+@endsection

@@ -21,9 +21,9 @@ class TransactionsController extends Controller
         $transaction = Balance::select('id','amount', 'action_date')->where([
             ['portfolio_id',$id],
             ['action_type', 'transaction']
-            ])->orderBy('action_date', 'desc')->paginate(10);
+            ])->orderBy('action_date', 'desc')->paginate(25);
             
-            $transaction->onEachSide(0)->links();
+            $transaction->onEachSide(1)->links();
         return  response()->json($transaction);
     }
    

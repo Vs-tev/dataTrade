@@ -1,14 +1,14 @@
 @extends('layouts.master')
 
+@section('content')
+
 <div class="main-content-container">
-    @include('layouts.sidebar')
-    @include('layouts.navbar')
-    @include('layouts.rightbar')
-    {{-- @include('dashboardpages.portfolio.modalPortfolio') --}}
+
     <div class="content-container" id="VuePortfolio">
 
-        <crud-app></crud-app>
+        <app-portfolio></app-portfolio>
            
-    </div>
+    </div>  
+   
 </div>
-
+@endsection

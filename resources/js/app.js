@@ -9,7 +9,8 @@ require('./bootstrap');
 window.Vue = require('vue');
 import Form from './Form'
 window.Form= Form
-import Portfolio from './components/Portfolio'
+import Portfolio from './components/portfolio/Portfolio'
+import Rules from './components/rules/Rules'
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -21,7 +22,8 @@ import Portfolio from './components/Portfolio'
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('crud-app', require('./components/Portfolio.vue').default);
+Vue.component('app-portfolio', require('./components/portfolio/Portfolio.vue').default);
+Vue.component('app-rules', require('./components/rules/Rules.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -40,10 +42,19 @@ Vue.component('crud-app', require('./components/Portfolio.vue').default);
         }
     }
 }); */
-
-const app = new Vue({
-    el: '#VuePortfolio',
-    components:{
-        Portfolio,
-    },
-});
+if (document.querySelector('#VuePortfolio')) { // this line check if #VuePortfolio exist 
+    const app = new Vue({
+        el: '#VuePortfolio',
+        components:{
+            Portfolio,
+        },
+    });
+}
+if (document.querySelector('#VueRules')) {
+    const rules = new Vue({
+        el: '#VueRules',
+        components:{
+            Rules
+        }
+    })
+}

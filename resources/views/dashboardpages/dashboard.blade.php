@@ -1,9 +1,9 @@
 @extends('layouts.master')
 
+@section('content')
+
 <div class="main-content-container">
-    @include('layouts.sidebar')
-    @include('layouts.navbar')
-    @include('layouts.rightbar')
+   
     <div class="content-container">
         <div class="row justify-content-start">
             <div class="col-md-4 pb-4 px-3">
@@ -88,4 +88,6 @@
             </div>
         </div>
     </div>
+
 </div>
+@endsection
