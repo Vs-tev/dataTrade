@@ -1,21 +1,5 @@
 
 $(function (){
-    tinymce.init({
-        selector:'textarea#mytext',
-        placeholder: 'Write description, or type somethin important about this strategy',
-        branding: false,
-        height: 248,
-        min_height: 150,
-        max_height: 350,
-        menubar: 'edit format table tools',
-        lineheight_formats: '0.5',
-        toolbar_mode: 'floating',
-        plugins: 'lists',
-        toolbar: 'numlist bullist | undo redo | styleselect | bold italic | alignleft aligncenter alignright',
-    
-    });
-
-
     /*Enabel tooltip bootstrap*/
     $('[data-toggle="tooltip"]').tooltip();
 
@@ -94,27 +78,3 @@ function showSlides(n) {
     slides[slideIndex-1].style.display = "block";
 }
 }
-
-$(function (){
-    var id;
-    $(document).on('click', '.delete-item', function() {
-        var id = (this.id);
-        $("#modal_delete").attr('data-id', id);
-        $('#modal_delete').modal('show');
-        
-        $("#btn-delete").on('click',function() {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-            });
-            $.ajax({
-                type:'GET',
-                url:"portfolio/d/"+id,
-                success: function() {
-                    $('#modal_delete').modal('hide');
-                }
-            })
-        })
-    });
-})

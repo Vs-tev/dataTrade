@@ -39,7 +39,7 @@ class ExitReasonController extends Controller
     public function store(Request $request)
     {
         $this->validate(request() ,[
-            'name' => ['required','unique:exit_Reasons', 'string', 'min:2', 'max:40'],
+            'name' => ['required','unique:exit_reasons', 'string', 'min:2', 'max:40'],
         ]);
             
         $exit_reason = new ExitReason;

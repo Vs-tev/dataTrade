@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <meta name="csrf-token" content="{{ csrf_token() }}" />
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <link href="{{ asset('css/style.css') }}" rel="stylesheet">
         <link href="{{ asset('css/sidebar.css') }}" rel="stylesheet">
         <link href="{{ asset('css/navbar.css') }}" rel="stylesheet">
@@ -17,7 +17,7 @@
         {{-- EasySelect --}}
         <link rel="stylesheet" href="{{ asset('easySelect/easySelectStyle.css')}}">
         {{-- TinyMCE text-editor --}}
-        
+        <script src="{{ asset('node_modules/tinymce/tinymce.min.js') }}"></script>
         {{-- Google fonts --}}
         <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
         <title>Trade Data</title>
@@ -40,4 +40,4 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="{{ asset('easySelect/easySelect.js') }}" defer></script>
 {{-- text editor tiny --}}
-<script src="{{ asset('node_modules/tinymce/tinymce.js') }}"></script>
+

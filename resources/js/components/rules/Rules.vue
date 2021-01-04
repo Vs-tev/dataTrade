@@ -118,7 +118,6 @@ export default {
     },
 
     addNewRule: function addNewRule() {
-      $("#modal-rule").appendTo("body");
       this.form.reset();
       this.form.modal = "create";
       if (this.typeRule == "entry_rules") {
@@ -143,7 +142,6 @@ export default {
     },
 
     getItem: function getItem(rule) {
-      $("#modal-rule").appendTo("body");
       this.form.errors.clear();
       this.form.modal = "edit";
       if (this.typeRule == "entry_rules") {
@@ -176,7 +174,6 @@ export default {
     },
 
     deleteRule: function deleteRule(value) {
-      $("#modal-rule").appendTo("body");
       this.form.title = "Delete Rule";
       this.form.modal = "delete";
       this.form.name = value.name;

@@ -266,7 +266,6 @@ label {
         top: 125;
         width: calc(100% - 295px);
         padding: 1rem;
-        z-index: -2
     }
 }
 
@@ -277,7 +276,6 @@ label {
         top: 125;
         width: 100%;
         padding: 1rem;
-        z-index: -2
     }
 }
 

@@ -49,12 +49,12 @@ Route::view('/dashboardPages/dashboard', 'dashboardpages.dashboard');
 Route::view('/dashboardPages/portfolio', 'dashboardpages.portfolio.portfolio')->name('portfolio')->middleware('auth');
 Route::get('/dashboardPages/portfolio/g', 'PortfolioController@index');
 Route::post('/dashboardPages/portfolio/u/{id}', 'PortfolioController@update');
-Route::post('/dashboardPages/portfolio/store', 'PortfolioController@store')->middleware('auth');
-Route::post('/dashboardPages/portfolio/d/{id}', 'PortfolioController@destroy')->middleware('auth');
-Route::post('/dashboardPages/portfolio/toggle_active/{id}', 'PortfolioController@toggle_is_active_portfolio')->middleware('auth');
+Route::post('/dashboardPages/portfolio/store', 'PortfolioController@store');
+Route::post('/dashboardPages/portfolio/d/{id}', 'PortfolioController@destroy');
+Route::post('/dashboardPages/portfolio/toggle_active/{id}', 'PortfolioController@toggle_is_active_portfolio');
 
 //transactions
-Route::get('/dashboardPages/portfolio/getTransactions/{id}', 'TransactionsController@index')->middleware('auth');
+Route::get('/dashboardPages/portfolio/getTransactions/{id}', 'TransactionsController@index');
 Route::post('/dashboardPages/portfolio/storeTransactions', 'TransactionsController@store');
 Route::post('/dashboardPages/portfolio/deleteTransactions/{id}', 'TransactionsController@destroy');
 
@@ -88,7 +88,10 @@ Route::post('/dashboardPages/tradingrules/exit_reasons/d/{id}', 'ExitReasonContr
 
 /**Trading strategy */
 Route::view('/dashboardPages/strategy', 'dashboardpages.strategy.strategy')->middleware('auth');
-
+Route::get('/dashboardPages/strategy/g', 'StrategyController@index');
+Route::post('/dashboardPages/strategy/p', 'StrategyController@store');
+Route::post('/dashboardPages/strategy/u/{id}', 'StrategyController@update');
+Route::post('/dashboardPages/strategy/d/{id}', 'StrategyController@destroy');
 /* --- */
 
 

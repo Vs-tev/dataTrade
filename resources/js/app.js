@@ -11,6 +11,10 @@ import Form from './Form'
 window.Form= Form
 import Portfolio from './components/portfolio/Portfolio'
 import Rules from './components/rules/Rules'
+import Strategies from './components/strategies/Strategies'
+
+
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -24,6 +28,7 @@ import Rules from './components/rules/Rules'
 
 Vue.component('app-portfolio', require('./components/portfolio/Portfolio.vue').default);
 Vue.component('app-rules', require('./components/rules/Rules.vue').default);
+Vue.component('app-strategies', require('./components/strategies/Strategies.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -31,17 +36,6 @@ Vue.component('app-rules', require('./components/rules/Rules.vue').default);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-/* const Test = new Vue({
-    el: '#app',
-    components:{
-        Portfolio,
-    },
-    data() {
-        return {
-            ime: 'vaskooo',
-        }
-    }
-}); */
 if (document.querySelector('#VuePortfolio')) { // this line check if #VuePortfolio exist 
     const app = new Vue({
         el: '#VuePortfolio',
@@ -50,11 +44,21 @@ if (document.querySelector('#VuePortfolio')) { // this line check if #VuePortfol
         },
     });
 }
+
 if (document.querySelector('#VueRules')) {
     const rules = new Vue({
         el: '#VueRules',
         components:{
             Rules
+        }
+    })
+}
+
+if (document.querySelector('#VueStrategies')) {
+    const strategies = new Vue({
+        el: '#VueStrategies',
+        components:{
+            Strategies,
         }
     })
 }

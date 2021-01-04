@@ -139,6 +139,14 @@ export default {
   },
 
   methods: {
+    checkResponseStatus(error) {
+      if (error.response.status === 419 || error.response.status == 401) {
+        window.location.href = "/login";
+      } else {
+        this.form.errors.record(error.response.data.errors);
+      }
+    },
+
     toogleActive: function (value, event) {
       var data = false;
       if (event.target.checked) {
@@ -152,11 +160,13 @@ export default {
         })
         .then((res) => {
           this.fetchitems();
+        })
+        .catch((error) => {
+          this.checkResponseStatus(error);
         });
     },
 
     getValues(item_id, item_name, item_currency) {
-      $("#modal-form").appendTo("body");
       this.form.modal = "edit";
       this.form.title = "Edit";
       this.form.errors.clear();
@@ -176,7 +186,6 @@ export default {
     },
 
     create: function create() {
-      $("#modal-form").appendTo("body");
       this.form.reset();
       this.form.title = "Create Portfolio";
       this.form.modal = "create";
@@ -195,7 +204,7 @@ export default {
           this.fetchitems();
         })
         .catch((error) => {
-          this.form.errors.record(error.response.data.errors);
+          this.checkResponseStatus(error);
         });
     },
 
@@ -213,12 +222,11 @@ export default {
           this.fetchitems();
         })
         .catch((error) => {
-          this.form.errors.record(error.response.data.errors);
+          this.checkResponseStatus(error);
         });
     },
 
     DeletePortfolio: function DeletePortfolio(value) {
-      $("#modal-form").appendTo("body");
       this.form.reset();
       this.form.title = "Delete Portfolio";
       this.form.modal = "delete";
@@ -234,7 +242,7 @@ export default {
           this.fetchitems();
         })
         .catch((error) => {
-          this.form.errors.record(error.response.data.errors);
+          this.checkResponseStatus(error);
         });
     },
 
@@ -250,9 +258,7 @@ export default {
             $("#transactions").appendTo("body");
           })
           .catch((error) => {
-            if (error.response.status === 401) {
-              window.location.href = "/login";
-            }
+            this.checkResponseStatus(error);
           });
       }
     },
@@ -285,11 +291,7 @@ export default {
           this.form.transaction_date = "";
         })
         .catch((error) => {
-          if (error.response.status === 401) {
-            window.location.href = "/login";
-          } else {
-            this.form.errors.record(error.response.data.errors);
-          }
+          this.checkResponseStatus(error);
         });
     },
 
@@ -303,7 +305,7 @@ export default {
           this.fetchitems();
         })
         .catch((error) => {
-          this.form.errors.record(error.response.data.errors);
+          this.checkResponseStatus(error);
         });
     },
   },

@@ -68,7 +68,7 @@ class PortfolioController extends Controller
 
         $portfolio->add_to_balance($portfolio);
 
-        //return response()->json('bravoo');
+        //return response()->json($portfolio);
     }
 
     /**
