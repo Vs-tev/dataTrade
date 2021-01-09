@@ -73,8 +73,8 @@ Route::view('/dashboardPages/tradehistory', 'dashboardpages.trading.trade_histor
 
 /**Trading rules */
 Route::view('/dashboardPages/tradingrules', 'dashboardpages.trading_rules.trading_rules')->middleware('auth');
-Route::get('/dashboardPages/tradingrules/entry_rules/g', 'EntryRulesController@index');
-Route::get('/dashboardPages/tradingrules/exit_reasons/g', 'ExitReasonController@index');
+Route::get('/entry_rules/g', 'EntryRulesController@index');
+Route::get('/exit_reasons/g', 'ExitReasonController@index');
 Route::post('/dashboardPages/tradingrules/entry_rules/p', 'EntryRulesController@store');
 Route::post('/dashboardPages/tradingrules/exit_reasons/p', 'ExitReasonController@store');
 Route::post('/dashboardPages/tradingrules/entry_rules/u/{id}', 'EntryRulesController@update');
@@ -88,10 +88,10 @@ Route::post('/dashboardPages/tradingrules/exit_reasons/d/{id}', 'ExitReasonContr
 
 /**Trading strategy */
 Route::view('/dashboardPages/strategy', 'dashboardpages.strategy.strategy')->middleware('auth');
-Route::get('/dashboardPages/strategy/g', 'StrategyController@index');
-Route::post('/dashboardPages/strategy/p', 'StrategyController@store');
-Route::post('/dashboardPages/strategy/u/{id}', 'StrategyController@update');
-Route::post('/dashboardPages/strategy/d/{id}', 'StrategyController@destroy');
+Route::get('/strategy/g', 'StrategyController@index');
+Route::post('/strategy/p', 'StrategyController@store');
+Route::post('/strategy/u/{id}', 'StrategyController@update');
+Route::post('/strategy/d/{id}', 'StrategyController@destroy');
 /* --- */
 
 

@@ -8,6 +8,12 @@
     <div id="VueStrategies">
         <app-strategies></app-strategies>
     </div>
+    {{-- <select class="easySelect" id="" >
+        @foreach ($strategy as $item)
+            <option value="">{{$item->name}}</option> 
+        @endforeach
+   
+    </select> --}}
 
 </div>
 

@@ -1,6 +1,6 @@
 <template>
     <div class="content-container">
-        <section class="dashboard_container_content col-12 col-md-11 col-xl-10 p-0 pb-4">
+        <section class="dashboard_container_content col-12  col-xl-10 p-0 pb-4">
             <div class="d-flex align-items-center justify-content-between border-bottom p-4">
                 <h4 class="font-weight-500 m-0">Strategies</h4>
                 <button type="button" class="btn btn-link text-muted border-0" @click="togglediv = !togglediv" v-if="togglediv">
@@ -18,11 +18,11 @@
             </div>
             
         </section>
-        <div v-if="loading" class="col-12 col-md-11 col-xl-10 d-flex justify-content-center align-content-center">
-            <div class="spinner-border"></div>
+        <div v-if="loading" class="col-12  col-xl-10 d-flex justify-content-center align-content-center">
+            <div class="spinner-border lighter"></div>
         </div>
         <div class="row strategies_container">
-            <div class="col-12 col-md-11 col-xl-10 mt-3 strategy-container-from-here" v-for="strategy in strategies" :key="strategy.id">
+            <div class="col-12 col-xl-10 mt-3 strategy-container-from-here" v-for="strategy in strategies" :key="strategy.id">
                 
                 <div class="p-0">
                     <div class="border-bottom p-4 d-flex justify-content-between align-items-center">
@@ -102,6 +102,9 @@ export default {
         title: "",
         modal: "",
         img_mode: false,
+        height: "261",
+        placeholder:
+          "Well written description will help you to improve your strategy and help you to make better trading decisions",
       }),
     };
   },
@@ -121,7 +124,7 @@ export default {
 
     getStrategies() {
       axios
-        .get("/dashboardPages/strategy/g")
+        .get("/strategy/g")
         .then((response) => {
           this.strategies = response.data;
           this.loading = false;
@@ -146,7 +149,7 @@ export default {
         data.append("name", value.name);
         data.append("description", value.description);
         axios
-          .post("/dashboardPages/strategy/p", data)
+          .post("/strategy/p", data)
           .then((res) => {
             this.getStrategies();
             $("#modal-strategy").modal("hide");
@@ -180,7 +183,7 @@ export default {
         data.append("name", value.name);
         data.append("description", value.description);
         axios
-          .post("/dashboardPages/strategy/u/" + value.id, data)
+          .post("/strategy/u/" + value.id, data)
           .then((res) => {
             $("#modal-strategy").modal("hide");
             this.getStrategies();
@@ -202,7 +205,7 @@ export default {
 
     destroyStrategy: function destroyStrategy(value) {
       axios
-        .post("/dashboardPages/strategy/d/" + value.id)
+        .post("/strategy/d/" + value.id)
         .then((res) => {
           $("#modal-strategy").modal("hide");
           this.getStrategies();

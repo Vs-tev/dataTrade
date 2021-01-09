@@ -22,6 +22,8 @@ class StrategyController extends Controller
         $strategy = Strategy::latest();
         $strategy = $strategy->where('user_id', auth()->id())
         ->get();
+
+        //return view('dashboardpages.strategy.strategy', compact('strategy'));
         return $strategy;
     }
 

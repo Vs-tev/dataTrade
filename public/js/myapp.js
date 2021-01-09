@@ -1,18 +1,10 @@
 
 $(function (){
+   
+
     /*Enabel tooltip bootstrap*/
     $('[data-toggle="tooltip"]').tooltip();
 
-    /**Easy select plugin*/
-    $(".easySelect").easySelect({
-        buttons: false,
-        search: false,
-        placeholderColor: '#6c757d',
-        selectColor: '#495057',
-        showEachItem: true,
-        width: '100%',
-        dropdownMaxHeight: '255px',
-    })
 
     /*Handle open/close rightbar and sidebar */
     $('#toggle-sidebar').on('click',function(){

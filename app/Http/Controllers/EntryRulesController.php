@@ -17,6 +17,7 @@ class EntryRulesController extends Controller
         $entry_rules = EntryRules::latest();
         $entry_rules = $entry_rules->where('user_id', auth()->id())
         ->get();
+        
         return $entry_rules;
     }
 

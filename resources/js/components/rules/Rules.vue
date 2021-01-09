@@ -109,7 +109,7 @@ export default {
         this.buttonText = "Add Exit Reason";
       }
       axios
-        .get("/dashboardPages/tradingrules/" + this.typeRule + "/g")
+        .get("/" + this.typeRule + "/g")
         .then((response) => {
           this.rules = response.data;
           //this.loading = false;

@@ -15,7 +15,8 @@
         <link href="{{ asset('css/rules.css') }}" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('material-icons/iconfont/material-icons.css') }}">
         {{-- EasySelect --}}
-        <link rel="stylesheet" href="{{ asset('easySelect/easySelectStyle.css')}}">
+        <link rel="stylesheet" href="{{ asset('js/easySelect/easySelectStyle.css')}}">
+        
         {{-- TinyMCE text-editor --}}
         <script src="{{ asset('node_modules/tinymce/tinymce.min.js') }}"></script>
         {{-- Google fonts --}}
@@ -38,6 +39,6 @@
  <script src="{{ asset('js/myapp.js') }}" defer></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="{{ asset('easySelect/easySelect.js') }}" defer></script>
-{{-- text editor tiny --}}
+<script src="{{ asset('js/easySelect/easySelect.js') }}" defer></script>
+
 

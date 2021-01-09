@@ -2,9 +2,9 @@
     <editor v-model="item.description" name="description"
         :key="item.id"
         api-key="6q52b91hsd3vy6c451g44vjkn1avc5pmzr0z102fs62j21na" :init="{
-        placeholder: 'Well written description will help you to improve your strategy and help you to make better trading decisions',
+        placeholder: item.placeholder,
         branding: false,
-        height: 261,
+        height: item.height,
         min_height: 150,
         max_height: 350,
         menubar: false,

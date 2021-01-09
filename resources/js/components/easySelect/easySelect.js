@@ -1,4 +1,3 @@
-//The options are on the bottom
 
 (function ($) {
     $.fn.easySelect = function (options) {
@@ -17,8 +16,8 @@
 
             var $this = $(this),
 
-            numberOfOptions = $(this).children('option').length;
-
+            numberOfOptions = $this.children('option').length;
+           
             $this.addClass('s-hidden');
 
             $this.wrap('<div class="easySelect"></div>');
@@ -153,11 +152,11 @@
             }
                 
 
-            $listItems.click(function (e) {
+            $listItems.on('click', function (e) {
                 e.stopPropagation();
                 $styledSelect.text($(this).text()).removeClass('active');
                 $this.val($(this).attr('val'));
-                clear.show();
+                $(this).clear.show();
 
                 val = [];
                 $('.mulpitply_checkbox_style:checked').each(function () {
@@ -223,7 +222,7 @@
             })
 /*--================================*/
             allValue = [];
-            $selectAll.click(function () {
+            $selectAll.on('click', function () {
                 if (MaxAllowed == "" || typeof MaxAllowed == typeof undefined) {
                     checkItem.prop('checked', true);
                     $('.mulpitply_checkbox_style:checked').each(function () {
@@ -255,11 +254,11 @@
             $input.on('click',function (e) {
                 e.stopPropagation();
             });
-            $input.on('keyuo', function () {
-                var val = $(this).val();
+            $input.on('keyup', function () {
+                var val = $(this).val().toLowerCase();
                 var isMatch = false;
                 $listItems.find('.container-item').each(function (i) {
-                    var content = $(this).html();
+                    var content = $(this).text();
                     if (content.toLowerCase().indexOf(val) == -1) {
                         $(this).hide();
                     } else {
@@ -272,38 +271,3 @@
         });
     }
 }(jQuery));
-
-     $("#demo").easySelect({
-         buttons: false,
-         search: false,
-         placeholder: 'Choose Country',
-         placeholderColor: '#524781',
-         selectColor: '#524781',
-         itemTitle: 'Countrys selected',
-         showEachItem: true,
-         width: '100%',
-         dropdownMaxHeight: '450px',
-     })
-     $("#demo1").easySelect({
-         buttons: false, 
-         search: true,
-         placeholder: 'Choose color',
-         placeholderColor: 'violet',
-         selectColor: 'lila',
-         itemTitle: 'Color selected',
-         showEachItem: true,
-         width: '100%',
-         dropdownMaxHeight: '450px',
-     })
-
-     $("#demo3").easySelect({
-         buttons: true, // 
-         search: true,
-         placeholder: 'Pick Car',
-         placeholderColor: 'green',
-         selectColor: '#524781',
-         itemTitle: 'Car selected',
-         showEachItem: true,
-         width: '100%',
-         dropdownMaxHeight: '450px',
-     })

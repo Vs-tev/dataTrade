@@ -29,7 +29,6 @@
                                     <h4 class="lighter font-500">Click here to upload image</h4>
                                 </label>
                             </div>
-
                             <div class="img-content-container" v-if="item.url && item.url !== 'noimage.jpg'">
                                 <div class="remove-img" @click="removeSelectedImg"><img src="/storage/icons/remove.svg"
                                         alt=""></div>
@@ -47,9 +46,8 @@
                     </div>
                     <div class="form-group pt-3">
                         <label for="textarea">Strategy description</label>
-                        <texteditor :item="item">
-                          
-                        </texteditor>
+
+                        <texteditor :item="item"></texteditor>
                         
                         <p class="error-output" v-if="item.errors.has('description')"
                             v-text="item.errors.get('description')"></p>

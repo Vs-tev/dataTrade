@@ -12,6 +12,7 @@ window.Form= Form
 import Portfolio from './components/portfolio/Portfolio'
 import Rules from './components/rules/Rules'
 import Strategies from './components/strategies/Strategies'
+import Traderecord from './components/trades/Traderecord'
 
 
 
@@ -29,6 +30,8 @@ import Strategies from './components/strategies/Strategies'
 Vue.component('app-portfolio', require('./components/portfolio/Portfolio.vue').default);
 Vue.component('app-rules', require('./components/rules/Rules.vue').default);
 Vue.component('app-strategies', require('./components/strategies/Strategies.vue').default);
+Vue.component('app-traderecord', require('./components/trades/Traderecord.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -59,6 +62,15 @@ if (document.querySelector('#VueStrategies')) {
         el: '#VueStrategies',
         components:{
             Strategies,
+        }
+    })
+}
+
+if (document.querySelector('#VueTradeRecord')) {
+    const traderecord = new Vue({
+        el: '#VueTradeRecord',
+        components:{
+            Traderecord,
         }
     })
 }
