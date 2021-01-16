@@ -61,7 +61,7 @@ Route::post('/dashboardPages/portfolio/deleteTransactions/{id}', 'TransactionsCo
 
 /* Trade Record */
 Route::view('/dashboardPages/traderecord', 'dashboardpages.trading.trade_record')->middleware('auth');
-
+Route::post('/dashboardPages/traderecord/p', 'TradeController@store');
 /* --- */
 
 

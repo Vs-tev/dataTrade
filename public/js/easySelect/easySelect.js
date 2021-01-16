@@ -156,15 +156,16 @@
             $listItems.on('click',function (e) {
                 e.stopPropagation();
                 $styledSelect.text($(this).text()).removeClass('active');
-                $this.val($(this).attr('val'));
+                $this.val($(this).attr('value'));
+                
                 clear.show();
 
-                val = [];
+                var val = [];
                 $('.mulpitply_checkbox_style:checked').each(function () {
                     val.push($(this).val());
                 })
                 $this.closest('select').val(val);
-
+        
                 $($this.closest('select').children('option:selected')).each(function () {
                     $(this).attr('selected', 'selected');
                 });
@@ -176,7 +177,7 @@
                 /*--===============================*/
                 eachItem();
                 eachItemoutput();
-
+               
                 var $checked_items = checkItem.filter(":checked").length;
                 if ($checked_items == 0) {
                     $styledSelect.text(settings.placeholder).removeClass('active').css('color', settings.placeholderColor);

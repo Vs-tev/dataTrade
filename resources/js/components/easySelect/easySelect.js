@@ -48,7 +48,6 @@
                 $divSearch.hide();
             }
             
-            
             var $divoptions = $('<div/> ', {
                 'class': 'divOptionsesySelect',
             }).appendTo($divSearch);
@@ -124,7 +123,7 @@
             var $listItems = $list.find('li');
             var checkItem = $list.find('.mulpitply_checkbox_style');
 
-            $styledSelect.click(function (e) {
+            $styledSelect.on('click', function (e) {
                 e.stopPropagation();
                 $('div.styledSelect.active').each(function () {
                     $(this).removeClass('active').next('ul.options').hide();
@@ -140,14 +139,12 @@
             }
 
             function eachItemoutput() {
-                
                 if (settings.showEachItem == true) {
                     $styledSelect.text(arrText.join(", ")).removeClass('active').css('color', settings.selectColor); 
                     
                 } else {
                     var $checked_items = checkItem.filter(":checked").length;
                     $styledSelect.text($checked_items + ' ' + settings.itemTitle).removeClass('active').css('color', settings.selectColor);
-                   
                 }
             }
                 
@@ -155,7 +152,8 @@
             $listItems.on('click', function (e) {
                 e.stopPropagation();
                 $styledSelect.text($(this).text()).removeClass('active');
-                $this.val($(this).attr('val'));
+                $this.val($(this).attr('value'));
+                
                 $(this).clear.show();
 
                 val = [];
@@ -163,7 +161,7 @@
                     val.push($(this).val());
                 })
                 $this.closest('select').val(val);
-
+                
                 $($this.closest('select').children('option:selected')).each(function () {
                     $(this).attr('selected', 'selected');
                 });
@@ -175,7 +173,7 @@
                 /*--===============================*/
                 eachItem();
                 eachItemoutput();
-
+                
                 var $checked_items = checkItem.filter(":checked").length;
                 if ($checked_items == 0) {
                     $styledSelect.text(settings.placeholder).removeClass('active').css('color', settings.placeholderColor);

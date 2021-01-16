@@ -83,12 +83,6 @@ export default {
     Texteditor,
   },
 
-  data() {
-    return {
-      //img_mode: false,
-    };
-  },
-
   methods: {
     destroyStrategy: function () {
       this.$emit("destroyStrategy", this.item);
@@ -99,7 +93,6 @@ export default {
     },
 
     onFileSelected() {
-      //const file = event.target.files[0];
       this.item.img_strategy = event.target.files[0];
       this.item.url = URL.createObjectURL(this.item.img_strategy);
       this.item.img_mode = true;

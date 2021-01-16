@@ -23,8 +23,4 @@ class Balance extends Model
         return $this->belongsTo(Portfolio::class);
     }
 
- public function fetch_portfolio(){
-        return $this->portfolio()->where('portfolio_id', $this->id);
-    }
-
 }

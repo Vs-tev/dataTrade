@@ -39,16 +39,18 @@ class Portfolio extends Model
     } */
     
     public function scopeIsactive($query){
-        return $query->where('is_active', 1); //return only active
+        return $query->where('is_active', 1)->pluck('id'); //return only active
     }
 
     public function add_to_balance($portfolio){
 
         $this->balance()->create([
+            
             'portfolio_id' => $this->id,
             'amount' => $portfolio->start_equity,
             'action_date' => $portfolio->started_at,
-            'action_type' => 'start_capital'
+            'action_type' => 'start_capital',
+            dd($this)
         ]);  
     }
 

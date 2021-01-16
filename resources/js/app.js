@@ -7,6 +7,10 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+import VueCompositionAPI from '@vue/composition-api'
+Vue.use(VueCompositionAPI)
+
+
 import Form from './Form'
 window.Form= Form
 import Portfolio from './components/portfolio/Portfolio'
@@ -70,7 +74,8 @@ if (document.querySelector('#VueTradeRecord')) {
     const traderecord = new Vue({
         el: '#VueTradeRecord',
         components:{
-            Traderecord,
+            Traderecord
+            
         }
     })
 }
