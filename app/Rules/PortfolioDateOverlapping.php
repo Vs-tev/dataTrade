@@ -25,9 +25,11 @@ class PortfolioDateOverlapping implements Rule
      */
     public function passes($attribute, $value)
     {  
-      
-        return Portfolio::where('id', request('portfolio_id'))->where('started_at', '>', $value)->count() == 0;
-       
+        if(request('portfolio_id')){
+            return Portfolio::where('id', request('portfolio_id'))->where('started_at', '>', $value)->count() == 0;
+        }else{
+            return Portfolio::where('id', Portfolio::isactive()->first())->where('started_at', '>', $value)->count() == 0;
+        }
     }
 
     /**
@@ -37,6 +39,6 @@ class PortfolioDateOverlapping implements Rule
      */
     public function message()
     {
-        return 'Date must be grater than portfolio start date ('.Portfolio::portfolioDate(request('portfolio_id')).') ';
+        return 'Date must be grater than portfolio start date ('.Portfolio::portfolioDate(request('portfolio_id') ?? Portfolio::isactive()->first()).') ';
     }
 }

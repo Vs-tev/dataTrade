@@ -39,6 +39,7 @@
         "object-path": "^0.11.5",
         "tinymce": "^5.6.2",
         "vue": "^2.6.12",
+        "vue-date-pick": "^1.4.1",
         "vue-multiselect": "^2.1.6"
     }
 }

@@ -45,12 +45,10 @@ class Portfolio extends Model
     public function add_to_balance($portfolio){
 
         $this->balance()->create([
-            
             'portfolio_id' => $this->id,
             'amount' => $portfolio->start_equity,
             'action_date' => $portfolio->started_at,
             'action_type' => 'start_capital',
-            dd($this)
         ]);  
     }
 

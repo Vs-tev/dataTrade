@@ -44,7 +44,15 @@
 
                          <div class="form-group mb-4  col-6 pr-0"  v-if="item.modal == 'create' ">
                             <label for="start_equity">Start date</label>
-                            <input type="date" id="started_at" v-model="item.started_at" name="started_at" class="form-control">
+                            <date-pick 
+                                  v-model="item.started_at"
+                                  :pickTime="false"
+                                  :isDateDisabled="isFutureDate"
+                                  :format="'YYYY-MM-DD'"
+                                  :inputAttributes="{readonly: true}"
+                                  @input="item.errors.clear('started_at')"
+                                  :class="{'is-invalid': item.errors.has('started_at')}"
+                                  ></date-pick>
                                 <p class="error-output"
                             v-if="item.errors.has('started_at')" v-text="item.errors.get('started_at')"></p>
                         </div>
@@ -72,11 +80,21 @@
         </div>
 </template>
 <script>
+import DatePick from "vue-date-pick";
 export default {
   name: "Modal",
   props: ["item"],
 
+  components: {
+    DatePick,
+  },
+
   methods: {
+    isFutureDate(date) {
+      const currentDate = new Date();
+      return date > currentDate;
+    },
+
     edit: function () {
       this.$emit("edit", this.item);
     },
@@ -91,3 +109,4 @@ export default {
   },
 };
 </script>
+<style src="vue-date-pick/dist/vueDatePick.css"></style>

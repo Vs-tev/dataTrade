@@ -22,9 +22,15 @@
                         </div>
                         <div class="form-group mb-4 pr-0 pt-3 pt-lg-0">
                             <label class="mr-0 mr-md-1">Date:</label>
-                            <input type="date" id="transaction_date" v-model="item.transaction_date"
-                                name="transaction_date" class="form-control"
-                                @change="item.errors.clear('transaction_date')">
+                            <date-pick 
+                                v-model="item.transaction_date"
+                                :pickTime="false"
+                                :isDateDisabled="isFutureDate"
+                                :format="'YYYY-MM-DD'"
+                                :inputAttributes="{readonly: true}"
+                                @input="item.errors.clear('transaction_date')"
+                                :class="{'is-invalid': item.errors.has('transaction_date')}"
+                                ></date-pick>
                             <p class="error-output" v-if="item.errors.has('transaction_date')"
                                 v-text="item.errors.get('transaction_date')"></p>
                         </div>
@@ -87,14 +93,20 @@
 </template>
 <script>
 import Pagination from "../Pagination";
-
+import DatePick from "vue-date-pick";
 export default {
-  components: { Pagination },
+  components: { Pagination, DatePick },
+
   name: "ModalTransaction",
   props: ["item", "transaction", "transact", "links"],
   //props: ["transaction"],
 
   methods: {
+    isFutureDate(date) {
+      const currentDate = new Date();
+      return date > currentDate;
+    },
+
     storeTransaction: function () {
       this.$emit("storeTransaction", this.item);
     },
@@ -107,3 +119,4 @@ export default {
   },
 };
 </script>
+<style src="vue-date-pick/dist/vueDatePick.css"></style>
