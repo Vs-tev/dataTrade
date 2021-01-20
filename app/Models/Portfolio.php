@@ -52,41 +52,20 @@ class Portfolio extends Model
         ]);  
     }
 
-    public function fetch_portfolio(){
+    public function fetch_portfolio($query){
         return $this->select('portfolios.id', 'name', 'start_equity', 'currency', 'is_active', 'portfolios.started_at', DB::raw('SUM(amount) as current_balance', ), )
         ->join('balances AS b', 'portfolios.id', '=', 'b.portfolio_id')
         ->where('user_id', auth()->id())
+        ->whereIn('is_active', $query)
         ->groupBy('portfolios.id')
         ->latest('portfolios.started_at')
         ->get();
-        
     }
-    
-
-    /* public function fetch_portfolio(){
-        //working query (change config/database  'strict' => false, line:50)
-       $a = DB::Select(DB::raw('SELECT id, name, current_balance, currency, start_equity, is_active, action_date FROM 
-      (SELECT portfolios.id as id, portfolios.name, portfolios.start_equity, portfolios.currency, portfolios.is_active, DATE_FORMAT(portfolios.action_date, "%d %b %Y")as action_date, balances.portfolio_id,
-      SUM(amount)AS current_balance
-        FROM portfolios INNER JOIN balances ON portfolios.id = balances.portfolio_id WHERE user_id = '.auth()->id().'
-        GROUP BY name)a'));
-        return $a;
-
-    } */
 
     public function equity(){
         return $this->balance()
         ->select(DB::raw('sum(amount) as total', 'portfolio_id'))
         ->where('portfolio_id', $this->id)->get();
     }
-
-    /* public static function calculate_balance(){
-        return DB::table('balances')
-        ->select(DB::raw('SUM(amount) as total_balance'))
-        ->groupBy('portfolio_id')
-        ->get();
-         
-     } */
-    
 
 }

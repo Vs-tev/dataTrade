@@ -48,6 +48,7 @@ Route::view('/dashboardPages/dashboard', 'dashboardpages.dashboard');
 //portfolio actions
 Route::view('/dashboardPages/portfolio', 'dashboardpages.portfolio.portfolio')->name('portfolio')->middleware('auth');
 Route::get('/dashboardPages/portfolio/g', 'PortfolioController@index');
+Route::get('/dashboardPages/portfolioIsActive/g', 'PortfolioController@show');
 Route::post('/dashboardPages/portfolio/u/{id}', 'PortfolioController@update');
 Route::post('/dashboardPages/portfolio/store', 'PortfolioController@store');
 Route::post('/dashboardPages/portfolio/d/{id}', 'PortfolioController@destroy');
@@ -61,6 +62,8 @@ Route::post('/dashboardPages/portfolio/deleteTransactions/{id}', 'TransactionsCo
 
 /* Trade Record */
 Route::view('/dashboardPages/traderecord', 'dashboardpages.trading.trade_record')->middleware('auth');
+Route::get('/dashboardPages/traderecord', 'TradeController@index')->middleware('auth');
+
 Route::post('/dashboardPages/traderecord/p', 'TradeController@store');
 /* --- */
 

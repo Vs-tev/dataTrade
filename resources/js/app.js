@@ -35,6 +35,7 @@ Vue.component('app-portfolio', require('./components/portfolio/Portfolio.vue').d
 Vue.component('app-rules', require('./components/rules/Rules.vue').default);
 Vue.component('app-strategies', require('./components/strategies/Strategies.vue').default);
 Vue.component('app-traderecord', require('./components/trades/Traderecord.vue').default);
+Vue.component('app-navbar', require('./components/navbar/Navbar.vue').default);
 
 
 /**
@@ -42,40 +43,42 @@ Vue.component('app-traderecord', require('./components/trades/Traderecord.vue').
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+const app = new Vue({
+    el: '#app',
+    
+});
 
-if (document.querySelector('#VuePortfolio')) { // this line check if #VuePortfolio exist 
+
+/* if (document.querySelector('#VuePortfolio')) { // this line check if #VuePortfolio exist 
     const app = new Vue({
         el: '#VuePortfolio',
-        components:{
-            Portfolio,
-        },
+        
     });
 }
 
 if (document.querySelector('#VueRules')) {
     const rules = new Vue({
         el: '#VueRules',
-        components:{
-            Rules
-        }
+      
     })
 }
 
 if (document.querySelector('#VueStrategies')) {
     const strategies = new Vue({
-        el: '#VueStrategies',
-        components:{
-            Strategies,
-        }
+        el: '#VueStrategies'
+        
     })
 }
 
-if (document.querySelector('#VueTradeRecord')) {
     const traderecord = new Vue({
         el: '#VueTradeRecord',
-        components:{
-            Traderecord
-            
-        }
-    })
-}
+        data: {
+            title: 'vueee',
+        },
+        methods: {
+            changetitle: function () {
+                console.log(rules)
+              },
+        },
+    }) */
+

@@ -17,7 +17,9 @@ class TradeController extends Controller
      */
     public function index()
     {
-        //
+     
+        return view('dashboardpages.trading.trade_record');
+        
     }
 
     /**

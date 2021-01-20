@@ -14,8 +14,6 @@
         <link href="{{ asset('css/trading.css') }}" rel="stylesheet">
         <link href="{{ asset('css/rules.css') }}" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('material-icons/iconfont/material-icons.css') }}">
-        {{-- EasySelect --}}
-        <link rel="stylesheet" href="{{ asset('js/easySelect/easySelectStyle.css')}}">
         
         {{-- TinyMCE text-editor --}}
         <script src="{{ asset('node_modules/tinymce/tinymce.min.js') }}"></script>
@@ -25,7 +23,7 @@
     </head>
     <body>
         
-        <div>
+        <div id="app">
             @include('layouts.sidebar')
             @include('layouts.navbar')
             @include('layouts.rightbar')
@@ -39,6 +37,5 @@
  <script src="{{ asset('js/myapp.js') }}" defer></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="{{ asset('js/easySelect/easySelect.js') }}" defer></script>
 
 

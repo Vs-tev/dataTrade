@@ -15,11 +15,13 @@
                     v-for="item in items" :key="item.id">
                     <div class="container-portfolio-action-buttons d-flex justify-content-between align-items-center border-bottom py-3 mb-2">
                      <div class="custom-control custom-switch switch_portfolio">
+                       <div v-if="items.length > 1">
                         <input @click="toogleActive(item, $event)" type="checkbox"
                             class="custom-control-input activate_portfolio" :id="item.id"
                             :checked="item.is_active == true ? 'checked': '' " :value="item.id">
                         <label class="custom-control-label" :for="item.id"
                             v-text="item.is_active == 0 ? 'Inactive' : 'Active' "></label>
+                        </div>
                     </div>
                     <div class=" d-flex  justify-content-between">
                           <button type="button" @click="getId(item.id)" class="btn btn-primary mr-2" data-toggle="modal"
@@ -160,6 +162,7 @@ export default {
         })
         .then((res) => {
           this.fetchitems();
+          this.$root.$emit("portfolio_balance");
         })
         .catch((error) => {
           this.checkResponseStatus(error);
@@ -180,7 +183,7 @@ export default {
         .get("/dashboardPages/portfolio/g")
         .then((res) => {
           this.items = res.data;
-          //this.loading = false;
+          this.$root.$emit("portfolio_balance");
         })
         .catch((error) => {});
     },

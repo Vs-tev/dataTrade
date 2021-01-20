@@ -24,8 +24,8 @@ class PortfolioController extends Controller
     public function index()
     {
         $portfolio = new Portfolio;
-
-        return $portfolio->fetch_portfolio();
+        $query = [0, 1];
+        return $portfolio->fetch_portfolio($query);
         
     }
 
@@ -79,7 +79,11 @@ class PortfolioController extends Controller
      */
     public function show(portfolio $portfolio)
     {
-        //
+        $portfolio = new Portfolio;
+
+        $query = [1];
+
+        return $portfolio->fetch_portfolio($query);
     }
 
     /**
@@ -130,38 +134,42 @@ class PortfolioController extends Controller
         } 
       
         $portfolio->delete();
+        if(Portfolio::where('user_id', auth()->id())->count()){
+            Portfolio::first()->where([
+                ['user_id', '=', auth()->id()]
+                ])->update([
+                'is_active' => 1
+            ]);
+        }
   
     }
 
     public function toggle_is_active_portfolio(Request $request, $id){     
       
-        Portfolio::where([
-            ['id', $id],
-            ['user_id', '=', auth()->id()]
-            ])->update([
-            'is_active' => request('active') 
-        ]);
-
-        if(request('active') == 1){
+        if(Portfolio::where('user_id', auth()->id())->count() > 1){
             Portfolio::where([
-                ['id', '<>', $id],
+                ['id', $id],
                 ['user_id', '=', auth()->id()]
                 ])->update([
-                'is_active' => 0
-        ]);
-        }else if(request('active') == 0){
-            Portfolio::where([
-                ['id', '<>', $id],
-                ['user_id', '=', auth()->id()]
-            ])->limit(1)->update([
-                'is_active' => 1
+                'is_active' => request('active') 
             ]);
-        }
-    
-        //return $data;
-    }
 
-    public function transactions(){
+            if(request('active') == 1){
+                Portfolio::where([
+                    ['id', '<>', $id],
+                    ['user_id', '=', auth()->id()]
+                    ])->update([
+                    'is_active' => 0
+                    ]);
+            }else if(request('active') == 0){
+                Portfolio::where([
+                    ['id', '<>', $id],
+                    ['user_id', '=', auth()->id()]
+                ])->limit(1)->update([
+                    'is_active' => 1
+                ]);
+            }
+        }
         
     }
 

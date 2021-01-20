@@ -54,11 +54,9 @@
 
                                         <button type="button" class="btn btn-link" @click="deleteRule(rule)" 
                                         data-toggle="modal" data-target="#modal-rule"><img src="/storage/icons/trash-sm.svg" alt=""></button>
-                                   
                                     </div>
                                 </td>
                             </tr>
-
                         </tbody>
                     </table>
                 </div>
@@ -67,10 +65,12 @@
             <modal :item="form" v-on:storeRule="storeRule($event)" v-on:updateRule="updateRule($event)" v-on:destroyRule="destroyRule($event)"></modal>
         </div>
     </div>
+    
 </template>
 <script>
 import Modal from "./Modal";
 export default {
+  //props: ["form"],
   name: "Rules",
   components: {
     Modal,

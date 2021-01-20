@@ -106,7 +106,7 @@
                         </div>
                         <div class="col-12 col-xl-2 text-center">
                             <span class="font-sm text-muted p-0 m-0 ">Return:
-                                <span class="font-sm text-muted p-0 m-0">&nbsp; {{form.pl}}</span>
+                                <span class="font-sm text-muted p-0 m-0" >&nbsp; {{trade_return}}</span>
                             </span>
                         </div>
                         <div class="col-12 col-xl-5 mb-3 mb-xl-0">
@@ -124,9 +124,9 @@
             <div class="row m-0 p-0 mb-0 mb-xl-3 align-items-center justify-content-between">
                 <div class="col-12 col-xl-4 mb-3 mb-xl-0">
                     <label class="typo__label">Entry rules (max 3)</label>
-                    <multiselect v-model="form.entry_rule_id" :options="entryRules" :multiple="true"
+                    <multiselect v-model="form.entry_rule_id" :options="entryrules" :multiple="true"
                         :close-on-select="false" :clear-on-select="false" :preserve-search="false" :max="3"
-                        placeholder="Select entrty rules" label="name" track-by="id" :preselect-first="true">
+                        placeholder="Select entrty rules" label="name" track-by="id" :searchable="false" :preselect-first="false">
                         <template slot="selection" slot-scope="{ values, isOpen  }"><span class="multiselect__single"
                                 v-if="values.length &amp;&amp; !isOpen">{{ values.length }} rules
                                 selected</span></template>
@@ -134,7 +134,7 @@
                 </div>
                 <div class="col-12 col-xl-4 mb-3 mb-xl-0">
                     <label class="typo__label">Exit reason</label>
-                    <multiselect v-model="form.exit_reason_id" :options="exitReasons" :searchable="false"
+                    <multiselect v-model="form.exit_reason_id" :options="exit_reason" :searchable="false"
                         :close-on-select="true" :show-labels="false" track-by="id" label="name"
                         placeholder="Exit Reason"></multiselect>
                 </div>
@@ -185,22 +185,23 @@
                 </div>
             </div>
             <div class="d-flex justify-content-center my-3">
-                <button type="button" id="tests" class="btn btn-secondary font-lg font-500 mr-3">Clear</button>
+                <button type="button" id="tests" class="btn btn-secondary font-lg font-500 mr-3" @click="clearFileds">Clear</button>
                 <button type="button" class="btn bt btn-primary font-lg font-500 mr-0" @click="recordTrade">Record Trade</button>
             </div>
         </section>
-
+        
+       
     </form>
 
 </template>
 <script>
 import Texteditor from "../Texteditor.vue";
 import Multiselect from "vue-multiselect";
-
 import DatePick from "vue-date-pick";
 
 export default {
   name: "Traderecord",
+  props: ["strategies", "exit_reason", "entryrules"],
   components: {
     Texteditor,
     Multiselect,
@@ -208,10 +209,9 @@ export default {
   },
   data() {
     return {
+      portfolio_equity: "",
       Difference_in_ms: "",
-      entryRules: [],
-      exitReasons: [],
-      strategies: [],
+
       loading: true,
       form: new Form({
         symbol: "AUD/CAD",
@@ -239,9 +239,7 @@ export default {
     };
   },
   mounted() {
-    this.getEntryRules();
-    this.getStrategies();
-    this.getExitReason();
+    this.getPortfolioEquity();
   },
 
   computed: {
@@ -270,7 +268,14 @@ export default {
         }
       }
     },
+
+    trade_return: function () {
+      return (
+        ((this.form.pl / this.portfolio_equity || 0) * 100).toFixed(2) + " %"
+      );
+    },
   },
+
   methods: {
     checkResponseStatus(error) {
       if (error.response.status === 419 || error.response.status == 401) {
@@ -303,37 +308,21 @@ export default {
       this.form.trade_img = "";
     },
 
-    getStrategies() {
-      axios
-        .get("/strategy/g")
-        .then((response) => {
-          this.loading = false;
-          this.strategies = response.data;
-        })
-        .catch((error) => {});
+    calculateProfit() {
+      return [(this.form.pl = this.form.pl_currency - this.form.fees)];
     },
-    getEntryRules() {
+
+    getPortfolioEquity() {
       axios
-        .get("/entry_rules/g")
-        .then((response) => {
-          this.entryRules = response.data;
-          this.loading = false;
-        })
-        .catch((error) => {});
-    },
-    getExitReason() {
-      axios
-        .get("/exit_reasons/g")
-        .then((response) => {
-          this.exitReasons = response.data;
-          this.loading = false;
+        .get("/dashboardPages/portfolioIsActive/g")
+        .then((res) => {
+          this.portfolio_equity = res.data[0].current_balance;
+          //this is send to navbar
+          this.$root.$emit("portfolio_balance"); // optional we can put second argumen -> this.$root.$emit("portfolio_balance", data)
         })
         .catch((error) => {});
     },
 
-    calculateProfit() {
-      return [(this.form.pl = this.form.pl_currency - this.form.fees)];
-    },
     recordTrade() {
       const data = new FormData();
       data.append("symbol", this.form.symbol);
@@ -367,11 +356,22 @@ export default {
       if (this.form.strategy_id) {
         data.append("strategy_id", this.form.strategy_id.id);
       }
-      axios.post("/dashboardPages/traderecord/p", data).catch((error) => {
-        this.checkResponseStatus(error);
-      });
+      axios
+        .post("/dashboardPages/traderecord/p", data)
+        .then((res) => {
+          this.getPortfolioEquity();
+          this.clearFileds();
+        })
+        .catch((error) => {
+          this.checkResponseStatus(error);
+        });
     },
-
+    clearFileds() {
+      this.form.reset();
+      this.form.type_side = "buy";
+      this.form.symbol = "AUD/CAD";
+      this.form.time_frame = "1 min";
+    },
     /* getSymbols() {
               axios
                 .get(

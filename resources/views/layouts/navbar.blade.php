@@ -12,7 +12,7 @@
         <div class="d-flex justify-content-center justify-content-sm-between flex-wrap ">
             <div class="top-left-bar">
                 <ul class="list-unstyled">
-                    <li class=""><a href="#" class="text-muted">Trading Analysis</a></li>
+                    <li class=""><a href="#" class="text-muted">Trade Analysis</a></li>
                     <li class=""><a href="#" class="text-muted">Strategy Analysis</a></li>
                     <li class=""><a href="#" class="text-muted ">Rules Analysis</a></li>
                 </ul> 
@@ -68,12 +68,5 @@
             </ul> 
         </div>
     </div>
-    <div class="downbar">
-        <div class="down-left d-flex justify-content-between">
-            <ul class="list-unstyled">
-                <li class="mr-3"><span class="font-lg dark">&#8226; Trade Record</span></li>
-                <li class=""><a href="#" class="lighter">the name of active portfolio (Actual Balance )</a> </li>
-            </ul> 
-        </div>
-    </div>
+   <app-navbar></app-navbar>
 </div>
