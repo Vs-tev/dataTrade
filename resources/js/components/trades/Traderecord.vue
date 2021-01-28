@@ -1,203 +1,197 @@
 <template>
-
     <form action="">
-        <section class="dashboard_container_content px-2 px-md-4">
-            <div class="d-md-flex">
-                <div class="col-12 col-md-6 p-0">
-                    <div class="row mx-0 mb-0 mb-xl-5 p-0 align-items-center justify-content-between">
-                        <div class="d-flex col-12 col-xl-4 mb-3 mb-xl-0">
-                            <div class="btn-group btn-group-toggle buy-sell-div col-12 p-0 mt-0" data-toggle="buttons"
-                                id="type">
-                                <button class="btn btn-type-buy buy btn-sm col-6 active" type="button" @click="buy">
-                                    <input class="buy" type="radio" name="type_side" id="type_buy" checked>BUY
-                                </button>
-                                <button class="btn btn-type-sell sell col-6 btn-sm" type="button" @click="sell">
-                                    <input class="sell" type="radio" name="type_side" id="type_sell">SELL
-                                </button>
-                            </div>
+        <section class="dashboard_container_content p-0 pb-4">
+            <div class="border-bottom p-4">
+                <h4 class="font-weight-500 m-0">Trade record pandel</h4>
+            </div>
+            <div class="d-lg-flex flex-block p-4">
+                <!-- trade inputs -->
+                <div class="new_trade_inputs_300 mx-auto">
+                    <div class="btn-group btn-group-toggle buy-sell-div col-12 p-0 mt-0" data-toggle="buttons"
+                        id="type">
+                        <button class="btn btn-type-buy buy btn-sm col-6 active" type="button" @click="buy">
+                            <input class="buy" type="radio" name="type_side" id="type_buy" checked>BUY
+                        </button>
+                        <button class="btn btn-type-sell sell col-6 btn-sm" type="button" @click="sell">
+                            <input class="sell" type="radio" name="type_side" id="type_sell">SELL
+                        </button>
+                    </div>
+                    <!-- symbol/time frame -->
+                    <div class="d-flex justify-content-between mt-4 symbol-time_frame">
+                        <div class="form-group">
+                            <label for="symbol">Symbol <span>*</span></label>
+                            <select v-model="form.symbol" class="form-control">
+                                <option value="AUD/CAD" selected>AUD/CAD</option>
+                                <option value="EUR/CAD">EUR/CAD</option>
+                            </select>
                         </div>
-                        <div class="col-12 col-xl-4 mb-3 mb-xl-0">
+                        <div class="">
+                            <label for="Time frame">Time frame</label>
+                            <select v-model="form.time_frame" class="form-control" name="time_frame">
+                                <option selected="" value="1 min">1 min</option>
+                                <option value="5 min">5 min</option>
+                                <option value="15 min">15 min</option>
+                                <option value="30 min">30 min</option>
+                                <option value="1 hour">1 hour</option>
+                                <option value="2 hours">2 hours</option>
+                                <option value="4 hours">4 hours</option>
+                                <option value="1 day">1 day</option>
+                                <option value="1 week">1 week</option>
+                                <option value="1 month">1 month</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- quantity -->
+                    <div class="qty-row">
+                        <div class="inline ">
                             <label for="quantity">Quantity</label>
-                            <input id="quantity" v-model="form.quantity" type="text" class="form-control" name="quantity"
-                                placeholder="10000" :class="{'is-invalid': form.errors.has('quantity')}" @input="form.errors.clear('quantity')">
-                            <p class="error-output" v-if="form.errors.has('quantity')" v-text="form.errors.get('quantity')"></p>
+                            <input id="quantity" v-model="form.quantity" type="text" class="form-control quantity_input"
+                                name="quantity" placeholder="10000" :class="{'is-invalid': form.errors.has('quantity')}"
+                                @input="form.errors.clear('quantity')">
                         </div>
-                        <div class="col-12 col-xl-4 mb-3 mb-xl-0">
-                            <div class="form-group">
-                                <label for="symbol">Symbol <span>*</span></label>
-                                <select v-model="form.symbol" class="form-control">
-                                    <option value="AUD/CAD" selected>AUD/CAD</option>
-                                    <option value="EUR/CAD">EUR/CAD</option>
-                                </select>
-                            </div>
-                        </div>
+                        <p class="error-output error-trade-p trade-error" v-if="form.errors.has('quantity')" v-text="form.errors.get('quantity')"></p>
                     </div>
-                    <div class="row mx-0 mb-0 mb-xl-5 p-0 align-items-center justify-content-between">
-                        <div class="col-12 col-xl-4 mb-3 mb-xl-0">
-                            <label for="Entry pirce">Entry price <span>*</span></label>
-                            <input v-model="form.entry_price" type="text" class="form-control" 
-                                placeholder="1.0000" :class="{'is-invalid': form.errors.has('entry_price')}" @input="form.errors.clear('entry_price')">
-                            <p class="error-output" v-if="form.errors.has('entry_price')" v-text="form.errors.get('entry_price')"></p>    
+                    <!-- Price -->
+                    <div class="price-row">
+                        <div class="inline justify-content-end ">
+                            <label>Price</label>
+                            <input v-model="form.entry_price" type="text" class="form-control price_input"
+                                placeholder="Entry" :class="{'is-invalid': form.errors.has('entry_price')}"
+                                @input="form.errors.clear('entry_price')">
+                            <input type="text" v-model="form.exit_price" class="form-control price_input" name="text"
+                                placeholder="Exit" :class="{'is-invalid': form.errors.has('exit_price')}"
+                                @input="form.errors.clear('exit_price')">
+                            <input type="text" v-model="form.stop_loss_price" class="form-control price_input"
+                                name="text" placeholder="Stop loss"
+                                :class="{'is-invalid': form.errors.has('stop_loss_price')}"
+                                @input="form.errors.clear('stop_loss_price')">
                         </div>
-                        <div class="col-12 col-xl-4 mb-3 mb-xl-0">
-                            <label for="Exit price">Exit price <span>*</span></label>
-                            <input type="text" v-model="form.exit_price" class="form-control" name="text"
-                                 placeholder="1.0000" :class="{'is-invalid': form.errors.has('exit_price')}" @input="form.errors.clear('exit_price')">
-                            <p class="error-output" v-if="form.errors.has('exit_price')" v-text="form.errors.get('exit_price')"></p>
-                        </div>
-                        <div class="col-12 col-xl-4 mb-3 mb-xl-0">
-                            <label for="Stop loss">Stop loss price <span>*</span></label>
-                            <input type="text" v-model="form.stop_loss_price" class="form-control" name="text"
-                                placeholder="1.0000" :class="{'is-invalid': form.errors.has('stop_loss_price')}" @input="form.errors.clear('stop_loss_price')">
-                            <p class="error-output" v-if="form.errors.has('stop_loss_price')" v-text="form.errors.get('stop_loss_price')"></p>
-                        </div>
+                        <p class="error-output error-trade-p" v-if="form.errors.has('entry_price') || form.errors.has('exit_price') || form.errors.has('stop_loss_price')" v-text="'Price format is invalid'"></p>
                     </div>
-                </div>
-                <div class="col-12 col-md-6 px-0">
-                    <div class="row m-0 p-0 mb-0 mb-xl-5 align-items-center justify-content-between">
-                        <div class="col-12 col-xl-5 mb-3 mb-xl-0">
-                            <div class="form-group">
-                                <label for="Entry date">Entry date <span>*</span></label>
+                    
+                    <!--Date -->
+                    <div class="date-row">
+                        <div class="inline justify-content-end">
+                            <label>Date</label>
+                            <div class="date-inpit-div">
                                 <date-pick 
-                                  v-model="form.entry_date"
-                                  :pickTime="true"
-                                  :isDateDisabled="isFutureDate"
-                                  :format="'YYYY-MM-DD HH:mm'"
-                                  :inputAttributes="{readonly: true}"
-                                  @input="form.errors.clear('entry_date')"
-                                  :class="{'is-invalid': form.errors.has('entry_date')}"
-                                  ></date-pick>
-                              <p class="error-output" v-if="form.errors.has('entry_date')" v-text="form.errors.get('entry_date')"></p>
+                                    v-model="form.entry_date" 
+                                    :pickTime="true" 
+                                    :isDateDisabled="isFutureDate"
+                                    :format="'YYYY-MM-DD HH:mm'"
+                                    
+                                    :inputAttributes="{readonly: false}"
+                                    @input="form.errors.clear('entry_date')"
+                                    :class="{'is-invalid': form.errors.has('entry_date')}">
+                                </date-pick>
                             </div>
                         </div>
-                        <div class="col-12 col-xl-2 mt-0 mt-xl-3 p-0 text-center date-error">
+                        <div class="date-inpit-div mt-1">
+                            <date-pick v-model="form.exit_date" 
+                              :pickTime="true" 
+                              :isDateDisabled="isFutureDate"
+                              :inputAttributes="{readonly: true}" 
+                                :format="'YYYY-MM-DD HH:mm'"
+                               
+                                @input="form.errors.clear('exit_date')"
+                                :class="{'is-invalid': form.errors.has('exit_date')}">
+                            </date-pick>
+                            <span class="font-sm lighter p-0" v-if="duration && !form.errors.has('entry_date') && !form.errors.has('exit_date')">{{duration}}</span>
+                            <p class="error-output w-25 p-0" v-if="form.errors.has('entry_date')"
+                                v-text="form.errors.get('entry_date')"></p>
+                            <p class="error-output w-25 p-0" v-if="!form.errors.has('entry_date') && form.errors.has('exit_date')"
+                                v-text="form.errors.get('exit_date')"></p>    
+                        </div>
+                    </div>
+                    <!-- Profit -->
+                    <div class="profit_row">
+                        <div class="inline justify-content-end">
+                            <label for="pl_currency">Profit</label>
+                            <input id="pl_currency" @keyup="calculateProfit" @input="form.errors.clear('pl_currency')"
+                                v-model="form.pl_currency" type="text" placeholder="0.00" class="form-control"
+                                :class="{'input-error': form.errors.has('pl_currency')}">
+                            <input type="text" v-model="trade_return" class="form-control trade_return" tabindex="-1"
+                                readonly>
+                            <input type="text" @keyup="calculateProfit" @input="form.errors.clear('fees')"
+                                v-model="form.fees" placeholder="Fees" class="form-control" name="fees" id="fees"
+                                :class="{'is-invalid': form.errors.has('fees')}">
+                        </div>
+                        <div class="profit-input-div mt-1">
+                            <input id="pips" v-model="form.pl_pips" type="text" class="form-control" name="pips"
+                                placeholder="Pips" :class="{'is-invalid': form.errors.has('pl_pips')}"
+                                @input="form.errors.clear('pl_pips')">  
+                        </div>
+                         <p class="error-output error-trade-p mt-4 pt-2" v-if="form.errors.has('pl_pips') || form.errors.has('pl_currency')" v-text="'The profit field is required'"></p>
+                    </div>
+
+                    <!-- Rules -->
+                    <div class="rules-row">
+                        <div class="inline justify-content-end">
+                           <label>Rules</label>
+                            <multiselect v-model="form.entry_rule_id" :options="entryrules" :multiple="true"
+                                :close-on-select="false" :clear-on-select="false" :preserve-search="false" :max="3"
+                                placeholder="Select entrty rules" id="entry_rules" label="name" track-by="id" :searchable="false"
+                                :preselect-first="false">
+                                <template slot="selection" slot-scope="{ values, isOpen  }"><span
+                                        class="multiselect__single"
+                                        v-if="values.length &amp;&amp; !isOpen">{{ values.length }} rules
+                                        selected</span>
+                                </template>
+                            </multiselect>
+                        </div>
                         
-                          <span class="font-sm text-muted" v-if="duration">{{duration}}</span>
-                            
-                        </div>
-                        <div class="col-12 col-xl-5 mb-3 mb-xl-0">
-                            <div class="form-group">
-                                <label for="Exit date">Exit date <span>*</span></label>
-                                 <date-pick 
-                                  v-model="form.exit_date"
-                                  :pickTime="true"
-                                  :isDateDisabled="isFutureDate"
-                                  :inputAttributes="{readonly: true}"
-                                  :format="'YYYY-MM-DD HH:mm'"
-                                  @input="form.errors.clear('exit_date')"
-                                  :class="{'is-invalid': form.errors.has('exit_date')}"
-                                  ></date-pick>
-                              <p class="error-output" v-if="form.errors.has('exit_date')" v-text="form.errors.get('exit_date')"></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row m-0 p-0 mb-0 mb-xl-5 align-items-center justify-content-between">
+                        <multiselect v-model="form.exit_reason_id" :options="exit_reason" :searchable="false"
+                            :close-on-select="true" :show-labels="false" track-by="id" label="name"
+                            placeholder="Exit Reason"></multiselect>
 
-                        <div class="col-12 col-xl-5 mb-3 mb-xl-0">
-                            <div class="input-group">
-                                <label for="Profit currency">Profit currency<span>*</span></label>
-                                <label for="fees" class="ml-auto">Fees</label>
-                                <input id="pl_currency" @keyup="calculateProfit" @input="form.errors.clear('pl_currency')" v-model="form.pl_currency" type="text"
-                                    placeholder="0.00" class="form-control w-75" :class="{'is-invalid': form.errors.has('pl_currency')}">
-                                <input type="text" @keyup="calculateProfit" @input="form.errors.clear('fees')" v-model="form.fees"
-                                   placeholder="0.00" class="form-control w-25" name="fees" id="fees" :class="{'is-invalid': form.errors.has('fees')}">
-                            </div>
-                             <p class="error-output" v-if="form.errors.has('pl_currency')" v-text="form.errors.get('pl_currency')"></p>
-                        </div>
-                        <div class="col-12 col-xl-2 text-center">
-                            <span class="font-sm text-muted p-0 m-0 ">Return:
-                                <span class="font-sm text-muted p-0 m-0" >&nbsp; {{trade_return}}</span>
-                            </span>
-                        </div>
-                        <div class="col-12 col-xl-5 mb-3 mb-xl-0">
-                            <div class="form-group">
-                                <label for="Profit Pips">Profit Pips <span>*</span></label>
-                                <input id="pips" v-model="form.pl_pips" type="text" class="form-control" name="pips"
-                                placeholder="0.00" :class="{'is-invalid': form.errors.has('pl_pips')}" @input="form.errors.clear('pl_pips')">
-                                <p class="error-output" v-if="form.errors.has('pl_pips')" v-text="form.errors.get('pl_pips')"></p>
-                            </div>
-                        </div>
+                       
+                        <multiselect v-model="form.strategy_id" :options="strategies" :searchable="false"
+                            :close-on-select="true" :show-labels="false" track-by="id" label="name"
+                            placeholder="Strategy">
+                        </multiselect>
                     </div>
                 </div>
-            </div>
-       
-            <div class="row m-0 p-0 mb-0 mb-xl-3 align-items-center justify-content-between">
-                <div class="col-12 col-xl-4 mb-3 mb-xl-0">
-                    <label class="typo__label">Entry rules (max 3)</label>
-                    <multiselect v-model="form.entry_rule_id" :options="entryrules" :multiple="true"
-                        :close-on-select="false" :clear-on-select="false" :preserve-search="false" :max="3"
-                        placeholder="Select entrty rules" label="name" track-by="id" :searchable="false" :preselect-first="false">
-                        <template slot="selection" slot-scope="{ values, isOpen  }"><span class="multiselect__single"
-                                v-if="values.length &amp;&amp; !isOpen">{{ values.length }} rules
-                                selected</span></template>
-                    </multiselect>
-                </div>
-                <div class="col-12 col-xl-4 mb-3 mb-xl-0">
-                    <label class="typo__label">Exit reason</label>
-                    <multiselect v-model="form.exit_reason_id" :options="exit_reason" :searchable="false"
-                        :close-on-select="true" :show-labels="false" track-by="id" label="name"
-                        placeholder="Exit Reason"></multiselect>
-                </div>
-                <div class="col-12 col-xl-4 mb-3 mb-xl-0">
-                    <label class="typo__label">Used strategy</label>
-                    <multiselect v-model="form.strategy_id" :options="strategies" :searchable="false"
-                        :close-on-select="true" :show-labels="false" track-by="id" label="name" placeholder="Strategy">
-                    </multiselect>
+                <!-- Img/commentar -->
+                <div class="flex-grow-1 img-commentar-div ml-md-4">
+                    <div class="">
+                        <div class="trade_img text-center mb-4">
+                            <div class="input-file-container js" v-if="!form.trade_img">
+                                <input class="d-none" @change="onFileSelected" id="img" name="img" type="file"
+                                    accept="image/x-png,image/gif,image/jpeg">
+                                <label tabindex="0" for="img" class="input-file-trigger text-center"> <span
+                                        class="material-icons icon-xl indigo ">cloud_upload</span>
+                                    <h4 class="lighter font-500">Click here to upload image</h4>
+                                </label>
+                            </div>
+                            <div class="img-content-container" v-if="form.trade_img">
+                                <div class="remove-img" @click="removeSelectedImg">
+                                    <img src="/storage/icons/remove.svg" alt="">
+                                </div>
+                                <img class="url-img" :src="this.form.thumbnail_img" alt="">
+                            </div>
+                        </div>
+                        <texteditor :item="form" class=""></texteditor>
+                    </div>
+
                 </div>
             </div>
-            <div class="col-12 col-xl-3 mb-3 mb-xl-0">
-                <label for="Time frame">Time frame</label>
-                <select v-model="form.time_frame" class="form-control" name="time_frame">
-                    <option selected="" value="1 min">1 min</option>
-                    <option value="5 min">5 min</option>
-                    <option value="15 min">15 min</option>
-                    <option value="30 min">30 min</option>
-                    <option value="1 hour">1 hour</option>
-                    <option value="2 hours">2 hours</option>
-                    <option value="4 hours">4 hours</option>
-                    <option value="1 day">1 day</option>
-                    <option value="1 week">1 week</option>
-                    <option value="1 month">1 month</option>
-                </select>
+
+            <div class="d-flex justify-content-end p-4">
+                <button type="button" id="tests" class="btn btn-secondary font-lg font-500 mr-3"
+                    @click="clearFileds">Clear</button>
+                <button type="button" class="btn bt btn-primary font-lg font-500 mr-0" @click="recordTrade">Record
+                    Trade</button>
             </div>
         </section>
-
-        <section class="dashboard_container_content chart-container">
-            <div class="row justify-content-around">
-                <div class="trade_img text-center my-3 p-0 mx-0 col-lg-5">
-                    <div class="input-file-container js" v-if="!form.trade_img">
-                        <input class="d-none" @change="onFileSelected" id="img" name="img" type="file"
-                            accept="image/x-png,image/gif,image/jpeg">
-                        <label tabindex="0" for="img" class="input-file-trigger text-center"> <span
-                                class="material-icons icon-xl indigo ">cloud_upload</span>
-                            <h4 class="lighter font-500">Click here to upload image</h4>
-                        </label>
-                    </div>
-                    <div class="img-content-container" v-if="form.trade_img">
-                        <div class="remove-img" @click="removeSelectedImg">
-                            <img src="/storage/icons/remove.svg" alt="">
-                        </div>
-                        <img class="url-img" :src="this.form.thumbnail_img" alt="">
-                    </div>
-                </div>
-                <div class="col-lg-5 my-3 p-0 mx-0">
-                    <texteditor :item="form" class=""></texteditor>
-                </div>
-            </div>
-            <div class="d-flex justify-content-center my-3">
-                <button type="button" id="tests" class="btn btn-secondary font-lg font-500 mr-3" @click="clearFileds">Clear</button>
-                <button type="button" class="btn bt btn-primary font-lg font-500 mr-0" @click="recordTrade">Record Trade</button>
-            </div>
-        </section>
-        
-       
     </form>
 
 </template>
+
 <script>
 import Texteditor from "../Texteditor.vue";
 import Multiselect from "vue-multiselect";
 import DatePick from "vue-date-pick";
+//import Chart from "../Chart.vue";
 
 export default {
   name: "Traderecord",
@@ -206,20 +200,23 @@ export default {
     Texteditor,
     Multiselect,
     DatePick,
+
+    //Chart,
   },
+
   data() {
     return {
-      portfolio_equity: "",
+      portfolio: "",
       Difference_in_ms: "",
 
       loading: true,
       form: new Form({
         symbol: "AUD/CAD",
         type_side: "buy",
-        quantity: "",
-        entry_price: "",
-        exit_price: "",
-        stop_loss_price: "",
+        quantity: "10000",
+        entry_price: "1.15000",
+        exit_price: "1.20000",
+        stop_loss_price: "1.10000",
         time_frame: "1 min",
         entry_date: "",
         exit_date: "",
@@ -233,13 +230,14 @@ export default {
         exit_reason_id: "",
         entry_rule_id: [],
         strategy_id: "",
-        height: "196",
+        height: "396",
         placeholder: "Write you thougts about this trade",
       }),
     };
   },
   mounted() {
     this.getPortfolioEquity();
+    this.today();
   },
 
   computed: {
@@ -257,21 +255,23 @@ export default {
           var minute = to_minute / 60000;
           return (
             Math.trunc(days) +
-            "d - " +
+            "d/" +
             Math.trunc(hour) +
-            "h - " +
+            "h/" +
             Math.trunc(minute) +
             "m"
           );
         } else {
-          return "Date is incorrect";
+          return "The date is incorrect";
         }
       }
     },
 
     trade_return: function () {
       return (
-        ((this.form.pl / this.portfolio_equity || 0) * 100).toFixed(2) + " %"
+        ((this.form.pl / this.portfolio.current_balance || 0) * 100).toFixed(
+          2
+        ) + "%"
       );
     },
   },
@@ -283,6 +283,20 @@ export default {
       } else {
         this.form.errors.record(error.response.data.errors);
       }
+    },
+
+    today() {
+      var today = new Date();
+      var date =
+        today.getFullYear() +
+        "-" +
+        ("0" + (today.getMonth() + 1)).slice(-2) +
+        "-" +
+        today.getDate();
+      var time = today.getHours() + ":" + today.getMinutes();
+      var dateTime = date + " " + time;
+      this.form.entry_date = dateTime;
+      this.form.exit_date = dateTime;
     },
 
     isFutureDate(date) {
@@ -316,9 +330,10 @@ export default {
       axios
         .get("/dashboardPages/portfolioIsActive/g")
         .then((res) => {
-          this.portfolio_equity = res.data[0].current_balance;
+          this.portfolio = res.data[0];
+
           //this is send to navbar
-          this.$root.$emit("portfolio_balance"); // optional we can put second argumen -> this.$root.$emit("portfolio_balance", data)
+          this.$root.$emit("portfolio_balance", res.data[0]); // optional we can put second argumen -> this.$root.$emit("portfolio_balance", data)
         })
         .catch((error) => {});
     },
@@ -373,24 +388,24 @@ export default {
       this.form.time_frame = "1 min";
     },
     /* getSymbols() {
-              axios
-                .get(
-                  "https://eodhistoricaldata.com/api/eod/EUR.FOREX?api_token=OeAFFmMliFG5orCUuwAKQ8l4WWFQ67YX&order=d&fmt=json",
-                  {
-                    transformRequest: [
-                      (data, headers) => {
-                        delete headers.common["X-Requested-With"];
-                        delete headers.common["Access-Control-Allow-Origin"];
-                        return data;
-                      },
-                    ],
-                  }
-                )
-                .then((response) => {
-                  this.symbols = response.data;
-                })
-                .catch((error) => {});
-            }, */
+      axios
+        .get(
+          "https://eodhistoricaldata.com/api/eod/EUR.FOREX?api_token=OeAFFmMliFG5orCUuwAKQ8l4WWFQ67YX&order=d&fmt=json",
+          {
+            transformRequest: [
+              (data, headers) => {
+                delete headers.common["X-Requested-With"];
+                delete headers.common["Access-Control-Allow-Origin"];
+                return data;
+              },
+            ],
+          }
+        )
+        .then((response) => {
+          this.symbols = response.data;
+        })
+        .catch((error) => {});
+    }, */
   },
 };
 </script>

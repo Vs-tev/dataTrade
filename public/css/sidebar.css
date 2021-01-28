@@ -1,10 +1,12 @@
 .sidebar {
+    display: none;
     top: 0;
     left: 0;
     width: 265px;
     background-color: #1e1e2d;
     height: 100%;
     position: fixed;
+    z-index: 9
 }
 
 .sidebar .scroll {
@@ -18,8 +20,23 @@
 }
 
 .sidebar-title {
-    padding: 0.6rem 0 0.6rem 1.8rem;
+    display: flex;
+    justify-content: space-around;
+    align-content: center;
+    align-items: center;
+    padding: 0.9rem 0rem;
     background-color: #1a1a27;
+}
+
+.sidebar-title h2 {
+    padding: 0px;
+    margin: 0px
+}
+
+.sidebar-title span:hover {
+    cursor: pointer;
+    color: var(--cyan);
+    transition: 0.2s ease;
 }
 
 .sidebar .scroll ul {
@@ -70,19 +87,69 @@
     transition: 0.2s ease !important;
 }
 
-
 .hide-show-sidebar {
-    left: 0 !important;
+    left: 0;
+    display: none !important;
+}
+
+.small-sidebar {
+    display: none;
+    top: 0;
+    left: 0;
+    width: 60px;
+    background-color: #1e1e2d;
+    height: 100%;
+    position: fixed;
+}
+
+@media screen and (min-width: 1602px) {
+    .sidebar {
+        display: block !important;
+        left: 0 !important;
+    }
+
+    .toggle-sidebar {
+        display: none !important
+    }
+}
+
+@media screen and (max-width: 1602px) {
+    .small-sidebar {
+        display: block;
+
+    }
 }
 
 @media screen and (max-width: 992px) {
     .sidebar {
         top: 0;
-        left: -265px;
+        display: block;
         z-index: 999;
         transition: 0.35s ease !important;
         --webkit-box-shadow: 0px 0px 18px -20px rgba(0, 0, 9, 9);
         -moz-box-shadow: 0px 0px 18px -20px rgba(0, 0, 9, 9);
         box-shadow: 0px 0px 18px -20px rgba(0, 0, 9, 9);
     }
+}
+
+@media screen and (max-width: 768px) {
+    .small-sidebar {
+        display: none;
+    }
+}
+
+.small-sidebar .list-unstyled li {
+    display: flex;
+    justify-content: center;
+    padding: 10px
+}
+
+.small-sidebar .list-unstyled li:hover {
+    background-color: #1a1a27;
+    transition: 0.2s ease !important;
+}
+
+.small-sidebar .list-unstyled li:hover a span {
+    color: var(--cyan);
+    transition: 0.2s ease !important;
 }

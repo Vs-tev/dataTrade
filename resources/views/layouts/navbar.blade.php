@@ -2,7 +2,7 @@
     <div class="dark-navbar-992px">
         <h5>dataTrade</h5>
         <ul class="list-unstyled">
-            <li class=""><a href="#" id="toggle-sidebar"><span class="material-icons">
+            <li class=""><a href="#" id=""><span class="material-icons toggle-sidebar">
                 menu
                 </span></a></li>
             <li class=""><a href="#" id="toggle-navbar"><span class="material-icons">person_outline</span></a></li>

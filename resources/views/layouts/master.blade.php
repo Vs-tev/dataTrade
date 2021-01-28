@@ -18,8 +18,10 @@
         {{-- TinyMCE text-editor --}}
         <script src="{{ asset('node_modules/tinymce/tinymce.min.js') }}"></script>
         {{-- Google fonts --}}
+       
         <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
         <title>Trade Data</title>
+        
     </head>
     <body>
         

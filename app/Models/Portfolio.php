@@ -14,7 +14,7 @@ class Portfolio extends Model
     protected $fillable = ['name, currency'];
 
     protected $casts = [
-        'started_at' => 'datetime:d-M-Y',
+        'started_at' => 'datetime:d M Y',
     ];
 
     public function user(){
@@ -26,10 +26,8 @@ class Portfolio extends Model
     }
 
     public static function portfolioDate($id){
-    
        return static::find($id)->started_at->format('d M Y');   
        //fetch for the validation message start date Portfolio
-
     }
 
     /* protected $appends=['published'];
@@ -43,7 +41,6 @@ class Portfolio extends Model
     }
 
     public function add_to_balance($portfolio){
-
         $this->balance()->create([
             'portfolio_id' => $this->id,
             'amount' => $portfolio->start_equity,
@@ -51,21 +48,15 @@ class Portfolio extends Model
             'action_type' => 'start_capital',
         ]);  
     }
-
+    
     public function fetch_portfolio($query){
-        return $this->select('portfolios.id', 'name', 'start_equity', 'currency', 'is_active', 'portfolios.started_at', DB::raw('SUM(amount) as current_balance', ), )
+        return $this->select('portfolios.id', 'name', 'start_equity', 'currency', 'is_active', 'portfolios.started_at', DB::raw('SUM(amount) as current_balance' ),)
         ->join('balances AS b', 'portfolios.id', '=', 'b.portfolio_id')
         ->where('user_id', auth()->id())
         ->whereIn('is_active', $query)
         ->groupBy('portfolios.id')
         ->latest('portfolios.started_at')
         ->get();
-    }
-
-    public function equity(){
-        return $this->balance()
-        ->select(DB::raw('sum(amount) as total', 'portfolio_id'))
-        ->where('portfolio_id', $this->id)->get();
     }
 
 }

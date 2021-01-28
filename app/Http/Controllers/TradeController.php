@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Trade;
+use App\Models\Balance;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Rules\PortfolioDateOverlapping;
@@ -19,6 +20,15 @@ class TradeController extends Controller
     {
      
         return view('dashboardpages.trading.trade_record');
+        
+    }
+
+    public function runningtotal()
+    {
+     
+        $balance = new Balance;
+
+        return $balance->runningTotal();
         
     }
 

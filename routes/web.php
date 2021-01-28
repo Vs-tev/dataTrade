@@ -64,6 +64,8 @@ Route::post('/dashboardPages/portfolio/deleteTransactions/{id}', 'TransactionsCo
 Route::view('/dashboardPages/traderecord', 'dashboardpages.trading.trade_record')->middleware('auth');
 Route::get('/dashboardPages/traderecord', 'TradeController@index')->middleware('auth');
 
+Route::get('/dashboardPages/traderecord/sparkline', 'TradeController@runningtotal');
+
 Route::post('/dashboardPages/traderecord/p', 'TradeController@store');
 /* --- */
 

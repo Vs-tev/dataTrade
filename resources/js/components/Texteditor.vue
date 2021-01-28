@@ -1,4 +1,5 @@
 <template>
+  <div class="custom-editor-wrapper">
     <editor v-model="item.description" name="description"
         :key="item.id"
         api-key="6q52b91hsd3vy6c451g44vjkn1avc5pmzr0z102fs62j21na" :init="{
@@ -15,6 +16,7 @@
         toolbar: 'numlist bullist | undo redo | underline | bold italic | alignleft aligncenter alignright',
         }">
     </editor>
+  </div>
 </template>
 <script>
 import Editor from "@tinymce/tinymce-vue";
@@ -27,3 +29,9 @@ export default {
   },
 };
 </script>
+<style>
+.tox-tinymce {
+  border: none !important;
+  border-radius: 3px !important;
+}
+</style>

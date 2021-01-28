@@ -7,14 +7,18 @@ $(function (){
 
 
     /*Handle open/close rightbar and sidebar */
-    $('#toggle-sidebar').on('click',function(){
+    $('.toggle-sidebar, .expand-sidebar').on('click',function(){
         $('#sidebar').toggleClass('hide-show-sidebar');
         $('#dropdown-user-992px').removeClass('hide-show-dropdown-navbar');
+    })
+
+    $('.expand-sidebar').on('click',function(){
+        $('#sidebar').css("display", "block");
     })
     
     $('#toggle-navbar').on('click',function(){
         $('#dropdown-user-992px').toggleClass('hide-show-dropdown-navbar');
-        $('#sidebar').removeClass('hide-show-sidebar');
+        $('#sidebar').addClass('hide-show-sidebar');
     })
 
     $('.toggle-rightbar').on('click', function(){

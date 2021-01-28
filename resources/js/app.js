@@ -13,10 +13,6 @@ Vue.use(VueCompositionAPI)
 
 import Form from './Form'
 window.Form= Form
-import Portfolio from './components/portfolio/Portfolio'
-import Rules from './components/rules/Rules'
-import Strategies from './components/strategies/Strategies'
-import Traderecord from './components/trades/Traderecord'
 
 
 
@@ -36,7 +32,7 @@ Vue.component('app-rules', require('./components/rules/Rules.vue').default);
 Vue.component('app-strategies', require('./components/strategies/Strategies.vue').default);
 Vue.component('app-traderecord', require('./components/trades/Traderecord.vue').default);
 Vue.component('app-navbar', require('./components/navbar/Navbar.vue').default);
-
+Vue.component('app-traderecord-chart-table', require('./components/trades/TraderecordChartTable.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
