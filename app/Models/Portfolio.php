@@ -37,7 +37,7 @@ class Portfolio extends Model
     } */
     
     public function scopeIsactive($query){
-        return $query->where('is_active', 1)->pluck('id'); //return only active
+        return $query->where([['is_active', 1], ['user_id', auth()->id()]])->pluck('id'); //return only active
     }
 
     public function add_to_balance($portfolio){
@@ -48,15 +48,41 @@ class Portfolio extends Model
             'action_type' => 'start_capital',
         ]);  
     }
+
+    public function scopeRunningTotal($query, $id){
+        //running total for all portfolios used in portfolio page
+        return $query = DB::table('balances')->select('action_date', 'id' , DB::raw('SUM(amount) OVER(ORDER BY action_date)as running_total'))
+        ->where('portfolio_id', $id)
+        ->orderBy('action_date', 'DESC')
+        ->limit(100)
+        ->get();
+    }
     
     public function fetch_portfolio($query){
-        return $this->select('portfolios.id', 'name', 'start_equity', 'currency', 'is_active', 'portfolios.started_at', DB::raw('SUM(amount) as current_balance' ),)
+        $portfolio = $this->select('portfolios.id','b.action_date',  'name', 'start_equity', 'currency', 'is_active', 'portfolios.started_at', 
+        DB::raw('SUM(amount) as current_balance, 
+        COUNT(CASE WHEN action_type = "trade" THEN 1 else NULL END) as total_trades, 
+        COUNT(CASE WHEN amount >= 0 AND action_type = "trade" THEN 1 else NULL END)as winning_trades, 
+        COUNT(CASE WHEN amount < 0 AND action_type = "trade" THEN 1 else NULL END)as losing_trades,
+        SUM(CASE WHEN action_type = "trade" THEN amount ELSE 0 END)as trade_profit'))
         ->join('balances AS b', 'portfolios.id', '=', 'b.portfolio_id')
         ->where('user_id', auth()->id())
         ->whereIn('is_active', $query)
         ->groupBy('portfolios.id')
-        ->latest('portfolios.started_at')
         ->get();
+        
+        $new = $portfolio->map(function($object){
+        $object->running_total = Portfolio::runningtotal($object->id);
+        return $object;
+        });
+        
+      /*   $data = [
+            mojem da si postroim object s razlichni array ili objects vytre kato api
+            'portfolio' => $new,
+        ]; */
+        return response()->json(
+             $new
+        );
     }
 
 }

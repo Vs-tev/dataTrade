@@ -7,6 +7,7 @@ use App\Models\Balance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Collection;
 
 
 class PortfolioController extends Controller
@@ -26,6 +27,10 @@ class PortfolioController extends Controller
         $portfolio = new Portfolio;
         $query = [0, 1];
         return $portfolio->fetch_portfolio($query);
+        /* return collect([
+            collect([$portfolio->fetch_portfolio($query)]),
+            collect([1,2,3,4,5])
+        ])->all(); */
         
     }
 

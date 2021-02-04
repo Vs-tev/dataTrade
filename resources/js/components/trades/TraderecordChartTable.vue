@@ -1,58 +1,60 @@
 <template>
     <div>
-        <donut-chart></donut-chart>
+      <br>
+         <donut-chart :data="winrate"></donut-chart>
         <div>
-            <hr>
+           
+                <apexchart type="area" ref="realtimeChart" :options="options" :series="series"></apexchart>
+          
             <br>
-            <apexchart type="area" ref="realtimeChart" :options="options" :series="series"></apexchart>
             <br>
-            <br>
+            <div class="table-div-min-height">
             <table class="table table-sm table-hover">
                 <thead>
-                    <tr>
+                    <tr class="text-center">
                         <th>Symbol</th>
-                        <th>Side</th>
+                        <th>Exit date</th>
                         <th>Profit</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>aud/cad</td>
-                        <td>Sell</td>
-                        <td>-80Eur</td>
-                    </tr>
-                    <tr>
-                        <td>aud/cad</td>
-                        <td>Sell</td>
-                        <td>-40Eur</td>
-                    </tr>
-                    <tr>
-                        <td>aud/cad</td>
-                        <td>Sell</td>
-                        <td>30Eur</td>
+                    <tr v-for="(item, index) in trades" :key="index" class="text-center">
+                        <td class="text-muted font-500">{{item.symbol}}</td>
+                        <td class="font-500">{{item.exit_date}}</td>
+                        <td class="font-500 cyan" :class="{'red':item.pl_currency < 0}">{{item.pl_currency}}</td>
                     </tr>
                 </tbody>
             </table>
+            <div v-if="loading" class="d-flex justify-content-center align-items-center container_for_small_trades_table">
+                <div class="spinner-border lighter"></div>
+              </div>
+            <div class="text-right px-4 pb-4 pt-2">
+               <a type="button" href="./tradehistory" class="lighter"> See all trades</a>
+            </div>
+            </div>
         </div>
-        <button type="button" @click="portfolodata">Get</button>
-        <p>{{this.series[0].data}}</p>
     </div>
 
 </template>
 <script>
 import VueApexCharts from "vue-apexcharts";
-//Vue.use(VueApexCharts);
-
 Vue.component("apexchart", VueApexCharts);
+import DonutChart from "./DonutChart.vue";
 
-import DonutChart from "../../DonutChart/DonutChart.vue";
 export default {
   components: {
     DonutChart,
   },
   data: function () {
     return {
+      loading: true,
+      loading_portfolio: true,
+      portfolio: {
+        winning_trades: "",
+        total_trades: "",
+      },
       running_total: "",
+      trades: "",
       series: [
         {
           name: "Equity",
@@ -85,20 +87,37 @@ export default {
         colors: ["#DCE6EC"],
         title: {
           text: "",
+          align: "center",
+          margin: 20,
           offsetX: 0,
           style: {
-            fontSize: "20px",
+            fontSize: "22px",
+            fontWeight: "600",
+            colors: "#343a40",
           },
         },
         subtitle: {
           text: "",
+          align: "center",
+          margin: 20,
           offsetX: 0,
           style: {
             fontSize: "14px",
+            fontWeight: "bold",
+            color: "#6c757d",
           },
         },
         noData: {
-          text: "Loading...",
+          text: undefined,
+          align: "center",
+          verticalAlign: "middle",
+          offsetX: 0,
+          offsetY: 0,
+          style: {
+            color: undefined,
+            fontSize: "14px",
+            fontFamily: undefined,
+          },
         },
       },
     };
@@ -106,21 +125,33 @@ export default {
 
   mounted() {
     this.portfolodata();
-    this.runningtotal();
     this.$root.$on("portfolio_balance", () => {
       this.runningtotal();
+      this.tradeRecordTradesTable();
     });
+  },
+  computed: {
+    winrate() {
+      return [
+        (
+          (this.portfolio.winning_trades / this.portfolio.total_trades || 0) *
+          100
+        ).toFixed(2),
+      ];
+    },
   },
 
   methods: {
     portfolodata() {
       this.$root.$on("portfolio_balance", (data) => {
-        // this.options.subtitle.text = data.name;
+        this.portfolio.winning_trades = data.winning_trades;
+        this.portfolio.total_trades = data.total_trades;
+        this.loading_portfolio = false;
         this.options = {
           ...this.options,
           ...{
             title: {
-              text: data.current_balance + "" + data.currency,
+              text: data.current_balance + " " + data.currency,
             },
             subtitle: {
               text: data.name,
@@ -145,9 +176,16 @@ export default {
     updateSeriesLine() {
       this.$refs.realtimeChart.updateSeries([
         {
-          data: this.series[0].data,
+          data: this.series[0].data.reverse(),
         },
       ]);
+    },
+
+    tradeRecordTradesTable() {
+      axios.get("/dashboardPages/traderecord/t").then((res) => {
+        this.trades = res.data;
+        this.loading = false;
+      });
     },
   },
 };

@@ -1,83 +1,8 @@
-.trade_img,
-.img_list {
-    border: 0.12rem var(--primary) dashed;
-    border-radius: 3px;
-    height: auto;
-    display: flex;
-    justify-content: center;
-    position: relative;
-}
-
-/*********************/
 .new_trade_inputs_300 {
     min-width: 300px;
     max-width: 300px
 }
 
-.buy-sell-div .buy,
-.buy-sell-div .sell {
-    text-align: center;
-    font-weight: 500;
-    padding: 0.5rem;
-    font-size: 0.9rem
-}
-
-.buy.focus,
-.buy:focus,
-.sell.focus,
-.sell:focus {
-    outline-offset: 0 !important;
-    -webkit-box-shadow: none !important;
-    box-shadow: none !important;
-}
-
-.error-trade-p {
-    margin-left: 66px;
-    padding: 0px;
-}
-
-.symbol-time_frame div select {
-    width: 130px
-}
-
-.inline {
-    display: flex;
-    align-items: center;
-}
-
-.inline label {
-    margin-right: 10px
-}
-
-.inline .quantity_input {
-    width: 233px;
-}
-
-.inline .price_input {
-    width: 78.5px
-}
-
-.inline .price_input:first-of-type {
-    border-right: none;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0
-}
-
-.inline .price_input {
-    width: 78.5px
-}
-
-.inline .price_input:nth-of-type(2) {
-    border-radius: 0
-}
-
-.inline .price_input:last-of-type {
-    border-left: none;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0
-}
-
-
 .trade_img,
 .img_list {
     border: 0.12rem var(--primary) dashed;
@@ -88,7 +13,6 @@
     position: relative;
 }
 
-/*********************/
 .buy-sell-div .buy,
 .buy-sell-div .sell {
     text-align: center;
@@ -192,7 +116,7 @@
     text-align: right;
     background: transparent;
     position: absolute;
-    margin-right: 62px;
+    margin-right: 65px;
     height: 28px;
     color: var(--lighter)
 }
@@ -221,6 +145,15 @@
     margin-top: 5px
 }
 
+.container_for_small_trades_table {
+    min-height: 215px;
+}
+
+.table-div-min-height {
+    min-height: 305px;
+
+}
+
 @media screen and (max-width: 1730px) {
     .main-content-container .trade-record-container {
         left: 275px;
@@ -242,11 +175,12 @@
 
     @media screen and (max-width: 768px) {
         .main-content-container .trade-record-container {
-            left: auto !important;
+            left: 0 !important;
             right: auto;
             top: 125;
-            width: auto;
-            padding: 1rem;
+            width: 100%;
+            padding: 0;
+            padding-top: 1rem;
         }
     }
 }
@@ -506,97 +440,7 @@
     }
 }
 
-.date-row .date-inpit-div {
-    width: 233px;
-}
 
-.date-row .date-inpit-div {
-    float: right;
-}
-
-.profit_row,
-.rules-row,
-.qty-row,
-.date-row,
-.price-row {
-    margin-top: 65px
-}
-
-.rules-row .inline .multiselect,
-.rules-row .multiselect {
-    width: 233px;
-}
-
-.profit_row .inline input:first-of-type {
-    width: 173.5px;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-right: none
-}
-
-.profit_row .inline .trade_return {
-    width: 70px;
-    padding: 0px;
-    border-left: none;
-    border: none;
-    text-align: right;
-    background: transparent;
-    position: absolute;
-    margin-right: 62px;
-    height: 28px;
-    color: var(--lighter)
-}
-
-.profit_row .inline .trade_return:focus {
-    box-shadow: none
-}
-
-.profit_row .inline input:last-of-type {
-    width: 60px;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-}
-
-.profit-input-div input {
-    width: 233px;
-    float: right;
-}
-
-.rules-row .multiselect {
-    float: right;
-}
-
-.rules-row .multiselect:nth-of-type(2),
-.rules-row>.multiselect:last-of-type {
-    margin-top: 5px
-}
-
-@media screen and (max-width: 1730px) {
-    .main-content-container .trade-record-container {
-        left: 275px;
-        right: auto;
-        top: 125;
-        width: calc(100% - 295px);
-        padding: 1rem;
-    }
-
-    @media screen and (max-width:1602px) {
-        .main-content-container .trade-record-container {
-            left: 60px;
-            right: auto;
-            top: 125;
-            width: calc(100% - 60px);
-            padding: 1rem;
-        }
-    }
-
-    @media screen and (max-width: 768px) {
-        .main-content-container .trade-record-container {
-            width: 100%;
-            padding: 0
-        }
-    }
-}
 
 /*Trade History*/
 

@@ -79,7 +79,6 @@
                                     :pickTime="true" 
                                     :isDateDisabled="isFutureDate"
                                     :format="'YYYY-MM-DD HH:mm'"
-                                    
                                     :inputAttributes="{readonly: false}"
                                     @input="form.errors.clear('entry_date')"
                                     :class="{'is-invalid': form.errors.has('entry_date')}">
@@ -177,9 +176,9 @@
             </div>
 
             <div class="d-flex justify-content-end p-4">
-                <button type="button" id="tests" class="btn btn-secondary font-lg font-500 mr-3"
+                <button type="button" id="tests" class="btn btn-secondary mr-3"
                     @click="clearFileds">Clear</button>
-                <button type="button" class="btn bt btn-primary font-lg font-500 mr-0" @click="recordTrade">Record
+                <button type="button" class="btn bt btn-primary mr-0" @click="recordTrade">Record
                     Trade</button>
             </div>
         </section>
@@ -208,15 +207,14 @@ export default {
     return {
       portfolio: "",
       Difference_in_ms: "",
-
       loading: true,
       form: new Form({
         symbol: "AUD/CAD",
         type_side: "buy",
         quantity: "10000",
-        entry_price: "1.15000",
-        exit_price: "1.20000",
-        stop_loss_price: "1.10000",
+        entry_price: "1.00000",
+        exit_price: "1.00000",
+        stop_loss_price: "1.00000",
         time_frame: "1 min",
         entry_date: "",
         exit_date: "",
@@ -292,8 +290,9 @@ export default {
         "-" +
         ("0" + (today.getMonth() + 1)).slice(-2) +
         "-" +
-        today.getDate();
-      var time = today.getHours() + ":" + today.getMinutes();
+        ("0" + (today.getDate() + 1)).slice(-2);
+      var time =
+        today.getHours() + ":" + ("0" + (today.getMinutes() + 1)).slice(-2);
       var dateTime = date + " " + time;
       this.form.entry_date = dateTime;
       this.form.exit_date = dateTime;
@@ -330,8 +329,7 @@ export default {
       axios
         .get("/dashboardPages/portfolioIsActive/g")
         .then((res) => {
-          this.portfolio = res.data[0];
-
+          this.portfolio = res.data;
           //this is send to navbar
           this.$root.$emit("portfolio_balance", res.data[0]); // optional we can put second argumen -> this.$root.$emit("portfolio_balance", data)
         })
@@ -383,6 +381,7 @@ export default {
     },
     clearFileds() {
       this.form.reset();
+      this.today();
       this.form.type_side = "buy";
       this.form.symbol = "AUD/CAD";
       this.form.time_frame = "1 min";

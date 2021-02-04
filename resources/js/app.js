@@ -7,10 +7,6 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-import VueCompositionAPI from '@vue/composition-api'
-Vue.use(VueCompositionAPI)
-
-
 import Form from './Form'
 window.Form= Form
 
@@ -33,7 +29,7 @@ Vue.component('app-strategies', require('./components/strategies/Strategies.vue'
 Vue.component('app-traderecord', require('./components/trades/Traderecord.vue').default);
 Vue.component('app-navbar', require('./components/navbar/Navbar.vue').default);
 Vue.component('app-traderecord-chart-table', require('./components/trades/TraderecordChartTable.vue').default);
-
+Vue.component('app-traderecord-history', require('./components/trades/TradeHistory/TradeHistory.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

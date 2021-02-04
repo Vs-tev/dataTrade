@@ -18,20 +18,20 @@ class TradeController extends Controller
      */
     public function index()
     {
-     
         return view('dashboardpages.trading.trade_record');
-        
     }
-
-    public function runningtotal()
-    {
-     
-        $balance = new Balance;
-
-        return $balance->runningTotal();
-        
+    public function tradeRecordTradesTable(){
+        $trade = new Trade;
+        $trade = $trade->select('symbol', 'exit_date', 'pl_currency')
+        ->where([
+            ['portfolio_id', \App\Models\Portfolio::isactive()->first()],
+            ['user_id', auth()->id()]
+            ])
+        ->orderBy('exit_date', 'DESC')
+        ->limit(7)
+        ->get();
+        return $trade;
     }
-
     /**
      * Show the form for creating a new resource.
      *

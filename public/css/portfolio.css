@@ -1,11 +1,11 @@
-.dashboard_container_content .portfolio_container .sparkline {
-    height: 100px;
-    width: 100px;
-    border: 1px solid var(--light);
-    border-radius: 5px;
-    -webkit-box-shadow: 0px 0px 18px -17px rgba(0, 0, 0, 1);
-    -moz-box-shadow: 0px 0px 18px -17px rgba(0, 0, 0, 1);
-    box-shadow: 0px 0px 18px -17px rgba(0, 0, 0, 1);
+.portfolio-wrapper {
+    min-height: 260px;
+}
+
+.chart-wrapper {
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
 }
 
 .inactive_portfolio::before {
@@ -35,9 +35,15 @@
 
 div.switch_portfolio {
     z-index: 3;
-    font-weight: 600
+    font-weight: 600;
+
+}
+
+.container-portfolio-action-buttons {
+    margin: 10px 35px;
 }
 
 .container-portfolio-action-buttons button {
-    z-index: 3
+    z-index: 3;
+
 }

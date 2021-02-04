@@ -16,7 +16,7 @@ class CreateBalanceTable extends Migration
         Schema::create('balances', function (Blueprint $table) {
             $table->id();
             $table->decimal('amount', 14, 2);
-            $table->date('action_date');
+            $table->dateTime('action_date');
             $table->string('action_type');
             $table->timestamps();
             $table->foreignId('portfolio_id')->constrained()->onDelete('cascade')->onDelete('cascade');;

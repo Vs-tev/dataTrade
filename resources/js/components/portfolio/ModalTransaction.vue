@@ -24,13 +24,19 @@
                             <label class="mr-0 mr-md-1">Date:</label>
                             <date-pick 
                                 v-model="item.transaction_date"
-                                :pickTime="false"
+                                :pickTime="true"
                                 :isDateDisabled="isFutureDate"
-                                :format="'YYYY-MM-DD'"
+                                :format="'YYYY-MM-DD HH:mm'"
                                 :inputAttributes="{readonly: true}"
                                 @input="item.errors.clear('transaction_date')"
                                 :class="{'is-invalid': item.errors.has('transaction_date')}"
-                                ></date-pick>
+                                >
+                                <template v-slot:default="{toggle, inputValue}">
+                                    <button @click="toggle" class="toggle-calendar">
+                                        {{ inputValue || ' Choose date ' }}
+                                    </button>
+                                </template>
+                                </date-pick>
                             <p class="error-output" v-if="item.errors.has('transaction_date')"
                                 v-text="item.errors.get('transaction_date')"></p>
                         </div>
@@ -120,3 +126,18 @@ export default {
 };
 </script>
 <style src="vue-date-pick/dist/vueDatePick.css"></style>
+<style scoped>
+.toggle-calendar {
+  width: 100%;
+  height: calc(1.6em + 0.8rem + 2px);
+  padding: 0.4rem 0.45rem;
+  font-size: var(--font-normal);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--primary-color);
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.2rem;
+}
+</style>

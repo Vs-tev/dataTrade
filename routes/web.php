@@ -63,10 +63,9 @@ Route::post('/dashboardPages/portfolio/deleteTransactions/{id}', 'TransactionsCo
 /* Trade Record */
 Route::view('/dashboardPages/traderecord', 'dashboardpages.trading.trade_record')->middleware('auth');
 Route::get('/dashboardPages/traderecord', 'TradeController@index')->middleware('auth');
-
-Route::get('/dashboardPages/traderecord/sparkline', 'TradeController@runningtotal');
-
 Route::post('/dashboardPages/traderecord/p', 'TradeController@store');
+Route::get('/dashboardPages/traderecord/t', 'TradeController@tradeRecordTradesTable');
+
 /* --- */
 
 
@@ -99,6 +98,8 @@ Route::post('/strategy/u/{id}', 'StrategyController@update');
 Route::post('/strategy/d/{id}', 'StrategyController@destroy');
 /* --- */
 
+/* Balance Controller */
+Route::get('/dashboardPages/traderecord/sparkline', 'BalanceController@getSparklineRuningTotal');
 
 
 Auth::routes();

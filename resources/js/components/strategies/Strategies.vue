@@ -3,11 +3,6 @@
         <section class="dashboard_container_content col-12  col-xl-10 p-0 pb-4">
             <div class="d-flex align-items-center justify-content-between border-bottom p-4">
                 <h4 class="font-weight-500 m-0">Strategies</h4>
-                <button type="button" class="btn btn-link text-muted border-0" @click="togglediv = !togglediv" v-if="togglediv">
-                    <span class="material-icons dark">
-                    close
-                    </span>
-                </button>
             </div>
         
             <div class="d-flex justify-content-start align-items-center pt-3 px-4">

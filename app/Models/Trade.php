@@ -21,6 +21,9 @@ class Trade extends Model
         return $this->hasOne(Balance::class);
     }
 
+    protected $casts = [
+        'exit_date' => 'datetime:M-d H:i',
+    ];
     public function add_to_used_entry_rules($request){
         /* $rules = $request->entry_rule_id;
         $array = explode(',', $rules);*/     

@@ -1,6 +1,7 @@
 <template>
-    <div class="row justify-content-between">
-        <div class="col-sm-12 pb-3 px-3">
+    <div class="row justify-content-center p-4">
+     
+        <div class="col-12 col-md-8 pb-3 p-0">
             <div class="dashboard_container_content border d-flex align-items-center">
                 <img src="/storage/icons/create.svg" alt="">
                 <span v-on:click="create" data-target="#modal-form" data-toggle="modal"
@@ -9,11 +10,108 @@
                 </span>
             </div>
         </div>
-        <main class="col-sm-12 pb-3 px-3 new-item">
-            <div>
-                <div class="dashboard_container_content border pt-0" :class="{'inactive_portfolio': item.is_active == 0 }"
+        
+      <!--   <div v-for="item in items[0]" :key="item.id">
+        <h4>{{item.name}}</h4>
+        </div>
+         -->
+        <main class="col-12 col-md-8 p-0 new-item">
+           <div class="dashboard_container_content portfolio-wrapper border p-0" :class="{'inactive_portfolio': item.is_active == 0 }"
+                    v-for="item in items.portfolio" :key="item.id">
+              <div class="container-portfolio-action-buttons d-flex justify-content-between align-items-center py-3 mb-2">
+                     <div class="custom-control custom-switch switch_portfolio">
+                       <div v-if="items.portfolio.length > 1">
+                        <input @click="toogleActive(item, $event)" type="checkbox"
+                            class="custom-control-input activate_portfolio" :id="item.id"
+                            :checked="item.is_active == true ? 'checked': '' " :value="item.id">
+                        <label class="custom-control-label" :for="item.id"
+                            v-text="item.is_active == 0 ? 'Inactive' : 'Active' "></label>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                          <button type="button" @click="getId(item.id)" class="btn btn-primary mr-2" data-toggle="modal"
+                                        data-target="#transactions"><img src="/storage/icons/wallet.svg" alt=""></button>
+                          <button type="button" @click="getValues(item.id, item.name, item.currency)"
+                                        class="btn btn-secondary mr-2" data-toggle="modal"
+                                        data-target="#modal-form"><img src="/storage/icons/edit.svg" alt=""></button>
+                          <button type="button" class="btn btn-secondary delete-item" @click="DeletePortfolio(item)" data-target="#modal-form" data-toggle="modal">
+                                  <img src="/storage/icons/trash.svg" alt="">
+                                </button>
+                      </div>
+              </div>
+            
+               <div class="chart-wrapper">
+                        <apexchart type="area" height="220" 
+                        :options="{chart:{
+                            width:'100%', 
+                            height: 160,
+                            type: 'area', 
+                            sparkline: {
+                              enabled: true,
+                            }
+                          }, 
+                          stroke: {
+                            curve: 'smooth',
+                          },
+                           fill: {
+                            opacity: 0.2,
+                          },
+                          yaxis: {
+                            min: parseFloat(item.start_equity / 2),
+                             show: false,
+                              showAlways: false,
+                          },
+                          colors: ['#3490dc'],
+                          title: {
+                            text: item.current_balance +' '+ item.currency,
+                            align: 'center',
+                            margin: 0,
+                            offsetX: 0,
+                            offsetY: 0,
+                            style: {
+                              fontSize: '22px',
+                              fontWeight: '600',
+                              colors: '#343a40',
+                            },
+                          },
+                            subtitle: {
+                              text: item.name + ' ' + item.started_at,
+                              align: 'center',
+                              margin: 10,
+                              offsetX: 0,
+                              style: {
+                                fontSize: '14px',
+                                fontWeight: 'bold',
+                                color: '#6c757d',
+                              },
+                            },
+                            xaxis: {
+                              type: 'datetime',
+
+                              categories: item.running_total.map(arr =>
+                               arr.action_date
+                                ).reverse()
+                            },
+                             tooltip: {
+                              x: {
+                                format: 'dd/MM/yy HH:mm'
+                              },
+                            },
+                        }" :series="[{name: 'Balance', data : item.running_total.map(arr =>
+                 parseFloat(arr.running_total)
+                 ).reverse()}]"></apexchart>
+               </div>  
+                
+             
+            </div>
+           <!--  <div>
+
+                <div class="dashboard_container_content border p-0" :class="{'inactive_portfolio': item.is_active == 0 }"
                     v-for="item in items" :key="item.id">
-                    <div class="container-portfolio-action-buttons d-flex justify-content-between align-items-center border-bottom py-3 mb-2">
+                      <div class="chart-wrapper">
+                        <apexchart height="160" :options="chartOptions" :series="series"></apexchart>
+                      </div>
+                    <div class="container-portfolio-action-buttons d-flex justify-content-between align-items-center py-3 mb-2">
                      <div class="custom-control custom-switch switch_portfolio">
                        <div v-if="items.length > 1">
                         <input @click="toogleActive(item, $event)" type="checkbox"
@@ -23,7 +121,7 @@
                             v-text="item.is_active == 0 ? 'Inactive' : 'Active' "></label>
                         </div>
                     </div>
-                    <div class=" d-flex  justify-content-between">
+                    <div class=" d-flex justify-content-between">
                           <button type="button" @click="getId(item.id)" class="btn btn-primary mr-2" data-toggle="modal"
                                         data-target="#transactions"><img src="/storage/icons/wallet.svg" alt=""></button>
                           <button type="button" @click="getValues(item.id, item.name, item.currency)"
@@ -36,11 +134,9 @@
                     </div>
                     <div class="d-flex justify-content-between" >
                       <div class="w-100">
-                        <div class="portfolio_container w-100 mb-3 pb-3 pt-2 justify-content-between border-bottom">
+                        <div class="portfolio_container w-100 pt-2 justify-content-between border-bottom">
                             <div class="d-flex">
-                                <div class="sparkline">
-                                    <p class="font-sm m-auto">LineChart</p>
-                                </div>
+                
                                 <div class="d-flex flex-column justify-content-around portfolio_name ml-3">
                                     <h3 class="font-weight-bold">{{item.name}}</h3>
                                     <div class="d-flex flex-wrap flex-sm-nowrap">
@@ -55,13 +151,12 @@
                             </div>
                         </div>
                       
-                        <div
-                            class="portfolio_info row col-lg-12 justify-content-between">
+                    <div class="portfolio_info row col-lg-12 justify-content-between">
                             <div class="d-flex align-items-center mb-3 mb-lg-0">
                                  <img src="/storage/icons/cash.svg" alt="">
                                 <div class="ml-2">
                                     <p class="p-0 m-0">Start capital</p>
-                                    <h5 class="text-uppercase">{{item.start_equity}} {{item.currency}}</h5>
+                                    <p class="text-uppercase">{{item.start_equity}} {{item.currency}}</p>
                                 </div>
                             </div>
                             <div class="d-flex align-items-center mb-3 mr-3 mb-lg-0">
@@ -98,8 +193,9 @@
                     </div>
                 </div>
 
-            </div>
+            </div> -->
         </main>
+        
         <modal :item="form" v-on:edit="edit($event)" v-on:store="store($event)" v-on:destroy="destroy($event)"></modal>
         <modal-transaction :transaction="transactions" :links="pagination" :item="form" v-on:setPage="setPage($event)" v-on:storeTransaction="storeTransaction($event)" v-on:delete_transaction="delete_transaction($event)"></modal-transaction>
     </div>
@@ -108,6 +204,8 @@
 import Modal from "./Modal";
 import ModalTransaction from "./ModalTransaction";
 
+import VueApexCharts from "vue-apexcharts";
+Vue.component("apexchart", VueApexCharts);
 export default {
   name: "Portfolio",
   components: {
@@ -116,7 +214,56 @@ export default {
   },
   data() {
     return {
-      items: [],
+      chartOptions: {
+        chart: {
+          width: "100%",
+          type: "area",
+          sparkline: {
+            enabled: true,
+          },
+        },
+        stroke: {
+          curve: "smooth",
+        },
+        fill: {
+          opacity: 0.3,
+        },
+        yaxis: {
+          min: 0,
+        },
+        colors: ["#8950fc"],
+        title: {
+          text: "9566.54 EUR",
+          align: "center",
+          margin: 0,
+          offsetX: 0,
+          style: {
+            fontSize: "22px",
+            fontWeight: "600",
+            colors: "#343a40",
+          },
+        },
+        subtitle: {
+          text: "Oanda account / 18-01-2021",
+          align: "center",
+          margin: 10,
+          offsetX: 0,
+          style: {
+            fontSize: "14px",
+            fontWeight: "bold",
+            color: "#6c757d",
+          },
+        },
+      },
+
+      items: {
+        portfolio: [],
+        series: [
+          {
+            data: [],
+          },
+        ],
+      },
       transactions: [],
       pagination: {
         data: [],
@@ -137,7 +284,7 @@ export default {
     };
   },
   mounted: function mounted() {
-    this.fetchitems();
+    this.fetchportfolio();
   },
 
   methods: {
@@ -161,7 +308,7 @@ export default {
           active: data,
         })
         .then((res) => {
-          this.fetchitems();
+          this.fetchportfolio();
           this.$root.$emit("portfolio_balance");
         })
         .catch((error) => {
@@ -178,11 +325,12 @@ export default {
       this.form.currency = item_currency;
     },
 
-    fetchitems() {
+    fetchportfolio() {
       axios
         .get("/dashboardPages/portfolio/g")
         .then((res) => {
-          this.items = res.data;
+          this.items.portfolio = res.data;
+
           this.$root.$emit("portfolio_balance");
         })
         .catch((error) => {});
@@ -204,7 +352,7 @@ export default {
         .post("/dashboardPages/portfolio/store", data)
         .then((res) => {
           $("#modal-form").modal("hide");
-          this.fetchitems();
+          this.fetchportfolio();
         })
         .catch((error) => {
           this.checkResponseStatus(error);
@@ -222,7 +370,7 @@ export default {
         .post("/dashboardPages/portfolio/u/" + item_id, data)
         .then((res) => {
           $("#modal-form").modal("hide");
-          this.fetchitems();
+          this.fetchportfolio();
         })
         .catch((error) => {
           this.checkResponseStatus(error);
@@ -242,7 +390,7 @@ export default {
         .post("/dashboardPages/portfolio/d/" + value.id)
         .then((res) => {
           $("#modal-form").modal("hide");
-          this.fetchitems();
+          this.fetchportfolio();
         })
         .catch((error) => {
           this.checkResponseStatus(error);
@@ -288,7 +436,7 @@ export default {
       axios
         .post("/dashboardPages/portfolio/storeTransactions", data)
         .then((res) => {
-          this.fetchitems();
+          this.fetchportfolio();
           this.getId(this.form.id);
           this.form.amount_transaction = "";
           this.form.transaction_date = "";
@@ -305,7 +453,7 @@ export default {
         .then((res) => {
           //$("#transactions").modal("hide");
           this.getId(this.form.id);
-          this.fetchitems();
+          this.fetchportfolio();
         })
         .catch((error) => {
           this.checkResponseStatus(error);
