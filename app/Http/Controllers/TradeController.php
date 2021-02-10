@@ -11,6 +11,10 @@ use App\Rules\PortfolioDateOverlapping;
 
 class TradeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -20,6 +24,42 @@ class TradeController extends Controller
     {
         return view('dashboardpages.trading.trade_record');
     }
+    
+    public function tradehistoryTradesTable(Request $request){
+        //dd($request->column[1]);
+        $trades = new Trade;
+
+        if($request->start_date !== null){
+            $trades = $trades->where('exit_date', '>=' , $request->start_date);
+        }
+        if($request->end_date !== null){
+            $trades = $trades->where('exit_date', '<=' ,$request->end_date);
+        }
+
+        if($request->sort_pl == 'winners'){
+            $trades = $trades->where('pl_currency', '>=', 0);
+        }else if($request->sort_pl == 'losers'){
+            $trades = $trades->where('pl_currency', '<', 0);
+        };
+
+        if($request->search_symbol !== ""){
+            $trades = $trades->where('symbol', 'LIKE', '%'.$request->search_symbol. '%');
+        };
+        if($request->column[0] !== null){
+            $trades = $trades->orderBy($request->column[0], $request->column[1]);
+        };
+
+        $trades = $trades->where([
+            ['user_id', auth()->id()],
+            ['portfolio_id', $request->p_id],
+        ])
+        ->with(['portfolio', 'strategy', 'used_entry_rules.entry_rule'])
+        ->orderBy('exit_date', 'desc')
+        ->paginate(request()->display);
+        
+        return $trades;
+    }
+
     public function tradeRecordTradesTable(){
         $trade = new Trade;
         $trade = $trade->select('symbol', 'exit_date', 'pl_currency')
@@ -28,7 +68,7 @@ class TradeController extends Controller
             ['user_id', auth()->id()]
             ])
         ->orderBy('exit_date', 'DESC')
-        ->limit(7)
+        ->limit(6)
         ->get();
         return $trade;
     }
@@ -155,8 +195,9 @@ class TradeController extends Controller
      * @param  \App\Models\Trade  $trade
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Trade $trade)
+    public function destroy($id)
     {
-        //
+        $trade = Trade::find($id);
+        $trade->delete();
     }
 }

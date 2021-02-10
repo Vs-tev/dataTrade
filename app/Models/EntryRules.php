@@ -14,4 +14,8 @@ class EntryRules extends Model
     protected $casts = [
         'created_at' => 'datetime:d-M-Y',
     ];
+
+   /*  public function used_entry_rules(){
+        return $this->hasMany(Used_entry_rules::class);
+    } */
 }

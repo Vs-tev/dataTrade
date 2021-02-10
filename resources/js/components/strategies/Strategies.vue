@@ -119,7 +119,7 @@ export default {
 
     getStrategies() {
       axios
-        .get("/strategy/g")
+        .get("/dashboardPages/strategy/g")
         .then((response) => {
           this.strategies = response.data;
           this.loading = false;
@@ -144,7 +144,7 @@ export default {
         data.append("name", value.name);
         data.append("description", value.description);
         axios
-          .post("/strategy/p", data)
+          .post("/dashboardPages/strategy/p", data)
           .then((res) => {
             this.getStrategies();
             $("#modal-strategy").modal("hide");
@@ -172,13 +172,12 @@ export default {
       if (value.img_strategy && value.img_strategy.type == "") {
         this.form.img_error = "Undefine file type";
       } else {
-        console.log(value.img_strategy);
         const data = new FormData();
         data.append("img_strategy", value.img_strategy);
         data.append("name", value.name);
         data.append("description", value.description);
         axios
-          .post("/strategy/u/" + value.id, data)
+          .post("/dashboardPages/strategy/u/" + value.id, data)
           .then((res) => {
             $("#modal-strategy").modal("hide");
             this.getStrategies();
@@ -200,7 +199,7 @@ export default {
 
     destroyStrategy: function destroyStrategy(value) {
       axios
-        .post("/strategy/d/" + value.id)
+        .post("/dashboardPages/strategy/d/" + value.id)
         .then((res) => {
           $("#modal-strategy").modal("hide");
           this.getStrategies();

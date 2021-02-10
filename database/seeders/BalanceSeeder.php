@@ -13,7 +13,7 @@ class BalanceSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Balance::factory(50)->create();
+        \App\Models\Balance::factory()->create();
         //call php artisan db:seed --class=BalanceSeeder
     }
 }

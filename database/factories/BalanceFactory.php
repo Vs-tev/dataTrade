@@ -22,10 +22,10 @@ class BalanceFactory extends Factory
     public function definition()
     {
         return [
-            'amount' => $this->faker->numberBetween($min = 5, $max = 600),
-            'action_date' => $this->faker->date($format = 'Y-m-d', $max = 'now'),
-            'action_type' => 'transaction',
-            'portfolio_id' => $this->faker->numberBetween($min = 1, $max = 1),
+            //'amount' => $this->faker->numberBetween($min = 5, $max = 600),
+            'action_date' => $this->faker->date($format = 'Y-m-d H:m', $max = 'now'),
+            'action_type' => 'trade',
+           // 'portfolio_id' => $this->faker->numberBetween($min = 14, $max = 17),
         ];
     }
 }

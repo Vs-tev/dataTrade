@@ -17,7 +17,7 @@
          -->
         <main class="col-12 col-md-8 p-0 new-item">
            <div class="dashboard_container_content portfolio-wrapper border p-0" :class="{'inactive_portfolio': item.is_active == 0 }"
-                    v-for="item in items.portfolio" :key="item.id">
+                    v-for="(item, index) in items.portfolio" :key="item.id">
               <div class="container-portfolio-action-buttons d-flex justify-content-between align-items-center py-3 mb-2">
                      <div class="custom-control custom-switch switch_portfolio">
                        <div v-if="items.portfolio.length > 1">
@@ -57,11 +57,11 @@
                             opacity: 0.2,
                           },
                           yaxis: {
-                            min: parseFloat(item.start_equity / 2),
+                            min: (parseFloat(item.start_equity) - (parseFloat(item.start_equity) / 10 )),
                              show: false,
-                              showAlways: false,
+                             showAlways: false,
                           },
-                          colors: ['#3490dc'],
+                          colors: index === 0 ? ['#3490dc']: ['#1bc5bd'],
                           title: {
                             text: item.current_balance +' '+ item.currency,
                             align: 'center',
@@ -75,19 +75,18 @@
                             },
                           },
                             subtitle: {
-                              text: item.name + ' ' + item.started_at,
+                              text: item.name + '-' + item.started_at,
                               align: 'center',
                               margin: 10,
                               offsetX: 0,
                               style: {
-                                fontSize: '14px',
+                                fontSize: '16px',
                                 fontWeight: 'bold',
-                                color: '#6c757d',
+                                color: '#343a40',
                               },
                             },
                             xaxis: {
                               type: 'datetime',
-
                               categories: item.running_total.map(arr =>
                                arr.action_date
                                 ).reverse()
@@ -102,98 +101,7 @@
                  ).reverse()}]"></apexchart>
                </div>  
                 
-             
             </div>
-           <!--  <div>
-
-                <div class="dashboard_container_content border p-0" :class="{'inactive_portfolio': item.is_active == 0 }"
-                    v-for="item in items" :key="item.id">
-                      <div class="chart-wrapper">
-                        <apexchart height="160" :options="chartOptions" :series="series"></apexchart>
-                      </div>
-                    <div class="container-portfolio-action-buttons d-flex justify-content-between align-items-center py-3 mb-2">
-                     <div class="custom-control custom-switch switch_portfolio">
-                       <div v-if="items.length > 1">
-                        <input @click="toogleActive(item, $event)" type="checkbox"
-                            class="custom-control-input activate_portfolio" :id="item.id"
-                            :checked="item.is_active == true ? 'checked': '' " :value="item.id">
-                        <label class="custom-control-label" :for="item.id"
-                            v-text="item.is_active == 0 ? 'Inactive' : 'Active' "></label>
-                        </div>
-                    </div>
-                    <div class=" d-flex justify-content-between">
-                          <button type="button" @click="getId(item.id)" class="btn btn-primary mr-2" data-toggle="modal"
-                                        data-target="#transactions"><img src="/storage/icons/wallet.svg" alt=""></button>
-                          <button type="button" @click="getValues(item.id, item.name, item.currency)"
-                                        class="btn btn-secondary mr-2" data-toggle="modal"
-                                        data-target="#modal-form"><img src="/storage/icons/edit.svg" alt=""></button>
-                          <button type="button" class="btn btn-secondary delete-item" @click="DeletePortfolio(item)" data-target="#modal-form" data-toggle="modal">
-                                  <img src="/storage/icons/trash.svg" alt="">
-                                </button>
-                      </div>
-                    </div>
-                    <div class="d-flex justify-content-between" >
-                      <div class="w-100">
-                        <div class="portfolio_container w-100 pt-2 justify-content-between border-bottom">
-                            <div class="d-flex">
-                
-                                <div class="d-flex flex-column justify-content-around portfolio_name ml-3">
-                                    <h3 class="font-weight-bold">{{item.name}}</h3>
-                                    <div class="d-flex flex-wrap flex-sm-nowrap">
-                                        <p class="mr-3 mb-0 d-flex">
-                                            Start date: &nbsp;<span class="dark font-500">{{item.started_at}}</span>
-                                        </p>
-                                        <p class="mr-3 mt-1 mt-sm-0 mb-0">
-                                            Currency: &nbsp;<span class="dark font-500 text-uppercase">{{item.currency}}</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                      
-                    <div class="portfolio_info row col-lg-12 justify-content-between">
-                            <div class="d-flex align-items-center mb-3 mb-lg-0">
-                                 <img src="/storage/icons/cash.svg" alt="">
-                                <div class="ml-2">
-                                    <p class="p-0 m-0">Start capital</p>
-                                    <p class="text-uppercase">{{item.start_equity}} {{item.currency}}</p>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center mb-3 mr-3 mb-lg-0">
-                                 <img src="/storage/icons/cash.svg" alt="">
-                                <div class="ml-2">
-                                    <p class="p-0 m-0">Balance</p>
-                                    <h5 class="indigo" :class="{'red' : item.current_balance < 0}" >{{item.current_balance}} {{item.currency}}</h5>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center mb-3 mr-3 mb-lg-0">
-                                <img src="/storage/icons/trend-up.svg" alt="">
-                                <div class="ml-2">
-                                    <p class="p-0 m-0">Win Rate</p>
-                                    <h5 class="">61.70 %</h5>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center mb-3 mr-3 mb-lg-0">
-                                <img src="/storage/icons/archive.svg" alt="">
-                                <div class="ml-2">
-                                    <p class="p-0 m-0">Recorded Trades</p>
-                                    <h5 class="">&#35; 81</h5>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center mb-3 mr-3 mb-lg-0">
-                                <img src="/storage/icons/area-line.svg" alt="">
-                                <div class="ml-2">
-                                    <p class="p-0 m-0">Return</p>
-                                    <h5 :class="{'red' : item.current_balance < item.start_equity }">{{(((item.current_balance - item.start_equity)/item.start_equity)*100).toFixed(2) }}%</h5>
-                                </div>
-                            </div>
-                        </div>
-                      </div>
-                      
-                    </div>
-                </div>
-
-            </div> -->
         </main>
         
         <modal :item="form" v-on:edit="edit($event)" v-on:store="store($event)" v-on:destroy="destroy($event)"></modal>

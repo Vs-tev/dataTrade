@@ -13,13 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('auth.login');
-});
-
-
-Route::view('typography','typography.typography' );
-
 //////////////////////////Route::view('/example', 'example'); 
 Route::get('/example', function () {
     return view('example', [
@@ -43,60 +36,70 @@ Route::get('/example2', function () {
 });
 /////////////////////////////////////////////end example
 
+
+
+Route::view('typography','typography.typography' );
+
+Route::get('/', function () {
+    return view('auth.login');
+});
+
 Route::view('/dashboardPages/dashboard', 'dashboardpages.dashboard');
 
 //portfolio actions
-Route::view('/dashboardPages/portfolio', 'dashboardpages.portfolio.portfolio')->name('portfolio')->middleware('auth');
-Route::get('/dashboardPages/portfolio/g', 'PortfolioController@index');
-Route::get('/dashboardPages/portfolioIsActive/g', 'PortfolioController@show');
-Route::post('/dashboardPages/portfolio/u/{id}', 'PortfolioController@update');
-Route::post('/dashboardPages/portfolio/store', 'PortfolioController@store');
-Route::post('/dashboardPages/portfolio/d/{id}', 'PortfolioController@destroy');
-Route::post('/dashboardPages/portfolio/toggle_active/{id}', 'PortfolioController@toggle_is_active_portfolio');
+Route::group(['middleware' => 'auth', 'prefix' => 'dashboardPages'], function(){
+    Route::view('/portfolio', 'dashboardpages.portfolio.portfolio')->name('portfolio');
+    Route::get('/portfolio/g', 'PortfolioController@index');
+    Route::get('/portfolioIsActive/g', 'PortfolioController@show');
+    Route::post('/portfolio/u/{id}', 'PortfolioController@update');
+    Route::post('/portfolio/store', 'PortfolioController@store');
+    Route::post('/portfolio/d/{id}', 'PortfolioController@destroy');
+    Route::post('/portfolio/toggle_active/{id}', 'PortfolioController@toggle_is_active_portfolio');
+});
 
 //transactions
-Route::get('/dashboardPages/portfolio/getTransactions/{id}', 'TransactionsController@index');
-Route::post('/dashboardPages/portfolio/storeTransactions', 'TransactionsController@store');
-Route::post('/dashboardPages/portfolio/deleteTransactions/{id}', 'TransactionsController@destroy');
-
+Route::group(['middleware' => 'auth', 'prefix' => 'dashboardPages/portfolio'], function(){
+    Route::get('/getTransactions/{id}', 'TransactionsController@index');
+    Route::post('/storeTransactions', 'TransactionsController@store');
+    Route::post('/deleteTransactions/{id}', 'TransactionsController@destroy');
+});
 
 /* Trade Record */
-Route::view('/dashboardPages/traderecord', 'dashboardpages.trading.trade_record')->middleware('auth');
-Route::get('/dashboardPages/traderecord', 'TradeController@index')->middleware('auth');
-Route::post('/dashboardPages/traderecord/p', 'TradeController@store');
-Route::get('/dashboardPages/traderecord/t', 'TradeController@tradeRecordTradesTable');
-
-/* --- */
+Route::group(['middleware' => 'auth', 'prefix' => 'dashboardPages/traderecord'], function(){
+    Route::view('/', 'dashboardpages.trading.trade_record');
+    Route::get('/', 'TradeController@index')->middleware('auth');
+    Route::post('/p', 'TradeController@store');
+    Route::get('/t', 'TradeController@tradeRecordTradesTable');
+});
 
 
 /* Trade Hstory */
 Route::view('/dashboardPages/tradehistory', 'dashboardpages.trading.trade_history')->middleware('auth');
-
-/* --- */
-
-
-/**Trading rules */
-Route::view('/dashboardPages/tradingrules', 'dashboardpages.trading_rules.trading_rules')->middleware('auth');
-Route::get('/entry_rules/g', 'EntryRulesController@index');
-Route::get('/exit_reasons/g', 'ExitReasonController@index');
-Route::post('/dashboardPages/tradingrules/entry_rules/p', 'EntryRulesController@store');
-Route::post('/dashboardPages/tradingrules/exit_reasons/p', 'ExitReasonController@store');
-Route::post('/dashboardPages/tradingrules/entry_rules/u/{id}', 'EntryRulesController@update');
-Route::post('/dashboardPages/tradingrules/exit_reasons/u/{id}', 'ExitReasonController@update');
-Route::post('/dashboardPages/tradingrules/entry_rules/d/{id}', 'EntryRulesController@destroy');
-Route::post('/dashboardPages/tradingrules/exit_reasons/d/{id}', 'ExitReasonController@destroy');
+Route::get('/dashboardPages/tradehistory/g', 'TradeController@tradehistoryTradesTable');
+Route::post('/dashboardPages/tradehistory/d/{id}', 'TradeController@destroy');
 
 
+/* Trading rules */
+Route::group(['middleware' => 'auth', 'prefix' => 'dashboardPages/tradingrules'], function(){
+    Route::view('/', 'dashboardpages.trading_rules.trading_rules');
+    Route::get('/entry_rules/g', 'EntryRulesController@index');
+    Route::get('/exit_reasons/g', 'ExitReasonController@index');
+    Route::post('/entry_rules/p', 'EntryRulesController@store');
+    Route::post('/exit_reasons/p', 'ExitReasonController@store');
+    Route::post('/entry_rules/u/{id}', 'EntryRulesController@update');
+    Route::post('/exit_reasons/u/{id}', 'ExitReasonController@update');
+    Route::post('/entry_rules/d/{id}', 'EntryRulesController@destroy');
+    Route::post('/exit_reasons/d/{id}', 'ExitReasonController@destroy');
+});
 
-/* --- */
-
-/**Trading strategy */
-Route::view('/dashboardPages/strategy', 'dashboardpages.strategy.strategy')->middleware('auth');
-Route::get('/strategy/g', 'StrategyController@index');
-Route::post('/strategy/p', 'StrategyController@store');
-Route::post('/strategy/u/{id}', 'StrategyController@update');
-Route::post('/strategy/d/{id}', 'StrategyController@destroy');
-/* --- */
+/* Trading strategy */
+Route::group(['middleware' => 'auth', 'prefix' => 'dashboardPages/strategy'], function(){
+    Route::view('/', 'dashboardpages.strategy.strategy')->middleware('auth');
+    Route::get('/g', 'StrategyController@index');
+    Route::post('/p', 'StrategyController@store');
+    Route::post('/u/{id}', 'StrategyController@update');
+    Route::post('/d/{id}', 'StrategyController@destroy');
+});
 
 /* Balance Controller */
 Route::get('/dashboardPages/traderecord/sparkline', 'BalanceController@getSparklineRuningTotal');

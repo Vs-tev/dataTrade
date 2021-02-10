@@ -29,6 +29,11 @@ class AppServiceProvider extends ServiceProvider
         View::composer(['dashboardpages.trading.trade_record'], function($view){
             $view->with('trade', \App\Models\Trade::all());
         }); */
+        View::composer(['dashboardpages.trading.trade_history'], function($view){
+            $view->with('portfolios', \App\Models\Portfolio::where('user_id', auth()->id())
+            ->orderBy('is_active', 'DESC')
+            ->get());
+        });
 
         View::composer(['dashboardpages.trading.trade_record'], function($view){
             $view->with('strategy', \App\Models\Strategy::where('user_id', auth()->id())->get());
@@ -41,5 +46,6 @@ class AppServiceProvider extends ServiceProvider
         View::composer(['dashboardpages.trading.trade_record'], function($view){
             $view->with('entryRules', \App\Models\EntryRules::where('user_id', auth()->id())->get());
         });
+
     }
 }

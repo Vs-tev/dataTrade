@@ -169,7 +169,8 @@
                                 <img class="url-img" :src="this.form.thumbnail_img" alt="">
                             </div>
                         </div>
-                        <texteditor :item="form" class=""></texteditor>
+                        <textarea class="form-control" v-model="form.description" cols="30" rows="10"></textarea>
+                        <!-- <texteditor  class=""></texteditor> -->
                     </div>
 
                 </div>
@@ -187,7 +188,6 @@
 </template>
 
 <script>
-import Texteditor from "../Texteditor.vue";
 import Multiselect from "vue-multiselect";
 import DatePick from "vue-date-pick";
 //import Chart from "../Chart.vue";
@@ -196,7 +196,6 @@ export default {
   name: "Traderecord",
   props: ["strategies", "exit_reason", "entryrules"],
   components: {
-    Texteditor,
     Multiselect,
     DatePick,
 
@@ -205,7 +204,7 @@ export default {
 
   data() {
     return {
-      portfolio: "",
+      portfolio: [],
       Difference_in_ms: "",
       loading: true,
       form: new Form({
@@ -276,10 +275,10 @@ export default {
 
   methods: {
     checkResponseStatus(error) {
-      if (error.response.status === 419 || error.response.status == 401) {
+      if (error.res.status === 419 || error.res.status == 401) {
         window.location.href = "/login";
       } else {
-        this.form.errors.record(error.response.data.errors);
+        this.form.errors.record(error.res.data.errors);
       }
     },
 
@@ -290,9 +289,8 @@ export default {
         "-" +
         ("0" + (today.getMonth() + 1)).slice(-2) +
         "-" +
-        ("0" + (today.getDate() + 1)).slice(-2);
-      var time =
-        today.getHours() + ":" + ("0" + (today.getMinutes() + 1)).slice(-2);
+        ("0" + today.getDate()).slice(-2);
+      var time = today.getHours() + ":" + ("0" + today.getMinutes()).slice(-2);
       var dateTime = date + " " + time;
       this.form.entry_date = dateTime;
       this.form.exit_date = dateTime;
@@ -329,7 +327,8 @@ export default {
       axios
         .get("/dashboardPages/portfolioIsActive/g")
         .then((res) => {
-          this.portfolio = res.data;
+          this.portfolio = res.data[0];
+
           //this is send to navbar
           this.$root.$emit("portfolio_balance", res.data[0]); // optional we can put second argumen -> this.$root.$emit("portfolio_balance", data)
         })

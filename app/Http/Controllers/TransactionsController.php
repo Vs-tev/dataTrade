@@ -23,7 +23,7 @@ class TransactionsController extends Controller
             ['action_type', 'transaction']
             ])->orderBy('action_date', 'desc')->paginate(25);
             
-            $transaction->onEachSide(1)->links();
+        $transaction->onEachSide(1)->links();
         return  response()->json($transaction);
     }
    

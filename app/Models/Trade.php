@@ -13,6 +13,10 @@ class Trade extends Model
 {
     use HasFactory;
 
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
     public function used_entry_rules(){
         return $this->hasMany(Used_entry_rules::class);
     }
@@ -21,9 +25,19 @@ class Trade extends Model
         return $this->hasOne(Balance::class);
     }
 
+    public function portfolio(){
+        return $this->belongsTo(Portfolio::class);
+    }
+
+    public function strategy(){
+        return $this->belongsTo(Strategy::class);
+    }
+
     protected $casts = [
-        'exit_date' => 'datetime:M-d H:i',
+        'exit_date' => 'datetime: d-M-Y H:i',
+        'entry_date' => 'datetime: d-M-Y H:i',
     ];
+
     public function add_to_used_entry_rules($request){
         /* $rules = $request->entry_rule_id;
         $array = explode(',', $rules);*/     

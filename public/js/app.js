@@ -2971,98 +2971,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -3496,7 +3404,7 @@ __webpack_require__.r(__webpack_exports__);
         this.buttonText = "Add Exit Reason";
       }
 
-      axios.get("/" + this.typeRule + "/g").then(function (response) {
+      axios.get("/dashboardPages/tradingrules/" + this.typeRule + "/g").then(function (response) {
         _this.rules = response.data; //this.loading = false;
       })["catch"](function (error) {});
     },
@@ -3820,7 +3728,7 @@ __webpack_require__.r(__webpack_exports__);
     getStrategies: function getStrategies() {
       var _this = this;
 
-      axios.get("/strategy/g").then(function (response) {
+      axios.get("/dashboardPages/strategy/g").then(function (response) {
         _this.strategies = response.data;
         _this.loading = false;
       })["catch"](function (error) {});
@@ -3840,7 +3748,7 @@ __webpack_require__.r(__webpack_exports__);
         data.append("img_strategy", value.img_strategy);
         data.append("name", value.name);
         data.append("description", value.description);
-        axios.post("/strategy/p", data).then(function (res) {
+        axios.post("/dashboardPages/strategy/p", data).then(function (res) {
           _this2.getStrategies();
 
           $("#modal-strategy").modal("hide");
@@ -3868,12 +3776,11 @@ __webpack_require__.r(__webpack_exports__);
       if (value.img_strategy && value.img_strategy.type == "") {
         this.form.img_error = "Undefine file type";
       } else {
-        console.log(value.img_strategy);
         var data = new FormData();
         data.append("img_strategy", value.img_strategy);
         data.append("name", value.name);
         data.append("description", value.description);
-        axios.post("/strategy/u/" + value.id, data).then(function (res) {
+        axios.post("/dashboardPages/strategy/u/" + value.id, data).then(function (res) {
           $("#modal-strategy").modal("hide");
 
           _this3.getStrategies();
@@ -3894,7 +3801,7 @@ __webpack_require__.r(__webpack_exports__);
     destroyStrategy: function destroyStrategy(value) {
       var _this4 = this;
 
-      axios.post("/strategy/d/" + value.id).then(function (res) {
+      axios.post("/dashboardPages/strategy/d/" + value.id).then(function (res) {
         $("#modal-strategy").modal("hide");
 
         _this4.getStrategies();
@@ -4010,6 +3917,62 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
         labels: ["Win rate"]
       }
     };
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trades/TradeHistory/DeleteTradeModal.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trades/TradeHistory/DeleteTradeModal.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "DeleteTradeModal",
+  props: ["trade"],
+  methods: {
+    destroyTrade: function destroyTrade() {
+      this.$emit("destroyTrade", this.trade);
+    }
   }
 });
 
@@ -4269,56 +4232,51 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "SortingTrades",
   components: {
     DatePick: vue_date_pick__WEBPACK_IMPORTED_MODULE_0___default.a
   },
+  props: ["portfolios"],
   data: function data() {
     return {
-      portfolio: "",
-      date: ""
+      start_date: "",
+      exit_date: "",
+      sort_pl: "all",
+      selectedPortfolio: this.$props.portfolios
     };
   },
   mounted: function mounted() {
-    this.fetchportfolio();
+    this.setSelectedPortfolio();
+  },
+  computed: {
+    today: function today() {
+      var today = new Date();
+      var date = today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + (today.getDate() + 1)).slice(-2);
+      return date;
+    }
   },
   methods: {
-    checkResponseStatus: function checkResponseStatus(error) {
-      if (error.response.status === 419 || error.response.status == 401) {
-        window.location.href = "/login";
-      } else {
-        this.form.errors.record(error.response.data.errors);
-      }
+    setSelectedPortfolio: function setSelectedPortfolio() {
+      this.selectedPortfolio = this.$props.portfolios[0].id;
     },
-    fetchportfolio: function fetchportfolio() {
-      var _this = this;
-
-      axios.get("/dashboardPages/portfolio/g").then(function (res) {
-        _this.portfolio = res.data;
-      })["catch"](function (error) {
-        _this.checkResponseStatus(error);
-      });
+    change_portfolio: function change_portfolio() {
+      this.$emit("change_portfolio", this.selectedPortfolio);
+    },
+    sort_by_profit: function sort_by_profit() {
+      this.$emit("sort_by_profit", this.sort_pl);
+    },
+    searchDateRange: function searchDateRange() {
+      this.$emit("searchDateRange", [this.start_date, this.exit_date]);
+    },
+    on_clear_start_date: function on_clear_start_date() {
+      this.start_date = "";
+      this.searchDateRange();
+    },
+    on_clear_exit_date: function on_clear_exit_date() {
+      this.exit_date = "";
+      this.searchDateRange();
     }
   }
 });
@@ -4336,6 +4294,8 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _SortingTrades_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SortingTrades.vue */ "./resources/js/components/trades/TradeHistory/SortingTrades.vue");
 /* harmony import */ var _DeteilsTrade_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DeteilsTrade.vue */ "./resources/js/components/trades/TradeHistory/DeteilsTrade.vue");
+/* harmony import */ var _Pagination_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Pagination.vue */ "./resources/js/components/Pagination.vue");
+/* harmony import */ var _DeleteTradeModal_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./DeleteTradeModal.vue */ "./resources/js/components/trades/TradeHistory/DeleteTradeModal.vue");
 //
 //
 //
@@ -4508,18 +4468,225 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     SortingTrades: _SortingTrades_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    DeteilsTrade: _DeteilsTrade_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    DeteilsTrade: _DeteilsTrade_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    Pagination: _Pagination_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    DeleteTradeModal: _DeleteTradeModal_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   name: "TradeHistory",
+  props: ["portfolios"],
   data: function data() {
-    return {};
+    return {
+      loading: true,
+      response: [],
+      trades: [],
+      portfolio_id: this.portfolios[0].id,
+      sort_pl: "all",
+      start_date: "",
+      end_date: "",
+      search_symbol: "",
+      show_per_page: "10",
+      column_name: "",
+      order: "ASC",
+      pagination: {
+        data: []
+      },
+      deleteTradeValue: []
+    };
   },
-  methods: {}
+  mounted: function mounted() {
+    this.get_trades();
+    this.duration();
+  },
+  methods: {
+    checkResponseStatus: function checkResponseStatus(error) {
+      if (error.response.status === 419 || error.response.status == 401) {
+        window.location.href = "/login";
+      } else {
+        this.form.errors.record(error.response.data.errors);
+      }
+    },
+    get_trades: function get_trades() {
+      var _this = this;
+
+      axios.get("/dashboardPages/tradehistory/g", {
+        params: {
+          p_id: this.portfolio_id,
+          sort_pl: this.sort_pl,
+          start_date: this.start_date,
+          end_date: this.end_date,
+          display: this.show_per_page,
+          search_symbol: this.search_symbol,
+          column: [this.column_name, this.order]
+        }
+      }).then(function (res) {
+        _this.trades = res.data.data;
+        _this.response = res.data;
+        _this.pagination.data = res.data.links;
+        _this.loading = false;
+      })["catch"](function (error) {
+        _this.checkResponseStatus(error);
+      });
+    },
+    change_portfolio: function change_portfolio(portfolio_id) {
+      this.portfolio_id = portfolio_id;
+      this.get_trades();
+    },
+    sort_by_profit: function sort_by_profit(sort_pl) {
+      this.sort_pl = sort_pl;
+      this.get_trades();
+    },
+    searchDateRange: function searchDateRange(dateRange) {
+      this.start_date = dateRange[0];
+      this.end_date = dateRange[1];
+      this.get_trades();
+    },
+    setPage: function setPage(page) {
+      var _this2 = this;
+
+      if (page !== null) {
+        axios.get(page, {
+          params: {
+            p_id: this.portfolio_id,
+            sort_pl: this.sort_pl,
+            start_date: this.start_date,
+            end_date: this.end_date,
+            display: this.show_per_page
+          }
+        }).then(function (res) {
+          _this2.trades = res.data.data;
+          _this2.pagination.data = res.data.links;
+        });
+      }
+    },
+    sort: function sort(name) {
+      this.column_name = name; //this.sort = "asc";
+
+      if (this.order == "ASC") {
+        this.order = "DESC";
+      } else {
+        this.order = "ASC";
+      } //console.log(this.order);
+
+
+      this.get_trades();
+    },
+    deleteTrade: function deleteTrade(trade) {
+      this.deleteTradeValue = trade; //this.tradePortfolioData = trade.portfolio;
+    },
+    destroyTrade: function destroyTrade(trade) {
+      var _this3 = this;
+
+      axios.post("/dashboardPages/tradehistory/d/" + trade.id).then(function (res) {
+        $("#modal_delete_trade").modal("hide");
+
+        _this3.get_trades();
+
+        _this3.$root.$emit("portfolio_balance"); //here we update navbar data to show current balance status
+
+      })["catch"](function (error) {
+        _this3.checkResponseStatus(error);
+      });
+    },
+    duration: function duration(entry_date, exit_date) {
+      var entry = new Date(entry_date);
+      var exit = new Date(exit_date);
+      this.Difference_in_ms = exit.getTime() - entry.getTime();
+      var days = this.Difference_in_ms / 86400000;
+      var to_hour = this.Difference_in_ms - Math.trunc(days) * 86400000;
+      var hour = to_hour / 3600000;
+      var to_minute = to_hour - Math.trunc(hour) * 3600000;
+      var minute = to_minute / 60000;
+      return Math.trunc(days) + "d/" + Math.trunc(hour) + "h/" + Math.trunc(minute) + "m";
+    }
+  }
 });
 
 /***/ }),
@@ -4533,11 +4700,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Texteditor_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Texteditor.vue */ "./resources/js/components/Texteditor.vue");
-/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
-/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var vue_date_pick__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-date-pick */ "./node_modules/vue-date-pick/dist/vueDatePick.js");
-/* harmony import */ var vue_date_pick__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_date_pick__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue_date_pick__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-date-pick */ "./node_modules/vue-date-pick/dist/vueDatePick.js");
+/* harmony import */ var vue_date_pick__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_date_pick__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -4726,7 +4892,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
+//
 
  //import Chart from "../Chart.vue";
 
@@ -4734,14 +4900,13 @@ __webpack_require__.r(__webpack_exports__);
   name: "Traderecord",
   props: ["strategies", "exit_reason", "entryrules"],
   components: {
-    Texteditor: _Texteditor_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_1___default.a,
-    DatePick: vue_date_pick__WEBPACK_IMPORTED_MODULE_2___default.a //Chart,
+    Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default.a,
+    DatePick: vue_date_pick__WEBPACK_IMPORTED_MODULE_1___default.a //Chart,
 
   },
   data: function data() {
     return {
-      portfolio: "",
+      portfolio: [],
       Difference_in_ms: "",
       loading: true,
       form: new Form({
@@ -4798,16 +4963,16 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     checkResponseStatus: function checkResponseStatus(error) {
-      if (error.response.status === 419 || error.response.status == 401) {
+      if (error.res.status === 419 || error.res.status == 401) {
         window.location.href = "/login";
       } else {
-        this.form.errors.record(error.response.data.errors);
+        this.form.errors.record(error.res.data.errors);
       }
     },
     today: function today() {
       var today = new Date();
-      var date = today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + (today.getDate() + 1)).slice(-2);
-      var time = today.getHours() + ":" + ("0" + (today.getMinutes() + 1)).slice(-2);
+      var date = today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2);
+      var time = today.getHours() + ":" + ("0" + today.getMinutes()).slice(-2);
       var dateTime = date + " " + time;
       this.form.entry_date = dateTime;
       this.form.exit_date = dateTime;
@@ -4837,7 +5002,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get("/dashboardPages/portfolioIsActive/g").then(function (res) {
-        _this.portfolio = res.data; //this is send to navbar
+        _this.portfolio = res.data[0]; //this is send to navbar
 
         _this.$root.$emit("portfolio_balance", res.data[0]); // optional we can put second argumen -> this.$root.$emit("portfolio_balance", data)
 
@@ -9637,7 +9802,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.toggle-calendar[data-v-44cb10b9][data-v-44cb10b9] {\r\n  width: 160px;\r\n  height: calc(1.6em + 0.8rem + 2px);\r\n  padding: 0.4rem 0.45rem;\r\n  font-size: var(--font-normal);\r\n  font-weight: 400;\r\n  line-height: 1.6;\r\n  color: var(--primary-color);\r\n  background-color: #fff;\r\n  background-clip: padding-box;\r\n  border: 1px solid #ced4da;\r\n  border-radius: 0.2rem;\n}\n.start_date[data-v-44cb10b9][data-v-44cb10b9][data-v-44cb10b9]:first-of-type {\r\n  border-right: none;\r\n  border-top-right-radius: 0;\r\n  border-bottom-right-radius: 0;\n}\n.end_date[data-v-44cb10b9][data-v-44cb10b9][data-v-44cb10b9] {\r\n  border-left: none;\r\n  border-top-left-radius: 0;\r\n  border-bottom-left-radius: 0;\n}\n.between_date[data-v-44cb10b9][data-v-44cb10b9] {\r\n  border-radius: 0;\n}\n@media screen and (max-width: 1190px) {\n.toggle-calendar[data-v-44cb10b9][data-v-44cb10b9] {\r\n    width: 100%;\r\n    padding: 0 10px 0 10px;\n}\n}\r\n", ""]);
+exports.push([module.i, "\n.toggle-calendar[data-v-44cb10b9][data-v-44cb10b9] {\r\n  width: 190px;\r\n  text-align: left;\r\n  height: calc(1.6em + 0.8rem + 2px);\r\n  padding: 0.4rem 0.45rem;\r\n  font-size: var(--font-normal);\r\n  font-weight: 400;\r\n  line-height: 1.6;\r\n  color: var(--primary-color);\r\n  background-color: #fff;\r\n  background-clip: padding-box;\r\n  border: 1px solid #ced4da;\r\n  border-radius: 0.2rem;\r\n  display: flex;\r\n  justify-content: space-between;\n}\n.toggle-calendar[data-v-44cb10b9][data-v-44cb10b9] button[data-v-44cb10b9] {\r\n  background: none;\r\n  border: 0;\r\n  text-align: left;\n}\n.toggle-calendar[data-v-44cb10b9][data-v-44cb10b9] span[data-v-44cb10b9] {\r\n  padding: 3.5px;\r\n  cursor: pointer;\n}\n.start_date[data-v-44cb10b9][data-v-44cb10b9][data-v-44cb10b9]:first-of-type {\r\n  border-right: none;\r\n  border-top-right-radius: 0;\r\n  border-bottom-right-radius: 0;\n}\n.end_date[data-v-44cb10b9][data-v-44cb10b9][data-v-44cb10b9] {\r\n  border-left: none;\r\n  border-top-left-radius: 0;\r\n  border-bottom-left-radius: 0;\n}\n.between_date[data-v-44cb10b9][data-v-44cb10b9] {\r\n  border-radius: 0;\n}\n@media screen and (max-width: 1734px) {\n.toggle-calendar[data-v-44cb10b9][data-v-44cb10b9][data-v-44cb10b9] {\r\n    width: 180px;\n}\n}\n@media screen and (max-width: 1683px) {\n.toggle-calendar[data-v-44cb10b9][data-v-44cb10b9][data-v-44cb10b9] {\r\n    width: 160px;\n}\n}\n@media screen and (max-width: 1190px) {\n.toggle-calendar[data-v-44cb10b9][data-v-44cb10b9][data-v-44cb10b9] {\r\n    width: 140px;\n}\n}\n@media screen and (max-width: 947px) {\n.toggle-calendar[data-v-44cb10b9][data-v-44cb10b9][data-v-44cb10b9] {\r\n    width: 130px;\n}\n}\r\n", ""]);
 
 // exports
 
@@ -42799,7 +42964,7 @@ var render = function() {
                               _c(
                                 "button",
                                 {
-                                  staticClass: "btn btn-link",
+                                  staticClass: "btn",
                                   on: {
                                     click: function($event) {
                                       return _vm.delete_transaction(row.id)
@@ -43004,7 +43169,7 @@ var render = function() {
       _c(
         "main",
         { staticClass: "col-12 col-md-8 p-0 new-item" },
-        _vm._l(_vm.items.portfolio, function(item) {
+        _vm._l(_vm.items.portfolio, function(item, index) {
           return _c(
             "div",
             {
@@ -43158,11 +43323,13 @@ var render = function() {
                           opacity: 0.2
                         },
                         yaxis: {
-                          min: parseFloat(item.start_equity / 2),
+                          min:
+                            parseFloat(item.start_equity) -
+                            parseFloat(item.start_equity) / 10,
                           show: false,
                           showAlways: false
                         },
-                        colors: ["#3490dc"],
+                        colors: index === 0 ? ["#3490dc"] : ["#1bc5bd"],
                         title: {
                           text: item.current_balance + " " + item.currency,
                           align: "center",
@@ -43176,19 +43343,18 @@ var render = function() {
                           }
                         },
                         subtitle: {
-                          text: item.name + " " + item.started_at,
+                          text: item.name + "-" + item.started_at,
                           align: "center",
                           margin: 10,
                           offsetX: 0,
                           style: {
-                            fontSize: "14px",
+                            fontSize: "16px",
                             fontWeight: "bold",
-                            color: "#6c757d"
+                            color: "#343a40"
                           }
                         },
                         xaxis: {
                           type: "datetime",
-
                           categories: item.running_total
                             .map(function(arr) {
                               return arr.action_date
@@ -44432,6 +44598,163 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trades/TradeHistory/DeleteTradeModal.vue?vue&type=template&id=0140141e&":
+/*!***************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trades/TradeHistory/DeleteTradeModal.vue?vue&type=template&id=0140141e& ***!
+  \***************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "modal", attrs: { id: "modal_delete_trade" } }, [
+      _c("div", { staticClass: "modal-dialog" }, [
+        _c("form", { staticClass: "modal-content" }, [
+          _c("div", { staticClass: "modal-header" }, [
+            _c("h5", { staticClass: "modal-title" }, [
+              _vm._v("Delete\n                    "),
+              _c("span", [
+                _vm._v(_vm._s(_vm.trade.symbol) + " • "),
+                _c("span", { staticClass: "dark font-500" }, [
+                  _vm._v(_vm._s(_vm.trade.time_frame))
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(0)
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.trade.id,
+                expression: "trade.id"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "hidden" },
+            domProps: { value: _vm.trade.id },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.trade, "id", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-body" }, [
+            _c("p", [_vm._v("Are you sure want to delete this trade?")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "p-0 m-0" }, [
+              _c("ul", { staticClass: "list-unstyled" }, [
+                _c("li", { staticClass: "p-2" }, [
+                  _c("div", { staticClass: "d-flex" }, [
+                    _c("span", { staticClass: "mr-3" }, [_vm._v("Symbol:")]),
+                    _c("span", { staticClass: "dark font-500" }, [
+                      _vm._v(_vm._s(_vm.trade.symbol))
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("li", { staticClass: "p-2" }, [
+                  _c("div", { staticClass: "d-flex" }, [
+                    _c("span", { staticClass: "mr-3" }, [_vm._v("Type:")]),
+                    _c("span", { staticClass: "dark font-500" }, [
+                      _vm._v(_vm._s(_vm.trade.type_side))
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("li", { staticClass: "p-2" }, [
+                  _c("div", { staticClass: "d-flex" }, [
+                    _c("span", { staticClass: "mr-3" }, [_vm._v("Profit:")]),
+                    _c("span", { staticClass: "dark font-500" }, [
+                      _vm._v(
+                        _vm._s(_vm.trade.pl_currency) +
+                          " " +
+                          _vm._s(
+                            _vm.trade.portfolio
+                              ? _vm.trade.portfolio.currency
+                              : ""
+                          ) +
+                          " | " +
+                          _vm._s(_vm.trade.pl_pips) +
+                          " pips"
+                      )
+                    ])
+                  ])
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-footer" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary",
+                attrs: { type: "button", "data-dismiss": "modal" }
+              },
+              [_vm._v("Close")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-danger",
+                attrs: { type: "button" },
+                on: { click: _vm.destroyTrade }
+              },
+              [_vm._v("Delete")]
+            )
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [
+        _c(
+          "span",
+          { staticClass: "material-icons ml-auto close-btn icon-sm" },
+          [_vm._v("close")]
+        )
+      ]
+    )
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trades/TradeHistory/DeteilsTrade.vue?vue&type=template&id=19a138b0&":
 /*!***********************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trades/TradeHistory/DeteilsTrade.vue?vue&type=template&id=19a138b0& ***!
@@ -44881,31 +45204,107 @@ var render = function() {
   return _c("section", { staticClass: "dashboard_container_content p-0" }, [
     _vm._m(0),
     _vm._v(" "),
-    _c("div", { staticClass: "d-md-flex mb-3 p-2" }, [
-      _c("div", { staticClass: "form-group col-12 col-md-3 col-lg-3" }, [
-        _c("label", { attrs: { for: "portfolio" } }, [_vm._v("Portfolio")]),
+    _c("div", { staticClass: "d-md-flex flex-wrap mb-3 px-2 pt-3" }, [
+      _c("div", { staticClass: "form-group col-12 col-md-3 col-lg-3 " }, [
+        _c("label", [_vm._v("Portfolio:")]),
         _vm._v(" "),
         _c(
           "select",
           {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.selectedPortfolio,
+                expression: "selectedPortfolio"
+              }
+            ],
             staticClass: "form-control",
-            attrs: { id: "portfolio", name: "portfolio" }
+            on: {
+              change: [
+                function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.selectedPortfolio = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                },
+                _vm.change_portfolio
+              ]
+            }
           },
-          _vm._l(_vm.portfolio, function(item) {
+          _vm._l(_vm.portfolios, function(portfolio, index) {
             return _c(
               "option",
-              { key: item.id, domProps: { value: item.id } },
-              [_vm._v(_vm._s(item.name))]
+              { key: index, domProps: { value: portfolio.id } },
+              [_vm._v(_vm._s(portfolio.name))]
             )
           }),
           0
         )
       ]),
       _vm._v(" "),
-      _vm._m(1),
+      _c(
+        "div",
+        { staticClass: "form-group col-12 col-md-3 col-lg-3 mt-3 mt-lg-0" },
+        [
+          _c("label", [_vm._v("Show:")]),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.sort_pl,
+                  expression: "sort_pl"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { name: "sort_by_profit" },
+              on: {
+                change: [
+                  function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.sort_pl = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  },
+                  _vm.sort_by_profit
+                ]
+              }
+            },
+            [
+              _c("option", { attrs: { value: "all", selected: "selected" } }, [
+                _vm._v("All")
+              ]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "winners" } }, [
+                _vm._v("Winners")
+              ]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "losers" } }, [_vm._v("Losers")])
+            ]
+          )
+        ]
+      ),
       _vm._v(" "),
-      _c("div", { staticClass: "form-group col-12 col-md-4 col-lg-4" }, [
-        _c("label", { attrs: { for: "date" } }, [_vm._v("Trade date")]),
+      _c("div", { staticClass: "form-group col mt-3 mt-lg-0" }, [
+        _c("label", { attrs: { for: "date" } }, [_vm._v("Trade Date:")]),
         _vm._v(" "),
         _c("div", { staticClass: "d-flex" }, [
           _c(
@@ -44917,6 +45316,7 @@ var render = function() {
                   format: "YYYY-MM-DD HH:mm",
                   inputAttributes: { readonly: false }
                 },
+                on: { input: _vm.searchDateRange },
                 scopedSlots: _vm._u([
                   {
                     key: "default",
@@ -44925,17 +45325,35 @@ var render = function() {
                       var inputValue = ref.inputValue
                       return [
                         _c(
-                          "button",
-                          {
-                            staticClass: "toggle-calendar start_date",
-                            on: { click: toggle }
-                          },
+                          "div",
+                          { staticClass: "toggle-calendar start_date" },
                           [
-                            _vm._v(
-                              "\n                           " +
-                                _vm._s(inputValue || " Start date ") +
-                                "\n                       "
-                            )
+                            _c(
+                              "button",
+                              {
+                                staticClass: "flex-grow-1",
+                                on: { click: toggle }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                               " +
+                                    _vm._s(inputValue || "Start date") +
+                                    "\n                           "
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            inputValue
+                              ? _c(
+                                  "span",
+                                  {
+                                    staticClass:
+                                      "material-icons font-sm border rounded-circle",
+                                    on: { click: _vm.on_clear_start_date }
+                                  },
+                                  [_vm._v("close")]
+                                )
+                              : _vm._e()
                           ]
                         )
                       ]
@@ -44943,11 +45361,11 @@ var render = function() {
                   }
                 ]),
                 model: {
-                  value: _vm.date,
+                  value: _vm.start_date,
                   callback: function($$v) {
-                    _vm.date = $$v
+                    _vm.start_date = $$v
                   },
-                  expression: "date"
+                  expression: "start_date"
                 }
               })
             ],
@@ -44972,6 +45390,7 @@ var render = function() {
                   format: "YYYY-MM-DD HH:mm",
                   inputAttributes: { readonly: false }
                 },
+                on: { input: _vm.searchDateRange },
                 scopedSlots: _vm._u([
                   {
                     key: "default",
@@ -44979,42 +45398,54 @@ var render = function() {
                       var toggle = ref.toggle
                       var inputValue = ref.inputValue
                       return [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "toggle-calendar end_date",
-                            on: { click: toggle }
-                          },
-                          [
-                            _vm._v(
-                              "\n                           " +
-                                _vm._s(inputValue || " End date ") +
-                                "\n                       "
-                            )
-                          ]
-                        )
+                        _c("div", { staticClass: "toggle-calendar end_date" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "flex-grow-1",
+                              on: { click: toggle }
+                            },
+                            [
+                              _vm._v(
+                                "\n                               " +
+                                  _vm._s(inputValue || "End date") +
+                                  "\n                           "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          inputValue
+                            ? _c(
+                                "span",
+                                {
+                                  staticClass:
+                                    "material-icons font-sm border rounded-circle",
+                                  on: { click: _vm.on_clear_exit_date }
+                                },
+                                [_vm._v("close")]
+                              )
+                            : _vm._e()
+                        ])
                       ]
                     }
                   }
                 ]),
                 model: {
-                  value: _vm.date,
+                  value: _vm.exit_date,
                   callback: function($$v) {
-                    _vm.date = $$v
+                    _vm.exit_date = $$v
                   },
-                  expression: "date"
+                  expression: "exit_date"
                 }
               })
             ],
             1
           )
         ])
-      ]),
-      _vm._v(" "),
-      _vm._m(2)
+      ])
     ]),
     _vm._v(" "),
-    _vm._m(3)
+    _vm._m(1)
   ])
 }
 var staticRenderFns = [
@@ -45036,110 +45467,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group col-12 col-md-3 col-lg-3" }, [
-      _c("label", { attrs: { for: "sort_by_profit" } }, [_vm._v("Show")]),
-      _vm._v(" "),
-      _c(
-        "select",
-        {
-          staticClass: "form-control",
-          attrs: { id: "sort_by_profit", name: "sort_by_profit" }
-        },
-        [
-          _c("option", { attrs: { value: "Volvo" } }, [_vm._v("All")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "Opel" } }, [_vm._v("Winners")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "Audi" } }, [_vm._v("Losers")])
-        ]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "form-group col-12 col-md-2 col-lg-2 align-self-end mt-3 mt-lg-0 float-lg-right"
-      },
-      [
-        _c("div", { staticClass: "dropdown " }, [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-secondary",
-              attrs: { type: "button", "data-toggle": "dropdown" }
-            },
-            [
-              _c("span", { staticClass: "material-icons cyan mr-1" }, [
-                _vm._v(
-                  "\n                           view_agenda\n                       "
-                )
-              ]),
-              _vm._v("\n                       View\n                   ")
-            ]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "dropdown-menu dropdown-menu-left" }, [
-            _c("h5", { staticClass: "dropdown-header indigo" }, [
-              _vm._v("CHOOSE VIEW")
-            ]),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "dropdown-item",
-                attrs: { id: "choose-table-view", href: "#" }
-              },
-              [
-                _c("span", { staticClass: "material-icons lighter icon-sm" }, [
-                  _vm._v(
-                    "\n                               toc\n                           "
-                  )
-                ]),
-                _vm._v("Table")
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "dropdown-item",
-                attrs: { id: "choose-largerow-view", href: "#" }
-              },
-              [
-                _c("span", { staticClass: "material-icons lighter icon-sm" }, [
-                  _vm._v(
-                    "\n                               calendar_view_day\n                           "
-                  )
-                ]),
-                _vm._v("Large Row")
-              ]
-            )
-          ])
-        ])
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "d-flex col-12 px-4 pb-4" }, [
-      _c(
-        "button",
-        { staticClass: "btn btn-primary mr-3", attrs: { type: "button" } },
-        [
-          _c("span", { staticClass: "material-icons white mr-1" }, [
-            _vm._v("search")
-          ]),
-          _vm._v("\n               Search\n           ")
-        ]
-      ),
-      _vm._v(" "),
       _c(
         "button",
         { staticClass: "btn btn-secondary", attrs: { type: "button" } },
@@ -45149,7 +45477,9 @@ var staticRenderFns = [
           ]),
           _vm._v("\n               Reset\n           ")
         ]
-      )
+      ),
+      _vm._v(" "),
+      _c("h1")
     ])
   }
 ]
@@ -45178,58 +45508,49 @@ var render = function() {
     "div",
     { staticClass: "content-container" },
     [
-      _c("sorting-trades"),
+      _c("sorting-trades", {
+        attrs: { portfolios: _vm.portfolios },
+        on: {
+          change_portfolio: function($event) {
+            return _vm.change_portfolio($event)
+          },
+          sort_by_profit: function($event) {
+            return _vm.sort_by_profit($event)
+          },
+          searchDateRange: function($event) {
+            return _vm.searchDateRange($event)
+          }
+        }
+      }),
       _vm._v(" "),
-      _vm._m(0),
-      _vm._v(" "),
-      _c("deteils-trade")
-    ],
-    1
-  )
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("section", { staticClass: "dashboard_container_content" }, [
-      _c(
-        "div",
-        {
-          staticClass: "d-flex col-12 justify-content-start align-items-center"
-        },
-        [
-          _c("label", { attrs: { for: "" } }, [_vm._v("Show")]),
-          _vm._v(" "),
-          _c("div", [
-            _c(
-              "select",
-              {
-                staticClass: "form-control",
-                attrs: { id: "sort_by_profit", name: "sort_by_profit" }
-              },
-              [
-                _c("option", { attrs: { value: "10" } }, [_vm._v("10")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "25" } }, [_vm._v("25")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "50" } }, [_vm._v("50")])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("label", { attrs: { for: "" } }, [_vm._v("Trades")])
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "d-md-flex mt-3 mb-2 justify-content-between" },
-        [
-          _c("div", { staticClass: "form-group col-12 col-md-3 mb-2" }, [
+      _c("section", { staticClass: "dashboard_container_content" }, [
+        _c("div", { staticClass: "d-sm-flex my-3" }, [
+          _c("div", { staticClass: "form-group align-items-center mr-auto" }, [
             _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.search_symbol,
+                  expression: "search_symbol"
+                }
+              ],
               staticClass: "form-control search-input",
-              attrs: { type: "text", name: "text", placeholder: "Search Trade" }
+              attrs: {
+                type: "text",
+                name: "text",
+                placeholder: "Search symbol"
+              },
+              domProps: { value: _vm.search_symbol },
+              on: {
+                keyup: _vm.get_trades,
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.search_symbol = $event.target.value
+                }
+              }
             }),
             _vm._v(" "),
             _c(
@@ -45239,460 +45560,914 @@ var staticRenderFns = [
             )
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "dropdown col mt-3 mt-md-0" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-primary float-md-right",
-                attrs: { type: "button", "data-toggle": "dropdown" }
-              },
-              [
-                _c("span", { staticClass: "material-icons white mr-1" }, [
-                  _vm._v("description")
-                ]),
-                _vm._v("Export\n                ")
-              ]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "dropdown-menu dropdown-menu-left" }, [
-              _c("h5", { staticClass: "dropdown-header indigo" }, [
-                _vm._v("OPTIONS")
-              ]),
+          _c(
+            "div",
+            { staticClass: "d-flex align-items-center pl-1 pr-4 mt-3 mt-sm-0" },
+            [
+              _c("label", { staticClass: "lighter pr-1" }, [_vm._v("Display")]),
               _vm._v(" "),
-              _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
-                _vm._v("Print")
-              ]),
-              _vm._v(" "),
-              _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
-                _vm._v("PDF")
-              ]),
-              _vm._v(" "),
-              _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
-                _vm._v("Email")
-              ])
-            ])
-          ])
-        ]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "col px-0 px-md-3" }, [
-        _c(
-          "div",
-          {
-            staticClass: "row p-0 justify-content-start",
-            staticStyle: {},
-            attrs: { id: "table-view" }
-          },
-          [
-            _c("table", { staticClass: "table table-sm table-hover" }, [
-              _c("thead", {}, [
-                _c("tr", [
-                  _c("th", { staticClass: "pl-3 pl-md-0" }, [
-                    _vm._v("Symbol "),
-                    _c("span", { staticClass: "unicode-arrow" }, [_vm._v("⇅")])
-                  ]),
-                  _vm._v(" "),
-                  _c("th", [
-                    _c("div", { staticClass: "d-none d-md-block" }, [
-                      _vm._v("Quantity "),
-                      _c("span", { staticClass: "unicode-arrow" }, [
-                        _vm._v("⇅")
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("th", [
-                    _c("div", { staticClass: "d-none d-md-block" }, [
-                      _vm._v("Type side"),
-                      _c("span", { staticClass: "unicode-arrow" }, [
-                        _vm._v("⇅")
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("th", [
-                    _c("div", { staticClass: "d-none d-md-block" }, [
-                      _vm._v("Entry price "),
-                      _c("span", { staticClass: "unicode-arrow" }, [
-                        _vm._v("⇅")
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("th", [
-                    _c("div", { staticClass: "d-none d-md-block" }, [
-                      _vm._v("Exit price "),
-                      _c("span", { staticClass: "unicode-arrow" }, [
-                        _vm._v("⇅")
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("th", [
-                    _c("div", { staticClass: "d-none d-md-block" }, [
-                      _vm._v("Sl price "),
-                      _c("span", { staticClass: "unicode-arrow" }, [
-                        _vm._v("⇅")
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("th", [
-                    _c("div", { staticClass: "d-none d-md-block" }, [
-                      _vm._v("Entry date "),
-                      _c("span", { staticClass: "unicode-arrow" }, [
-                        _vm._v("⇅")
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("th", [
-                    _c("div", { staticClass: "d-none d-md-block" }, [
-                      _vm._v("Exit date "),
-                      _c("span", { staticClass: "unicode-arrow" }, [
-                        _vm._v("⇅")
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("th", { staticClass: "pl-3 pl-md-0" }, [
-                    _vm._v("Profit "),
-                    _c("span", { staticClass: "unicode-arrow" }, [_vm._v("⇅")])
-                  ]),
-                  _vm._v(" "),
-                  _c("th", { staticClass: "pl-3 pl-md-0" }, [
-                    _vm._v("Actions "),
-                    _c("span", { staticClass: "unicode-arrow" })
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tbody", [
-                _c("tr", [
-                  _c("td", { staticClass: "pl-3 pl-md-0" }, [
-                    _vm._v("EUR/USD")
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("div", { staticClass: "d-none d-md-block" }, [
-                      _vm._v("85000")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("div", { staticClass: "d-none d-md-block" }, [
-                      _vm._v("SELL")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("div", { staticClass: "d-none d-md-block" }, [
-                      _vm._v("1.45000")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("div", { staticClass: "d-none d-md-block" }, [
-                      _vm._v("1.45620")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("div", { staticClass: "d-none d-md-block" }, [
-                      _vm._v("1.44950")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("div", { staticClass: "d-none d-md-block" }, [
-                      _vm._v("10.11.20")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("div", { staticClass: "d-none d-md-block" }, [
-                      _vm._v("12.11.20")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("td", { staticClass: "pl-3 pl-md-0" }, [
-                    _vm._v("180 Eur / 18 pips")
-                  ]),
-                  _vm._v(" "),
-                  _c("td", { staticClass: "pl-3 pl-md-0" }, [
-                    _c("div", { staticClass: "d-flex" }, [
-                      _c("button", { staticClass: "btn btn-link mr-3" }, [
-                        _c(
-                          "span",
-                          { staticClass: "material-icons close-trade-deteils" },
-                          [_vm._v("visibility")]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("button", { staticClass: "btn btn-link" }, [
-                        _c(
-                          "span",
-                          {
-                            staticClass: "material-icons",
-                            attrs: {
-                              "data-target": "#modal_delete",
-                              "data-toggle": "modal"
-                            }
-                          },
-                          [_vm._v("delete")]
-                        )
-                      ])
-                    ])
-                  ])
-                ])
-              ])
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "row p-0 justify-content-start large-row-view",
-            staticStyle: { display: "none" },
-            attrs: { id: "large-row-view" }
-          },
-          [
-            _c("div", { staticClass: "col-12 col-md-6 col-lg-4 mb-4" }, [
-              _c("div", { staticClass: "border rounded" }, [
+              _c("div", [
                 _c(
-                  "div",
+                  "select",
                   {
-                    staticClass:
-                      "header-trade dropdown d-flex justify-content-between pb-3"
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.show_per_page,
+                        expression: "show_per_page"
+                      }
+                    ],
+                    staticClass: "form-control sort_by_profit",
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.show_per_page = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        },
+                        _vm.get_trades
+                      ]
+                    }
                   },
                   [
-                    _c("h4", { staticClass: "font-500 dark" }, [
-                      _vm._v("EURJPY/15min")
+                    _c(
+                      "option",
+                      { attrs: { value: "10", selected: "selected" } },
+                      [_vm._v("10")]
+                    ),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "20" } }, [_vm._v("25")]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "50" } }, [_vm._v("50")]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "100" } }, [_vm._v("50")])
+                  ]
+                )
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
+          _vm._m(1)
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col px-0 px-md-3" }, [
+          _c(
+            "div",
+            {
+              staticClass: "row p-0 justify-content-start",
+              staticStyle: { display: "none" },
+              attrs: { id: "table-view" }
+            },
+            [
+              _c("table", { staticClass: "table table-sm table-hover" }, [
+                _c("thead", {}, [
+                  _c("tr", [
+                    _c(
+                      "th",
+                      {
+                        on: {
+                          click: function($event) {
+                            return _vm.sort("symbol")
+                          }
+                        }
+                      },
+                      [
+                        _vm._v("Symbol "),
+                        _c("span", { staticClass: "unicode-arrow" }, [
+                          _vm._v("⇅")
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("th", [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "d-none d-md-block",
+                          on: {
+                            click: function($event) {
+                              return _vm.sort("quantity")
+                            }
+                          }
+                        },
+                        [
+                          _vm._v("Quantity "),
+                          _c("span", { staticClass: "unicode-arrow" }, [
+                            _vm._v("⇅")
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(2),
+                    _vm._v(" "),
+                    _vm._m(3),
+                    _vm._v(" "),
+                    _c("th", [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "d-none d-md-block",
+                          on: {
+                            click: function($event) {
+                              return _vm.sort("entry_price")
+                            }
+                          }
+                        },
+                        [
+                          _vm._v("Entry price "),
+                          _c("span", { staticClass: "unicode-arrow" }, [
+                            _vm._v("⇅")
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("th", [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "d-none d-md-block",
+                          on: {
+                            click: function($event) {
+                              return _vm.sort("exit_price")
+                            }
+                          }
+                        },
+                        [
+                          _vm._v("Exit price "),
+                          _c("span", { staticClass: "unicode-arrow" }, [
+                            _vm._v("⇅")
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("th", [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "d-none d-md-block",
+                          on: {
+                            click: function($event) {
+                              return _vm.sort("stop_loss_price")
+                            }
+                          }
+                        },
+                        [
+                          _vm._v("Sl price "),
+                          _c("span", { staticClass: "unicode-arrow" }, [
+                            _vm._v("⇅")
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("th", [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "d-none d-md-block",
+                          on: {
+                            click: function($event) {
+                              return _vm.sort("entry_date")
+                            }
+                          }
+                        },
+                        [
+                          _vm._v("Entry date "),
+                          _c("span", { staticClass: "unicode-arrow" }, [
+                            _vm._v("⇅")
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("th", [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "d-none d-md-block",
+                          on: {
+                            click: function($event) {
+                              return _vm.sort("exit_date")
+                            }
+                          }
+                        },
+                        [
+                          _vm._v("Exit date "),
+                          _c("span", { staticClass: "unicode-arrow" }, [
+                            _vm._v("⇅")
+                          ])
+                        ]
+                      )
                     ]),
                     _vm._v(" "),
                     _c(
-                      "button",
+                      "th",
                       {
-                        staticClass: "btn btn-link text-muted border-0",
-                        attrs: { type: "button", "data-toggle": "dropdown" }
+                        on: {
+                          click: function($event) {
+                            return _vm.sort("pl_currency")
+                          }
+                        }
                       },
-                      [_c("span", [_vm._v("•••")])]
+                      [
+                        _vm._v("Profit "),
+                        _c("span", { staticClass: "unicode-arrow" }, [
+                          _vm._v("⇅")
+                        ])
+                      ]
                     ),
                     _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "dropdown-menu dropdown-menu-left" },
-                      [
-                        _c("h5", { staticClass: "dropdown-header indigo" }, [
-                          _vm._v("OPTIONS")
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "a",
-                          {
-                            staticClass: "dropdown-item",
-                            attrs: { href: "#" }
-                          },
-                          [_vm._v("Except trade")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "a",
-                          {
-                            staticClass: "dropdown-item",
-                            attrs: { href: "#" }
-                          },
-                          [_vm._v("Deteils")]
-                        )
-                      ]
-                    )
-                  ]
-                ),
+                    _vm._m(4)
+                  ])
+                ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "my-flex-view" }, [
-                  _c("img", {
-                    staticStyle: { height: "100px" },
-                    attrs: {
-                      src: "https://www.tradingview.com/x/ANOGgEdq/",
-                      alt: ""
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "d-flex flex-column justify-content-between ml-3"
-                    },
-                    [
-                      _c("span", { staticClass: " font-500 lighter" }, [
-                        _c("span", { staticClass: "red" }, [_vm._v("SELL ")]),
-                        _vm._v("12500 units")
+                _vm.loading ? _c("tbody", [_vm._m(5)]) : _vm._e(),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.trades, function(trade) {
+                    return _c("tr", { key: trade.id }, [
+                      _c("td", { staticClass: "font-500" }, [
+                        _vm._v(_vm._s(trade.symbol) + " • "),
+                        _c("span", { staticClass: "dark font-500" }, [
+                          _vm._v(_vm._s(trade.time_frame))
+                        ])
                       ]),
                       _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "font-500 text-muted d-flex align-items-center"
-                        },
-                        [
-                          _vm._v(
-                            "Profit: +185.50 Eur\n                                "
-                          )
-                        ]
-                      ),
+                      _c("td", [
+                        _c("div", { staticClass: "d-none d-md-block" }, [
+                          _vm._v(_vm._s(trade.quantity))
+                        ])
+                      ]),
                       _vm._v(" "),
+                      _c("td", [
+                        _c("div", { staticClass: "d-none d-md-block" }, [
+                          _vm._v(_vm._s(trade.type_side))
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("div", { staticClass: "d-none d-md-block" }, [
+                          _vm._v(
+                            _vm._s(trade.fees) +
+                              " " +
+                              _vm._s(trade.portfolio.currency)
+                          )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("div", { staticClass: "d-none d-md-block" }, [
+                          _vm._v(_vm._s(trade.entry_price))
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("div", { staticClass: "d-none d-md-block" }, [
+                          _vm._v(_vm._s(trade.exit_price))
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("div", { staticClass: "d-none d-md-block" }, [
+                          _vm._v(_vm._s(trade.stop_loss_price))
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("div", { staticClass: "d-none d-md-block" }, [
+                          _vm._v(_vm._s(trade.entry_date))
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("div", { staticClass: "d-none d-md-block" }, [
+                          _vm._v(_vm._s(trade.exit_date))
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("td", {}, [
+                        _c(
+                          "span",
+                          { class: trade.pl_currency < 0 ? "red" : "primary" },
+                          [
+                            _vm._v(
+                              _vm._s(trade.pl_currency) +
+                                "\n                                    " +
+                                _vm._s(trade.portfolio.currency) +
+                                " |"
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("span", {
+                          class: trade.pl_pips < 0 ? "red" : "primary",
+                          domProps: {
+                            innerHTML: _vm._s(trade.pl_pips + " pips")
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("td", {}, [
+                        _c("div", { staticClass: "d-flex" }, [
+                          _vm._m(6, true),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn",
+                              attrs: {
+                                type: "button",
+                                "data-target": "#modal_delete_trade",
+                                "data-toggle": "modal"
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.deleteTrade(trade)
+                                }
+                              }
+                            },
+                            [
+                              _c("span", { staticClass: "material-icons" }, [
+                                _vm._v("delete")
+                              ])
+                            ]
+                          )
+                        ])
+                      ])
+                    ])
+                  }),
+                  0
+                )
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          !_vm.loading
+            ? _c(
+                "div",
+                _vm._l(_vm.trades, function(trade) {
+                  return _c(
+                    "div",
+                    {
+                      key: trade.id,
+                      staticClass: "row p-0 my-4 shadow border rounded",
+                      staticStyle: {},
+                      attrs: { id: "large-row-view" }
+                    },
+                    [
                       _c(
                         "div",
-                        {
-                          staticClass:
-                            " font-500 lighter d-flex align-items-center"
-                        },
+                        { staticClass: "d-flex align-items-center w-100" },
                         [
-                          _vm._v(
-                            "Return: +1.20%\n                                "
-                          )
+                          _c("div", { staticClass: "p-3 " }, [
+                            _c("img", {
+                              staticStyle: { height: "210px", width: "230px" },
+                              attrs: {
+                                src: "/storage/trades/" + trade.trade_img,
+                                alt: ""
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "py-3 pl-0" }, [
+                            _c("div", {}, [
+                              _c(
+                                "h4",
+                                { staticClass: "font-weight-bold m-0" },
+                                [
+                                  _vm._v(_vm._s(trade.symbol) + ", "),
+                                  _c("span", { staticClass: "font-lg" }, [
+                                    _vm._v(
+                                      _vm._s(trade.time_frame) +
+                                        " / " +
+                                        _vm._s(trade.type_side) +
+                                        " •\n                                        " +
+                                        _vm._s(trade.quantity)
+                                    )
+                                  ])
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "p",
+                                {
+                                  staticClass: "font-weight-bolder lighter pb-1"
+                                },
+                                [
+                                  _vm._v(
+                                    " " +
+                                      _vm._s(trade.pl_currency) +
+                                      " " +
+                                      _vm._s(
+                                        trade.portfolio
+                                          ? trade.portfolio.currency
+                                          : ""
+                                      ) +
+                                      " / " +
+                                      _vm._s(trade.pl_pips) +
+                                      " pips / -0.98 % "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "pb-3 d-flex" }, [
+                                _c(
+                                  "p",
+                                  {
+                                    staticClass:
+                                      "font-weight-bold m-0 width-50px"
+                                  },
+                                  [_vm._v("Used Strategy: ")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "span",
+                                  {
+                                    staticClass:
+                                      "badge badge-light ml-1 text-muted"
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        trade.strategy
+                                          ? trade.strategy.name
+                                          : ""
+                                      )
+                                    )
+                                  ]
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "pb-3 d-flex" }, [
+                                _c(
+                                  "p",
+                                  {
+                                    staticClass:
+                                      "font-weight-bold m-0 width-50px"
+                                  },
+                                  [_vm._v("Entry rules: ")]
+                                ),
+                                _vm._v(" "),
+                                trade.used_entry_rules
+                                  ? _c(
+                                      "div",
+                                      _vm._l(trade.used_entry_rules, function(
+                                        rule,
+                                        index
+                                      ) {
+                                        return _c(
+                                          "span",
+                                          {
+                                            key: index,
+                                            staticClass:
+                                              "badge badge-light text-muted ml-1 mb-1 mb-xl-0"
+                                          },
+                                          [_vm._v(_vm._s(rule.entry_rule.name))]
+                                        )
+                                      }),
+                                      0
+                                    )
+                                  : _vm._e()
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("div", {}, [
+                              _c(
+                                "p",
+                                { staticClass: "m-0 font-weight-bold " },
+                                [_vm._v("Trade note:")]
+                              ),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "trade-note-div" }, [
+                                _c("p", {
+                                  staticClass: "m-0 .text-wrap",
+                                  domProps: {
+                                    innerHTML: _vm._s(trade.trade_notes)
+                                  }
+                                })
+                              ])
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "timeline-trade ml-auto" }, [
+                            _c("div", { staticClass: "timeline p-3" }, [
+                              _c(
+                                "div",
+                                { staticClass: "timeline-item pt-0 pb-4" },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "timeline-label font-weight-bolder"
+                                    },
+                                    [
+                                      _c(
+                                        "p",
+                                        {
+                                          staticClass:
+                                            "font-weight-normal text-muted m-0"
+                                        },
+                                        [_vm._v("Entry date:")]
+                                      ),
+                                      _vm._v(
+                                        "\n                                        " +
+                                          _vm._s(trade.entry_date) +
+                                          "\n                                    "
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _vm._m(7, true),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "font-weight-mormal text-muted text-nowrap timeline-content pl-2"
+                                    },
+                                    [
+                                      _c(
+                                        "span",
+                                        {
+                                          staticClass:
+                                            "font-weight-bolder text-nowrap"
+                                        },
+                                        [
+                                          _vm._v(
+                                            "Entry price: " +
+                                              _vm._s(trade.entry_price) +
+                                              " "
+                                          )
+                                        ]
+                                      )
+                                    ]
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "timeline-item py-2" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "timeline-label font-weight-bolder text-dark-75"
+                                  },
+                                  [
+                                    _c(
+                                      "p",
+                                      {
+                                        staticClass:
+                                          "font-weight-normal text-muted m-0"
+                                      },
+                                      [_vm._v("Duration:")]
+                                    ),
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(
+                                          _vm.duration(
+                                            trade.entry_date,
+                                            trade.exit_date
+                                          )
+                                        ) +
+                                        "\n                                    "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _vm._m(8, true),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "timeline-content pl-2 text-muted"
+                                  },
+                                  [
+                                    _c(
+                                      "span",
+                                      {
+                                        staticClass:
+                                          "font-weight-bolder text-nowrap"
+                                      },
+                                      [
+                                        _vm._v(
+                                          "SL price: " +
+                                            _vm._s(trade.stop_loss_price) +
+                                            " "
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "timeline-item pb-0 pt-4" },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "timeline-label font-weight-bolder"
+                                    },
+                                    [
+                                      _c(
+                                        "p",
+                                        {
+                                          staticClass:
+                                            "font-weight-normal text-muted m-0"
+                                        },
+                                        [_vm._v("Exit date:")]
+                                      ),
+                                      _vm._v(
+                                        "\n                                        " +
+                                          _vm._s(trade.exit_date) +
+                                          "\n                                    "
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _vm._m(9, true),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "timeline-content text-muted pl-2"
+                                    },
+                                    [
+                                      _c(
+                                        "span",
+                                        {
+                                          staticClass:
+                                            "font-weight-bolder text-nowrap"
+                                        },
+                                        [
+                                          _vm._v(
+                                            "Exit price: " +
+                                              _vm._s(trade.exit_price)
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "span",
+                                        {
+                                          staticClass:
+                                            "font-weight-bolder text-nowrap"
+                                        },
+                                        [_vm._v("Exit reason: SL Hit ")]
+                                      )
+                                    ]
+                                  )
+                                ]
+                              )
+                            ])
+                          ])
                         ]
                       )
                     ]
                   )
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "d-flex justify-content-between font-500 mt-4"
-                  },
-                  [
-                    _c("span", [
-                      _c("span", [_vm._v("⚬")]),
-                      _vm._v(" Entry Price:")
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "lighter" }, [_vm._v("1.4585")])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "d-flex justify-content-between font-500 mt-2"
-                  },
-                  [
-                    _c("span", [
-                      _c("span", [_vm._v("⚬")]),
-                      _vm._v(" Exit Price:")
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "lighter" }, [_vm._v("1.4234")])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "d-flex justify-content-between font-500 mt-2"
-                  },
-                  [
-                    _c("span", [_c("span", [_vm._v("⚬")]), _vm._v(" SL:")]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "lighter" }, [_vm._v("1.5232")])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "d-flex justify-content-between font-500 mt-2 mb-4"
-                  },
-                  [
-                    _c("span", [
-                      _c("span", [_vm._v("⚬")]),
-                      _vm._v(" Date trade")
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "lighter" }, [
-                      _vm._v("05 Mai 20 - 06 Mai 20")
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "commentar-container mx-0  mb-4" }, [
-                  _c("h5", { staticClass: "px-3 pt-3" }, [
-                    _vm._v("Trade commentar")
-                  ]),
-                  _vm._v(" "),
-                  _c("p", { staticClass: "p-3" }, [
-                    _vm._v(
-                      "\n                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, iste quibusdam ipsam ipsa\n                                tempora sint blanditiinonnsequatur, illum illo accusamus?\n                            "
-                    )
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "d-flex justify-content-end" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-secondary red mr-3",
-                      attrs: {
-                        type: "button",
-                        "data-target": "#modal_delete",
-                        "data-toggle": "modal"
-                      }
-                    },
-                    [_vm._v("Delete trade")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-primary close-trade-deteils",
-                      attrs: { type: "button" }
-                    },
-                    [_vm._v("Deteils")]
-                  )
+                }),
+                0
+              )
+            : _vm._e()
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "d-flex align-items-center" },
+          [
+            _c("div", {}, [
+              _c("span", [
+                _vm._v("Found trades: "),
+                _c("span", { staticClass: "font-500" }, [
+                  _vm._v(_vm._s(_vm.response.total))
                 ])
               ])
-            ])
-          ]
+            ]),
+            _vm._v(" "),
+            _c("pagination", {
+              staticClass: "m-auto",
+              attrs: { pagination: _vm.response, pages: _vm.pagination },
+              on: {
+                setPage: function($event) {
+                  return _vm.setPage($event)
+                }
+              }
+            })
+          ],
+          1
         )
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "d-flex" }, [
-        _c("ul", { staticClass: "pagination pagination-sm m-auto" }, [
-          _c("li", { staticClass: "page-item" }, [
-            _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
-              _vm._v("Previous")
-            ])
+      _c("deteils-trade"),
+      _vm._v(" "),
+      _c("delete-trade-modal", {
+        attrs: { trade: _vm.deleteTradeValue },
+        on: {
+          destroyTrade: function($event) {
+            return _vm.destroyTrade($event)
+          }
+        }
+      })
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group pr-4 mt-3 mt-sm-0" }, [
+      _c("div", { staticClass: "dropdown " }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-secondary",
+            attrs: { type: "button", "data-toggle": "dropdown" }
+          },
+          [
+            _c("span", { staticClass: "material-icons cyan mr-1" }, [
+              _vm._v(
+                "\n                            view_agenda\n                        "
+              )
+            ]),
+            _vm._v("\n                        View\n                    ")
+          ]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "dropdown-menu dropdown-menu-left" }, [
+          _c("h5", { staticClass: "dropdown-header indigo" }, [
+            _vm._v("CHOOSE VIEW")
           ]),
           _vm._v(" "),
-          _c("li", { staticClass: "page-item" }, [
-            _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
-              _vm._v("1")
-            ])
-          ]),
+          _c(
+            "a",
+            {
+              staticClass: "dropdown-item",
+              attrs: { id: "choose-table-view", href: "#" }
+            },
+            [
+              _c("span", { staticClass: "material-icons lighter icon-sm" }, [
+                _vm._v(
+                  "\n                                toc\n                            "
+                )
+              ]),
+              _vm._v("Table")
+            ]
+          ),
           _vm._v(" "),
-          _c("li", { staticClass: "page-item" }, [
-            _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
-              _vm._v("2")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "page-item" }, [
-            _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
-              _vm._v("3")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "page-item" }, [
-            _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
-              _vm._v("Next")
-            ])
-          ])
+          _c(
+            "a",
+            {
+              staticClass: "dropdown-item",
+              attrs: { id: "choose-largerow-view", href: "#" }
+            },
+            [
+              _c("span", { staticClass: "material-icons lighter icon-sm" }, [
+                _vm._v(
+                  "\n                                calendar_view_day\n                            "
+                )
+              ]),
+              _vm._v("Large Row")
+            ]
+          )
         ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "dropdown mt-3 mt-sm-0" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-primary float-md-right",
+          attrs: { type: "button", "data-toggle": "dropdown" }
+        },
+        [
+          _c("span", { staticClass: "material-icons white mr-1" }, [
+            _vm._v("description")
+          ]),
+          _vm._v("Export\n                ")
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "dropdown-menu dropdown-menu-left" }, [
+        _c("h5", { staticClass: "dropdown-header indigo" }, [
+          _vm._v("OPTIONS")
+        ]),
+        _vm._v(" "),
+        _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
+          _vm._v("Print")
+        ]),
+        _vm._v(" "),
+        _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
+          _vm._v("PDF")
+        ]),
+        _vm._v(" "),
+        _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
+          _vm._v("Email")
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", [
+      _c("div", { staticClass: "d-none d-md-block" }, [
+        _vm._v("Type side"),
+        _c("span", { staticClass: "unicode-arrow" }, [_vm._v("⇅")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", [
+      _c("div", { staticClass: "d-none d-md-block" }, [_vm._v("Fees")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", {}, [
+      _vm._v("Actions "),
+      _c("span", { staticClass: "unicode-arrow" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { staticClass: "text-center p-5", attrs: { colspan: "10" } }, [
+        _c("div", { staticClass: "spinner-border lighter" })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("button", { staticClass: "btn mr-3" }, [
+      _c("span", { staticClass: "material-icons close-trade-deteils" }, [
+        _vm._v("visibility")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "timeline-badge" }, [
+      _c("span", { staticClass: "material-icons primary" }, [
+        _vm._v("trip_origin")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "timeline-badge" }, [
+      _c("span", { staticClass: "material-icons primary" }, [
+        _vm._v("trip_origin")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "timeline-badge" }, [
+      _c("span", { staticClass: "material-icons primary " }, [
+        _vm._v("trip_origin")
       ])
     ])
   }
@@ -46389,55 +47164,70 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "flex-grow-1 img-commentar-div ml-md-4" }, [
-          _c(
-            "div",
-            {},
-            [
-              _c("div", { staticClass: "trade_img text-center mb-4" }, [
-                !_vm.form.trade_img
-                  ? _c("div", { staticClass: "input-file-container js" }, [
-                      _c("input", {
-                        staticClass: "d-none",
-                        attrs: {
-                          id: "img",
-                          name: "img",
-                          type: "file",
-                          accept: "image/x-png,image/gif,image/jpeg"
-                        },
-                        on: { change: _vm.onFileSelected }
-                      }),
-                      _vm._v(" "),
-                      _vm._m(2)
-                    ])
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.form.trade_img
-                  ? _c("div", { staticClass: "img-content-container" }, [
-                      _c(
-                        "div",
-                        {
-                          staticClass: "remove-img",
-                          on: { click: _vm.removeSelectedImg }
-                        },
-                        [
-                          _c("img", {
-                            attrs: { src: "/storage/icons/remove.svg", alt: "" }
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("img", {
-                        staticClass: "url-img",
-                        attrs: { src: this.form.thumbnail_img, alt: "" }
-                      })
-                    ])
-                  : _vm._e()
-              ]),
+          _c("div", {}, [
+            _c("div", { staticClass: "trade_img text-center mb-4" }, [
+              !_vm.form.trade_img
+                ? _c("div", { staticClass: "input-file-container js" }, [
+                    _c("input", {
+                      staticClass: "d-none",
+                      attrs: {
+                        id: "img",
+                        name: "img",
+                        type: "file",
+                        accept: "image/x-png,image/gif,image/jpeg"
+                      },
+                      on: { change: _vm.onFileSelected }
+                    }),
+                    _vm._v(" "),
+                    _vm._m(2)
+                  ])
+                : _vm._e(),
               _vm._v(" "),
-              _c("texteditor", { attrs: { item: _vm.form } })
-            ],
-            1
-          )
+              _vm.form.trade_img
+                ? _c("div", { staticClass: "img-content-container" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "remove-img",
+                        on: { click: _vm.removeSelectedImg }
+                      },
+                      [
+                        _c("img", {
+                          attrs: { src: "/storage/icons/remove.svg", alt: "" }
+                        })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("img", {
+                      staticClass: "url-img",
+                      attrs: { src: this.form.thumbnail_img, alt: "" }
+                    })
+                  ])
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.form.description,
+                  expression: "form.description"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { cols: "30", rows: "10" },
+              domProps: { value: _vm.form.description },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.form, "description", $event.target.value)
+                }
+              }
+            })
+          ])
         ])
       ]),
       _vm._v(" "),
@@ -46566,8 +47356,8 @@ var render = function() {
                     _c(
                       "td",
                       {
-                        staticClass: "font-500 cyan",
-                        class: { red: item.pl_currency < 0 }
+                        staticClass: "font-500",
+                        class: item.pl_currency < 0 ? "red" : "primary"
                       },
                       [_vm._v(_vm._s(item.pl_currency))]
                     )
@@ -59346,15 +60136,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!***************************************************!*\
   !*** ./resources/js/components/navbar/Navbar.vue ***!
   \***************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Navbar_vue_vue_type_template_id_d3be5158___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Navbar.vue?vue&type=template&id=d3be5158& */ "./resources/js/components/navbar/Navbar.vue?vue&type=template&id=d3be5158&");
 /* harmony import */ var _Navbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Navbar.vue?vue&type=script&lang=js& */ "./resources/js/components/navbar/Navbar.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Navbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Navbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -59384,7 +60173,7 @@ component.options.__file = "resources/js/components/navbar/Navbar.vue"
 /*!****************************************************************************!*\
   !*** ./resources/js/components/navbar/Navbar.vue?vue&type=script&lang=js& ***!
   \****************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -59981,6 +60770,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DonutChart_vue_vue_type_template_id_0a1ce07e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DonutChart_vue_vue_type_template_id_0a1ce07e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/trades/TradeHistory/DeleteTradeModal.vue":
+/*!**************************************************************************!*\
+  !*** ./resources/js/components/trades/TradeHistory/DeleteTradeModal.vue ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _DeleteTradeModal_vue_vue_type_template_id_0140141e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DeleteTradeModal.vue?vue&type=template&id=0140141e& */ "./resources/js/components/trades/TradeHistory/DeleteTradeModal.vue?vue&type=template&id=0140141e&");
+/* harmony import */ var _DeleteTradeModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DeleteTradeModal.vue?vue&type=script&lang=js& */ "./resources/js/components/trades/TradeHistory/DeleteTradeModal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _DeleteTradeModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _DeleteTradeModal_vue_vue_type_template_id_0140141e___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _DeleteTradeModal_vue_vue_type_template_id_0140141e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/trades/TradeHistory/DeleteTradeModal.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/trades/TradeHistory/DeleteTradeModal.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************!*\
+  !*** ./resources/js/components/trades/TradeHistory/DeleteTradeModal.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DeleteTradeModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./DeleteTradeModal.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trades/TradeHistory/DeleteTradeModal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DeleteTradeModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/trades/TradeHistory/DeleteTradeModal.vue?vue&type=template&id=0140141e&":
+/*!*********************************************************************************************************!*\
+  !*** ./resources/js/components/trades/TradeHistory/DeleteTradeModal.vue?vue&type=template&id=0140141e& ***!
+  \*********************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DeleteTradeModal_vue_vue_type_template_id_0140141e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./DeleteTradeModal.vue?vue&type=template&id=0140141e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trades/TradeHistory/DeleteTradeModal.vue?vue&type=template&id=0140141e&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DeleteTradeModal_vue_vue_type_template_id_0140141e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DeleteTradeModal_vue_vue_type_template_id_0140141e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

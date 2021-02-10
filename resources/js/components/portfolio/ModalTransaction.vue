@@ -73,7 +73,7 @@
                                     <td class="pl-2" :class=" {'red' : row.amount < 0}">{{row.amount}}</td>
                                     <td>
                                         <div class="d-flex">
-                                            <button @click="delete_transaction(row.id)" class="btn btn-link"> <img
+                                            <button @click="delete_transaction(row.id)" class="btn"> <img
                                                     src="/storage/icons/trash-sm.svg" alt=""></button>
                                         </div>
                                     </td>

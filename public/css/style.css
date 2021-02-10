@@ -533,13 +533,15 @@ input {
 }
 
 .search-input {
-    padding-left: 25px !important;
+    padding-left: 30px !important;
 }
 
 .search-i {
     position: absolute;
-    margin-top: -25px;
-    margin-left: 6px;
+    margin-top: -27px;
+    margin-left: 8px;
+    font-size: 20px !important;
+    color: var(--lighter) !important;
 }
 
 
@@ -2071,22 +2073,23 @@ pre code {
 }
 
 .table tr td div button .material-icons {
-    color: #bcbcbc;
-    font-size: 19px;
+    color: var(--lighter);
+    font-size: 16px;
 }
 
 .table tr td div button {
     display: flex;
     align-items: center;
-    padding: 0.2rem;
+    padding: 0.6rem;
+    border-radius: 8px
 }
 
 .table tr td div button:hover {
-    background-color: #fdfdfd;
+    background-color: #fff;
 }
 
 .table tr td div button:hover .material-icons {
-    color: var(--cyan)
+    color: var(--lighter)
 }
 
 .table th {
@@ -2098,13 +2101,13 @@ pre code {
 .table td {
     padding: 0.75rem;
     vertical-align: top;
-    border-bottom: 1px solid #dee2e6;
+    border-bottom: 1px solid #f3f0f0;
     font-size: var(--font-normal);
 }
 
 .table thead th {
     vertical-align: bottom;
-    border-bottom: 1px solid #dee2e6;
+    border-bottom: 0.13rem solid #f3f0f0;
 }
 
 .table tbody+tbody {
@@ -2112,7 +2115,7 @@ pre code {
 }
 
 .table-sm th {
-    padding: 0.3rem 0 0.3rem 0rem;
+    padding: 0.7rem 0 0.7rem 0.3rem;
     color: var(--dark);
     font-weight: 500;
     background: #fff;
@@ -2120,7 +2123,7 @@ pre code {
 }
 
 .table-sm td {
-    padding: 0.3rem 0 0.3rem 0rem;
+    padding: 0.7rem 0 0.7rem 0.3rem;
     vertical-align: middle;
     color: var(--primary-color);
 }
@@ -2151,7 +2154,8 @@ pre code {
 }
 
 .table-hover tbody tr:hover {
-    background-color: #f1f1fc;
+    background-color: var(--light);
+    cursor: pointer;
 }
 
 .table-primary,
@@ -5690,14 +5694,14 @@ input[type=button].btn-block {
 
 .badge {
     display: inline-block;
-    padding: 0.2rem 0.65rem !important;
-    font-size: var(--font-normal);
+    padding: 0.2rem 0.45rem !important;
+    font-size: var(--font-sm);
     font-weight: 500;
     line-height: 1;
     text-align: center;
     white-space: nowrap;
     vertical-align: baseline;
-    border-radius: 5px !important;
+    border-radius: 3px !important;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     -webkit-box-shadow: 0px 0px 8px -8px rgba(0, 0, 0, 1);
     -moz-box-shadow: 0px 0px 8px -8px rgba(0, 0, 0, 1);
@@ -5828,6 +5832,7 @@ a.badge-danger:focus {
 
 .badge-light {
     background-color: var(--badge-entry-rule);
+    border: 1px solid var(--lighter);
 }
 
 a.badge-light:hover,

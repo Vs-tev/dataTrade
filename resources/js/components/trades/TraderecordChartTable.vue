@@ -21,7 +21,7 @@
                     <tr v-for="(item, index) in trades" :key="index" class="text-center">
                         <td class="text-muted font-500">{{item.symbol}}</td>
                         <td class="font-500">{{item.exit_date}}</td>
-                        <td class="font-500 cyan" :class="{'red':item.pl_currency < 0}">{{item.pl_currency}}</td>
+                        <td class="font-500" :class="item.pl_currency < 0 ?'red' : 'primary' ">{{item.pl_currency}}</td>
                     </tr>
                 </tbody>
             </table>
