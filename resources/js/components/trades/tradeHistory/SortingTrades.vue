@@ -81,7 +81,6 @@ export default {
     return {
       start_date: "",
       exit_date: "",
-
       sort_pl: "all",
       selectedPortfolio: this.$props.portfolios,
     };

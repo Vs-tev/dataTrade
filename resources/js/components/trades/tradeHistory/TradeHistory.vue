@@ -69,7 +69,7 @@
                                             class="unicode-arrow">&#8645;</span></div>
                                 </th>
                                 <th>
-                                    <div class="d-none d-md-block">Type side<span class="unicode-arrow">&#8645;</span>
+                                    <div class="d-none d-md-block">Side<span class="unicode-arrow">&#8645;</span>
                                     </div>
                                 </th>
                                 <th>
@@ -154,34 +154,44 @@
                         </tbody>
                     </table>
                 </div>
-                <div v-if="!loading">
-                    <div class="row p-0 my-4 shadow border rounded" v-for="trade in trades" :key="trade.id" id="large-row-view" style="display">
-                        <div class="d-flex align-items-center w-100">
-                            <div class="p-3 ">
-                                <img :src="'/storage/trades/'+ trade.trade_img" alt="" style="height: 210px; width: 230px">
+                <div v-if="!loading" class="border-top">
+                    <div class="row p-0 my-4 shadow border rounded" v-for="trade in trades" :key="trade.id"
+                        id="large-row-view" style="display">
+
+                        <div class="d-md-flex align-items-center w-100 ">
+                            <div class="d-none d-lg-block p-3 trade-img">
+                                <img :src="'/storage/trades/'+ trade.trade_img" alt=""
+                                    style="height: 210px; width: 230px">
                             </div>
-                            <div class="py-3 pl-0">
+                            <div class="py-3 pl-0 mb-auto px-3 px-lg-0 ">
                                 <div class="">
-                                    <h4 class="font-weight-bold m-0">{{trade.symbol}}, <span class="font-lg">{{trade.time_frame}} / {{trade.type_side}} &#8226;
-                                            {{trade.quantity}}</span></h4>
-                                    <p class="font-weight-bolder lighter pb-1"> {{trade.pl_currency}} {{trade.portfolio ? trade.portfolio.currency : ''}} / {{trade.pl_pips}} pips / -0.98 % </p>
+                                    <h4 class="font-weight-bold m-0 pointer" @click="editTrade(trade)" 
+                                    data-target="#modal_edit_trade" data-toggle="modal">{{trade.symbol}}, 
+                                        <span class="font-lg">{{trade.time_frame}} / {{trade.type_side}} &#8226;
+                                                {{trade.quantity}}
+                                        </span>
+                                    </h4>
+                                    <p class="font-weight-bolder lighter pb-1"> {{trade.pl_currency}}
+                                        {{trade.portfolio ? trade.portfolio.currency : ''}} / {{trade.pl_pips}} pips /
+                                        -0.98 % </p>
                                     <div class="pb-3 d-flex">
                                         <p class="font-weight-bold m-0 width-50px">Used Strategy: </p>
                                         <span class="badge badge-light ml-1 text-muted">{{trade.strategy ? trade.strategy.name : ''}}</span>
                                     </div>
-                                    <div class="pb-3 d-flex">
+                                    <div class="pb-3 d-flex" v>
                                         <p class="font-weight-bold m-0 width-50px">Entry rules: </p>
                                         <div v-if="trade.used_entry_rules">
-                                            <span class="badge badge-light text-muted ml-1 mb-1 mb-xl-0" v-for="(rule, index) in trade.used_entry_rules" :key="index">{{rule.entry_rule.name}}</span>
+                                            <span class="badge badge-light text-muted ml-1 mb-1 mb-xl-0"
+                                                v-for="(rule, index) in trade.used_entry_rules"
+                                                :key="index">{{rule.entry_rule.name}}</span>
                                         </div>
                                     </div>
 
                                 </div>
 
-                                <div class="">
-                                    <p class="m-0 font-weight-bold ">Trade note:</p>
-                                    <div class="trade-note-div">
-                                        <p class="m-0 .text-wrap" v-html="trade.trade_notes"></p>
+                                <div class="" v-if="trade.trade_notes">
+                                    <div class="trade-note-div ">
+                                        <p class="m-0 text-wrap" v-html="trade.trade_notes"></p>
                                     </div>
                                 </div>
                             </div>
@@ -195,8 +205,9 @@
                                         <div class="timeline-badge">
                                             <span class="material-icons primary">trip_origin</span>
                                         </div>
-                                        <div class="font-weight-mormal text-muted text-nowrap timeline-content pl-2">
-                                            <span class="font-weight-bolder text-nowrap">Entry price: {{trade.entry_price}} </span>
+                                        <div class="font-weight-mormal text-muted  timeline-content pl-2">
+                                            <span class="font-weight-bolder ">Entry price:
+                                                {{trade.entry_price}} </span>
 
                                         </div>
                                     </div>
@@ -204,17 +215,16 @@
                                     <div class="timeline-item py-2">
                                         <div class="timeline-label font-weight-bolder text-dark-75">
                                             <p class="font-weight-normal text-muted m-0">Duration:</p>
-                                        {{duration(trade.entry_date, trade.exit_date)}}
+                                            {{duration(trade.entry_date, trade.exit_date)}}
                                         </div>
                                         <div class="timeline-badge">
                                             <span class="material-icons primary">trip_origin</span>
                                         </div>
                                         <div class="timeline-content pl-2 text-muted">
-                                            <span class="font-weight-bolder text-nowrap">SL price: {{trade.stop_loss_price}} </span>
-
+                                            <span class="font-weight-bolder ">SL price:
+                                                {{trade.stop_loss_price}} </span>
                                         </div>
                                     </div>
-
                                     <div class="timeline-item pb-0 pt-4">
                                         <div class="timeline-label font-weight-bolder">
                                             <p class="font-weight-normal text-muted m-0">Exit date:</p>
@@ -224,17 +234,31 @@
                                             <span class="material-icons primary ">trip_origin</span>
                                         </div>
                                         <div class="timeline-content text-muted pl-2">
-                                            <span class="font-weight-bolder text-nowrap">Exit price: {{trade.exit_price}}</span>
-                                            <span class="font-weight-bolder text-nowrap">Exit reason: SL Hit </span>
-
+                                            <span class="font-weight-bolder ">Exit price:
+                                                {{trade.exit_price}}</span>
+                                            <p class="font-weight-bolder m-0">Exit reason: 
+                                                <span v-if="trade.exit_reason" class="badge badge-light ml-1 text-muted">{{trade.exit_reason.name}}</span>
+                                            </p>
                                         </div>
                                     </div>
 
                                 </div>
                             </div>
                         </div>
+                        <div class="trade-options mx-3 w-100 border-top">
+                            <div class="trade-options-buttons py-2 d-flex ">
+                                 <button type="button" class="btn"><span class="material-icons icon-sm">visibility_off</span></button>
+
+                                <button type="button" @click="editTrade(trade)" class="btn ml-auto mr-4" 
+                                data-target="#modal_edit_trade" data-toggle="modal"><span class="material-icons icon-sm">mode_edit</span></button>
+
+                                <button type="button" @click="deleteTrade(trade)" class="btn"
+                                    data-target="#modal_delete_trade" data-toggle="modal"><span
+                                        class="material-icons icon-sm">delete</span></button>
+                            </div>
+                        </div>
                     </div>
-                 </div>
+                </div>
             </div>
             <!-- Pagination -->
             <div class="d-flex align-items-center">
@@ -245,9 +269,8 @@
                 </pagination>
             </div>
         </section>
-        <deteils-trade></deteils-trade>
-        <delete-trade-modal :trade="deleteTradeValue"
-            v-on:destroyTrade="destroyTrade($event)"></delete-trade-modal>
+        <deteils-trade :trade="form" v-bind="$props" v-on:update="update"></deteils-trade>
+        <delete-trade-modal :trade="deleteTradeValue" v-on:destroyTrade="destroyTrade($event)"></delete-trade-modal>
     </div>
 
 </template>
@@ -265,7 +288,7 @@ export default {
     DeleteTradeModal,
   },
   name: "TradeHistory",
-  props: ["portfolios"],
+  props: ["portfolios", "strategies", "exit_reason", "entryrules"],
 
   data() {
     return {
@@ -283,6 +306,27 @@ export default {
       pagination: {
         data: [],
       },
+
+      form: new Form({
+        id: "",
+        trade_img: "",
+        img_mode: true,
+        symbol: "",
+        type_side: "",
+        quantity: "",
+        entry_price: "",
+        exit_price: "",
+        stop_loss_price: "",
+        time_frame: "",
+        entry_date: "",
+        exit_date: "",
+        trade_notes: "",
+        trade_img: "",
+        strategy: "",
+        exit_reason: "",
+        entry_rules: "",
+        used_entry_rules: [],
+      }),
       deleteTradeValue: [],
     };
   },
@@ -367,6 +411,29 @@ export default {
         this.order = "ASC";
       }
       //console.log(this.order);
+      this.get_trades();
+    },
+    editTrade: function editTrade(trade) {
+      this.form.id = trade.id;
+      this.form.trade_img = trade.trade_img;
+      this.form.symbol = trade.symbol;
+      this.form.type_side = trade.type_side;
+      this.form.quantity = trade.quantity;
+      this.form.time_frame = trade.time_frame;
+      this.form.entry_price = trade.entry_price;
+      this.form.exit_price = trade.exit_price;
+      this.form.stop_loss_price = trade.stop_loss_price;
+      this.form.used_entry_rules = trade.used_entry_rules;
+      this.form.exit_reason = trade.exit_reason;
+      this.form.strategy = trade.strategy;
+      this.form.trade_notes = trade.trade_notes;
+      this.form.img_mode = false;
+      this.form.entry_rules = trade.used_entry_rules.map((item) => {
+        return item.entry_rule;
+      });
+    },
+
+    update() {
       this.get_trades();
     },
 

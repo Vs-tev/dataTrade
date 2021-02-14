@@ -444,21 +444,10 @@ img {
     border-radius: 5px;
 }
 
-.img_list>.img-content-container .remove-img {
+.remove-img {
     position: absolute;
     left: calc(50% - 20px);
-    top: 190px;
-    background-color: #a7a6a64d;
-    padding: 5px;
-    border-radius: 5px;
-    transition: 0.2s ease
-}
-
-
-.trade_img>.img-content-container .remove-img {
-    position: absolute;
-    left: calc(50% - 20px);
-    top: 86px;
+    top: calc(50% - 20px);
     background-color: #a7a6a64d;
     padding: 5px;
     border-radius: 5px;
@@ -466,13 +455,11 @@ img {
     z-index: 0
 }
 
-.trade_img .img-content-container .remove-img:hover,
-.img_list .img-content-container .remove-img:hover {
+.remove-img:hover {
     background-color: #a7a6a6a9 !important;
     transition: 0.2s ease;
     cursor: pointer
 }
-
 
 svg {
     overflow: hidden;
@@ -6759,6 +6746,8 @@ a.close.disabled {
         max-width: 1140px;
     }
 }
+
+
 
 .tooltip {
     position: absolute;

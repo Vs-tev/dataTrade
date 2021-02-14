@@ -3570,6 +3570,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Modal",
@@ -3987,6 +3988,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -4142,8 +4145,96 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "DeteilsTrade"
+  name: "DeteilsTrade",
+  components: {
+    Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default.a
+  },
+  props: ["trade", "portfolios", "strategies", "exit_reason", "entryrules"],
+  data: function data() {
+    return {
+      new_img: "",
+      form: new Form({
+        quantity: "",
+        entry_price: "",
+        exit_price: "",
+        stop_loss_price: "",
+        entry_date: "",
+        exit_date: "",
+        description: "",
+        trade_img: ""
+      })
+    };
+  },
+  methods: {
+    checkResponseStatus: function checkResponseStatus(error) {
+      if (error.response.status === 419 || error.response.status == 401) {
+        window.location.href = "/login";
+      } else {
+        this.form.errors.record(error.response.data.errors);
+      }
+    },
+    update: function update() {
+      var _this = this;
+
+      var data = new FormData();
+      data.append("symbol", this.trade.symbol);
+      data.append("type_side", this.trade.type_side);
+      data.append("quantity", this.trade.quantity);
+      data.append("entry_price", this.trade.entry_price);
+      data.append("exit_price", this.trade.exit_price);
+      data.append("stop_loss_price", this.trade.stop_loss_price);
+      data.append("time_frame", this.trade.time_frame);
+      data.append("trade_notes", this.trade.trade_notes);
+
+      if (this.trade.exit_reason) {
+        data.append("exit_reason_id", this.trade.exit_reason.id);
+      }
+
+      if (this.trade.strategy) {
+        data.append("strategy_id", this.trade.strategy.id);
+      }
+
+      data.append("trade_img", this.trade.trade_img);
+      data.append("entry_rule_id", this.trade.entry_rules.map(function (item) {
+        return {
+          id: item.id
+        }.id;
+      }));
+      axios.post("/dashboardPages/tradehistory/u/" + this.trade.id, data).then(function (res) {
+        _this.$emit("update");
+
+        $("#modal_edit_trade").modal("hide");
+      })["catch"](function (error) {
+        _this.checkResponseStatus(error);
+      });
+    },
+    onFileSelected: function onFileSelected() {
+      this.trade.img_mode = true;
+      this.trade.trade_img = event.target.files[0];
+      this.new_img = URL.createObjectURL(this.trade.trade_img);
+    },
+    removeTradeImg: function removeTradeImg() {
+      this.trade.trade_img = "";
+      this.new_img = "";
+      this.trade.img_mode = true;
+    }
+  }
 });
 
 /***/ }),
@@ -4296,6 +4387,31 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _DeteilsTrade_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DeteilsTrade.vue */ "./resources/js/components/trades/TradeHistory/DeteilsTrade.vue");
 /* harmony import */ var _Pagination_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Pagination.vue */ "./resources/js/components/Pagination.vue");
 /* harmony import */ var _DeleteTradeModal_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./DeleteTradeModal.vue */ "./resources/js/components/trades/TradeHistory/DeleteTradeModal.vue");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4561,8 +4677,10 @@ __webpack_require__.r(__webpack_exports__);
     DeleteTradeModal: _DeleteTradeModal_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   name: "TradeHistory",
-  props: ["portfolios"],
+  props: ["portfolios", "strategies", "exit_reason", "entryrules"],
   data: function data() {
+    var _Form;
+
     return {
       loading: true,
       response: [],
@@ -4578,6 +4696,21 @@ __webpack_require__.r(__webpack_exports__);
       pagination: {
         data: []
       },
+      form: new Form((_Form = {
+        id: "",
+        trade_img: "",
+        img_mode: true,
+        symbol: "",
+        type_side: "",
+        quantity: "",
+        entry_price: "",
+        exit_price: "",
+        stop_loss_price: "",
+        time_frame: "",
+        entry_date: "",
+        exit_date: "",
+        trade_notes: ""
+      }, _defineProperty(_Form, "trade_img", ""), _defineProperty(_Form, "strategy", ""), _defineProperty(_Form, "exit_reason", ""), _defineProperty(_Form, "entry_rules", ""), _defineProperty(_Form, "used_entry_rules", []), _Form)),
       deleteTradeValue: []
     };
   },
@@ -4658,6 +4791,28 @@ __webpack_require__.r(__webpack_exports__);
 
       this.get_trades();
     },
+    editTrade: function editTrade(trade) {
+      this.form.id = trade.id;
+      this.form.trade_img = trade.trade_img;
+      this.form.symbol = trade.symbol;
+      this.form.type_side = trade.type_side;
+      this.form.quantity = trade.quantity;
+      this.form.time_frame = trade.time_frame;
+      this.form.entry_price = trade.entry_price;
+      this.form.exit_price = trade.exit_price;
+      this.form.stop_loss_price = trade.stop_loss_price;
+      this.form.used_entry_rules = trade.used_entry_rules;
+      this.form.exit_reason = trade.exit_reason;
+      this.form.strategy = trade.strategy;
+      this.form.trade_notes = trade.trade_notes;
+      this.form.img_mode = false;
+      this.form.entry_rules = trade.used_entry_rules.map(function (item) {
+        return item.entry_rule;
+      });
+    },
+    update: function update() {
+      this.get_trades();
+    },
     deleteTrade: function deleteTrade(trade) {
       this.deleteTradeValue = trade; //this.tradePortfolioData = trade.portfolio;
     },
@@ -4704,6 +4859,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vue_date_pick__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-date-pick */ "./node_modules/vue-date-pick/dist/vueDatePick.js");
 /* harmony import */ var vue_date_pick__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_date_pick__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
 //
 //
 //
@@ -4963,10 +5122,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     checkResponseStatus: function checkResponseStatus(error) {
-      if (error.res.status === 419 || error.res.status == 401) {
+      if (error.response.status === 419 || error.response.status == 401) {
         window.location.href = "/login";
       } else {
-        this.form.errors.record(error.res.data.errors);
+        this.form.errors.record(error.response.data.errors);
       }
     },
     today: function today() {
@@ -5006,11 +5165,14 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.$root.$emit("portfolio_balance", res.data[0]); // optional we can put second argumen -> this.$root.$emit("portfolio_balance", data)
 
-      })["catch"](function (error) {});
+      })["catch"](function (error) {
+        _this.checkResponseStatus(error);
+      });
     },
     recordTrade: function recordTrade() {
       var _this2 = this;
 
+      //console.log(this.form.trade_img);
       var data = new FormData();
       data.append("symbol", this.form.symbol);
       data.append("type_side", this.form.type_side);
@@ -43953,7 +44115,7 @@ var render = function() {
       "div",
       {
         staticClass: "modal-dialog",
-        class: [_vm.item.modal == "delete" ? " " : "modal-xl"]
+        class: [_vm.item.modal == "delete" ? " " : "modal-lg"]
       },
       [
         _c("form", { staticClass: "modal-content" }, [
@@ -44251,6 +44413,10 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("h4", { staticClass: "lighter font-500" }, [
           _vm._v("Click here to upload image")
+        ]),
+        _vm._v(" "),
+        _c("p", { staticClass: "dark font-sm" }, [
+          _vm._v("Images, up to 2 MB, jpeg, png, gif ")
         ])
       ]
     )
@@ -44770,7 +44936,648 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    { staticClass: "modal", attrs: { id: "modal_edit_trade" } },
+    [
+      _c("div", { staticClass: "modal-dialog modal-xl" }, [
+        _c("div", { staticClass: "modal-content" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-body" }, [
+            _c("div", { staticClass: "container-edit-trade-img-container" }, [
+              _vm.trade.trade_img == "noimage.jpg" || !_vm.trade.trade_img
+                ? _c("div", { staticClass: "img_list" }, [
+                    _c("div", { staticClass: "input-file-container js" }, [
+                      _c("input", {
+                        staticClass: "d-none",
+                        attrs: {
+                          id: "img",
+                          name: "img",
+                          type: "file",
+                          accept: "image/x-png,image/gif,image/jpeg"
+                        },
+                        on: { change: _vm.onFileSelected }
+                      }),
+                      _vm._v(" "),
+                      _vm._m(1)
+                    ])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.trade.trade_img && _vm.trade.trade_img !== "noimage.jpg"
+                ? _c("div", { staticClass: "img-buttons" }, [
+                    _c("div", { staticClass: "remove-img" }, [
+                      _c("img", {
+                        attrs: { src: "/storage/icons/remove.svg", alt: "" },
+                        on: { click: _vm.removeTradeImg }
+                      })
+                    ])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.trade.trade_img !== "noimage.jpg"
+                ? _c("img", {
+                    staticClass: "modal-trade-img",
+                    attrs: {
+                      src: !_vm.trade.img_mode
+                        ? "/storage/trades/" + _vm.trade.trade_img
+                        : this.new_img,
+                      alt: ""
+                    }
+                  })
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "list-editable-items p-3 col-12 col-sm-10 col-lg-10 col-xl-9 mx-md-auto"
+              },
+              [
+                _c("ul", { staticClass: "list-unstyled" }, [
+                  _vm._m(2),
+                  _vm._v(" "),
+                  _c("li", { staticClass: "editable-item" }, [
+                    _c("label", { staticClass: "label-item" }, [
+                      _vm._v("Type side:")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.trade.type_side,
+                            expression: "trade.type_side"
+                          }
+                        ],
+                        staticClass: "form-control bg-light",
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.trade,
+                              "type_side",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { value: "buy" } }, [
+                          _vm._v("Buy")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "sell" } }, [
+                          _vm._v("Sell")
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("li", { staticClass: "editable-item" }, [
+                    _c("label", { staticClass: "label-item" }, [
+                      _vm._v("Symbol:")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.trade.symbol,
+                            expression: "trade.symbol"
+                          }
+                        ],
+                        staticClass: "form-control bg-light",
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.trade,
+                              "symbol",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _c(
+                          "option",
+                          { attrs: { value: "AUD/CAD", selected: "" } },
+                          [_vm._v("AUD/CAD")]
+                        ),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "EUR/CAD" } }, [
+                          _vm._v("EUR/CAD")
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("li", { staticClass: "editable-item" }, [
+                    _c("label", { staticClass: "label-item" }, [
+                      _vm._v("Time frame:")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.trade.time_frame,
+                            expression: "trade.time_frame"
+                          }
+                        ],
+                        staticClass: "form-control bg-light",
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.trade,
+                              "time_frame",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { value: "1 min" } }, [
+                          _vm._v("1 min")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "5 min" } }, [
+                          _vm._v("5 min")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "15 min" } }, [
+                          _vm._v("15 min")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "30 min" } }, [
+                          _vm._v("30 min")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "1 hour" } }, [
+                          _vm._v("1 hour")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "2 hours" } }, [
+                          _vm._v("2 hours")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "4 hours" } }, [
+                          _vm._v("4 hours")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "1 day" } }, [
+                          _vm._v("1 day")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "1 week" } }, [
+                          _vm._v("1 week")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "1 month" } }, [
+                          _vm._v("1 month")
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("li", { staticClass: "editable-item" }, [
+                    _c("label", { staticClass: "label-item" }, [
+                      _vm._v("Quantity:")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "w-100" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.trade.quantity,
+                            expression: "trade.quantity"
+                          }
+                        ],
+                        staticClass: "form-control border-0 bg-light",
+                        class: {
+                          "is-invalid": _vm.form.errors.has("quantity")
+                        },
+                        attrs: { type: "text" },
+                        domProps: { value: _vm.trade.quantity },
+                        on: {
+                          input: [
+                            function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.trade,
+                                "quantity",
+                                $event.target.value
+                              )
+                            },
+                            function($event) {
+                              return _vm.form.errors.clear("quantity")
+                            }
+                          ]
+                        }
+                      }),
+                      _vm._v(" "),
+                      _vm.form.errors.has("quantity")
+                        ? _c("p", {
+                            staticClass: "error-output",
+                            domProps: {
+                              textContent: _vm._s(
+                                _vm.form.errors.get("quantity")
+                              )
+                            }
+                          })
+                        : _vm._e()
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(3),
+                  _vm._v(" "),
+                  _c("li", { staticClass: "editable-item" }, [
+                    _c("label", { staticClass: "label-item" }, [
+                      _vm._v("Entry: ")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "price" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.trade.entry_price,
+                            expression: "trade.entry_price"
+                          }
+                        ],
+                        staticClass:
+                          "form-control  border-0 bg-light mb-2 mb-lg-0",
+                        class: {
+                          "is-invalid": _vm.form.errors.has("entry_price")
+                        },
+                        attrs: { type: "text" },
+                        domProps: { value: _vm.trade.entry_price },
+                        on: {
+                          input: [
+                            function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.trade,
+                                "entry_price",
+                                $event.target.value
+                              )
+                            },
+                            function($event) {
+                              return _vm.form.errors.clear("entry_price")
+                            }
+                          ]
+                        }
+                      }),
+                      _vm._v(" "),
+                      _vm.form.errors.has("entry_price")
+                        ? _c("p", {
+                            staticClass: "error-output",
+                            domProps: {
+                              textContent: _vm._s(
+                                _vm.form.errors.get("entry_price")
+                              )
+                            }
+                          })
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("label", { staticClass: "label-item" }, [_vm._v("SL:")]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "price" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.trade.stop_loss_price,
+                            expression: "trade.stop_loss_price"
+                          }
+                        ],
+                        staticClass:
+                          "form-control  border-0 bg-light mb-2 mb-lg-0",
+                        attrs: { type: "text" },
+                        domProps: { value: _vm.trade.stop_loss_price },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.trade,
+                              "stop_loss_price",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _vm.form.errors.has("stop_loss_price")
+                        ? _c("p", {
+                            staticClass: "error-output",
+                            domProps: {
+                              textContent: _vm._s(
+                                _vm.form.errors.get("stop_loss_price")
+                              )
+                            }
+                          })
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("label", { staticClass: "label-item" }, [
+                      _vm._v("Exit:")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "price" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.trade.exit_price,
+                            expression: "trade.exit_price"
+                          }
+                        ],
+                        staticClass:
+                          "form-control  border-0 bg-light mb-2 mb-lg-0",
+                        class: {
+                          "is-invalid": _vm.form.errors.has("exit_price")
+                        },
+                        attrs: { type: "text" },
+                        domProps: { value: _vm.trade.exit_price },
+                        on: {
+                          input: [
+                            function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.trade,
+                                "exit_price",
+                                $event.target.value
+                              )
+                            },
+                            function($event) {
+                              return _vm.form.errors.clear("exit_price")
+                            }
+                          ]
+                        }
+                      }),
+                      _vm._v(" "),
+                      _vm.form.errors.has("exit_price")
+                        ? _c("p", {
+                            staticClass: "error-output",
+                            domProps: {
+                              textContent: _vm._s(
+                                _vm.form.errors.get("exit_price")
+                              )
+                            }
+                          })
+                        : _vm._e()
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(4),
+                  _vm._v(" "),
+                  _c(
+                    "li",
+                    { staticClass: "editable-item" },
+                    [
+                      _c("label", { staticClass: "label-item" }, [
+                        _vm._v("Entry rules: ")
+                      ]),
+                      _vm._v(" "),
+                      _c("multiselect", {
+                        staticClass: "select-rule mb-2 mb-lg-0",
+                        attrs: {
+                          options: _vm.entryrules,
+                          multiple: true,
+                          "close-on-select": false,
+                          "clear-on-select": false,
+                          "preserve-search": false,
+                          max: 3,
+                          "preselect-first": false,
+                          searchable: false,
+                          label: "name",
+                          "track-by": "id",
+                          placeholder: "Select entrty rules",
+                          id: "entry_rules"
+                        },
+                        scopedSlots: _vm._u([
+                          {
+                            key: "selection",
+                            fn: function(ref) {
+                              var values = ref.values
+                              var isOpen = ref.isOpen
+                              return [
+                                values.length && !isOpen
+                                  ? _c(
+                                      "span",
+                                      { staticClass: "multiselect__single" },
+                                      [
+                                        _vm._v(
+                                          _vm._s(values.length) +
+                                            " rules\n                                            selected"
+                                        )
+                                      ]
+                                    )
+                                  : _vm._e()
+                              ]
+                            }
+                          }
+                        ]),
+                        model: {
+                          value: _vm.trade.entry_rules,
+                          callback: function($$v) {
+                            _vm.$set(_vm.trade, "entry_rules", $$v)
+                          },
+                          expression: "trade.entry_rules"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { staticClass: "label-item" }, [
+                        _vm._v("Exit:")
+                      ]),
+                      _vm._v(" "),
+                      _c("multiselect", {
+                        attrs: {
+                          options: _vm.exit_reason,
+                          searchable: false,
+                          "close-on-select": true,
+                          "show-labels": false,
+                          "track-by": "id",
+                          label: "name",
+                          placeholder: "Exit Reason"
+                        },
+                        model: {
+                          value: _vm.trade.exit_reason,
+                          callback: function($$v) {
+                            _vm.$set(_vm.trade, "exit_reason", $$v)
+                          },
+                          expression: "trade.exit_reason"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "li",
+                    { staticClass: "editable-item" },
+                    [
+                      _c("label", { staticClass: "label-item" }, [
+                        _vm._v("Used strategy:")
+                      ]),
+                      _vm._v(" "),
+                      _c("multiselect", {
+                        attrs: {
+                          options: _vm.strategies,
+                          searchable: false,
+                          "close-on-select": true,
+                          "show-labels": false,
+                          "track-by": "id",
+                          label: "name",
+                          placeholder: "Exit Reason"
+                        },
+                        model: {
+                          value: _vm.trade.strategy,
+                          callback: function($$v) {
+                            _vm.$set(_vm.trade, "strategy", $$v)
+                          },
+                          expression: "trade.strategy"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _vm._m(5),
+                  _vm._v(" "),
+                  _c("li", { staticClass: "editable-item" }, [
+                    _c("label", { staticClass: "label-item" }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "w-100" }, [
+                      _c("textarea", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.trade.trade_notes,
+                            expression: "trade.trade_notes"
+                          }
+                        ],
+                        staticClass: "form-control border-0 bg-light",
+                        class: {
+                          "is-invalid": _vm.form.errors.has("trade_notes")
+                        },
+                        attrs: { cols: "30", rows: "10" },
+                        domProps: { value: _vm.trade.trade_notes },
+                        on: {
+                          input: [
+                            function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.trade,
+                                "trade_notes",
+                                $event.target.value
+                              )
+                            },
+                            function($event) {
+                              return _vm.form.errors.clear("trade_notes")
+                            }
+                          ]
+                        }
+                      }),
+                      _vm._v(" "),
+                      _vm.form.errors.has("trade_notes")
+                        ? _c("p", {
+                            staticClass: "error-output",
+                            domProps: {
+                              textContent: _vm._s(
+                                _vm.form.errors.get("trade_notes")
+                              )
+                            }
+                          })
+                        : _vm._e()
+                    ])
+                  ])
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-footer" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary",
+                attrs: { type: "button", "data-dismiss": "" }
+              },
+              [_vm._v("Close")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                attrs: { type: "button" },
+                on: { click: _vm.update }
+              },
+              [_vm._v("Save")]
+            )
+          ])
+        ])
+      ])
+    ]
+  )
 }
 var staticRenderFns = [
   function() {
@@ -44778,406 +45585,100 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c(
-      "section",
-      { staticClass: "trade_deteils", attrs: { id: "trade_deteils" } },
+      "div",
+      { staticClass: "d-flex justify-content-between border-bottom px-4 py-4" },
       [
+        _c("div", { staticClass: "my-auto" }, [
+          _c("h4", { staticClass: "font-weight-500 m-0" }, [
+            _vm._v("Edit Trade")
+          ])
+        ]),
+        _vm._v(" "),
         _c(
-          "div",
+          "button",
           {
-            staticClass:
-              "header_trade_deteils align-items-center d-flex px-4 py-4"
+            staticClass: "close my-auto",
+            attrs: {
+              type: "button",
+              "data-dismiss": "modal",
+              "aria-label": "Close"
+            }
           },
           [
-            _c("div", { staticClass: "my-auto" }, [
-              _c("div", { staticClass: "d-flex align-content-center" }, [
-                _c("h4", { staticClass: "font-weight-bold m-0" }, [
-                  _vm._v("EURUSD / ")
-                ]),
-                _vm._v(" "),
-                _c("h4", [
-                  _c(
-                    "span",
-                    { staticClass: "font-weight-bold indigo ml-1 m-0" },
-                    [_vm._v("Buy")]
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _c("p", { staticClass: "font-500 font-lg m-0" }, [
-                _vm._v("Test Portfolio 1 "),
-                _c("span", { staticClass: "text-muted " }, [
-                  _vm._v("   12 Jan 2020")
-                ])
-              ])
-            ]),
-            _vm._v(" "),
             _c(
               "span",
-              {
-                staticClass:
-                  "material-icons icon-sm ml-auto close-btn close-trade-deteils"
-              },
+              { staticClass: "material-icons ml-auto close-btn icon-sm" },
               [_vm._v("close")]
             )
           ]
-        ),
+        )
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      {
+        staticClass: "input-file-trigger text-center",
+        attrs: { tabindex: "0", for: "img" }
+      },
+      [
+        _c("span", { staticClass: "material-icons icon-xl indigo " }, [
+          _vm._v("cloud_upload")
+        ]),
         _vm._v(" "),
-        _c("div", { staticClass: "scroll-content" }, [
-          _c(
-            "div",
-            {
-              staticClass:
-                "img-container d-flex flex-column flex-md-row align-content-center px-4"
-            },
-            [
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "selected-img d-flex  align-items-center mb-3 mb-md-0"
-                },
-                [
-                  _c("img", {
-                    attrs: {
-                      src: "https://www.tradingview.com/x/NSwr4nQM/",
-                      alt: ""
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("img", {
-                    attrs: {
-                      src: "https://www.tradingview.com/x/666Hwj5t/",
-                      alt: ""
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("img", {
-                    attrs: {
-                      src: "https://www.tradingview.com/x/l5DgNzQ0/",
-                      alt: ""
-                    }
-                  })
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "thumbnails-img d-flex d-flex-row flex-md-column justify-content-between"
-                },
-                [
-                  _c("img", {
-                    attrs: {
-                      onclick: "currentSlide(1)",
-                      src: "https://www.tradingview.com/x/NSwr4nQM/",
-                      alt: ""
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("img", {
-                    attrs: {
-                      onclick: "currentSlide(2)",
-                      src: "https://www.tradingview.com/x/666Hwj5t/",
-                      alt: ""
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("img", {
-                    attrs: {
-                      onclick: "currentSlide(3)",
-                      src: "https://www.tradingview.com/x/l5DgNzQ0/",
-                      alt: ""
-                    }
-                  })
-                ]
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass:
-                "buttons-img d-flex justify-content-center align-content-center mt-2"
-            },
-            [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary ml-3",
-                  attrs: { onclick: "plusSlides(-1)" }
-                },
-                [
-                  _c("span", { staticClass: "material-icons white p-0" }, [
-                    _vm._v("keyboard_arrow_left")
-                  ])
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary ml-3",
-                  attrs: { onclick: "plusSlides(1)" }
-                },
-                [
-                  _c("span", { staticClass: "material-icons white p-0" }, [
-                    _vm._v("keyboard_arrow_right")
-                  ])
-                ]
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass:
-                "col-12 col-lg-10 row current-trade-performance px-4 px-lg-0 mx-lg-auto my-5"
-            },
-            [
-              _c("div", { staticClass: "col-12 col-lg-9 pr-lg-5" }, [
-                _c("table", {}, [
-                  _c("thead", [
-                    _c("tr", [
-                      _c("th", { staticClass: "font-md" }, [
-                        _vm._v("DESCRIPTION")
-                      ]),
-                      _vm._v(" "),
-                      _c("th", { staticClass: "font-md" }, [_vm._v("ENTRY")]),
-                      _vm._v(" "),
-                      _c("th", { staticClass: "font-md" }, [_vm._v("EXIT")]),
-                      _vm._v(" "),
-                      _c("th", { staticClass: "font-md" }, [
-                        _vm._v("STOP LOSS")
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [
-                      _c("div", { staticClass: "d-flex align-items-center " }, [
-                        _c(
-                          "span",
-                          { staticClass: "material-icons cyan icon-sm mr-1" },
-                          [_vm._v("fiber_manual_record")]
-                        ),
-                        _vm._v("\n                                Price")
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1.5000")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1.5030")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1.4030")])
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [
-                      _c("div", { staticClass: "d-flex align-items-center " }, [
-                        _c(
-                          "span",
-                          {
-                            staticClass:
-                              "material-icons text-muted icon-sm mr-1"
-                          },
-                          [_vm._v("fiber_manual_record")]
-                        ),
-                        _vm._v("\n                                Date")
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("11 Jun 2020")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("13 Jun 2020")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("-")])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("hr", { staticClass: "py-1" }),
-                _vm._v(" "),
-                _c("table", { staticClass: "table-rules" }, [
-                  _c("tr", [
-                    _c("td", {}, [
-                      _c("div", { staticClass: "d-flex align-items-center " }, [
-                        _c(
-                          "span",
-                          {
-                            staticClass: "material-icons lighter icon-sm mr-1"
-                          },
-                          [_vm._v("fiber_manual_record")]
-                        ),
-                        _vm._v(" "),
-                        _c("p", [_vm._v("Entry Rules")])
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "pl-2" }, [
-                      _c("div", [
-                        _c(
-                          "span",
-                          {
-                            staticClass:
-                              "badge badge-light text-muted mb-1 mb-xl-0"
-                          },
-                          [_vm._v("double top confirmation")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "span",
-                          {
-                            staticClass:
-                              "badge badge-light text-muted mb-1 mb-xl-0"
-                          },
-                          [_vm._v("Rsi oversold")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "span",
-                          {
-                            staticClass:
-                              "badge badge-light text-muted mb-1 mb-xl-0"
-                          },
-                          [_vm._v("candlestick confirmation")]
-                        )
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [
-                      _c("div", { staticClass: "d-flex align-items-center " }, [
-                        _c(
-                          "span",
-                          { staticClass: "material-icons orange icon-sm mr-1" },
-                          [_vm._v("fiber_manual_record")]
-                        ),
-                        _vm._v(" "),
-                        _c("p", [_vm._v("Exit Reason")])
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "pl-2" }, [
-                      _c("span", { staticClass: "badge bg-orange red" }, [
-                        _vm._v("SL Hit")
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [
-                      _c("div", { staticClass: "d-flex align-items-center " }, [
-                        _c(
-                          "span",
-                          { staticClass: "material-icons cyan icon-sm mr-1" },
-                          [_vm._v("fiber_manual_record")]
-                        ),
-                        _vm._v(" "),
-                        _c("p", [_vm._v("Used strategy")])
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "pl-2" }, [
-                      _c("span", { staticClass: "badge badge-light cyan" }, [
-                        _vm._v("Double top retest 0.618")
-                      ])
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("hr", { staticClass: "py-1" }),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "trade-comentar-container d-flex align-items-strat"
-                  },
-                  [
-                    _c(
-                      "div",
-                      { staticClass: "commentar-icon rounded-circle" },
-                      [
-                        _c(
-                          "span",
-                          {
-                            staticClass: "material-icons cyan",
-                            staticStyle: { transform: "scale(-1, 1)" }
-                          },
-                          [
-                            _vm._v(
-                              "\n                            chat_bubble_outline\n                        "
-                            )
-                          ]
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "commentar-container ml-3" }, [
-                      _c("h5", { staticClass: "pt-3 pl-3" }, [
-                        _vm._v("Trade commentar")
-                      ]),
-                      _vm._v(" "),
-                      _c("p", { staticClass: "p-3" }, [
-                        _vm._v(
-                          "\n                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, iste quibusdam ipsam ipsa\n                            tempora sint blanditiis quo veritatis in velit doloribus reiciendis enim vel esse. Unde\n                            incidunt nesciunt minus non.\n                        "
-                        )
-                      ])
-                    ])
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-12 col-lg-3" }, [
-                _c("div", { staticClass: "profit-container" }, [
-                  _c("div", { staticClass: "pb-4 pt-3" }, [
-                    _c("h4", { staticClass: "font-weight-bold lighter" }, [
-                      _vm._v("PROFIT")
-                    ]),
-                    _vm._v(" "),
-                    _c("h2", [_vm._v("185,41 EUR")]),
-                    _vm._v(" "),
-                    _c("h5", { staticClass: "font-500" }, [
-                      _vm._v("15.6 PIPS ")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "py-4 border-top" }, [
-                    _c("h5", { staticClass: "lighter" }, [
-                      _c("span", [_vm._v("⚬")]),
-                      _vm._v(" RETURN")
-                    ]),
-                    _vm._v(" "),
-                    _c("h5", {}, [_vm._v("1.27%")])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "py-4 border-top" }, [
-                    _c("h5", { staticClass: "lighter" }, [
-                      _c("span", [_vm._v("⚬")]),
-                      _vm._v("  DRADE DURATION  ")
-                    ]),
-                    _vm._v(" "),
-                    _c("h5", {}, [_vm._v("1.5 days")])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "py-4 border-top" }, [
-                    _c("h5", { staticClass: "lighter" }, [
-                      _c("span", [_vm._v("⚬")]),
-                      _vm._v(" RISK REWARD  ")
-                    ]),
-                    _vm._v(" "),
-                    _c("h5", {}, [_vm._v("3.50")])
-                  ])
-                ])
-              ])
-            ]
-          )
+        _c("h4", { staticClass: "lighter font-500" }, [
+          _vm._v("Click here to upload image")
+        ]),
+        _vm._v(" "),
+        _c("p", { staticClass: "dark font-sm" }, [
+          _vm._v("Images, up to 3 MB, jpeg, png, gif ")
         ])
       ]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "editable-item" }, [
+      _c("label", {}),
+      _vm._v(" "),
+      _c("p", { staticClass: "font-500 font-lg mb-0" }, [_vm._v("Edit trade:")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "editable-item" }, [
+      _c("label", {}),
+      _vm._v(" "),
+      _c("p", { staticClass: "font-500 font-lg mb-0" }, [_vm._v("Price:")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "editable-item" }, [
+      _c("label", {}),
+      _vm._v(" "),
+      _c("p", { staticClass: "font-500 font-lg mb-0" }, [_vm._v("Rules:")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "editable-item" }, [
+      _c("label", {}),
+      _vm._v(" "),
+      _c("p", { staticClass: "font-500 font-lg mb-0" }, [_vm._v("Trade note:")])
+    ])
   }
 ]
 render._withStripped = true
@@ -45920,6 +46421,7 @@ var render = function() {
           !_vm.loading
             ? _c(
                 "div",
+                { staticClass: "border-top" },
                 _vm._l(_vm.trades, function(trade) {
                   return _c(
                     "div",
@@ -45932,137 +46434,175 @@ var render = function() {
                     [
                       _c(
                         "div",
-                        { staticClass: "d-flex align-items-center w-100" },
+                        { staticClass: "d-md-flex align-items-center w-100 " },
                         [
-                          _c("div", { staticClass: "p-3 " }, [
-                            _c("img", {
-                              staticStyle: { height: "210px", width: "230px" },
-                              attrs: {
-                                src: "/storage/trades/" + trade.trade_img,
-                                alt: ""
-                              }
-                            })
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "py-3 pl-0" }, [
-                            _c("div", {}, [
-                              _c(
-                                "h4",
-                                { staticClass: "font-weight-bold m-0" },
-                                [
-                                  _vm._v(_vm._s(trade.symbol) + ", "),
-                                  _c("span", { staticClass: "font-lg" }, [
-                                    _vm._v(
-                                      _vm._s(trade.time_frame) +
-                                        " / " +
-                                        _vm._s(trade.type_side) +
-                                        " •\n                                        " +
-                                        _vm._s(trade.quantity)
-                                    )
-                                  ])
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "p",
-                                {
-                                  staticClass: "font-weight-bolder lighter pb-1"
+                          _c(
+                            "div",
+                            { staticClass: "d-none d-lg-block p-3 trade-img" },
+                            [
+                              _c("img", {
+                                staticStyle: {
+                                  height: "210px",
+                                  width: "230px"
                                 },
-                                [
-                                  _vm._v(
-                                    " " +
-                                      _vm._s(trade.pl_currency) +
-                                      " " +
-                                      _vm._s(
-                                        trade.portfolio
-                                          ? trade.portfolio.currency
-                                          : ""
-                                      ) +
-                                      " / " +
-                                      _vm._s(trade.pl_pips) +
-                                      " pips / -0.98 % "
-                                  )
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "pb-3 d-flex" }, [
+                                attrs: {
+                                  src: "/storage/trades/" + trade.trade_img,
+                                  alt: ""
+                                }
+                              })
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "py-3 pl-0 mb-auto px-3 px-lg-0 " },
+                            [
+                              _c("div", {}, [
+                                _c(
+                                  "h4",
+                                  {
+                                    staticClass: "font-weight-bold m-0 pointer",
+                                    attrs: {
+                                      "data-target": "#modal_edit_trade",
+                                      "data-toggle": "modal"
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.editTrade(trade)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(trade.symbol) +
+                                        ", \n                                    "
+                                    ),
+                                    _c("span", { staticClass: "font-lg" }, [
+                                      _vm._v(
+                                        _vm._s(trade.time_frame) +
+                                          " / " +
+                                          _vm._s(trade.type_side) +
+                                          " •\n                                            " +
+                                          _vm._s(trade.quantity) +
+                                          "\n                                    "
+                                      )
+                                    ])
+                                  ]
+                                ),
+                                _vm._v(" "),
                                 _c(
                                   "p",
                                   {
                                     staticClass:
-                                      "font-weight-bold m-0 width-50px"
-                                  },
-                                  [_vm._v("Used Strategy: ")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "span",
-                                  {
-                                    staticClass:
-                                      "badge badge-light ml-1 text-muted"
+                                      "font-weight-bolder lighter pb-1"
                                   },
                                   [
                                     _vm._v(
-                                      _vm._s(
-                                        trade.strategy
-                                          ? trade.strategy.name
-                                          : ""
-                                      )
+                                      " " +
+                                        _vm._s(trade.pl_currency) +
+                                        "\n                                    " +
+                                        _vm._s(
+                                          trade.portfolio
+                                            ? trade.portfolio.currency
+                                            : ""
+                                        ) +
+                                        " / " +
+                                        _vm._s(trade.pl_pips) +
+                                        " pips /\n                                    -0.98 % "
                                     )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "pb-3 d-flex" }, [
+                                  _c(
+                                    "p",
+                                    {
+                                      staticClass:
+                                        "font-weight-bold m-0 width-50px"
+                                    },
+                                    [_vm._v("Used Strategy: ")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "span",
+                                    {
+                                      staticClass:
+                                        "badge badge-light ml-1 text-muted"
+                                    },
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          trade.strategy
+                                            ? trade.strategy.name
+                                            : ""
+                                        )
+                                      )
+                                    ]
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "pb-3 d-flex",
+                                    attrs: { v: "" }
+                                  },
+                                  [
+                                    _c(
+                                      "p",
+                                      {
+                                        staticClass:
+                                          "font-weight-bold m-0 width-50px"
+                                      },
+                                      [_vm._v("Entry rules: ")]
+                                    ),
+                                    _vm._v(" "),
+                                    trade.used_entry_rules
+                                      ? _c(
+                                          "div",
+                                          _vm._l(
+                                            trade.used_entry_rules,
+                                            function(rule, index) {
+                                              return _c(
+                                                "span",
+                                                {
+                                                  key: index,
+                                                  staticClass:
+                                                    "badge badge-light text-muted ml-1 mb-1 mb-xl-0"
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    _vm._s(rule.entry_rule.name)
+                                                  )
+                                                ]
+                                              )
+                                            }
+                                          ),
+                                          0
+                                        )
+                                      : _vm._e()
                                   ]
                                 )
                               ]),
                               _vm._v(" "),
-                              _c("div", { staticClass: "pb-3 d-flex" }, [
-                                _c(
-                                  "p",
-                                  {
-                                    staticClass:
-                                      "font-weight-bold m-0 width-50px"
-                                  },
-                                  [_vm._v("Entry rules: ")]
-                                ),
-                                _vm._v(" "),
-                                trade.used_entry_rules
-                                  ? _c(
+                              trade.trade_notes
+                                ? _c("div", {}, [
+                                    _c(
                                       "div",
-                                      _vm._l(trade.used_entry_rules, function(
-                                        rule,
-                                        index
-                                      ) {
-                                        return _c(
-                                          "span",
-                                          {
-                                            key: index,
-                                            staticClass:
-                                              "badge badge-light text-muted ml-1 mb-1 mb-xl-0"
-                                          },
-                                          [_vm._v(_vm._s(rule.entry_rule.name))]
-                                        )
-                                      }),
-                                      0
+                                      { staticClass: "trade-note-div " },
+                                      [
+                                        _c("p", {
+                                          staticClass: "m-0 text-wrap",
+                                          domProps: {
+                                            innerHTML: _vm._s(trade.trade_notes)
+                                          }
+                                        })
+                                      ]
                                     )
-                                  : _vm._e()
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("div", {}, [
-                              _c(
-                                "p",
-                                { staticClass: "m-0 font-weight-bold " },
-                                [_vm._v("Trade note:")]
-                              ),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "trade-note-div" }, [
-                                _c("p", {
-                                  staticClass: "m-0 .text-wrap",
-                                  domProps: {
-                                    innerHTML: _vm._s(trade.trade_notes)
-                                  }
-                                })
-                              ])
-                            ])
-                          ]),
+                                  ])
+                                : _vm._e()
+                            ]
+                          ),
                           _vm._v(" "),
                           _c("div", { staticClass: "timeline-trade ml-auto" }, [
                             _c("div", { staticClass: "timeline p-3" }, [
@@ -46099,18 +46639,15 @@ var render = function() {
                                     "div",
                                     {
                                       staticClass:
-                                        "font-weight-mormal text-muted text-nowrap timeline-content pl-2"
+                                        "font-weight-mormal text-muted  timeline-content pl-2"
                                     },
                                     [
                                       _c(
                                         "span",
-                                        {
-                                          staticClass:
-                                            "font-weight-bolder text-nowrap"
-                                        },
+                                        { staticClass: "font-weight-bolder " },
                                         [
                                           _vm._v(
-                                            "Entry price: " +
+                                            "Entry price:\n                                            " +
                                               _vm._s(trade.entry_price) +
                                               " "
                                           )
@@ -46138,7 +46675,7 @@ var render = function() {
                                       [_vm._v("Duration:")]
                                     ),
                                     _vm._v(
-                                      "\n                                    " +
+                                      "\n                                        " +
                                         _vm._s(
                                           _vm.duration(
                                             trade.entry_date,
@@ -46161,13 +46698,10 @@ var render = function() {
                                   [
                                     _c(
                                       "span",
-                                      {
-                                        staticClass:
-                                          "font-weight-bolder text-nowrap"
-                                      },
+                                      { staticClass: "font-weight-bolder " },
                                       [
                                         _vm._v(
-                                          "SL price: " +
+                                          "SL price:\n                                            " +
                                             _vm._s(trade.stop_loss_price) +
                                             " "
                                         )
@@ -46215,25 +46749,41 @@ var render = function() {
                                     [
                                       _c(
                                         "span",
-                                        {
-                                          staticClass:
-                                            "font-weight-bolder text-nowrap"
-                                        },
+                                        { staticClass: "font-weight-bolder " },
                                         [
                                           _vm._v(
-                                            "Exit price: " +
+                                            "Exit price:\n                                            " +
                                               _vm._s(trade.exit_price)
                                           )
                                         ]
                                       ),
                                       _vm._v(" "),
                                       _c(
-                                        "span",
+                                        "p",
                                         {
-                                          staticClass:
-                                            "font-weight-bolder text-nowrap"
+                                          staticClass: "font-weight-bolder m-0"
                                         },
-                                        [_vm._v("Exit reason: SL Hit ")]
+                                        [
+                                          _vm._v(
+                                            "Exit reason: \n                                            "
+                                          ),
+                                          trade.exit_reason
+                                            ? _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "badge badge-light ml-1 text-muted"
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    _vm._s(
+                                                      trade.exit_reason.name
+                                                    )
+                                                  )
+                                                ]
+                                              )
+                                            : _vm._e()
+                                        ]
                                       )
                                     ]
                                   )
@@ -46241,6 +46791,70 @@ var render = function() {
                               )
                             ])
                           ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "trade-options mx-3 w-100 border-top" },
+                        [
+                          _c(
+                            "div",
+                            {
+                              staticClass: "trade-options-buttons py-2 d-flex "
+                            },
+                            [
+                              _vm._m(10, true),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn ml-auto mr-4",
+                                  attrs: {
+                                    type: "button",
+                                    "data-target": "#modal_edit_trade",
+                                    "data-toggle": "modal"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.editTrade(trade)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "span",
+                                    { staticClass: "material-icons icon-sm" },
+                                    [_vm._v("mode_edit")]
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn",
+                                  attrs: {
+                                    type: "button",
+                                    "data-target": "#modal_delete_trade",
+                                    "data-toggle": "modal"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.deleteTrade(trade)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "span",
+                                    { staticClass: "material-icons icon-sm" },
+                                    [_vm._v("delete")]
+                                  )
+                                ]
+                              )
+                            ]
+                          )
                         ]
                       )
                     ]
@@ -46278,7 +46892,15 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
-      _c("deteils-trade"),
+      _c(
+        "deteils-trade",
+        _vm._b(
+          { attrs: { trade: _vm.form }, on: { update: _vm.update } },
+          "deteils-trade",
+          _vm.$props,
+          false
+        )
+      ),
       _vm._v(" "),
       _c("delete-trade-modal", {
         attrs: { trade: _vm.deleteTradeValue },
@@ -46399,7 +47021,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("th", [
       _c("div", { staticClass: "d-none d-md-block" }, [
-        _vm._v("Type side"),
+        _vm._v("Side"),
         _c("span", { staticClass: "unicode-arrow" }, [_vm._v("⇅")])
       ])
     ])
@@ -46468,6 +47090,16 @@ var staticRenderFns = [
     return _c("div", { staticClass: "timeline-badge" }, [
       _c("span", { staticClass: "material-icons primary " }, [
         _vm._v("trip_origin")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("button", { staticClass: "btn", attrs: { type: "button" } }, [
+      _c("span", { staticClass: "material-icons icon-sm" }, [
+        _vm._v("visibility_off")
       ])
     ])
   }
@@ -47203,6 +47835,15 @@ var render = function() {
                       attrs: { src: this.form.thumbnail_img, alt: "" }
                     })
                   ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.form.errors.has("trade_img")
+                ? _c("p", {
+                    staticClass: "error-output",
+                    domProps: {
+                      textContent: _vm._s(_vm.form.errors.get("trade_img"))
+                    }
+                  })
                 : _vm._e()
             ]),
             _vm._v(" "),
@@ -47292,6 +47933,10 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("h4", { staticClass: "lighter font-500" }, [
           _vm._v("Click here to upload image")
+        ]),
+        _vm._v(" "),
+        _c("p", { staticClass: "dark font-sm" }, [
+          _vm._v("Images, up to 3 MB, jpeg, png, gif ")
         ])
       ]
     )

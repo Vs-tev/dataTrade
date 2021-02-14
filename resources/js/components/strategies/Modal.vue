@@ -1,6 +1,6 @@
 <template>
     <div class="modal" id="modal-strategy">
-        <div class="modal-dialog" v-bind:class="[item.modal == 'delete' ? ' ' : 'modal-xl' ]">
+        <div class="modal-dialog" v-bind:class="[item.modal == 'delete' ? ' ' : 'modal-lg' ]">
             <form class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{item.title}}
@@ -27,6 +27,7 @@
                                 <label tabindex="0" for="img" class="input-file-trigger"> <span
                                         class="material-icons icon-xl indigo">cloud_upload</span>
                                     <h4 class="lighter font-500">Click here to upload image</h4>
+                                    <p class="dark font-sm">Images, up to 2 MB, jpeg, png, gif </p>
                                 </label>
                             </div>
                             <div class="img-content-container" v-if="item.url && item.url !== 'noimage.jpg'">
@@ -92,7 +93,7 @@ export default {
       this.$emit("onFileSelected", this.item.img_strategy);
     },
 
-    onFileSelected() {
+    onFileSelected: function () {
       this.item.img_strategy = event.target.files[0];
       this.item.url = URL.createObjectURL(this.item.img_strategy);
       this.item.img_mode = true;

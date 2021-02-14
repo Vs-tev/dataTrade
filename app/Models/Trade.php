@@ -13,6 +13,22 @@ class Trade extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+    'trade_img',
+    'symbol',
+    'type_side',
+    'quantity',
+    'entry_price',
+    'exit_price',
+    'stop_loss_price',
+    'time_frame',
+    'entry_date',
+    'exit_date',
+    'trade_notes',
+    'trade_img',
+    'strategy',
+    'exit_reason'
+    ];
     public function user(){
         return $this->belongsTo(User::class);
     }
@@ -31,6 +47,10 @@ class Trade extends Model
 
     public function strategy(){
         return $this->belongsTo(Strategy::class);
+    }
+
+    public function exit_reason(){
+        return $this->belongsTo(ExitReason::class);
     }
 
     protected $casts = [

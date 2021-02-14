@@ -25,16 +25,27 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {   
-       /*  test how to send data to vue component in traderecord
-        View::composer(['dashboardpages.trading.trade_record'], function($view){
-            $view->with('trade', \App\Models\Trade::all());
-        }); */
+        /**Trade History*/
         View::composer(['dashboardpages.trading.trade_history'], function($view){
             $view->with('portfolios', \App\Models\Portfolio::where('user_id', auth()->id())
             ->orderBy('is_active', 'DESC')
             ->get());
         });
 
+        View::composer(['dashboardpages.trading.trade_history'], function($view){
+            $view->with('strategy', \App\Models\Strategy::where('user_id', auth()->id())->get());
+        });
+
+        View::composer(['dashboardpages.trading.trade_history'], function($view){
+            $view->with('exitReasons', \App\Models\ExitReason::where('user_id', auth()->id())->get());
+        });
+
+        View::composer(['dashboardpages.trading.trade_history'], function($view){
+            $view->with('entryRules', \App\Models\EntryRules::where('user_id', auth()->id())->get());
+        });
+
+
+        /**Trade Record*/
         View::composer(['dashboardpages.trading.trade_record'], function($view){
             $view->with('strategy', \App\Models\Strategy::where('user_id', auth()->id())->get());
         });

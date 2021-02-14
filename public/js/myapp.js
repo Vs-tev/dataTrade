@@ -26,12 +26,6 @@ $(function (){
         $('#cover').toggleClass('backdrop-class');
     })
 
-    $('.close-trade-deteils').on('click', function(){
-        $('#trade_deteils').toggleClass('toggle-container');
-        $('#cover').toggleClass('backdrop-class');
-    })
-
-
     //Trade History switch view 
     $('#choose-table-view').on('click',function(){
         $('#table-view').show();
@@ -44,7 +38,7 @@ $(function (){
 
 })
 
-/* img slide  */
+/* img slide  
 
 var slideIndex = 1;
 showSlides(slideIndex);
@@ -66,11 +60,12 @@ function showSlides(n) {
   for (i = 0; i < slides.length; i++) {
       slides[i].style.display = "none";
   }
-  for (i = 0; i < img.length; i++) {
-    img[i].className = img[i].className.replace("active-img", "");
+    for (i = 0; i < img.length; i++) {
+        img[i].className = img[i].className.replace("active-img", "");
+    }
+        if(img[slideIndex-1] != undefined){
+        img[slideIndex-1].className += "active-img";
+        slides[slideIndex-1].style.display = "block";
+    }
 }
-    if(img[slideIndex-1] != undefined){
-    img[slideIndex-1].className += "active-img";
-    slides[slideIndex-1].style.display = "block";
-}
-}
+*/

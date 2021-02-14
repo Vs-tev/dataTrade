@@ -110,7 +110,6 @@ class StrategyController extends Controller
     public function update(Request $request, $id)
     {
        
-      
         $strategy = Strategy::findOrFail($id);
         if(request('img_strategy') == $strategy->img_strategy){
             $fileNameToStore = $strategy->img_strategy;

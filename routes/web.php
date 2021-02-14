@@ -76,6 +76,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboardPages/traderecord'],
 /* Trade Hstory */
 Route::view('/dashboardPages/tradehistory', 'dashboardpages.trading.trade_history')->middleware('auth');
 Route::get('/dashboardPages/tradehistory/g', 'TradeController@tradehistoryTradesTable');
+Route::post('/dashboardPages/tradehistory/u/{id}', 'TradeController@update');
 Route::post('/dashboardPages/tradehistory/d/{id}', 'TradeController@destroy');
 
 

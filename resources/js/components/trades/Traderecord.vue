@@ -160,6 +160,7 @@
                                 <label tabindex="0" for="img" class="input-file-trigger text-center"> <span
                                         class="material-icons icon-xl indigo ">cloud_upload</span>
                                     <h4 class="lighter font-500">Click here to upload image</h4>
+                                    <p class="dark font-sm">Images, up to 3 MB, jpeg, png, gif </p>
                                 </label>
                             </div>
                             <div class="img-content-container" v-if="form.trade_img">
@@ -168,7 +169,10 @@
                                 </div>
                                 <img class="url-img" :src="this.form.thumbnail_img" alt="">
                             </div>
+                             <p class="error-output" v-if="form.errors.has('trade_img')"
+                            v-text="form.errors.get('trade_img')"></p>
                         </div>
+                       
                         <textarea class="form-control" v-model="form.description" cols="30" rows="10"></textarea>
                         <!-- <texteditor  class=""></texteditor> -->
                     </div>
@@ -275,10 +279,10 @@ export default {
 
   methods: {
     checkResponseStatus(error) {
-      if (error.res.status === 419 || error.res.status == 401) {
+      if (error.response.status === 419 || error.response.status == 401) {
         window.location.href = "/login";
       } else {
-        this.form.errors.record(error.res.data.errors);
+        this.form.errors.record(error.response.data.errors);
       }
     },
 
@@ -332,10 +336,13 @@ export default {
           //this is send to navbar
           this.$root.$emit("portfolio_balance", res.data[0]); // optional we can put second argumen -> this.$root.$emit("portfolio_balance", data)
         })
-        .catch((error) => {});
+        .catch((error) => {
+          this.checkResponseStatus(error);
+        });
     },
 
     recordTrade() {
+      //console.log(this.form.trade_img);
       const data = new FormData();
       data.append("symbol", this.form.symbol);
       data.append("type_side", this.form.type_side);
