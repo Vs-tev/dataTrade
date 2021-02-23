@@ -1,24 +1,24 @@
 <template>
-    <div class="row justify-content-center p-4">
-     
-        <div class="col-12 col-md-8 pb-3 p-0">
-            <div class="dashboard_container_content border d-flex align-items-center">
-                <img src="/storage/icons/create.svg" alt="">
-                <span v-on:click="create" data-target="#modal-form" data-toggle="modal"
-                    class="font-lg ml-2 font-500 pointer">
-                    Create Recording Portfolio
-                </span>
-            </div>
-        </div>
-        
+    <div class="row justify-content-center p-4"> 
+      <div class="col-12 col-md-8 pb-3 p-0">
+          <div class="dashboard_container_content border d-flex align-items-center">
+              <img src="/storage/icons/create.svg" alt="">
+              <span v-on:click="create" data-target="#modal-form" data-toggle="modal"
+                  class="font-lg ml-2 font-500 pointer">
+                  Create Recording Portfolio
+              </span>
+          </div>
+      </div>
+              
       <!--   <div v-for="item in items[0]" :key="item.id">
         <h4>{{item.name}}</h4>
         </div>
          -->
-        <main class="col-12 col-md-8 p-0 new-item">
+         
+        <main class="col-12 col-md-8 p-0 new-item" v-if="items.portfolio">
            <div class="dashboard_container_content portfolio-wrapper border p-0" :class="{'inactive_portfolio': item.is_active == 0 }"
                     v-for="(item, index) in items.portfolio" :key="item.id">
-              <div class="container-portfolio-action-buttons d-flex justify-content-between align-items-center py-3 mb-2">
+              <div class="container-portfolio-action-buttons d-flex justify-content-between align-items-center p-3 mb-2">
                      <div class="custom-control custom-switch switch_portfolio">
                        <div v-if="items.portfolio.length > 1">
                         <input @click="toogleActive(item, $event)" type="checkbox"
@@ -39,12 +39,11 @@
                                 </button>
                       </div>
               </div>
-            
                <div class="chart-wrapper">
-                        <apexchart type="area" height="220" 
+                        <apexchart type="area" height="180" 
                         :options="{chart:{
                             width:'100%', 
-                            height: 160,
+      
                             type: 'area', 
                             sparkline: {
                               enabled: true,
@@ -75,7 +74,7 @@
                             },
                           },
                             subtitle: {
-                              text: item.name + '-' + item.started_at,
+                              text: item.name + ' • ' + item.started_at,
                               align: 'center',
                               margin: 10,
                               offsetX: 0,

@@ -19,7 +19,8 @@ class CreateBalanceTable extends Migration
             $table->dateTime('action_date');
             $table->string('action_type');
             $table->timestamps();
-            $table->foreignId('portfolio_id')->constrained()->onDelete('cascade')->onDelete('cascade');;
+            $table->boolean('is_except')->default('false');
+            $table->foreignId('portfolio_id')->constrained()->onDelete('cascade');
             $table->foreignId('trade_id')->nullable()->constrained('trades')->onDelete('cascade');
         });
     }

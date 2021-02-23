@@ -20,7 +20,10 @@ class StrategyController extends Controller
     public function index()
     {
         $strategy = Strategy::latest();
-        $strategy = $strategy->where('user_id', auth()->id())
+        $strategy = $strategy->withCount(['trade as total_trades','trade as winning_trades' => function($query){
+            $query->where('pl_currency', '>=', 0);
+        }])
+        ->where('user_id', auth()->id())
         ->get();
 
         //return view('dashboardpages.strategy.strategy', compact('strategy'));

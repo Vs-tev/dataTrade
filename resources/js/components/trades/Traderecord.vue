@@ -1,32 +1,35 @@
 <template>
     <form action="">
-        <section class="dashboard_container_content p-0 pb-4">
+        <section class="dashboard_container_content p-0">
             <div class="border-bottom p-4">
                 <h4 class="font-weight-500 m-0">Trade record pandel</h4>
             </div>
-            <div class="d-lg-flex flex-block p-4">
+            <div class="d-lg-flex flex-block px-4 pt-4">
                 <!-- trade inputs -->
                 <div class="new_trade_inputs_300 mx-auto">
-                    <div class="btn-group btn-group-toggle buy-sell-div col-12 p-0 mt-0" data-toggle="buttons"
-                        id="type">
-                        <button class="btn btn-type-buy buy btn-sm col-6 active" type="button" @click="buy">
-                            <input class="buy" type="radio" name="type_side" id="type_buy" checked>BUY
-                        </button>
-                        <button class="btn btn-type-sell sell col-6 btn-sm" type="button" @click="sell">
-                            <input class="sell" type="radio" name="type_side" id="type_sell">SELL
-                        </button>
-                    </div>
+                
+               
+                      <div class="btn-group btn-group-toggle buy-sell-div col-12 p-0 mt-0" data-toggle="buttons"
+                          id="type">
+                          <button class="btn btn-type-buy buy btn-sm col-6 active" type="button" @click="buy">
+                              <input class="buy" type="radio" name="type_side" id="type_buy" checked>BUY
+                          </button>
+                          <button class="btn btn-type-sell sell col-6 btn-sm" type="button" @click="sell">
+                              <input class="sell" type="radio" name="type_side" id="type_sell">SELL
+                          </button>
+                      </div>
+                   
+                
+             
                     <!-- symbol/time frame -->
                     <div class="d-flex justify-content-between mt-4 symbol-time_frame">
                         <div class="form-group">
-                            <label for="symbol">Symbol <span>*</span></label>
                             <select v-model="form.symbol" class="form-control">
                                 <option value="AUD/CAD" selected>AUD/CAD</option>
                                 <option value="EUR/CAD">EUR/CAD</option>
                             </select>
                         </div>
                         <div class="">
-                            <label for="Time frame">Time frame</label>
                             <select v-model="form.time_frame" class="form-control" name="time_frame">
                                 <option selected="" value="1 min">1 min</option>
                                 <option value="5 min">5 min</option>
@@ -66,6 +69,7 @@
                                 :class="{'is-invalid': form.errors.has('stop_loss_price')}"
                                 @input="form.errors.clear('stop_loss_price')">
                         </div>
+                          <span class="font-sm lighter error-trade-p position-absolute" v-if="!form.errors.has('entry_price') && !form.errors.has('exit_price') && !form.errors.has('stop_loss_price')">Risk reward: {{risk_reward_ratio}}</span>
                         <p class="error-output error-trade-p" v-if="form.errors.has('entry_price') || form.errors.has('exit_price') || form.errors.has('stop_loss_price')" v-text="'Price format is invalid'"></p>
                     </div>
                     
@@ -91,11 +95,10 @@
                               :isDateDisabled="isFutureDate"
                               :inputAttributes="{readonly: true}" 
                                 :format="'YYYY-MM-DD HH:mm'"
-                               
                                 @input="form.errors.clear('exit_date')"
                                 :class="{'is-invalid': form.errors.has('exit_date')}">
                             </date-pick>
-                            <span class="font-sm lighter p-0" v-if="duration && !form.errors.has('entry_date') && !form.errors.has('exit_date')">{{duration}}</span>
+                            <span class="font-sm lighter p-0" v-if="duration && !form.errors.has('entry_date') && !form.errors.has('exit_date')">Trade duration: {{duration}}</span>
                             <p class="error-output w-25 p-0" v-if="form.errors.has('entry_date')"
                                 v-text="form.errors.get('entry_date')"></p>
                             <p class="error-output w-25 p-0" v-if="!form.errors.has('entry_date') && form.errors.has('exit_date')"
@@ -133,34 +136,35 @@
                                 :preselect-first="false">
                                 <template slot="selection" slot-scope="{ values, isOpen  }"><span
                                         class="multiselect__single"
-                                        v-if="values.length &amp;&amp; !isOpen">{{ values.length }} rules
+                                        v-if="values.length &amp;&amp; !isOpen">{{ values.length }} entry rules
                                         selected</span>
                                 </template>
                             </multiselect>
                         </div>
-                        
                         <multiselect v-model="form.exit_reason_id" :options="exit_reason" :searchable="false"
                             :close-on-select="true" :show-labels="false" track-by="id" label="name"
                             placeholder="Exit Reason"></multiselect>
 
-                       
                         <multiselect v-model="form.strategy_id" :options="strategies" :searchable="false"
                             :close-on-select="true" :show-labels="false" track-by="id" label="name"
                             placeholder="Strategy">
                         </multiselect>
                     </div>
+            
                 </div>
                 <!-- Img/commentar -->
-                <div class="flex-grow-1 img-commentar-div ml-md-4">
+                <div class="flex-grow-1 img-commentar-div ml-lg-4">
                     <div class="">
                         <div class="trade_img text-center mb-4">
                             <div class="input-file-container js" v-if="!form.trade_img">
                                 <input class="d-none" @change="onFileSelected" id="img" name="img" type="file"
                                     accept="image/x-png,image/gif,image/jpeg">
-                                <label tabindex="0" for="img" class="input-file-trigger text-center"> <span
-                                        class="material-icons icon-xl indigo ">cloud_upload</span>
+                                <label tabindex="0" for="img" class="input-file-trigger d-flex justify-content-center align-items-center"> 
+                                  <div>
+                                    <span class="material-icons icon-xl indigo ">cloud_upload</span>
                                     <h4 class="lighter font-500">Click here to upload image</h4>
                                     <p class="dark font-sm">Images, up to 3 MB, jpeg, png, gif </p>
+                                  </div>
                                 </label>
                             </div>
                             <div class="img-content-container" v-if="form.trade_img">
@@ -172,12 +176,13 @@
                              <p class="error-output" v-if="form.errors.has('trade_img')"
                             v-text="form.errors.get('trade_img')"></p>
                         </div>
-                       
-                        <textarea class="form-control" v-model="form.description" cols="30" rows="10"></textarea>
+                       <label>Trade note:</label>
+                        <textarea class="form-control" v-model="form.description" cols="30" rows="12" placeholder="Write your analysis or thoughts about this trade"></textarea>
                         <!-- <texteditor  class=""></texteditor> -->
                     </div>
-
+                  
                 </div>
+              
             </div>
 
             <div class="d-flex justify-content-end p-4">
@@ -222,6 +227,8 @@ export default {
         entry_date: "",
         exit_date: "",
         pl_currency: "",
+        current_trade_return: "",
+        risk_reward: "",
         fees: "",
         pl: "",
         pl_pips: "",
@@ -231,8 +238,6 @@ export default {
         exit_reason_id: "",
         entry_rule_id: [],
         strategy_id: "",
-        height: "396",
-        placeholder: "Write you thougts about this trade",
       }),
     };
   },
@@ -242,6 +247,21 @@ export default {
   },
 
   computed: {
+    risk_reward_ratio: function () {
+      var entry = this.form.entry_price;
+      var exit = this.form.exit_price;
+      var stop = this.form.stop_loss_price;
+      if (entry && exit && stop) {
+        var result = ((entry - exit) / (stop - entry) || 0).toFixed(2);
+        if (isFinite(result)) {
+          this.form.risk_reward = result;
+          return result;
+        } else {
+          this.form.risk_reward = 0;
+          return 0;
+        }
+      }
+    },
     duration: function () {
       var entry = new Date(this.form.entry_date);
       var exit = new Date(this.form.exit_date);
@@ -269,11 +289,11 @@ export default {
     },
 
     trade_return: function () {
-      return (
-        ((this.form.pl / this.portfolio.current_balance || 0) * 100).toFixed(
-          2
-        ) + "%"
-      );
+      var trade_return = (
+        (this.form.pl / this.portfolio.current_balance || 0) * 100
+      ).toFixed(2);
+      this.form.current_trade_return = trade_return;
+      return trade_return + "%";
     },
   },
 
@@ -358,6 +378,8 @@ export default {
       data.append("pl_pips", this.form.pl_pips);
       data.append("trade_notes", this.form.description);
       data.append("trade_img", this.form.trade_img);
+      data.append("trade_return", this.form.current_trade_return);
+      data.append("risk_reward", this.form.risk_reward);
       if (this.form.exit_reason_id) {
         data.append("exit_reason_id", this.form.exit_reason_id.id);
       }

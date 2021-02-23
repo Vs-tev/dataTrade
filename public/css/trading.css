@@ -150,9 +150,11 @@
 }
 
 .table-div-min-height {
-    min-height: 305px;
+    min-height: 240px;
 
 }
+
+
 
 @media screen and (max-width: 1730px) {
     .main-content-container .trade-record-container {
@@ -175,6 +177,12 @@
     }
 }
 
+@media screen and (max-width: 992px) {
+    .img-commentar-div {
+        margin-top: 110px;
+    }
+}
+
 @media screen and (max-width: 768px) {
     .main-content-container .trade-record-container {
         left: 0 !important;
@@ -186,6 +194,10 @@
     }
 }
 
+/*table view*/
+.trade-history-thead tr th {
+    cursor: pointer;
+}
 
 /*largearge-row-view*/
 
@@ -238,7 +250,7 @@
 }
 
 .timeline-trade .timeline-content {
-    width: 200px;
+    min-width: 150px;
     overflow: hidden;
 }
 
@@ -309,6 +321,12 @@
     width: 100%;
 }
 
+.badge-rules {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 @media (max-width:992px) {
     .editable-item {
         display: block;
@@ -330,3 +348,4 @@
         width: 100%
     }
 }
+

@@ -5,22 +5,35 @@
                 <p class="lighter font-500 mb-0">All recorded trades in one place</p>
             </div>
             <div class="d-md-flex flex-wrap mb-3 px-2 pt-3">
-                <div class="form-group col-12 col-md-3 col-lg-3 ">
+                <div class="form-group col-12 col-lg-3 ">
                     <label>Portfolio:</label>
-                    <select v-model="selectedPortfolio" class="form-control" @change="change_portfolio">
-                        <option :value="portfolio.id" v-for="(portfolio, index) in portfolios" :key="index">{{portfolio.name}}</option>
-                    </select>
+                    <multiselect v-model="selectedPortfolio" @input="change_portfolio" :options="portfolios" :searchable="false" 
+                            :close-on-select="true" :allow-empty="false"  :show-labels="false" label="name" track-by="id">
+                    </multiselect>
+
                 </div>
-                <div class="form-group col-12 col-md-3 col-lg-3 mt-3 mt-lg-0">
+                 <div class="form-group col-12 col-lg-2 mt-3 mt-lg-0">
+                  <label>Sort by frame</label>
+                    <multiselect v-model="selected_frame" @input="sort_by_time_frame" :options="time_frame" :multiple="true"
+                        :close-on-select="false" :preserve-search="false" :show-labels="false"
+                         :searchable="false"
+                        :preselect-first="false">
+                        <template slot="selection" slot-scope="{ values, isOpen  }"><span
+                                class="multiselect__single"
+                                v-if="values.length &amp;&amp; !isOpen">{{ values.length }} time frames
+                                </span>
+                        </template>
+                    </multiselect>
+                </div>
+                <div class="form-group col-12 col-lg-2 mt-3 mt-lg-0">
                     <label>Show:</label>
-                    <select v-model="sort_pl" @change="sort_by_profit" class="form-control" name="sort_by_profit">
-                        <option value="all" selected="selected">All</option>
-                        <option value="winners">Winners</option>
-                        <option value="losers">Losers</option>
-                    </select>
+                     <multiselect  v-model="sort_pl" @input="sort_by_profit" :options="sort_by" :searchable="false"
+                            :close-on-select="true" :show-labels="false" :allow-empty="false"
+                            placeholder="All">
+                    </multiselect>
                 </div>
+
                 <div class="form-group col mt-3 mt-lg-0">
-                
                     <label for="date">Trade Date:</label>
                     <div class="d-flex">
                         <div>
@@ -59,29 +72,45 @@
                             </date-pick>
                         </div>
                     </div>
-
                 </div>
+
             </div>
             <div class="d-flex col-12 px-4 pb-4">
-                <button type="button" class="btn btn-secondary">
-                    <span class="material-icons text-muted mr-1">clear</span>
-                    Reset
-                </button>
-                <h1></h1>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="except_trade" @change="toggle_excepted_trade" class="custom-control-input" id="exept_trades" name="example1">
+                    <label class="custom-control-label" for="exept_trades">Except trades</label>
+                </div>
             </div>
         </section>
 </template>
 <script>
 import DatePick from "vue-date-pick";
+import Multiselect from "vue-multiselect";
 export default {
   name: "SortingTrades",
-  components: { DatePick },
+  components: { DatePick, Multiselect },
   props: ["portfolios"],
   data() {
     return {
+      time_frame: [
+        "1 min",
+        "5 min",
+        "15 min",
+        "30 min",
+        "1 hour",
+        "2 hours",
+        "4 hours",
+        "1 day",
+        "1 week",
+        "1 month",
+      ],
+      sort_by: ["All", "Winners", "Losers"],
+
+      selected_frame: [],
       start_date: "",
       exit_date: "",
-      sort_pl: "all",
+      sort_pl: "All",
+      except_trade: "",
       selectedPortfolio: this.$props.portfolios,
     };
   },
@@ -106,11 +135,14 @@ export default {
 
   methods: {
     setSelectedPortfolio() {
-      this.selectedPortfolio = this.$props.portfolios[0].id;
+      this.selectedPortfolio = this.$props.portfolios[0];
     },
 
     change_portfolio: function () {
-      this.$emit("change_portfolio", this.selectedPortfolio);
+      this.$emit("change_portfolio", this.selectedPortfolio.id);
+    },
+    sort_by_time_frame: function () {
+      this.$emit("sort_by_time_frame", this.selected_frame);
     },
     sort_by_profit: function () {
       this.$emit("sort_by_profit", this.sort_pl);
@@ -129,6 +161,10 @@ export default {
       this.exit_date = "";
       this.searchDateRange();
     },
+
+    toggle_excepted_trade() {
+      this.$emit("toggle_excepted_trade", this.except_trade);
+    },
   },
 };
 </script>
@@ -137,11 +173,11 @@ export default {
 .toggle-calendar[data-v-44cb10b9] {
   width: 190px;
   text-align: left;
-  height: calc(1.6em + 0.8rem + 2px);
-  padding: 0.4rem 0.45rem;
+  height: calc(1.4em + 0.75rem + 2px);
+  padding: 0.4rem 0.25rem;
   font-size: var(--font-normal);
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.2;
   color: var(--primary-color);
   background-color: #fff;
   background-clip: padding-box;
@@ -154,9 +190,14 @@ export default {
   background: none;
   border: 0;
   text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .toggle-calendar[data-v-44cb10b9][data-v-44cb10b9] span {
-  padding: 3.5px;
+  padding: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
 }
 .start_date[data-v-44cb10b9][data-v-44cb10b9]:first-of-type {
@@ -189,7 +230,7 @@ export default {
 }
 @media screen and (max-width: 947px) {
   .toggle-calendar[data-v-44cb10b9][data-v-44cb10b9] {
-    width: 130px;
+    width: 140px;
   }
 }
 </style>

@@ -36,6 +36,7 @@ class TradeFactory extends Factory
             'pl_currency' => rand(-150, 250),
             'pl_pips' => rand(-50, 250),
             'fees' => rand(2, 12),
+            'trade_img' => 'noimage.jpg',
             'trade_notes' => 'asjdhbaskjdnaksdjnasjdnlasdk',
         ];
     }

@@ -27,7 +27,7 @@ class TradeController extends Controller
     }
     
     public function tradehistoryTradesTable(Request $request){
-        //dd($request->column[1]);
+        
         $trades = new Trade;
 
         if($request->start_date !== null){
@@ -36,10 +36,14 @@ class TradeController extends Controller
         if($request->end_date !== null){
             $trades = $trades->where('exit_date', '<=' ,$request->end_date);
         }
-
-        if($request->sort_pl == 'winners'){
+        //dd($request->p_id);
+        if($request->time_frame){
+            $trades = $trades->whereIn('time_frame', $request->time_frame);
+        }
+        //dd($request->sort_pl);
+        if($request->sort_pl == 'Winners'){
             $trades = $trades->where('pl_currency', '>=', 0);
-        }else if($request->sort_pl == 'losers'){
+        }else if($request->sort_pl == 'Losers'){
             $trades = $trades->where('pl_currency', '<', 0);
         };
 
@@ -50,14 +54,20 @@ class TradeController extends Controller
             $trades = $trades->orderBy($request->column[0], $request->column[1]);
         };
 
-        $trades = $trades->where([
+        if($request->boolean('except_trade') == true){
+            $trades->whereHas('balance', function($query){
+                $query->where('is_except', 1);
+            }); 
+        }
+
+        $trades = $trades->with(['portfolio', 'strategy', 'used_entry_rules.entry_rule', 'exit_reason', 'balance', 'trade_performance'])
+        ->where([
             ['user_id', auth()->id()],
             ['portfolio_id', $request->p_id],
         ])
-        ->with(['portfolio', 'strategy', 'used_entry_rules.entry_rule', 'exit_reason'])
         ->orderBy('exit_date', 'desc')
         ->paginate(request()->display);
-        
+
         return $trades;
     }
 
@@ -69,7 +79,7 @@ class TradeController extends Controller
             ['user_id', auth()->id()]
             ])
         ->orderBy('exit_date', 'DESC')
-        ->limit(6)
+        ->limit(5)
         ->get();
         return $trade;
     }
@@ -91,7 +101,6 @@ class TradeController extends Controller
      */
     public function store(Request $request)
     {
-
         $this->validate(request() ,[
             'type_side' => ['required', Rule::in(['buy', 'sell'])],
             'quantity' => ['required', 'numeric','min:0','max:99999999999'],
@@ -148,8 +157,10 @@ class TradeController extends Controller
         $trade->portfolio_id = \App\Models\Portfolio::isactive()->first();
         $trade->user_id = auth()->id();        
 
+        //dd($request);
         $trade->save();
-        $trade->add_to_balance($trade);
+        $trade->add_to_balance($trade); //Trade Model
+        $trade->add_to_trade_performance($request);
         if($request->input('entry_rule_id')){
             $trade->add_to_used_entry_rules($request);//ot tuk schte vzema portfolio_id, trade id
         }
@@ -172,9 +183,16 @@ class TradeController extends Controller
      * @param  \App\Models\Trade  $trade
      * @return \Illuminate\Http\Response
      */
-    public function edit(Trade $trade)
+    public function update_excepted_trade(Trade $trade, $id)
     {
+        $trade = Trade::where('user_id', auth()->id())->find($id);
        
+        if($trade->balance->is_except == 0){
+            $trade->balance()->update(['is_except' => 1]);
+        }else{
+            $trade->balance()->update(['is_except' => 0]);
+        }
+        
     }
 
     /**
@@ -198,8 +216,6 @@ class TradeController extends Controller
             //'exit_date' => ['required', 'date', 'after_or_equal: '.$request->input('entry_date').''],
             'exit_reason_id' => 'exists:App\Models\ExitReason,id',
             'strategy_id' => 'exists:App\Models\Strategy,id',
-            //'trade_img' => 'image|mimes:jpeg,png,jpg,gif,svg|nullable|max:2999',
-            
             'trade_notes' => ['nullable','max:10000'],
         ]);
 
@@ -215,9 +231,10 @@ class TradeController extends Controller
         $trade->trade_notes = $request->input('trade_notes');
         $trade->strategy_id = $request->input('strategy_id');
         $trade->exit_reason_id = $request->input('exit_reason_id');
-
         $used_entry_rules = $trade->used_entry_rules();
         $used_entry_rules->delete();
+
+        $trade->trade_performance()->update(['ratio' => $request->input('risk_reward')]);   
 
         if($request->input('entry_rule_id')){
             $trade->add_to_used_entry_rules($request);
@@ -232,15 +249,10 @@ class TradeController extends Controller
             ],
             ['trade_img.image' => 'Allowed file types: jpg,png,gif']
             );
-             //Get filename with extention
              $filenameWithExt = request()->file('trade_img')->getClientOriginalName();
-             //Get just filename
              $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-             //Get just ext
              $extention = request()->file('trade_img')->getClientOriginalExtension();
-             //Filename to store
              $fileNameToStore = $filename.'_'.time().'.'.$extention;
-             //Upload Image
              $path = request()->file('trade_img')->storeAs('public/trades', $fileNameToStore);
              if($trade->trade_img !== 'noimage.jpg'){
                 Storage::delete('public/trades/'.$trade->trade_img);
@@ -252,8 +264,8 @@ class TradeController extends Controller
                 }
             }
         }
-
         $trade->trade_img = $fileNameToStore;
+
         $trade->save();
 
         return $trade;

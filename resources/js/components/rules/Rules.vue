@@ -19,7 +19,7 @@
                         <thead>
                             <tr>
                                 <th class="font-500 font-md">{{this.thTitle}}</th>
-                                <th class="lighter font-md font-500 d-none d-md-flex"># TRADES</th>
+                                <th class="lighter font-md font-500 d-none d-md-flex"># USED</th>
                                 <th class="lighter font-md font-500 ">
                                     <div class="d-none d-md-block">SUCCESS</div>
                                 </th>
@@ -37,14 +37,14 @@
                                             <p class="m-0 p-0 lighter font-md font-500">Created: <span>{{rule.created_at}}</span></p>
                                         </div>
                                     </div>
-
                                 </td>
-                                <td class="d-none d-md-block">12 Trades
-                                    <p class="m-0 p-0 lighter font-md font-500">Last: 6 days ago</p>
+                                <td class="d-none d-md-block">{{rule.used_rules_count}} Trades
                                 </td>
                                 <td class="">
                                     <span
-                                        class="d-none d-md-inline badge badge-light font-sm font-500 text-muted">28%</span>
+                                        class="d-none d-md-inline badge badge-light font-sm font-500 text-muted" 
+                                        v-html="rule.used_rules_count ? ((rule.rules_in_winn_trades / rule.used_rules_count)*100).toFixed(2) + '%' : '0.00%' ">
+                                        </span>
                                 </td>
                                 <td>
                                     <div class="d-flex align-content-center">
@@ -161,7 +161,7 @@ export default {
 
       axios
         .post(
-          "/dashboardPages/tradingrules/" + this.typeRule + "/d/" + item_id,
+          "/dashboardPages/tradingrules/" + this.typeRule + "/u/" + item_id,
           data
         )
         .then((res) => {

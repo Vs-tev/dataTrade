@@ -3,10 +3,7 @@
       <br>
          <donut-chart :data="winrate"></donut-chart>
         <div>
-           
-                <apexchart type="area" ref="realtimeChart" :options="options" :series="series"></apexchart>
-          
-            <br>
+         <apexchart type="area" ref="realtimeChart" :options="options" :series="series"></apexchart>
             <br>
             <div class="table-div-min-height">
             <table class="table table-sm table-hover">
@@ -17,20 +14,26 @@
                         <th>Profit</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody v-if="trades.length">
                     <tr v-for="(item, index) in trades" :key="index" class="text-center">
                         <td class="text-muted font-500">{{item.symbol}}</td>
                         <td class="font-500">{{item.exit_date}}</td>
                         <td class="font-500" :class="item.pl_currency < 0 ?'red' : 'primary' ">{{item.pl_currency}}</td>
                     </tr>
                 </tbody>
+                <tbody v-else>
+                  <tr>
+                    <td colspan="3" class="border-0 text-center font-weight-500">No recorded trades</td>
+                  </tr>
+                </tbody>
             </table>
             <div v-if="loading" class="d-flex justify-content-center align-items-center container_for_small_trades_table">
                 <div class="spinner-border lighter"></div>
               </div>
-            <div class="text-right px-4 pb-4 pt-2">
-               <a type="button" href="./tradehistory" class="lighter"> See all trades</a>
+           
             </div>
+             <div class="text-right px-4 pb-4 pt-2">
+               <a type="button" href="./tradehistory" class="lighter"> See all trades</a>
             </div>
         </div>
     </div>
@@ -88,7 +91,7 @@ export default {
         title: {
           text: "",
           align: "center",
-          margin: 20,
+          margin: 0,
           offsetX: 0,
           style: {
             fontSize: "22px",

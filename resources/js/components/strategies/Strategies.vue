@@ -35,34 +35,29 @@
                     </div>
                     <div class="">
                       <div class="border-bottom py-3 px-4">
-                         <span class="lighter font-500">Description:</span>
+                         <label class="">Description:</label>
                       </div>
                         <div class="d-flex align-items-top strategy_description_div p-1 p-md-4">
                             <p class="text-break" v-html="strategy.description"></p>
                          </div>
                     </div>
-                    <div class="d-flex justify-content-around border-top p-3">
-                        <div class="d-flex align-items-center">
-                            <img src="/storage/icons/list.svg" alt="" >
-                            <div class="ml-2">
-                                <p class="p-0 m-0">Trades</p>
-                                <h5 class="">&#35; 81</h5>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center ">
-                            <img src="/storage/icons/area-line.svg" alt="">
-                            <div class="ml-2">
-                                <p class="p-0 m-0">Success</p>
-                                <h5 class="">45,85 %</h5>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center ">
-                            <img src="/storage/icons/area-line.svg" alt="">
-                            <div class="ml-2">
-                                <p class="p-0 m-0">Used</p>
-                                <h5 class="">54.40 %</h5>
-                            </div>
-                        </div>
+                    <div class="d-flex justify-content-around border-top p-2">
+                      <div class="ml-2 font-weight-bold text-center my-auto">
+                          <p class="p-0 m-0">Trades</p>
+                          <p class="m-0 lighter font-md">{{strategy.total_trades}}</p>
+                      </div>
+                  
+                       <div class="ml-2 font-weight-bold text-center my-auto">
+                          <p class="p-0 m-0">Winners</p>
+                            <p class="m-0 lighter font-md">{{strategy.winning_trades}}</p>
+                      </div>
+
+                     <div class="ml-2 font-weight-bold text-center my-auto">
+                          <p class="p-0 m-0">Success</p>
+                          <p class="badge badge-light font-sm font-500 text-muted" 
+                          v-html="strategy.total_trades ? ((strategy.winning_trades/strategy.total_trades)*100).toFixed(2) +'%' : '0.00%' ">
+                          </p>
+                      </div>
                     </div>
                 </div>
             </div>

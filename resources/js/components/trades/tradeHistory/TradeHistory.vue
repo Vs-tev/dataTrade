@@ -2,10 +2,9 @@
 
     <div class="content-container">
         <sorting-trades :portfolios="portfolios" v-on:change_portfolio="change_portfolio($event)"
-            v-on:sort_by_profit="sort_by_profit($event)" v-on:searchDateRange="searchDateRange($event)">
+            v-on:sort_by_time_frame="sort_by_time_frame($event)" v-on:sort_by_profit="sort_by_profit($event)" v-on:searchDateRange="searchDateRange($event)" v-on:toggle_excepted_trade="toggle_excepted_trade($event)">
         </sorting-trades>
         <section class="dashboard_container_content">
-
 
             <div class="d-sm-flex my-3">
                 <div class="form-group align-items-center mr-auto">
@@ -16,11 +15,11 @@
                 <div class="d-flex align-items-center pl-1 pr-4 mt-3 mt-sm-0">
                     <label class="lighter pr-1">Display</label>
                     <div>
-                        <select @change="get_trades" v-model="show_per_page" class="form-control sort_by_profit">
+                        <select @change="get_trades" v-model="show_per_page" class="form-control">
                             <option value="10" selected="selected">10</option>
                             <option value="20">25</option>
                             <option value="50">50</option>
-                            <option value="100">50</option>
+                            <option value="100">100</option>
                         </select>
                     </div>
                 </div>
@@ -32,12 +31,13 @@
                             </span>
                             View
                         </button>
-                        <div class="dropdown-menu dropdown-menu-left">
+                        <div class="dropdown-menu dropdown-menu-right">
                             <h5 class="dropdown-header indigo">CHOOSE VIEW</h5>
                             <a class="dropdown-item" id="choose-table-view" href="#"><span
                                     class="material-icons lighter icon-sm">
                                     toc
                                 </span>Table</a>
+                                
                             <a class="dropdown-item" id="choose-largerow-view" href="#"><span
                                     class="material-icons lighter icon-sm">
                                     calendar_view_day
@@ -45,22 +45,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="dropdown mt-3 mt-sm-0">
-                    <button type="button" class="btn btn-primary float-md-right" data-toggle="dropdown">
-                        <span class="material-icons white mr-1">description</span>Export
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-left">
-                        <h5 class="dropdown-header indigo">OPTIONS</h5>
-                        <a class="dropdown-item" href="#">Print</a>
-                        <a class="dropdown-item" href="#">PDF</a>
-                        <a class="dropdown-item" href="#">Email</a>
-                    </div>
-                </div>
+               
             </div>
-            <div class="col px-0 px-md-3">
-                <div class="row p-0 justify-content-start" id="table-view" style="display:none">
+            <div class="col px-0 px-md-3 border-top">
+                <div class="row p-0 justify-content-start" id="table-view" style="display">
                     <table class="table table-sm table-hover">
-                        <thead class="">
+                        <thead class="trade-history-thead">
                             <tr>
                                 <th class="" @click="sort('symbol')">Symbol <span class="unicode-arrow">&#8645;</span>
                                 </th>
@@ -73,7 +63,7 @@
                                     </div>
                                 </th>
                                 <th>
-                                    <div class="d-none d-md-block">Fees</div>
+                                    <div class="d-none d-lg-block">Fees</div>
                                 </th>
                                 <th>
                                     <div class="d-none d-md-block" @click="sort('entry_price')">Entry price <span
@@ -85,6 +75,10 @@
                                 </th>
                                 <th>
                                     <div class="d-none d-md-block" @click="sort('stop_loss_price')">Sl price <span
+                                            class="unicode-arrow">&#8645;</span></div>
+                                </th>
+                                 <th>
+                                    <div class="d-none d-lg-block">Ratio <span
                                             class="unicode-arrow">&#8645;</span></div>
                                 </th>
                                 <th>
@@ -108,7 +102,7 @@
                             </tr>
                         </tbody>
                         <tbody>
-                            <tr v-for="trade in trades" :key="trade.id">
+                            <tr v-for="trade in trades" :key="trade.id" >
                                 <td class="font-500">{{trade.symbol}} &#8226; <span
                                         class="dark font-500">{{trade.time_frame}}</span></td>
                                 <td>
@@ -118,7 +112,7 @@
                                     <div class="d-none d-md-block">{{trade.type_side}}</div>
                                 </td>
                                 <td>
-                                    <div class="d-none d-md-block">{{trade.fees}} {{trade.portfolio.currency}}</div>
+                                    <div class="d-none d-lg-block">{{trade.fees}} {{trade.portfolio.currency}}</div>
                                 </td>
                                 <td>
                                     <div class="d-none d-md-block">{{trade.entry_price}}</div>
@@ -128,6 +122,9 @@
                                 </td>
                                 <td>
                                     <div class="d-none d-md-block">{{trade.stop_loss_price}}</div>
+                                </td>
+                                <td>
+                                    <div class="d-none d-lg-block" v-if="trade.trade_performance">{{trade.trade_performance.ratio}}</div>
                                 </td>
                                 <td>
                                     <div class="d-none d-md-block">{{trade.entry_date}}</div>
@@ -140,11 +137,16 @@
                                         {{trade.portfolio.currency}} |</span>
                                     <span :class="trade.pl_pips < 0 ? 'red': 'primary' "
                                         v-html="trade.pl_pips + ' pips' "></span>
+                                     <p class="m-0" v-if="trade.trade_performance">{{trade.trade_performance.trade_return}}%</p>
                                 </td>
                                 <td class="">
                                     <div class="d-flex">
-                                        <button class="btn mr-3"><span
-                                                class="material-icons close-trade-deteils">visibility</span></button>
+                                         <button type="button" @click="editTrade(trade)" class="btn"
+                                    data-target="#modal_edit_trade" data-toggle="modal"><span
+                                        class="material-icons icon-sm">mode_edit</span></button>
+                                          <button type="button" @click="exept_trade(trade)" class="btn" v-if="trade.balance" data-target="#modal_delete_trade" data-toggle="modal">
+                                            <span class="material-icons icon-sm" :class="trade.balance.is_except == 0 ? 'lighter': 'primary'" v-html="trade.balance.is_except == 0 ? 'visibility': 'visibility_off' "></span>
+                                        </button>
                                         <button type="button" @click="deleteTrade(trade)" class="btn"
                                             data-target="#modal_delete_trade" data-toggle="modal"><span
                                                 class="material-icons">delete</span></button>
@@ -154,9 +156,8 @@
                         </tbody>
                     </table>
                 </div>
-                <div v-if="!loading" class="border-top">
-                    <div class="row p-0 my-4 shadow border rounded" v-for="trade in trades" :key="trade.id"
-                        id="large-row-view" style="display">
+                <div class="p-2" id="large-row-view" style="display:none">
+                    <div class="row p-0 my-4 shadow border rounded" v-for="trade in trades" :key="trade.id">
 
                         <div class="d-md-flex align-items-center w-100 ">
                             <div class="d-none d-lg-block p-3 trade-img">
@@ -165,33 +166,47 @@
                             </div>
                             <div class="py-3 pl-0 mb-auto px-3 px-lg-0 ">
                                 <div class="">
-                                    <h4 class="font-weight-bold m-0 pointer" @click="editTrade(trade)" 
-                                    data-target="#modal_edit_trade" data-toggle="modal">{{trade.symbol}}, 
+                                    <h4 class="font-weight-bold m-0 pointer" @click="editTrade(trade)"
+                                        data-target="#modal_edit_trade" data-toggle="modal">{{trade.symbol}},
                                         <span class="font-lg">{{trade.time_frame}} / {{trade.type_side}} &#8226;
-                                                {{trade.quantity}}
+                                            {{trade.quantity}}
                                         </span>
                                     </h4>
-                                    <p class="font-weight-bolder lighter pb-1"> {{trade.pl_currency}}
-                                        {{trade.portfolio ? trade.portfolio.currency : ''}} / {{trade.pl_pips}} pips /
-                                        -0.98 % </p>
-                                    <div class="pb-3 d-flex">
+                                    <p class="font-weight-bolder">
+                                      <span :class="trade.pl_currency < 0 ?'red' : 'lighter' ">{{trade.pl_currency}} {{trade.portfolio ? trade.portfolio.currency : ''}} </span> 
+                                        <span :class="trade.pl_pips < 0 ?'red' : 'lighter' ">/ {{trade.pl_pips}} pips /</span>
+                                        <span v-if="trade.trade_performance" :class="trade.trade_performance.trade_return < 0 ?'red' : 'lighter' ">{{trade.trade_performance.trade_return}}%</span>
+                                        <span v-if="trade.trade_performance" class="lighter"> / Ratio {{trade.trade_performance.ratio}}</span>
+                                         
+                                         </p>
+                                    <div class="pb-2 d-md-flex">
                                         <p class="font-weight-bold m-0 width-50px">Used Strategy: </p>
-                                        <span class="badge badge-light ml-1 text-muted">{{trade.strategy ? trade.strategy.name : ''}}</span>
+                                        <span
+                                            class="badge badge-light ml-1 text-muted">{{trade.strategy ? trade.strategy.name : ''}}</span>
                                     </div>
-                                    <div class="pb-3 d-flex" v>
+                                    <div class="pb-2 d-md-flex">
                                         <p class="font-weight-bold m-0 width-50px">Entry rules: </p>
                                         <div v-if="trade.used_entry_rules">
-                                            <span class="badge badge-light text-muted ml-1 mb-1 mb-xl-0"
+                                            <span
+                                                class="badge badge-light badge-rules text-muted ml-1 mb-1 mb-xl-0"
                                                 v-for="(rule, index) in trade.used_entry_rules"
                                                 :key="index">{{rule.entry_rule.name}}</span>
                                         </div>
                                     </div>
-
+                                    <div class="d-md-flex">
+                                        <p class="font-weight-bold m-0 width-50px">Exit reason: </p>
+                                        <div v-if="trade.exit_reason">
+                                            <span
+                                                class="badge badge-light ml-1 badge-rules text-muted">{{trade.exit_reason.name}}</span>
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <div class="" v-if="trade.trade_notes">
-                                    <div class="trade-note-div ">
-                                        <p class="m-0 text-wrap" v-html="trade.trade_notes"></p>
+                                <hr class="my-2">
+                                <div class="">
+                                    <div class="trade-note-div">
+                                        <p class="m-0 text-wrap"
+                                        :class="!trade.trade_notes ? 'lighter' : ' '"
+                                         v-html="!trade.trade_notes ? 'There is no trade notes' : trade.trade_notes"></p>
                                     </div>
                                 </div>
                             </div>
@@ -236,9 +251,6 @@
                                         <div class="timeline-content text-muted pl-2">
                                             <span class="font-weight-bolder ">Exit price:
                                                 {{trade.exit_price}}</span>
-                                            <p class="font-weight-bolder m-0">Exit reason: 
-                                                <span v-if="trade.exit_reason" class="badge badge-light ml-1 text-muted">{{trade.exit_reason.name}}</span>
-                                            </p>
                                         </div>
                                     </div>
 
@@ -247,10 +259,13 @@
                         </div>
                         <div class="trade-options mx-3 w-100 border-top">
                             <div class="trade-options-buttons py-2 d-flex ">
-                                 <button type="button" class="btn"><span class="material-icons icon-sm">visibility_off</span></button>
+                                <button type="button" @click="exept_trade(trade)" class="btn" v-if="trade.balance" data-target="#modal_delete_trade" data-toggle="modal">
+                                    <span class="material-icons icon-sm" :class="trade.balance.is_except == 0 ? 'lighter': 'primary'" v-html="trade.balance.is_except == 0 ? 'visibility': 'visibility_off' "></span>
+                                </button>
 
-                                <button type="button" @click="editTrade(trade)" class="btn ml-auto mr-4" 
-                                data-target="#modal_edit_trade" data-toggle="modal"><span class="material-icons icon-sm">mode_edit</span></button>
+                                <button type="button" @click="editTrade(trade)" class="btn ml-auto mr-4"
+                                    data-target="#modal_edit_trade" data-toggle="modal"><span
+                                        class="material-icons icon-sm">mode_edit</span></button>
 
                                 <button type="button" @click="deleteTrade(trade)" class="btn"
                                     data-target="#modal_delete_trade" data-toggle="modal"><span
@@ -270,7 +285,7 @@
             </div>
         </section>
         <deteils-trade :trade="form" v-bind="$props" v-on:update="update"></deteils-trade>
-        <delete-trade-modal :trade="deleteTradeValue" v-on:destroyTrade="destroyTrade($event)"></delete-trade-modal>
+        <modal :trade="modal_data" v-on:confirm_except_trade="confirm_except_trade($event)" v-on:destroyTrade="destroyTrade($event)"></modal>
     </div>
 
 </template>
@@ -278,14 +293,14 @@
 import SortingTrades from "./SortingTrades.vue";
 import DeteilsTrade from "./DeteilsTrade.vue";
 import Pagination from "../../Pagination.vue";
-import DeleteTradeModal from "./DeleteTradeModal.vue";
+import Modal from "./Modal.vue";
 
 export default {
   components: {
     SortingTrades,
     DeteilsTrade,
     Pagination,
-    DeleteTradeModal,
+    Modal,
   },
   name: "TradeHistory",
   props: ["portfolios", "strategies", "exit_reason", "entryrules"],
@@ -296,9 +311,11 @@ export default {
       response: [],
       trades: [],
       portfolio_id: this.portfolios[0].id,
+      time_frame: [],
       sort_pl: "all",
       start_date: "",
       end_date: "",
+      except_trade: "",
       search_symbol: "",
       show_per_page: "10",
       column_name: "",
@@ -327,7 +344,10 @@ export default {
         entry_rules: "",
         used_entry_rules: [],
       }),
-      deleteTradeValue: [],
+      modal_data: {
+        data: [],
+        modal_type: "",
+      },
     };
   },
   mounted() {
@@ -355,6 +375,8 @@ export default {
             display: this.show_per_page,
             search_symbol: this.search_symbol,
             column: [this.column_name, this.order],
+            except_trade: this.except_trade,
+            time_frame: this.time_frame,
           },
         })
         .then((res) => {
@@ -367,8 +389,14 @@ export default {
           this.checkResponseStatus(error);
         });
     },
+
     change_portfolio(portfolio_id) {
       this.portfolio_id = portfolio_id;
+      this.get_trades();
+    },
+
+    sort_by_time_frame(selected_frame) {
+      this.time_frame = selected_frame;
       this.get_trades();
     },
 
@@ -380,6 +408,11 @@ export default {
     searchDateRange(dateRange) {
       this.start_date = dateRange[0];
       this.end_date = dateRange[1];
+      this.get_trades();
+    },
+
+    toggle_excepted_trade(value) {
+      this.except_trade = value;
       this.get_trades();
     },
 
@@ -437,14 +470,36 @@ export default {
       this.get_trades();
     },
 
+    exept_trade: function exept_trade(trade) {
+      this.modal_data.data = trade;
+      if (trade.balance.is_except == 0) {
+        this.modal_data.modal_type = "except_trade";
+      } else {
+        this.modal_data.modal_type = "include_trade";
+      }
+    },
+
+    confirm_except_trade: function confirm_except_trade(trade) {
+      axios
+        .post("/dashboardPages/tradehistory/exept/" + trade)
+        .then((res) => {
+          $("#modal_delete_trade").modal("hide");
+          this.get_trades();
+          this.$root.$emit("portfolio_balance"); //here we update navbar data to show current balance status
+        })
+        .catch((error) => {
+          this.checkResponseStatus(error);
+        });
+    },
+
     deleteTrade: function deleteTrade(trade) {
-      this.deleteTradeValue = trade;
-      //this.tradePortfolioData = trade.portfolio;
+      this.modal_data.data = trade;
+      this.modal_data.modal_type = "delete";
     },
 
     destroyTrade: function destroyTrade(trade) {
       axios
-        .post("/dashboardPages/tradehistory/d/" + trade.id)
+        .post("/dashboardPages/tradehistory/d/" + trade)
         .then((res) => {
           $("#modal_delete_trade").modal("hide");
           this.get_trades();

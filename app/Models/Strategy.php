@@ -14,4 +14,8 @@ class Strategy extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    public function trade(){
+        return $this->hasMany(Trade::class);
+    }
 }

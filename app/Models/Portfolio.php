@@ -16,6 +16,7 @@ class Portfolio extends Model
     protected $casts = [
         'started_at' => 'datetime:d M Y',
     ];
+    
 
     public function user(){
         return $this->belongsTo(User::class);
@@ -51,8 +52,8 @@ class Portfolio extends Model
 
     public function scopeRunningTotal($query, $id){
         //running total for all portfolios used in portfolio page
-        return $query = DB::table('balances')->select('action_date', 'id' , DB::raw('SUM(amount) OVER(ORDER BY action_date)as running_total'))
-        ->where('portfolio_id', $id)
+         return $query = DB::table('balances')->select('action_date', 'id' , DB::raw('SUM(amount) OVER(ORDER BY action_date)as running_total'))
+        ->where([['portfolio_id', $id],['is_except', 0]])
         ->orderBy('action_date', 'DESC')
         ->limit(100)
         ->get();
@@ -60,19 +61,22 @@ class Portfolio extends Model
     
     public function fetch_portfolio($query){
         $portfolio = $this->select('portfolios.id','b.action_date',  'name', 'start_equity', 'currency', 'is_active', 'portfolios.started_at', 
-        DB::raw('SUM(amount) as current_balance, 
+        DB::raw('SUM(amount) as current_balance,
         COUNT(CASE WHEN action_type = "trade" THEN 1 else NULL END) as total_trades, 
         COUNT(CASE WHEN amount >= 0 AND action_type = "trade" THEN 1 else NULL END)as winning_trades, 
         COUNT(CASE WHEN amount < 0 AND action_type = "trade" THEN 1 else NULL END)as losing_trades,
         SUM(CASE WHEN action_type = "trade" THEN amount ELSE 0 END)as trade_profit'))
         ->join('balances AS b', 'portfolios.id', '=', 'b.portfolio_id')
-        ->where('user_id', auth()->id())
+        ->where([['user_id', auth()->id()],['is_except', 0]])
         ->whereIn('is_active', $query)
         ->groupBy('portfolios.id')
         ->get();
         
+        //dd(number_format($portfolio[0]->current_balance,2, '.',' '));
+
         $new = $portfolio->map(function($object){
         $object->running_total = Portfolio::runningtotal($object->id);
+        //$object->current_balance = number_format($object->current_balance,2, '.','');
         return $object;
         });
         

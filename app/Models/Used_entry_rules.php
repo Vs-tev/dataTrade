@@ -21,5 +21,14 @@ class Used_entry_rules extends Model
         return $this->belongsTo(EntryRules::class);
     }
 
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+
+    public function trade(){
+        return $this->hasManyThrough(Trade::class);
+    }
+
     
 }

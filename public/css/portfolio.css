@@ -31,16 +31,13 @@
 
 .inactive_portfolio div.switch_portfolio label {
     color: var(--indigo)
+    
 }
 
 div.switch_portfolio {
     z-index: 3;
     font-weight: 600;
 
-}
-
-.container-portfolio-action-buttons {
-    margin: 10px 35px;
 }
 
 .container-portfolio-action-buttons button {

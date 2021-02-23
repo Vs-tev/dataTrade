@@ -81,7 +81,7 @@
                                       <p class="font-500 font-lg mb-0">Price:</p>
                                   </li>
                                     <li class="editable-item">
-                                      <label class="label-item">Entry: </label>
+                                      <label class="label-item">Entry:</label>
                                       <div class="price">
                                           <input type= "text" v-model="trade.entry_price" class="form-control  border-0 bg-light mb-2 mb-lg-0" :class="{'is-invalid': form.errors.has('entry_price')}"
                                             @input="form.errors.clear('entry_price')">
@@ -91,9 +91,8 @@
                                       
                                       <label class="label-item">SL:</label>
                                       <div class="price">
-                                        <input type="text" v-model="trade.stop_loss_price" class="form-control  border-0 bg-light mb-2 mb-lg-0" >
+                                        <input type="text"  v-model="trade.stop_loss_price" class="form-control  border-0 bg-light mb-2 mb-lg-0" >
                                             <p class="error-output" v-if="form.errors.has('stop_loss_price')" v-text="form.errors.get('stop_loss_price')"></p>
-
                                       </div>
 
                                       <label class="label-item">Exit:</label>
@@ -101,8 +100,11 @@
                                         <input type="text" v-model="trade.exit_price" class="form-control  border-0 bg-light mb-2 mb-lg-0" :class="{'is-invalid': form.errors.has('exit_price')}"
                                             @input="form.errors.clear('exit_price')">
                                             <p class="error-output" v-if="form.errors.has('exit_price')" v-text="form.errors.get('exit_price')"></p>
-
                                       </div>
+                                  </li>
+                                  <li class="editable-item py-0">
+                                    <label class="label-item pt-0">Ratio:</label>
+                                    <span v-if="risk_reward_ratio_computed">{{risk_reward_ratio_computed}}</span>
                                   </li>
                                   <li class="editable-item">
                                       <label class=""></label>
@@ -117,6 +119,7 @@
                                       :close-on-select="false" 
                                       :clear-on-select="false" 
                                       :preserve-search="false" 
+                                      
                                       :max="3"
                                       :preselect-first="false"
                                       :searchable="false"
@@ -131,15 +134,15 @@
                                     </multiselect>
                                       <label class="label-item">Exit:</label>
                                       <multiselect v-model="trade.exit_reason" :options="exit_reason" :searchable="false"
-                                        :close-on-select="true" :show-labels="false" track-by="id" label="name"
+                                        :close-on-select="true" :show-labels="false" :clear-on-select="true" track-by="id" label="name"
                                         placeholder="Exit Reason">
                                         </multiselect>
                                   </li>
                                      <li class="editable-item">
                                       <label class="label-item">Used strategy:</label>
                                       <multiselect v-model="trade.strategy" :options="strategies" :searchable="false"
-                                        :close-on-select="true" :show-labels="false" track-by="id" label="name"
-                                        placeholder="Exit Reason"></multiselect>
+                                        :close-on-select="true" :clear-on-select="true"  :show-labels="false" track-by="id" label="name"
+                                        placeholder="Select used strategy"></multiselect>
                                   </li>
                                    <li class="editable-item">
                                       <label class=""></label>
@@ -148,8 +151,8 @@
                                    <li class="editable-item">
                                       <label class="label-item"></label>
                                       <div class="w-100">
-                                        <textarea class="form-control border-0 bg-light" v-model="trade.trade_notes" cols="30" rows="10" :class="{'is-invalid': form.errors.has('trade_notes')}"
-                                            @input="form.errors.clear('trade_notes')"></textarea>
+                                        <textarea class="form-control border-0 bg-light" v-model="trade.trade_notes" cols="30" rows="8" :class="{'is-invalid': form.errors.has('trade_notes')}"
+                                            @input="form.errors.clear('trade_notes')" placeholder="Write your analysis or thoughts about this trade"></textarea>
                                         <p class="error-output" v-if="form.errors.has('trade_notes')" v-text="form.errors.get('trade_notes')"></p>
                                       </div>
                                   </li>
@@ -158,7 +161,7 @@
                 </div>
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" @click="update" class="btn btn-primary">Save</button>
                 </div>
             </div>
@@ -187,10 +190,28 @@ export default {
         stop_loss_price: "",
         entry_date: "",
         exit_date: "",
-        description: "",
+        trade_notes: "",
         trade_img: "",
+        risk_reward: "",
       }),
     };
+  },
+  computed: {
+    risk_reward_ratio_computed: function () {
+      var entry = this.trade.entry_price;
+      var exit = this.trade.exit_price;
+      var stop = this.trade.stop_loss_price;
+      if (entry && exit && stop) {
+        var result = ((entry - exit) / (stop - entry) || 0).toFixed(2);
+        if (isFinite(result)) {
+          this.form.risk_reward = result;
+          return result;
+        } else {
+          this.form.risk_reward = 0;
+          return 0;
+        }
+      }
+    },
   },
 
   methods: {
@@ -202,6 +223,20 @@ export default {
       }
     },
 
+    /* risk_reward_ratio: function () {
+      var entry = this.trade.entry_price;
+      var exit = this.trade.exit_price;
+      var stop = this.trade.stop_loss_price;
+      if (entry && exit && stop) {
+        var result = ((entry - exit) / (stop - entry) || 0).toFixed(2);
+        if (isFinite(result)) {
+          this.form.risk_reward = result;
+        } else {
+          this.form.risk_reward = 0;
+        }
+      }
+    }, */
+
     update: function () {
       const data = new FormData();
       data.append("symbol", this.trade.symbol);
@@ -211,7 +246,10 @@ export default {
       data.append("exit_price", this.trade.exit_price);
       data.append("stop_loss_price", this.trade.stop_loss_price);
       data.append("time_frame", this.trade.time_frame);
-      data.append("trade_notes", this.trade.trade_notes);
+      if (this.trade.trade_notes !== null) {
+        data.append("trade_notes", this.trade.trade_notes);
+      }
+      data.append("risk_reward", this.form.risk_reward);
       if (this.trade.exit_reason) {
         data.append("exit_reason_id", this.trade.exit_reason.id);
       }

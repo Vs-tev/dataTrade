@@ -15,7 +15,10 @@ class EntryRulesController extends Controller
     public function index()
     {
         $entry_rules = EntryRules::latest();
-        $entry_rules = $entry_rules->where('user_id', auth()->id())
+        $entry_rules = $entry_rules->withCount(['trade as used_rules_count', 'trade as rules_in_winn_trades' => function($query){
+            $query->where('pl_currency', '>=', 0);
+        }])
+        ->where('user_id', auth()->id())
         ->get();
         
         return $entry_rules;

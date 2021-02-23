@@ -41,6 +41,10 @@ class Trade extends Model
         return $this->hasOne(Balance::class);
     }
 
+    public function trade_performance(){
+        return $this->hasOne(Trade_performance::class);
+    }
+
     public function portfolio(){
         return $this->belongsTo(Portfolio::class);
     }
@@ -80,6 +84,15 @@ class Trade extends Model
             'action_type' => 'trade',
             'portfolio_id' => $trade->portfolio_id,
             'trade_id' => $this->id,
+        ]);
+    }
+
+    public function add_to_trade_performance($request){
+        $this->trade_performance()->create([
+            'trade_return' => $request->trade_return,
+            'trade_id' => $this->id,
+            'ratio' => $request->risk_reward,
+            'portfolio_id' => \App\Models\Portfolio::isactive()->first(),
         ]);
     }
 }
