@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Strategy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Gate;
+
 
 class StrategyController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth','hasPortfolio']);
     }
     /**
      * Display a listing of the resource.
@@ -37,7 +40,9 @@ class StrategyController extends Controller
      */
     public function create()
     {
-        //
+        if (!Gate::allows('strategies')){
+            return response('Upgrade account', 402);
+        }
     }
 
     /**
@@ -48,37 +53,41 @@ class StrategyController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate(request() ,[
-            
-            'name' => ['required','unique:strategies', 'string', 'min:2', 'max:40'],
-            'description' => 'required',
-            'img_strategy' => 'image|mimes:jpeg,png,jpg,gif,svg|nullable|max:2999'
-        ],
-        ['img_strategy.image' => 'Allowed file types: jpg,png,gif']
-    );
+        if (Gate::allows('strategies')){
+            $this->validate(request() ,[
+                'name' => [Rule::unique('strategies')->where(function ($query) {
+                    return $query->where('user_id', auth()->id());
+                }),'required', 'string', 'min:2', 'max:40'],
+                'description' => 'required',
+                'img_strategy' => 'image|mimes:jpeg,png,jpg,gif,svg|nullable|max:2999'
+                ],
+                ['img_strategy.image' => 'Allowed file types: jpg,png,gif']
+            );
 
-        if(request()->hasFile('img_strategy')){
-            //Get filename with extention
-            $filenameWithExt = request()->file('img_strategy')->getClientOriginalName();
-            //Get just filename
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            //Get just ext
-            $extention = request()->file('img_strategy')->getClientOriginalExtension();
-            //Filename to store
-            $fileNameToStore = $filename.'_'.time().'.'.$extention;
-            //Upload Image
-            $path = request()->file('img_strategy')->storeAs('public/strategies', $fileNameToStore);
-        }else {
-            $fileNameToStore = 'noimage.jpg';
+            if(request()->hasFile('img_strategy')){
+                //Get filename with extention
+                $filenameWithExt = request()->file('img_strategy')->getClientOriginalName();
+                //Get just filename
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                //Get just ext
+                $extention = request()->file('img_strategy')->getClientOriginalExtension();
+                //Filename to store
+                $fileNameToStore = $filename.'_'.time().'.'.$extention;
+                //Upload Image
+                $path = request()->file('img_strategy')->storeAs('public/strategies', $fileNameToStore);
+            }else {
+                $fileNameToStore = 'noimage.jpg';
+            }
+
+            $strategy = new Strategy;
+            $strategy->name = $request->input('name');
+            $strategy->img_strategy = $fileNameToStore;
+            $strategy->user_id = auth()->id();
+            $strategy->description = $request->input('description');
+        
+            $strategy->save();
+
         }
-
-        $strategy = new Strategy;
-        $strategy->name = $request->input('name');
-        $strategy->img_strategy = $fileNameToStore;
-        $strategy->user_id = auth()->id();
-        $strategy->description = $request->input('description');
-      
-        $strategy->save();
     }
 
     /**
@@ -89,7 +98,7 @@ class StrategyController extends Controller
      */
     public function show(strategy $strategy)
     {
-        //
+        
     }
 
     /**

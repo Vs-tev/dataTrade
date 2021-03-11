@@ -14,4 +14,8 @@ class ExitReason extends Model
     protected $casts = [
         'created_at' => 'datetime:d-M-Y',
     ];
+
+    public function trade(){
+        return $this->hasMany(Trade::class);
+    }
 }

@@ -4,9 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\ExitReason;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class ExitReasonController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['auth','hasPortfolio']);
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +24,8 @@ class ExitReasonController extends Controller
     public function index()
     {
         $exitReason = ExitReason::latest();
-        $exitReason = $exitReason->where('user_id', auth()->id())
+        $exitReason = $exitReason->withCount('trade as used_rules_count')
+        ->where('user_id', auth()->id())
         ->get();
         return $exitReason;
     }
@@ -27,7 +37,9 @@ class ExitReasonController extends Controller
      */
     public function create()
     {
-        //
+        if (!Gate::allows('exit_reasons')) {
+            return response('Upgrade account', 402);
+        }
     }
 
     /**
@@ -38,15 +50,18 @@ class ExitReasonController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate(request() ,[
-            'name' => ['required','unique:exit_reasons', 'string', 'min:2', 'max:40'],
-        ]);
-            
-        $exit_reason = new ExitReason;
-        $exit_reason->name = $request->input('name');
-        $exit_reason->user_id = auth()->id();
-
-        $exit_reason->save();
+        if (Gate::allows('exit_reasons')) {
+            $this->validate(request() ,[
+                'name' => [Rule::unique('exit_reasons')->where(function ($query) {
+                    return $query->where('user_id', auth()->id());
+                }),'required', 'string', 'min:2', 'max:40'],
+            ]);
+                
+            $exit_reason = new ExitReason;
+            $exit_reason->name = $request->input('name');
+            $exit_reason->user_id = auth()->id();
+            $exit_reason->save();
+        }
     }
 
     /**

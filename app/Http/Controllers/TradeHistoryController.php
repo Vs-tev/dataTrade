@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 
 class TradeHistoryController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['auth','hasPortfolio']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +18,7 @@ class TradeHistoryController extends Controller
      */
     public function index()
     {
-       // return view('dashboardpages.trading.trade_history');
+        return view('dashboardpages.trading.trade_history');
     }
 
     /**

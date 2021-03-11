@@ -6,8 +6,8 @@
             </div>
         
             <div class="d-flex justify-content-start align-items-center pt-3 px-4">
-                <button type="button" class="btn btn-secondary border-0 lighter font-500" data-toggle="modal" data-target="#modal-strategy"
-                @click="createStrategy">
+                <button type="button" class="btn btn-secondary border-0 lighter font-500"
+                @click="create">
                     Add New
                 </button>
             </div>
@@ -63,10 +63,11 @@
             </div>
         </div>
         <modal :item="form" v-on:storeStrategy="storeStrategy($event)" v-on:updateStrategy="updateStrategy($event)" v-on:destroyStrategy="destroyStrategy($event)" v-on:onFileSelected="onFileSelected($event)"></modal>
+        <modal-upgrade-plan :text="upgrade_plan_modal"></modal-upgrade-plan>
     </div>
 </template>
 <script>
-//import Editor from "@tinymce/tinymce-vue";
+import ModalUpgradePlan from "../ModalUpgradePlan.vue";
 import Modal from "./Modal";
 
 export default {
@@ -74,10 +75,17 @@ export default {
   components: {
     //editor: Editor,
     Modal,
+    ModalUpgradePlan,
   },
 
   data() {
     return {
+      upgrade_plan_modal: [
+        {
+          text: "Use the full power of dataTrade",
+          subtext: "Upgrade your plan to create up to 10 strategies",
+        },
+      ],
       strategies: [],
       items: [],
       togglediv: false,
@@ -122,12 +130,21 @@ export default {
         .catch((error) => {});
     },
 
-    createStrategy() {
-      this.form.reset();
-      this.form.title = "Create Strategy";
-      this.form.modal = "create";
-
-      //console.log(tinyMCE.init({ selector: ".my_editor" }));
+    create: function create() {
+      axios
+        .get("/dashboardPages/strategy/create")
+        .then((res) => {
+          //$("#modal-form").modal("show");
+          this.form.reset();
+          this.form.title = "Create Strategy";
+          this.form.modal = "create";
+          $("#modal-strategy").modal("show");
+        })
+        .catch((error) => {
+          if (error.response.status === 402) {
+            $("#modal-upgrade-plan").modal("show");
+          }
+        });
     },
 
     storeStrategy(value) {

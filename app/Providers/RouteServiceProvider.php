@@ -18,6 +18,7 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     public const HOME = '/dashboardPages/dashboard';
+    public const CREATE_FIRST_PORTFOLIO = '/create_first_portfolio';
 
     /**
      * The controller namespace for the application.

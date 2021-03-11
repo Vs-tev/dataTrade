@@ -1,19 +1,14 @@
 <template>
     <div class="row justify-content-center p-4"> 
       <div class="col-12 col-md-8 pb-3 p-0">
+        
           <div class="dashboard_container_content border d-flex align-items-center">
-              <img src="/storage/icons/create.svg" alt="">
-              <span v-on:click="create" data-target="#modal-form" data-toggle="modal"
-                  class="font-lg ml-2 font-500 pointer">
-                  Create Recording Portfolio
-              </span>
+              <button type="button" class="btn btn-secondary border-0 lighter font-500"
+                v-on:click="create">
+                    Add New
+                </button>
           </div>
       </div>
-              
-      <!--   <div v-for="item in items[0]" :key="item.id">
-        <h4>{{item.name}}</h4>
-        </div>
-         -->
          
         <main class="col-12 col-md-8 p-0 new-item" v-if="items.portfolio">
            <div class="dashboard_container_content portfolio-wrapper border p-0" :class="{'inactive_portfolio': item.is_active == 0 }"
@@ -34,7 +29,7 @@
                           <button type="button" @click="getValues(item.id, item.name, item.currency)"
                                         class="btn btn-secondary mr-2" data-toggle="modal"
                                         data-target="#modal-form"><img src="/storage/icons/edit.svg" alt=""></button>
-                          <button type="button" class="btn btn-secondary delete-item" @click="DeletePortfolio(item)" data-target="#modal-form" data-toggle="modal">
+                          <button type="button" v-if="items.portfolio.length > 1" class="btn btn-secondary delete-item" @click="DeletePortfolio(item)" data-target="#modal-form" data-toggle="modal">
                                   <img src="/storage/icons/trash.svg" alt="">
                                 </button>
                       </div>
@@ -56,7 +51,7 @@
                             opacity: 0.2,
                           },
                           yaxis: {
-                            min: (parseFloat(item.start_equity) - (parseFloat(item.start_equity) / 10 )),
+                            min: parseFloat(item.start_equity) ,
                              show: false,
                              showAlways: false,
                           },
@@ -105,12 +100,13 @@
         
         <modal :item="form" v-on:edit="edit($event)" v-on:store="store($event)" v-on:destroy="destroy($event)"></modal>
         <modal-transaction :transaction="transactions" :links="pagination" :item="form" v-on:setPage="setPage($event)" v-on:storeTransaction="storeTransaction($event)" v-on:delete_transaction="delete_transaction($event)"></modal-transaction>
+        <modal-upgrade-plan :text="upgrade_plan_modal"></modal-upgrade-plan>
     </div>
 </template>
 <script>
 import Modal from "./Modal";
 import ModalTransaction from "./ModalTransaction";
-
+import ModalUpgradePlan from "../ModalUpgradePlan";
 import VueApexCharts from "vue-apexcharts";
 Vue.component("apexchart", VueApexCharts);
 export default {
@@ -118,9 +114,17 @@ export default {
   components: {
     Modal,
     ModalTransaction,
+    ModalUpgradePlan,
   },
   data() {
     return {
+      upgrade_plan_modal: [
+        {
+          text: "Keep track on multiple portfolios",
+          subtext:
+            "Upgrade your plan to create up to 5 portfolios and multiple tests trading setup.",
+        },
+      ],
       chartOptions: {
         chart: {
           width: "100%",
@@ -240,13 +244,26 @@ export default {
 
           this.$root.$emit("portfolio_balance");
         })
-        .catch((error) => {});
+        .catch((error) => {
+          this.checkResponseStatus(error);
+        });
     },
 
     create: function create() {
-      this.form.reset();
-      this.form.title = "Create Portfolio";
-      this.form.modal = "create";
+      axios
+        .get("/dashboardPages/portfolio/create")
+        .then((res) => {
+          //$("#modal-form").modal("show");
+          this.form.reset();
+          this.form.title = "Create Portfolio";
+          this.form.modal = "create";
+          $("#modal-form").modal("show");
+        })
+        .catch((error) => {
+          if (error.response.status === 402) {
+            $("#modal-upgrade-plan").modal("show");
+          }
+        });
     },
 
     store: function store(value) {

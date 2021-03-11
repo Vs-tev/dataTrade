@@ -39,11 +39,11 @@
         </div>
         <div class="settings-container d-flex">     
             <span class="material-icons icon-lg indigo">
-                    account_balance_wallet 
+                payment
             </span>
             <div class="ml-3">
-               <a href="#"><h5 class="m-0 p-1">Manage Portfolios</h5></a> 
-               <p class="m-0 p-1 text-muted">2 portfolios</p>
+               <a href="{{ route('plan') }}"><h5 class="m-0 p-1">Upgrade plan</h5></a> 
+               <p class="m-0 p-1 text-muted">Current: Free</p>
             </div>
         </div>
     </div>

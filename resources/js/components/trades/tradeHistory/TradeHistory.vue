@@ -143,13 +143,15 @@
                                     <div class="d-flex">
                                          <button type="button" @click="editTrade(trade)" class="btn"
                                     data-target="#modal_edit_trade" data-toggle="modal"><span
-                                        class="material-icons icon-sm">mode_edit</span></button>
+                                        class="material-icons icon-sm">mode_edit</span>
+                                        </button>
                                           <button type="button" @click="exept_trade(trade)" class="btn" v-if="trade.balance" data-target="#modal_delete_trade" data-toggle="modal">
                                             <span class="material-icons icon-sm" :class="trade.balance.is_except == 0 ? 'lighter': 'primary'" v-html="trade.balance.is_except == 0 ? 'visibility': 'visibility_off' "></span>
                                         </button>
                                         <button type="button" @click="deleteTrade(trade)" class="btn"
                                             data-target="#modal_delete_trade" data-toggle="modal"><span
-                                                class="material-icons">delete</span></button>
+                                                class="material-icons">delete</span>
+                                          </button>
                                     </div>
                                 </td>
                             </tr>

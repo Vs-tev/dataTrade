@@ -1,0 +1,74 @@
+.svg-fill-primary{
+    fill: #3699ff !important;
+    opacity: 0.4
+}
+
+.top-content{
+    height: 240px;
+}
+
+.cardTitle{
+    font-size: 36px;
+}
+.cardPrice{
+    font-size: 46px;
+    line-height: 100%;
+}
+
+.border-current{
+    border: 2px solid var(--primary);
+}
+.h-20{
+    height: 20px!important;
+}
+.h-80{
+   min-height:80px
+}
+
+.width-90{
+    min-width:90px;
+}
+
+
+/*billing*/
+.alert-top{
+    top: 110px!important;
+    color: white;
+    border-radius: 0;
+    border: none;
+
+}
+#card-element{
+    height: 45px;
+}
+.StripeElement {
+    box-sizing: border-box;
+    height: 45px;
+    padding: 12px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 0.2rem;
+    background-color: white;
+    box-shadow: 0 1px 3px 0 #e6ebf1;
+    -webkit-transition: box-shadow 150ms ease;
+    transition: box-shadow 150ms ease;
+   color: #32325d;
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 16px;
+    width: 100%;
+}
+.StripeElement--focus,
+.StripeElement::focus{
+    box-shadow: 0 1px 3px 0 #cfd7df;
+}
+.StripeElement--invalid {
+    border-color: #fa755a;
+}
+.StripeElement--webkit-autofill {
+    background-color: #fefde5 !important;
+}
+.StripeElement::placeholder
+{
+    opacity: 1;
+    color: #aab7c4;
+   
+}

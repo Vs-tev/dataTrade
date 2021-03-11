@@ -2,18 +2,18 @@
      <div class="downbar">
         <div class="down-left d-flex justify-content-start" >
             <ul class="list-unstyled" v-if="spinner">
-                <li class="font-500 font-xl dark"><span>{{portfolio.name}}: </span></li>
-                <li class="font-lg font-500 light-md"><span>{{portfolio.current_balance}} {{portfolio.currency}}
+                <li class="font-500 dark"><span>{{portfolio.name}}: </span></li>
+                <li class="font-500 light-md"><span>{{portfolio.current_balance}} {{portfolio.currency}}
                   <span class="">( <span class="font-dark">Net Profit: </span><span :class="{'red' : netProfit < 0}">{{netProfit}} {{portfolio.currency}}</span>)</span>
                 </span>
                 </li>
-                <li class="border-left mx-4 p-1"></li>
-                <li class="font-lg"><span class="font-500">Return: </span>
-                <span class="font-lg font-500 light-md" :class="{'red' : rci < 0}">{{rci}}%</span>
+                <li class="border-left mx-2 p-1"></li>
+                <li class=""><span class="font-500">Return: </span>
+                <span class=" font-500 light-md" :class="{'red' : rci < 0}">{{rci}}%</span>
                 </li>
-                <li class="border-left mx-4 p-1"></li>
-                <li class="font-lg"><span class="font-500">Trade Profit:</span>
-                <span class="font-lg font-500 light-md" :class="{'red' : trade_profit < 0}">{{trade_profit}}</span>
+                <li class="border-left mx-2 p-1"></li>
+                <li class=""><span class="font-500">Trade Profit:</span>
+                <span class=" font-500 light-md" :class="{'red' : trade_profit < 0}">{{trade_profit}}</span>
                 </li>
             </ul> 
              <ul class="list-unstyled" v-if="!spinner">

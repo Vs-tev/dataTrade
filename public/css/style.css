@@ -130,6 +130,13 @@ p {
     margin-bottom: 1rem;
 
 }
+.font-family-monospace{
+    font-family: var(--font-family-monospace);
+}
+
+.font-family-Nunito-sans-serif{
+    font-family: var(--font-family-sans-serif);
+}
 
 label {
     color: var(--primary-color);
@@ -152,11 +159,15 @@ label {
 }
 
 .font-lg {
-    font-size: 0.95rem !important;
+    font-size: 0.92rem !important;
 }
 
 .font-xl {
     font-size: 1.03rem !important;
+}
+
+.font-xxl {
+    font-size: 1.26rem !important;
 }
 
 .icon-xs {
@@ -268,6 +279,10 @@ label {
 
 .pointer {
     cursor: pointer;
+}
+
+.cursor-auto{
+    cursor: auto !important;;
 }
 
 @media screen and (max-width: 1500px) {
@@ -2084,12 +2099,12 @@ pre code {
     background-color: #ffffff;
 }
 
-.table tr td div button .material-icons {
+.table tr td div .btn .material-icons {
     color: var(--lighter);
     font-size: 16px;
 }
 
-.table tr td div button {
+.table tr td div .btn {
     display: flex;
     align-items: center;
     padding: 0.6rem;
@@ -2097,11 +2112,11 @@ pre code {
     box-shadow: none !important;
 }
 
-.table tr td div button:hover {
+.table tr td div .btn:hover {
     background-color: #fff;
 }
 
-.table tr td div button:hover .material-icons {
+.table tr td div .btn:hover .material-icons {
     color: var(--lighter)
 }
 
@@ -2112,7 +2127,7 @@ pre code {
 
 .table th,
 .table td {
-    padding: 0.75rem;
+    padding: 0.75rem 0;
     vertical-align: top;
     border-bottom: 1px solid #f3f0f0;
     font-size: var(--font-normal);
@@ -2312,12 +2327,11 @@ pre code {
 .table-strategy thead tr th {
     border: none;
     background-color: var(--light);
-    padding: 1rem
+    padding: 1rem 0 1rem 0rem
 }
 
 .table-rules tbody tr td,
 .table-strategy tbody tr td {
-    padding: 1.5rem 0 1.5rem 1rem;
     vertical-align: middle;
     border: none;
     font-weight: 600;
@@ -7472,7 +7486,9 @@ button.bg-dark:focus {
 .border-bottom {
     border-bottom: 1px solid #dee2e6 !important;
 }
-
+.border-bottom-white{
+    border-bottom: 2px solid #fff;
+}
 .border-left {
     border-left: 1px solid #dee2e6 !important;
 }
@@ -8719,6 +8735,10 @@ button.bg-dark:focus {
 
 .shadow-none {
     box-shadow: none !important;
+}
+
+.w-15{
+    width: 15% !important;
 }
 
 .w-25 {

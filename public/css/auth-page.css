@@ -1,7 +1,6 @@
 .auth-page {
     position: relative;
-    height: 100vh;
-
+    height: 100%;
 }
 
 .left-side {
@@ -66,11 +65,16 @@
 
 .auth-page .auth-input {
     width: 430px;
-    padding: 28px 0px 28px 20px;
+    padding-left: 20px;
     border: none;
     background-color: var(--light);
     border-radius: 10px;
-    font-size: var(--font-lg)
+    font-size: var(--font-lg);
+    height: 60px;
+}
+
+.auth-input-w-50{
+    width: 100%!important;
 }
 
 .auth-page .auth-input:focus {

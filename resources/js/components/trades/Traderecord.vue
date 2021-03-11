@@ -1,4 +1,5 @@
 <template>
+  <div>
     <form action="">
         <section class="dashboard_container_content p-0">
             <div class="border-bottom p-4">
@@ -192,13 +193,15 @@
                     Trade</button>
             </div>
         </section>
-    </form>
-
+      </form>
+    <modal-upgrade-plan :text="upgrade_plan_modal"></modal-upgrade-plan>
+  </div>
 </template>
 
 <script>
 import Multiselect from "vue-multiselect";
 import DatePick from "vue-date-pick";
+import ModalUpgradePlan from "../ModalUpgradePlan.vue";
 //import Chart from "../Chart.vue";
 
 export default {
@@ -207,6 +210,7 @@ export default {
   components: {
     Multiselect,
     DatePick,
+    ModalUpgradePlan,
 
     //Chart,
   },
@@ -404,7 +408,11 @@ export default {
           this.clearFileds();
         })
         .catch((error) => {
-          this.checkResponseStatus(error);
+          if (error.response.status === 402) {
+            $("#modal-upgrade-plan").modal("show");
+          } else {
+            this.checkResponseStatus(error);
+          }
         });
     },
     clearFileds() {

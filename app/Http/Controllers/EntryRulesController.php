@@ -4,9 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\EntryRules;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class EntryRulesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth','hasPortfolio']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -31,7 +39,9 @@ class EntryRulesController extends Controller
      */
     public function create()
     {
-        
+        if (!Gate::allows('entry_rules')){
+            return response('Upgrade account', 402);
+        }
     }
 
     /**
@@ -42,15 +52,20 @@ class EntryRulesController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate(request() ,[
-            'name' => ['required','unique:entry_rules', 'string', 'min:2', 'max:40'],
-        ]);
-            
-        $entry_rule = new EntryRules;
-        $entry_rule->name = $request->input('name');
-        $entry_rule->user_id = auth()->id();
+        if (Gate::allows('entry_rules')){
+        
+            $this->validate(request() ,[
+                'name' => [Rule::unique('entry_rules')->where(function ($query) {
+                    return $query->where('user_id', auth()->id());
+                }),'required', 'string', 'min:2', 'max:40'],
+            ]);
+                
+            $entry_rule = new EntryRules;
+            $entry_rule->name = $request->input('name');
+            $entry_rule->user_id = auth()->id();
+            $entry_rule->save();
 
-        $entry_rule->save();
+        }
     }
 
     /**

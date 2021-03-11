@@ -13,15 +13,15 @@
         <link href="{{ asset('css/portfolio.css') }}" rel="stylesheet">
         <link href="{{ asset('css/trading.css') }}" rel="stylesheet">
         <link href="{{ asset('css/rules.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/plan.css') }}" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('material-icons/iconfont/material-icons.css') }}">
-        
+       
         {{-- TinyMCE text-editor --}}
         <script src="{{ asset('node_modules/tinymce/tinymce.min.js') }}"></script>
         {{-- Google fonts --}}
-       
         <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
-        <title>Trade Data</title>
         
+        <title>Trade Data</title>
     </head>
     <body>
         
@@ -39,5 +39,5 @@
  <script src="{{ asset('js/myapp.js') }}" defer></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-
+@yield('scripts')
 

@@ -8,7 +8,7 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 import Form from './Form'
-window.Form= Form
+window.Form = Form
 
 
 
@@ -30,35 +30,44 @@ Vue.component('app-traderecord', require('./components/trades/Traderecord.vue').
 Vue.component('app-navbar', require('./components/navbar/Navbar.vue').default);
 Vue.component('app-traderecord-chart-table', require('./components/trades/TraderecordChartTable.vue').default);
 Vue.component('app-traderecord-history', require('./components/trades/TradeHistory/TradeHistory.vue').default);
+Vue.component('register-first_portfolio', require('./components/portfolio/RegisterFirstPortfolio.vue').default);
+Vue.component('app-plans', require('./components/plans/plans.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-const app = new Vue({
-    el: '#app',
-    
-});
 
+if (document.querySelector('#app')) {
+    const app = new Vue({
+        el: '#app',
+    });
+}
 
-/* if (document.querySelector('#VuePortfolio')) { // this line check if #VuePortfolio exist 
+if (document.querySelector('#register')) {
+    const register = new Vue({
+        el: '#register',
+    });
+}
+
+/* if (document.querySelector('#VuePortfolio')) { // this line check if #VuePortfolio exist
     const app = new Vue({
         el: '#VuePortfolio',
-        
+
     });
 }
 
 if (document.querySelector('#VueRules')) {
     const rules = new Vue({
         el: '#VueRules',
-      
+
     })
 }
 
 if (document.querySelector('#VueStrategies')) {
     const strategies = new Vue({
         el: '#VueStrategies'
-        
+
     })
 }
 

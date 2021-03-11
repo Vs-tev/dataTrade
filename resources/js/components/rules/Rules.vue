@@ -6,41 +6,37 @@
         </ul>
         <div class="tab-content">
             <div id="entry_rule" class="tab-pane active" role="tabpanel">
-                <div class="d-block d-md-flex justify-content-between align-items-center pt-4 pb-3 px-4">
-                    <div class="form-group px-0 col-12 col-md-3">
-                        <input type="text" class="form-control search-input" name="text" placeholder="Search rule">
-                        <span class="material-icons font-sm icon-sm search-i">search</span>
-                    </div>
-                    <button type="button" @click="addNewRule" class="btn btn-primary font-weight-500 mt-2 mt-md-0" data-target="#modal-rule"
-                        data-toggle="modal" v-text="buttonText"></button>
+                <div class="d-block d-md-flex justify-content-start align-items-center py-3 px-4">
+                  <button type="button" @click="create" class="btn btn-secondary border-0 lighter font-500"  v-text="buttonText">
+                  </button>
                 </div>
                 <div class="col rule-table-div px-2 px-sm-4">
-                    <table class="table table-rules">
-                        <thead>
+                    <table class="table table-rules table-hover">
+                        <thead class="border-bottom-white">
                             <tr>
-                                <th class="font-500 font-md">{{this.thTitle}}</th>
+                                <th class="font-500 font-md pl-1">{{this.thTitle}}</th>
                                 <th class="lighter font-md font-500 d-none d-md-flex"># USED</th>
-                                <th class="lighter font-md font-500 ">
+                                <th class="lighter font-md font-500 " v-if="typeRule == 'entry_rules'">
                                     <div class="d-none d-md-block">SUCCESS</div>
                                 </th>
                                 <th class="lighter font-md font-500">ACTION</th>
                             </tr>
-
                         </thead>
                         <tbody>
-                            <tr v-for="rule in rules" :key="rule.id">
+                            <tr class="border-bottom" v-for="rule in rules" :key="rule.id">
                                 <td>
-                                    <div class="d-flex align-items-center">
-                                        <span class="avatar-letter m-0 h3" :class="{'bg-cyan white' : typeRule == 'exit_reasons'}">{{rule.name.charAt(0)}}</span>
-                                        <div class="">
-                                            <span class="m-0 p-0 font-normal font-weight-bold">{{rule.name}}</span>
-                                            <p class="m-0 p-0 lighter font-md font-500">Created: <span>{{rule.created_at}}</span></p>
-                                        </div>
-                                    </div>
+                                  <div class="pl-1">
+                                      <span class="m-0 p-0 font-normal font-weight-bold">{{rule.name}}</span>
+                                      <p class="m-0 p-0 lighter font-md font-500">Created: <span>{{rule.created_at}}</span></p>
+                                  </div>
                                 </td>
-                                <td class="d-none d-md-block">{{rule.used_rules_count}} Trades
+                                <td class="d-none d-md-block">
+                                  <div>
+                                    <span class="m-0 p-0 font-normal font-weight-bold">{{rule.used_rules_count}} Trades</span>
+                                    <p class="m-0 p-0 lighter font-md font-500" v-if="typeRule == 'entry_rules' "><span>{{rule.rules_in_winn_trades}} Winners</span></p>
+                                  </div>
                                 </td>
-                                <td class="">
+                                <td v-if="typeRule == 'entry_rules'">
                                     <span
                                         class="d-none d-md-inline badge badge-light font-sm font-500 text-muted" 
                                         v-html="rule.used_rules_count ? ((rule.rules_in_winn_trades / rule.used_rules_count)*100).toFixed(2) + '%' : '0.00%' ">
@@ -49,11 +45,13 @@
                                 <td>
                                     <div class="d-flex align-content-center">
                                         <button type="button"
-                                        class="btn btn-secondary mr-2" data-toggle="modal" @click="getItem(rule)"
-                                        data-target="#modal-rule"><img src="/storage/icons/edit-sm.svg" alt=""></button>
+                                        class="btn" data-toggle="modal" @click="getItem(rule)"
+                                        data-target="#modal-rule"><span
+                                        class="material-icons">mode_edit</span></button>
 
-                                        <button type="button" class="btn btn-link" @click="deleteRule(rule)" 
-                                        data-toggle="modal" data-target="#modal-rule"><img src="/storage/icons/trash-sm.svg" alt=""></button>
+                                        <button type="button" class="btn" @click="deleteRule(rule)" 
+                                        data-toggle="modal" data-target="#modal-rule"><span
+                                        class="material-icons">delete</span></button>
                                     </div>
                                 </td>
                             </tr>
@@ -61,22 +59,30 @@
                     </table>
                 </div>
             </div>
-          
             <modal :item="form" v-on:storeRule="storeRule($event)" v-on:updateRule="updateRule($event)" v-on:destroyRule="destroyRule($event)"></modal>
+            <modal-upgrade-plan :text="upgrade_plan_modal"></modal-upgrade-plan>
         </div>
     </div>
     
 </template>
 <script>
+import ModalUpgradePlan from "../ModalUpgradePlan.vue";
 import Modal from "./Modal";
 export default {
   //props: ["form"],
   name: "Rules",
   components: {
     Modal,
+    ModalUpgradePlan,
   },
   data() {
     return {
+      upgrade_plan_modal: [
+        {
+          text: "Use the full power of dataTrade",
+          subtext: "Upgrade your plan, and create up to 20 trading rules",
+        },
+      ],
       typeRule: "entry_rules",
       thTitle: "",
       buttonText: "",
@@ -116,15 +122,24 @@ export default {
         })
         .catch((error) => {});
     },
-
-    addNewRule: function addNewRule() {
-      this.form.reset();
-      this.form.modal = "create";
-      if (this.typeRule == "entry_rules") {
-        this.form.title = "Create Entry Rule";
-      } else if (this.typeRule == "exit_reasons") {
-        this.form.title = "Create Exit Reason";
-      }
+    create: function create() {
+      axios
+        .get("/dashboardPages/tradingrules/" + this.typeRule)
+        .then((res) => {
+          this.form.reset();
+          this.form.modal = "create";
+          if (this.typeRule == "entry_rules") {
+            this.form.title = "Create Entry Rule";
+          } else if (this.typeRule == "exit_reasons") {
+            this.form.title = "Create Exit Reason";
+          }
+          $("#modal-rule").modal("show");
+        })
+        .catch((error) => {
+          if (error.response.status === 402) {
+            $("#modal-upgrade-plan").modal("show");
+          }
+        });
     },
 
     storeRule: function storeRule(value) {

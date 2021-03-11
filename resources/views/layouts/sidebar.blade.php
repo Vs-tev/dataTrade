@@ -8,23 +8,34 @@
     <div class="p-1">
         <div class="scroll">
             <ul class="list-unstyled">
-                <li class=""><a href="dashboard" class=""><span class="material-icons">
+                <li class=""><a href="../dashboardPages/dashboard" class=""><span class="material-icons">
                             dashboard</span>Dashboard</a></li>
-                <li class=""><a href="portfolio" class=""><span class="material-icons">
+                <li class=""><a href="../dashboardPages/portfolio" class=""><span class="material-icons">
                             account_balance_wallet</span>Portfolio</a></li>
                 <li class=""><a href="#" class="separator font-sm">Trading</a></li>
 
-                <li class=""><a href="traderecord" class=""><span class="material-icons">
+                <li class=""><a href="../dashboardPages/traderecord" class=""><span class="material-icons">
                             insert_chart_outlined</span>Trade Record</a></li>
-                <li class=""><a href="tradehistory" class=""><span class="material-icons">
+                <li class=""><a href="../dashboardPages/tradehistory" class=""><span class="material-icons">
                             history</span>Trades History</a></li>
 
                 <li class=""><a href="#" class="separator">Trading Steup</a> </li>
-                <li class=""><a href="tradingrules" class="">
-                        <span class="material-icons">
-                            rule</span>Trading Rules</a> </li>
-                <li class=""><a href="strategy" class=""><span class="material-icons">
+                <li class=""><a href="../dashboardPages/tradingrules" class="">
+                    <span class="material-icons">rule</span>Trading Rules</a> 
+                </li>
+                <li class=""><a href="../dashboardPages/strategy" class=""><span class="material-icons">
                             settings_applications</span>Strategy</a></li>
+
+                <li class=""><a href="#" class="separator">Billing</a> </li>  
+                <li class=""><a href="{{route('plan')}}" class="">
+                    <span class="material-icons">payments</span>Plans</a> 
+                </li>     
+                <li class=""><a href="{{route('payment_methods')}}" class="">
+                    <span class="material-icons">payment</span>Payment methods</a> 
+                </li>  
+                <li class=""><a href="{{route('payment_methods.dashboard')}}" class="">
+                    <span class="material-icons">dashboard_customize</span>Dashboard</a> 
+                </li>                    
             </ul>
         </div>
     </div>

@@ -4,7 +4,7 @@
 
 <div class="main-content-container">
 
-    <div class="content-container" id="VuePortfolio">
+    <div class="content-container">
 
         <app-portfolio></app-portfolio>
            

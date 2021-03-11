@@ -31,8 +31,8 @@
             @enderror
 
         </div>
-        <div class="form-group mb-5">
-                <div class="form-check">
+        <div class="form-group mb-5 ">
+                <div class="form-check pt-4">
                     <div class="custom-checkbox">
                         <input type="checkbox" class="custom-control-input" id="remember" name="remember"
                             {{ old('remember') ? 'checked' : ''}}>

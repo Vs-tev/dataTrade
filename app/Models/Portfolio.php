@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class Portfolio extends Model
@@ -36,9 +37,12 @@ class Portfolio extends Model
         return Carbon::createFromTimeStamp(strtotime($this->attributes['action_date']))->diffForHumans(['options' => Carbon::ONE_DAY_WORDS]); 
         //this bind published with getPublishedAttribute() and return 'created_at' with diffForHumans(). used in vue to output readable date 
     } */
-    
+
     public function scopeIsactive($query){
-        return $query->where([['is_active', 1], ['user_id', auth()->id()]])->pluck('id'); //return only active
+        return $query->where([
+            ['is_active', 1], 
+            ['user_id', auth()->id()]
+        ])->pluck('id'); //return only active
     }
 
     public function add_to_balance($portfolio){

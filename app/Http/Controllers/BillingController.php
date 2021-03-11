@@ -1,0 +1,66 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Plan;
+use App\Models\Feature;
+use Illuminate\Http\Request;
+
+class BillingController extends Controller
+{
+
+    public function index()
+    {
+        //dd(auth()->user()->subscribedToPlan(Plan::free_plan_price_id()->first(), 'default'));
+        $monthlyPlans = Plan::where('billing_period', 'monthly')->get();
+        $yearlyPlans = Plan::where('billing_period', 'yearly')->get();
+        $currentplan = auth()->user()->subscription('default') ?? NULL;
+        $subscriptionstatus = auth()->user()->subscribed('default');
+        $paymentMethods = auth()->user()->paymentMethods();
+       
+        if(!is_null($currentplan)){
+            $currentplan->withCasts(['ends_at' => 'datetime:d M Y']);
+        }
+        return view('billing.index', compact('monthlyPlans', 'yearlyPlans', 'currentplan', 'paymentMethods', 'subscriptionstatus'));
+    }
+
+    public function cancel()
+    {
+        $cancel = auth()->user()->subscription('default')->cancel();
+        return redirect()->route('plan')->with('cancel', 'Your cancellation was successfully');;
+    }
+
+    public function resume($plan_id)
+    {
+        
+        $paymentMethods = auth()->user()->paymentMethods();
+        if($paymentMethods->count()){
+            $resume = auth()->user()->subscription('default')->resume();
+            return redirect()->route('plan')->withMessage('Subscribed successfully');
+        }else{
+            $plan = Plan::findOrFail($plan_id);
+            $intent = auth()->user()->createSetupIntent();
+            return view('billing.checkout', compact('plan', 'intent'));
+        }
+    }
+
+    public function dashboard()
+    {
+        $currentplan = auth()->user()->subscription('default');
+
+        $subscriptionstatus = auth()->user()->subscribed('default');
+    
+        $plan = Plan::where('stripe_plan_id',  $subscriptionstatus == true ? auth()->user()->subscription('default')->stripe_plan : Plan::free_plan_price_id()->first())->get();
+       
+        $userFeatures = Feature::select('features.name', 'feature_plan.max_amount')
+        ->join('feature_plan', 'feature_plan.feature_id', '=', 'features.id')
+        ->join('plans', 'feature_plan.plan_id', '=', 'plans.id')
+        ->where('plans.stripe_plan_id', $subscriptionstatus == true ? auth()->user()->subscription('default')->stripe_plan : Plan::free_plan_price_id()->first())
+        ->groupBy('features.name')
+        ->orderBy('feature_plan.max_amount', 'ASC')
+        ->get();
+      
+        return view('billing.dashboard', compact('userFeatures', 'plan'));
+    }
+
+}
