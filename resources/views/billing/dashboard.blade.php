@@ -3,15 +3,18 @@
 @section('content')
 
 <div class="main-content-container">
-    
+   
     <div class="content-container py-0 pl-5">
         <div class="row mt-4">
             <div class="col-12 col-md-4 col-lg-3 col-xl-2">
                 <h3 class="mb-4">Current Plan</h3>
                 <div class="mb-4">
-                    <h1 class="ml-4 mb-0 display-4 text-uppercase primary">{{$plan[0]->name}}</h1>
-                    
-                    <h6 class="ml-4 font-weight-light lighter text-uppercase">{{$plan[0]->name == 'Free' ? 'forever' : $plan[0]->billing_period }}</h6>
+                    <h1 class="ml-4 mb-0 display-4 text-uppercase primary">{{$plan->name}}</h1>
+                    <div class="ml-4 font-weight-light text-muted text-uppercase">{{$plan->name == 'Free' ? 'forever' : $plan->billing_period }}
+                    @if (auth()->user()->subscription('default')->cancelled())
+                    <span class="text-lowercase">(Cancelled: expire on {{auth()->user()->subscription('default')->ends_at->toDateString()}})</span>
+                        @endif
+                    </div>
                 </div>
                 <div class="mb-4">
                     <ul class="list-unstyled">

@@ -95,6 +95,7 @@ class ExitReasonController extends Controller
      */
     public function update(Request $request, $id)
     {
+   
         $this->validate(request() ,[
             'name' => ['required','unique:exit_reasons,name,'.$id.'', 'string', 'min:2', 'max:40'],
         ]);

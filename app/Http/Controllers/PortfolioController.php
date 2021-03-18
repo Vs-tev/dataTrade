@@ -54,7 +54,6 @@ class PortfolioController extends Controller
     public function store(Request $request)
     {
         if (Gate::allows('portfolios')){
-      
             $this->validate(request() ,[
                 'name' => [Rule::unique('portfolios')->where(function ($query) {
                     return $query->where('user_id', auth()->id());
@@ -114,7 +113,6 @@ class PortfolioController extends Controller
         $data->update($request->all());
 
         return $data;
-
     }
 
     /**

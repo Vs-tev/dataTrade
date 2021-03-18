@@ -27,7 +27,7 @@ class BillingController extends Controller
     public function cancel()
     {
         $cancel = auth()->user()->subscription('default')->cancel();
-        return redirect()->route('plan')->with('cancel', 'Your cancellation was successfully');;
+        return redirect()->route('plan')->with('cancel', 'Your cancellation was successfully');
     }
 
     public function resume($plan_id)
@@ -46,12 +46,10 @@ class BillingController extends Controller
 
     public function dashboard()
     {
-        $currentplan = auth()->user()->subscription('default');
-
         $subscriptionstatus = auth()->user()->subscribed('default');
-    
-        $plan = Plan::where('stripe_plan_id',  $subscriptionstatus == true ? auth()->user()->subscription('default')->stripe_plan : Plan::free_plan_price_id()->first())->get();
-       
+      
+        //$plan = Plan::where('stripe_plan_id',  $subscriptionstatus == true ? auth()->user()->subscription('default')->stripe_plan : Plan::free_plan_price_id()->first())->get();
+        
         $userFeatures = Feature::select('features.name', 'feature_plan.max_amount')
         ->join('feature_plan', 'feature_plan.feature_id', '=', 'features.id')
         ->join('plans', 'feature_plan.plan_id', '=', 'plans.id')
@@ -60,7 +58,7 @@ class BillingController extends Controller
         ->orderBy('feature_plan.max_amount', 'ASC')
         ->get();
       
-        return view('billing.dashboard', compact('userFeatures', 'plan'));
+        return view('billing.dashboard', compact('userFeatures'));
     }
 
 }

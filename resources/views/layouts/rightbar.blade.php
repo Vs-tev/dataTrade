@@ -10,8 +10,8 @@
                     <p class="font-lg">{{Auth::user()->name}}</p>
                     <p class="text-muted d-flex align-items-center"><span class="material-icons cyan mr-1">email</span> 
                         {{Auth::user()->email}}</p>
-                    <a type="button" class="btn btn-primary" href="{{ route('logout') }}" 
-                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Sing out</a>
+                    <button class="btn btn-primary" href="{{ route('logout') }}" 
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Sing out</button>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf
                    </form>
@@ -19,32 +19,24 @@
             </div>
         <hr>
         <p class="font-lg text-muted my-4">Settings</p>
-        <div class="settings-container d-flex">     
-            <span class="material-icons icon-lg indigo" style="transform: rotate(90deg) scale(1,-1)">
-                vpn_key
-            </span>
-            <div class="ml-3">
-               <a href="#"><h5>Change Password</h5></a>
-               <p class="m-0 p-1">&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;</p>
-            </div>
-        </div>
-        <div class="settings-container d-flex">     
+        <a href="{{route('user_settings')}}" class="settings-container d-flex">     
             <span class="material-icons icon-lg indigo">
-                mail
+                manage_accounts
             </span>
             <div class="ml-3">
-               <a href="#"><h5 class="m-0 p-1">Change Email</h5></a> 
+              <h5 class="m-0 p-1">User settings</h5>
                <p class="m-0 p-1 text-muted">{{Auth::user()->email}}</p>
             </div>
-        </div>
-        <div class="settings-container d-flex">     
+        </a>
+        <hr>
+        <a class="settings-container d-flex" href="{{ route('plan') }}">     
             <span class="material-icons icon-lg indigo">
                 payment
             </span>
             <div class="ml-3">
-               <a href="{{ route('plan') }}"><h5 class="m-0 p-1">Upgrade plan</h5></a> 
-               <p class="m-0 p-1 text-muted">Current: Free</p>
+               <h5 class="m-0 p-1">Plans</h5>
+               <p class="m-0 p-1 text-muted">Billing</p>
             </div>
-        </div>
+        </a>
     </div>
 </div>

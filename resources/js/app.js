@@ -32,6 +32,8 @@ Vue.component('app-traderecord-chart-table', require('./components/trades/Trader
 Vue.component('app-traderecord-history', require('./components/trades/TradeHistory/TradeHistory.vue').default);
 Vue.component('register-first_portfolio', require('./components/portfolio/RegisterFirstPortfolio.vue').default);
 Vue.component('app-plans', require('./components/plans/plans.vue').default);
+Vue.component('user-settings', require('./components/user/UserSettings.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

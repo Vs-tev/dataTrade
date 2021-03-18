@@ -47,10 +47,10 @@
                                   </li>
                                  <li class="editable-item">
                                       <label class="label-item">Symbol:</label>
-                                      <select v-model="trade.symbol" class="form-control bg-light">
-                                        <option value="AUD/CAD" selected>AUD/CAD</option>
-                                        <option value="EUR/CAD">EUR/CAD</option>
-                                    </select>
+                                     <div class="dropdown w-100">
+                                        <div class="form-control border-0 bg-light" data-toggle="dropdown" v-html="trade.symbol" onclick="$('.symbol-menu').show()"></div>
+                                        <menu-symbol v-on:setSymbol="setSymbol($event)"></menu-symbol>
+                                      </div>
                                   </li>
                                    <li class="editable-item">
                                       <label class="label-item">Time frame:</label>
@@ -172,14 +172,15 @@
 </template>
 <script>
 import Multiselect from "vue-multiselect";
+import MenuSymbol from "../../MenuSymbol.vue";
+
 export default {
   name: "DeteilsTrade",
   components: {
     Multiselect,
+    MenuSymbol,
   },
-
   props: ["trade", "portfolios", "strategies", "exit_reason", "entryrules"],
-
   data() {
     return {
       new_img: "",
@@ -213,7 +214,6 @@ export default {
       }
     },
   },
-
   methods: {
     checkResponseStatus(error) {
       if (error.response.status === 419 || error.response.status == 401) {
@@ -223,19 +223,9 @@ export default {
       }
     },
 
-    /* risk_reward_ratio: function () {
-      var entry = this.trade.entry_price;
-      var exit = this.trade.exit_price;
-      var stop = this.trade.stop_loss_price;
-      if (entry && exit && stop) {
-        var result = ((entry - exit) / (stop - entry) || 0).toFixed(2);
-        if (isFinite(result)) {
-          this.form.risk_reward = result;
-        } else {
-          this.form.risk_reward = 0;
-        }
-      }
-    }, */
+    setSymbol: function setSymbol(symbol) {
+      this.trade.symbol = symbol;
+    },
 
     update: function () {
       const data = new FormData();
@@ -276,13 +266,11 @@ export default {
           this.checkResponseStatus(error);
         });
     },
-
     onFileSelected() {
       this.trade.img_mode = true;
       this.trade.trade_img = event.target.files[0];
       this.new_img = URL.createObjectURL(this.trade.trade_img);
     },
-
     removeTradeImg() {
       this.trade.trade_img = "";
       this.new_img = "";

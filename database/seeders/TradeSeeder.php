@@ -19,7 +19,7 @@ class TradeSeeder extends Seeder
         //here we we insert into trades and into related tables wich is balance and fill related data like so . 
         //also we can do this for used_entry_rules and so on.
 
-        \App\Models\Trade::factory(100)
+        \App\Models\Trade::factory(301)
         ->has(\App\Models\Balance::factory()
             ->state(function(array $attributes, Trade $trade){
                 return[

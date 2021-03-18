@@ -11,7 +11,7 @@
     <div class="dropdown-user-992px" id="dropdown-user-992px">
         <div class="d-flex justify-content-center justify-content-sm-between flex-wrap ">
             <div class="top-left-bar">
-                <ul class="list-unstyled">
+                <ul class="list-unstyled text-center">
                     <li class=""><a href="#" class="text-muted">Trade Analysis</a></li>
                     <li class=""><a href="#" class="text-muted">Strategy Analysis</a></li>
                     <li class=""><a href="#" class="text-muted ">Rules Analysis</a></li>
@@ -19,7 +19,7 @@
             </div>
             <div class="top-right-bar">
                 <ul class="list-unstyled">
-                    <li class="dropright"><a type="button" href="#" class="" data-toggle="dropdown"><span class="material-icons cyan icon-md">
+                   {{--  <li class="dropright"><a type="button" href="#" class="" data-toggle="dropdown"><span class="material-icons cyan icon-md">
                         search
                         </span></a> 
                         <div class="dropdown-menu ">
@@ -28,11 +28,17 @@
                         </div></li>
                     <li class=""><a href="#" class=""><span class="material-icons cyan icon-md">
                         language
-                        </span></a> </li>
-                    <li class=""><a href="#" class="text-muted toggle-rightbar name_and_avatar">
-                        Vasil 
-                        <span class="avatar-name font-lg">V</span>
-                    </a></li>
+                        </span></a> </li> --}}
+                        <li class=" mr-3">
+                            <a type="button" href="{{route('plan')}}" class="border">
+                                <span class="dark font-weight-light">Plan: </span>
+                                    {{$plan->name}}
+                            </a>
+                        </li>
+                        <li class=""><span class="text-muted toggle-rightbar name_and_avatar">
+                            {{strtok(Auth::user()->name, " ") }}
+                            <span class="avatar-name font-lg text-uppercase">{{ Auth::user()->name[0] }}</span>
+                        </span></li>
                    
                 </ul> 
             </div>
@@ -49,7 +55,7 @@
         
         <div class="top-right-bar">
             <ul class="list-unstyled ">
-                <li class=""><a type="button" href="#" class="" data-toggle="dropdown"><span class="material-icons cyan icon-md">
+                {{-- <li class=""><a type="button" href="#" class="" data-toggle="dropdown"><span class="material-icons cyan icon-md">
                     search
                     </span></a> 
                     <div class="dropdown-menu dropdown-search">
@@ -59,11 +65,21 @@
                 </li>
                 <li class=""><a href="#" class=""><span class="material-icons cyan icon-md">
                     language
-                    </span></a> </li>
+                    </span></a>
+                 </li> --}}
+                 <li class=" mr-3">
+                    <a type="button" href="{{route('plan')}}" class="border">
+                        <span class="dark font-weight-light">Plan: </span>
+                            {{$plan->name}}
+                    </a>
+                 </li>
+
+                
                 <li class=""><span class="text-muted toggle-rightbar name_and_avatar">
                     {{strtok(Auth::user()->name, " ") }}
                     <span class="avatar-name font-lg text-uppercase">{{ Auth::user()->name[0] }}</span>
-                </span></li>
+                </span>
+            </li>
                
             </ul> 
         </div>

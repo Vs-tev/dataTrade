@@ -1,6 +1,6 @@
 <template>
     <div class="row justify-content-center p-4"> 
-      <div class="col-12 col-md-8 pb-3 p-0">
+      <div class="col-12 col-md-11 col-lg-8 pb-3 p-0">
         
           <div class="dashboard_container_content border d-flex align-items-center">
               <button type="button" class="btn btn-secondary border-0 lighter font-500"
@@ -10,7 +10,7 @@
           </div>
       </div>
          
-        <main class="col-12 col-md-8 p-0 new-item" v-if="items.portfolio">
+        <main class="col-12 col-md-11 col-lg-8 p-0 new-item" v-if="items.portfolio">
            <div class="dashboard_container_content portfolio-wrapper border p-0" :class="{'inactive_portfolio': item.is_active == 0 }"
                     v-for="(item, index) in items.portfolio" :key="item.id">
               <div class="container-portfolio-action-buttons d-flex justify-content-between align-items-center p-3 mb-2">
@@ -24,7 +24,7 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-between">
-                          <button type="button" @click="getId(item.id)" class="btn btn-primary mr-2" data-toggle="modal"
+                          <button type="button" @click="getId(item.id, item.currency)" class="btn btn-primary mr-2" data-toggle="modal"
                                         data-target="#transactions"><img src="/storage/icons/wallet.svg" alt=""></button>
                           <button type="button" @click="getValues(item.id, item.name, item.currency)"
                                         class="btn btn-secondary mr-2" data-toggle="modal"
@@ -35,7 +35,7 @@
                       </div>
               </div>
                <div class="chart-wrapper">
-                        <apexchart type="area" height="180" 
+                        <apexchart type="area" height="270" 
                         :options="{chart:{
                             width:'100%', 
       
@@ -51,20 +51,19 @@
                             opacity: 0.2,
                           },
                           yaxis: {
-                            min: parseFloat(item.start_equity) ,
                              show: false,
                              showAlways: false,
                           },
                           colors: index === 0 ? ['#3490dc']: ['#1bc5bd'],
                           title: {
-                            text: item.current_balance +' '+ item.currency,
+                            text: item.current_balance +' '+ item.currency + ' '+ '('+ ((item.current_balance - item.start_equity)/ item.start_equity * 100).toFixed(2) + '%' + ')' ,
                             align: 'center',
                             margin: 0,
                             offsetX: 0,
                             offsetY: 0,
                             style: {
-                              fontSize: '22px',
-                              fontWeight: '600',
+                              fontSize: '24px',
+                              fontWeight: '500',
                               colors: '#343a40',
                             },
                           },
@@ -74,8 +73,8 @@
                               margin: 10,
                               offsetX: 0,
                               style: {
-                                fontSize: '16px',
-                                fontWeight: 'bold',
+                                fontSize: '18px',
+                                fontWeight: '400',
                                 color: '#343a40',
                               },
                             },
@@ -87,8 +86,16 @@
                             },
                              tooltip: {
                               x: {
-                                format: 'dd/MM/yy HH:mm'
+                                format: 'dd/MMM/yy'
                               },
+                              y: {
+                                labels: {
+                                  formatter: function(val) {
+                                    return val.toFixed(2);
+                                  }
+                                }
+                              }
+                              
                             },
                         }" :series="[{name: 'Balance', data : item.running_total.map(arr =>
                  parseFloat(arr.running_total)
@@ -99,7 +106,7 @@
         </main>
         
         <modal :item="form" v-on:edit="edit($event)" v-on:store="store($event)" v-on:destroy="destroy($event)"></modal>
-        <modal-transaction :transaction="transactions" :links="pagination" :item="form" v-on:setPage="setPage($event)" v-on:storeTransaction="storeTransaction($event)" v-on:delete_transaction="delete_transaction($event)"></modal-transaction>
+        <modal-transaction :currency="portfolioCurrency" :transaction="transactions" :links="pagination" :item="form" v-on:setPage="setPage($event)" v-on:storeTransaction="storeTransaction($event)" v-on:delete_transaction="delete_transaction($event)"></modal-transaction>
         <modal-upgrade-plan :text="upgrade_plan_modal"></modal-upgrade-plan>
     </div>
 </template>
@@ -125,47 +132,6 @@ export default {
             "Upgrade your plan to create up to 5 portfolios and multiple tests trading setup.",
         },
       ],
-      chartOptions: {
-        chart: {
-          width: "100%",
-          type: "area",
-          sparkline: {
-            enabled: true,
-          },
-        },
-        stroke: {
-          curve: "smooth",
-        },
-        fill: {
-          opacity: 0.3,
-        },
-        yaxis: {
-          min: 0,
-        },
-        colors: ["#8950fc"],
-        title: {
-          text: "9566.54 EUR",
-          align: "center",
-          margin: 0,
-          offsetX: 0,
-          style: {
-            fontSize: "22px",
-            fontWeight: "600",
-            colors: "#343a40",
-          },
-        },
-        subtitle: {
-          text: "Oanda account / 18-01-2021",
-          align: "center",
-          margin: 10,
-          offsetX: 0,
-          style: {
-            fontSize: "14px",
-            fontWeight: "bold",
-            color: "#6c757d",
-          },
-        },
-      },
 
       items: {
         portfolio: [],
@@ -176,6 +142,7 @@ export default {
         ],
       },
       transactions: [],
+      portfolioCurrency: "",
       pagination: {
         data: [],
       },
@@ -197,6 +164,7 @@ export default {
   mounted: function mounted() {
     this.fetchportfolio();
   },
+  computed: {},
 
   methods: {
     checkResponseStatus(error) {
@@ -322,18 +290,20 @@ export default {
     },
 
     /* Transaction controller */
-    getId: function getId(value) {
+    getId: function getId(value, currency) {
       {
         this.form.id = value;
         axios
           .get("/dashboardPages/portfolio/getTransactions/" + value)
           .then((res) => {
             this.transactions = res.data;
+            this.portfolioCurrency = currency;
+
             this.pagination.data = res.data.links;
             $("#transactions").appendTo("body");
           })
           .catch((error) => {
-            this.checkResponseStatus(error);
+            console.log(error);
           });
       }
     },

@@ -287,7 +287,7 @@
             </div>
         </section>
         <deteils-trade :trade="form" v-bind="$props" v-on:update="update"></deteils-trade>
-        <modal :trade="modal_data" v-on:confirm_except_trade="confirm_except_trade($event)" v-on:destroyTrade="destroyTrade($event)"></modal>
+        <modal-delete-except-trade :trade="modal_data" v-on:confirm_except_trade="confirm_except_trade($event)" v-on:destroyTrade="destroyTrade($event)"></modal-delete-except-trade>
     </div>
 
 </template>
@@ -295,14 +295,14 @@
 import SortingTrades from "./SortingTrades.vue";
 import DeteilsTrade from "./DeteilsTrade.vue";
 import Pagination from "../../Pagination.vue";
-import Modal from "./Modal.vue";
+import ModalDeleteExceptTrade from "./ModalDeleteExceptTrade.vue";
 
 export default {
   components: {
     SortingTrades,
     DeteilsTrade,
     Pagination,
-    Modal,
+    ModalDeleteExceptTrade,
   },
   name: "TradeHistory",
   props: ["portfolios", "strategies", "exit_reason", "entryrules"],

@@ -26,6 +26,7 @@
     <body>
         
         <div id="app">
+            <div id="cover" class=""></div>
             @include('layouts.sidebar')
             @include('layouts.navbar')
             @include('layouts.rightbar')

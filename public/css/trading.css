@@ -1,10 +1,10 @@
 .new_trade_inputs_300 {
-    min-width: 300px;
-    max-width: 300px
+    min-width: 320px;
+    max-width: 320px;
 }
 
-.trade_img,
-.img_list {
+.img_list,
+.trade_img {
     border: 0.12rem var(--primary) dashed;
     border-radius: 3px;
     height: auto;
@@ -12,13 +12,15 @@
     justify-content: center;
     position: relative;
 }
-
+.buy-sell-div{
+    min-width: 100px;
+}
 .buy-sell-div .buy,
 .buy-sell-div .sell {
     text-align: center;
     font-weight: 500;
     padding: 0.5rem;
-    font-size: 0.9rem
+    font-size: 0.9rem;
 }
 
 .buy.focus,
@@ -30,119 +32,121 @@
     box-shadow: none !important;
 }
 
+.symbol-div{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 99px;
+    white-space: nowrap;
+}
+    
+
 .error-trade-p {
     margin-left: 66px;
-    padding: 0px;
+    padding: 0;
 }
 
-.symbol-time_frame div select {
-    width: 130px
-}
 
 .inline {
     display: flex;
     align-items: center;
 }
 
-.inline label {
-    margin-right: 10px
+.inline > label {
+    width: 55px;
+    min-width: 55px;
+    text-align: right;
+    margin-right: 10px;
 }
 
 .inline .quantity_input {
-    width: 233px;
+    width: 100%;
 }
 
 .inline .price_input {
-    width: 78.5px
+    width: 100%;
 }
 
 .inline .price_input:first-of-type {
     border-right: none;
     border-top-right-radius: 0;
-    border-bottom-right-radius: 0
+    border-bottom-right-radius: 0;
 }
 
 .inline .price_input {
-    width: 78.5px
+    width: 33%;
 }
 
 .inline .price_input:nth-of-type(2) {
-    border-radius: 0
+    border-radius: 0;
 }
 
 .inline .price_input:last-of-type {
     border-left: none;
     border-top-left-radius: 0;
-    border-bottom-left-radius: 0
+    border-bottom-left-radius: 0;
 }
 
-.date-row .inline .date-inpit-div,
-.date-row .date-inpit-div {
-    width: 233px;
+.date-row .inline div .date-inpit-div,
+.date-row div .date-inpit-div {
+    width: 100%;
 }
 
-.date-row .date-inpit-div {
-    float: right;
+.date-row div .date-inpit-div {
+    float: left;
 }
 
-.qty-row,
+.date-row,
 .price-row,
-.date-row {
-    margin-top: 35px !important
+.qty-row {
+    margin-top: 35px !important;
 }
 
 .profit_row,
 .rules-row {
-    margin-top: 72px !important
+    margin-top: 45px;
 }
 
 .rules-row .inline .multiselect,
 .rules-row .multiselect {
-    width: 233px;
+    width: 100%;
 }
 
-.profit_row .inline input:first-of-type {
-    width: 173.5px;
+.profit_row .inline .pl_currency {
+    width: 147.5px;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
-    border-right: none
+    border-right: none;
 }
 
 .profit_row .inline .trade_return {
     width: 70px;
-    padding: 0px;
+    padding: 0;
     border-left: none;
     border: none;
     text-align: right;
     background: transparent;
     position: absolute;
-    margin-right: 65px;
-    height: 28px;
-    color: var(--lighter)
+    margin-left: 78px;
+    color: var(--lighter);
 }
 
 .profit_row .inline .trade_return:focus {
-    box-shadow: none
+    box-shadow: none;
 }
 
-.profit_row .inline input:last-of-type {
+.profit_row .inline .fees {
     width: 60px;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }
 
 .profit-input-div input {
-    width: 233px;
-    float: right;
+    width: 100%;
 }
 
-.rules-row .multiselect {
-    float: right;
-}
-
-.rules-row .multiselect:nth-of-type(2),
-.rules-row>.multiselect:last-of-type {
-    margin-top: 5px
+.rules-row .multiselect:last-of-type,
+.rules-row .multiselect:nth-of-type(2) {
+    margin-top: 5px;
 }
 
 .container_for_small_trades_table {
@@ -154,7 +158,21 @@
 
 }
 
-
+.scroll_modal_content{
+    display: flex;
+     flex-direction: column;
+     justify-content: center;
+ }
+ .scroll_modal_content .tab-pane{
+     max-height: calc(100vh - 20rem);
+     height: 500px!important;
+     overflow: hidden;
+     
+ }
+ .scroll_modal_content .tab-pane ul {
+      overflow-y: auto;
+      height: 100%
+ }
 
 @media screen and (max-width: 1730px) {
     .main-content-container .trade-record-container {
@@ -189,9 +207,30 @@
         right: auto;
         top: 125;
         width: 100%;
-        padding: 0;
-        padding-top: 1rem;
+        padding: 1rem 0 0;
     }
+
+    .new_trade_inputs_300 {
+        min-width: 100%!important;
+        max-width: 100%!important;
+    }
+    .inline .quantity_input {
+        width: 100%;
+    }
+    .inline .price_input {
+        width: 100%;
+    }
+    .date-row .inline div .date-inpit-div,
+    .date-row div .date-inpit-div {
+        width: 100%;
+    }
+
+    .rules-row .inline .multiselect,
+    .rules-row .multiselect,
+    .rules-wrapper {
+        width: 100%;
+    }
+
 }
 
 /*table view*/
@@ -218,11 +257,11 @@
 
 .timeline-trade .timeline .timeline-item {
     display: flex;
-    align-items: center
+    align-items: center;
 }
 
 .timeline-trade .timeline {
-    position: relative
+    position: relative;
 }
 
 .timeline-trade .timeline:before {
@@ -238,7 +277,7 @@
 .timeline-item .timeline-label {
     min-width: 130px;
     text-align: right;
-    padding-right: 5px
+    padding-right: 5px;
 }
 
 .timeline-item .timeline-badge {
@@ -246,7 +285,7 @@
     background: #f8f9fa;
     display: flex;
     align-content: center;
-    align-items: center
+    align-items: center;
 }
 
 .timeline-trade .timeline-content {
@@ -256,9 +295,9 @@
 
 .timeline-item .timeline-badge span {
     font-size: 16px;
-    padding: 0px;
-    margin: 0px;
-    line-height: 13px
+    padding: 0;
+    margin: 0;
+    line-height: 13px;
 }
 
 .width-50px {
@@ -271,24 +310,24 @@
     min-height: 60px;
     overflow: auto;
     font-weight: 300;
-    width: 100%
+    width: 100%;
 }
 
 .trade-options button {
     padding: 9px;
-    border-radius: 9px
+    border-radius: 9px;
 }
 
-.trade-options button.focus,
-.trade-options button:focus,
 .btn-edit-trade.focus,
-.btn-edit-trade:focus {
+.btn-edit-trade:focus,
+.trade-options button.focus,
+.trade-options button:focus {
     box-shadow: none;
 }
 
 .trade-options button span {
     font-size: 17px !important;
-    color: var(--dark)
+    color: var(--dark);
 }
 
 .trade-options button:hover {
@@ -303,18 +342,18 @@
 }
 
 .editable-item .price {
-    width: 23.5%
+    width: 23.5%;
 }
 
 .editable-item .label-item {
     font-size: var(--font-normal);
     font-weight: 500;
     padding: 11px;
-    text-align: right
+    text-align: right;
 }
 
 .editable-item label:first-of-type {
-    min-width: 140px;
+    min-width: 160px;
 }
 
 .input-wrapper-div {
@@ -337,15 +376,14 @@
     }
 
     .editable-item .label-item {
-        padding: 0
+        padding: 0;
     }
 
     .editable-item .price {
-        width: 100%
+        width: 100%;
     }
 
     .editable-item .date {
-        width: 100%
+        width: 100%;
     }
 }
-

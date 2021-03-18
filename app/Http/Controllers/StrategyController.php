@@ -28,8 +28,7 @@ class StrategyController extends Controller
         }])
         ->where('user_id', auth()->id())
         ->get();
-
-        //return view('dashboardpages.strategy.strategy', compact('strategy'));
+        
         return $strategy;
     }
 

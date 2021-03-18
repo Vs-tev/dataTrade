@@ -64,7 +64,7 @@ class Portfolio extends Model
     }
     
     public function fetch_portfolio($query){
-        $portfolio = $this->select('portfolios.id','b.action_date',  'name', 'start_equity', 'currency', 'is_active', 'portfolios.started_at', 
+        $portfolio = $this->select('portfolios.id','b.action_date','name', 'start_equity', 'currency', 'is_active', 'portfolios.started_at', 
         DB::raw('SUM(amount) as current_balance,
         COUNT(CASE WHEN action_type = "trade" THEN 1 else NULL END) as total_trades, 
         COUNT(CASE WHEN amount >= 0 AND action_type = "trade" THEN 1 else NULL END)as winning_trades, 
@@ -75,8 +75,7 @@ class Portfolio extends Model
         ->whereIn('is_active', $query)
         ->groupBy('portfolios.id')
         ->get();
-        
-        //dd(number_format($portfolio[0]->current_balance,2, '.',' '));
+
 
         $new = $portfolio->map(function($object){
         $object->running_total = Portfolio::runningtotal($object->id);

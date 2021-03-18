@@ -56,7 +56,7 @@
 </template>
 <script>
 export default {
-  name: "Modal",
+  name: "ModalDeleteExceptTrade",
 
   props: ["trade"],
 

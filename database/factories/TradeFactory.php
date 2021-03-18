@@ -23,8 +23,8 @@ class TradeFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => 27,
-            'portfolio_id' => 24,
+            'user_id' => 1,
+            'portfolio_id' => 51,
             'symbol' => $this->faker->randomElement(['EUR/CAD', 'ERU/USD']),
             'type_side' => $this->faker->randomElement(['sell', 'buy']),
             'quantity' => rand(500, 10000),
@@ -32,10 +32,10 @@ class TradeFactory extends Factory
             'exit_price' => rand(1.0000, 1.2500),
             'stop_loss_price' => rand(1.0000, 1.2500),
             'time_frame' => $this->faker->randomElement(['1 min', '15 min']),
-            'entry_date' => $this->faker->dateTimeBetween('2021-03-01', 'now'),
-            'exit_date' => $this->faker->dateTimeBetween('2021-03-05', 'now'),
-            'pl_currency' => rand(-150, 250),
-            'pl_pips' => rand(-50, 250),
+            'entry_date' => $this->faker->dateTimeBetween('2021-03-06', '2021-03-07'),
+            'exit_date' => $this->faker->dateTimeBetween('2021-03-07', 'now'),
+            'pl_currency' => rand(-250, 40),
+            'pl_pips' => rand(-20, 10),
             'fees' => rand(2, 12),
             'trade_img' => 'noimage.jpg',
             'trade_notes' => 'asjdhbaskjdnaksdjnasjdnlasdk',

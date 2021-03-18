@@ -5,12 +5,12 @@
             <div class="border-bottom p-4">
                 <h4 class="font-weight-500 m-0">Trade record pandel</h4>
             </div>
-            <div class="d-lg-flex flex-block px-4 pt-4">
+            <div class="d-lg-flex flex-block pl-0 pr-0 pr-md-4 pt-0">
                 <!-- trade inputs -->
                 <div class="new_trade_inputs_300 mx-auto">
-                
-               
-                      <div class="btn-group btn-group-toggle buy-sell-div col-12 p-0 mt-0" data-toggle="buttons"
+
+                  <div class="d-flex justify-content-start border-bottom ">
+                     <div class="btn-group btn-group-toggle buy-sell-div p-0 border-right" data-toggle="buttons"
                           id="type">
                           <button class="btn btn-type-buy buy btn-sm col-6 active" type="button" @click="buy">
                               <input class="buy" type="radio" name="type_side" id="type_buy" checked>BUY
@@ -19,19 +19,37 @@
                               <input class="sell" type="radio" name="type_side" id="type_sell">SELL
                           </button>
                       </div>
-                   
-                
-             
-                    <!-- symbol/time frame -->
-                    <div class="d-flex justify-content-between mt-4 symbol-time_frame">
-                        <div class="form-group">
-                            <select v-model="form.symbol" class="form-control">
-                                <option value="AUD/CAD" selected>AUD/CAD</option>
-                                <option value="EUR/CAD">EUR/CAD</option>
-                            </select>
-                        </div>
-                        <div class="">
-                            <select v-model="form.time_frame" class="form-control" name="time_frame">
+                      <div class="form-group w-100 d-flex align-items-center m-0 p-0 border-right pointer" data-toggle="modal" data-target="#modal-symbol">
+                            <div class="font-lg font-500 pl-2 symbol-div" v-html="form.symbol"></div>
+                      </div>
+                     
+                       <div class="form-group w-100 m-0 p-0 border-right pointer">
+                         <div class="font-lg font-500 pl-2 w-100 h-100">
+                           <!--  -->
+                             <div class="dropdown h-100">
+                                <div class="d-flex align-items-center  w-100 h-100" data-toggle="dropdown">
+                                    {{form.time_frame}}
+                                </div>
+                                <div class="dropdown-menu dropdown-menu-right py-0">
+                                  <ul class="list-group list-group-flush rounded">
+                                    <li class="list-group-item list-group-item-action" @click="form.time_frame = '1 min' ">1 min</li>
+                                    <li class="list-group-item list-group-item-action" @click="form.time_frame = '5 min' ">5 min</li>
+                                    <li class="list-group-item list-group-item-action" @click="form.time_frame = '15 min' ">15 min</li>
+                                    <li class="list-group-item list-group-item-action" @click="form.time_frame = '30 min' ">30 min</li>
+                                    <li class="list-group-item list-group-item-action" @click="form.time_frame = '1 hour' ">1 hour</li>
+                                    <li class="list-group-item list-group-item-action" @click="form.time_frame = '2 hours' ">2 hours</li>
+                                    <li class="list-group-item list-group-item-action" @click="form.time_frame = '4 hours' ">4 hours</li>
+                                    <li class="list-group-item list-group-item-action" @click="form.time_frame = '1 day' ">1 day</li>
+                                    <li class="list-group-item list-group-item-action" @click="form.time_frame = '1 week' ">1 week</li>
+                                    <li class="list-group-item list-group-item-action" @click="form.time_frame = '1 month' ">1 month</li>
+                                  </ul> 
+                                </div>
+                             </div>
+
+                           <!--  -->
+                          
+                         </div>
+                            <!-- <select v-model="form.time_frame" class="form-control" name="time_frame">
                                 <option selected="" value="1 min">1 min</option>
                                 <option value="5 min">5 min</option>
                                 <option value="15 min">15 min</option>
@@ -42,11 +60,13 @@
                                 <option value="1 day">1 day</option>
                                 <option value="1 week">1 week</option>
                                 <option value="1 month">1 month</option>
-                            </select>
+                            </select> -->
                         </div>
-                    </div>
+
+                  </div>
+                     
                     <!-- quantity -->
-                    <div class="qty-row">
+                    <div class="qty-row px-4">
                         <div class="inline ">
                             <label for="quantity">Quantity</label>
                             <input id="quantity" v-model="form.quantity" type="text" class="form-control quantity_input"
@@ -56,8 +76,8 @@
                         <p class="error-output error-trade-p trade-error" v-if="form.errors.has('quantity')" v-text="form.errors.get('quantity')"></p>
                     </div>
                     <!-- Price -->
-                    <div class="price-row">
-                        <div class="inline justify-content-end ">
+                    <div class="price-row px-4">
+                        <div class="inline">
                             <label>Price</label>
                             <input v-model="form.entry_price" type="text" class="form-control price_input"
                                 placeholder="Entry" :class="{'is-invalid': form.errors.has('entry_price')}"
@@ -75,62 +95,75 @@
                     </div>
                     
                     <!--Date -->
-                    <div class="date-row">
-                        <div class="inline justify-content-end">
-                            <label>Date</label>
-                            <div class="date-inpit-div">
-                                <date-pick 
-                                    v-model="form.entry_date" 
-                                    :pickTime="true" 
-                                    :isDateDisabled="isFutureDate"
-                                    :format="'YYYY-MM-DD HH:mm'"
-                                    :inputAttributes="{readonly: false}"
-                                    @input="form.errors.clear('entry_date')"
-                                    :class="{'is-invalid': form.errors.has('entry_date')}">
-                                </date-pick>
+                      <div class="date-row px-4">
+                        <div class="inline align-items-start">
+                            <label class="pt-1">Date</label>
+                            <div>
+                                <div class="date-inpit-div">
+                                    <date-pick
+                                        v-model="form.entry_date"
+                                        :pickTime="true"
+                                        :isDateDisabled="isFutureDate"
+                                        :format="'YYYY-MM-DD HH:mm'"
+                                        :inputAttributes="{readonly: false}"
+                                        @input="form.errors.clear('entry_date')"
+                                        :class="{'is-invalid': form.errors.has('entry_date')}"></date-pick>
+                                </div>
+                                <div class="date-inpit-div mt-1">
+                                    <date-pick
+                                        v-model="form.exit_date"
+                                        :pickTime="true"
+                                        :isDateDisabled="isFutureDate"
+                                        :inputAttributes="{readonly: true}"
+                                        :format="'YYYY-MM-DD HH:mm'"
+                                        @input="form.errors.clear('exit_date')"
+                                        :class="{'is-invalid': form.errors.has('exit_date')}"></date-pick>
+                                    <p
+                                        class="font-sm lighter p-0 position-absolute"
+                                        v-if="duration && !form.errors.has('entry_date') && !form.errors.has('exit_date')">Trade duration:
+                                        {{duration}}</p>
+                                    <p
+                                        class="error-output w-25 p-0"
+                                        v-if="form.errors.has('entry_date')"
+                                        v-text="form.errors.get('entry_date')"></p>
+                                    <p
+                                        class="error-output w-25 p-0"
+                                        v-if="!form.errors.has('entry_date') && form.errors.has('exit_date')"
+                                        v-text="form.errors.get('exit_date')"></p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="date-inpit-div mt-1">
-                            <date-pick v-model="form.exit_date" 
-                              :pickTime="true" 
-                              :isDateDisabled="isFutureDate"
-                              :inputAttributes="{readonly: true}" 
-                                :format="'YYYY-MM-DD HH:mm'"
-                                @input="form.errors.clear('exit_date')"
-                                :class="{'is-invalid': form.errors.has('exit_date')}">
-                            </date-pick>
-                            <span class="font-sm lighter p-0" v-if="duration && !form.errors.has('entry_date') && !form.errors.has('exit_date')">Trade duration: {{duration}}</span>
-                            <p class="error-output w-25 p-0" v-if="form.errors.has('entry_date')"
-                                v-text="form.errors.get('entry_date')"></p>
-                            <p class="error-output w-25 p-0" v-if="!form.errors.has('entry_date') && form.errors.has('exit_date')"
-                                v-text="form.errors.get('exit_date')"></p>    
                         </div>
                     </div>
                     <!-- Profit -->
-                    <div class="profit_row">
-                        <div class="inline justify-content-end">
-                            <label for="pl_currency">Profit</label>
-                            <input id="pl_currency" @keyup="calculateProfit" @input="form.errors.clear('pl_currency')"
-                                v-model="form.pl_currency" type="text" placeholder="0.00" class="form-control"
-                                :class="{'input-error': form.errors.has('pl_currency')}">
-                            <input type="text" v-model="trade_return" class="form-control trade_return" tabindex="-1"
-                                readonly>
-                            <input type="text" @keyup="calculateProfit" @input="form.errors.clear('fees')"
-                                v-model="form.fees" placeholder="Fees" class="form-control" name="fees" id="fees"
-                                :class="{'is-invalid': form.errors.has('fees')}">
+                    <div class="profit_row px-4">
+                        <div class="inline align-items-start justify-content-center justify-content-md-start">
+                            <label class="pt-1">Profit<span class="font-sm">({{portfolio.currency}})</span></label>
+                            <div class="">
+                              <div class="d-flex">
+                                 <input id="pl_currency" @keyup="calculateProfit" @input="form.errors.clear('pl_currency')"
+                                  v-model="form.pl_currency" type="text" placeholder="0.00" class="form-control pl_currency"
+                                  :class="{'input-error': form.errors.has('pl_currency')}">
+                                <input type="text" v-model="trade_return" class="form-control trade_return" tabindex="-1"
+                                    readonly>
+                                <input type="text" @keyup="calculateProfit" @input="form.errors.clear('fees')"
+                                    v-model="form.fees" placeholder="Fees" class="form-control fees" name="fees" id="fees"
+                                  :class="{'is-invalid': form.errors.has('fees')}">
+                              </div>
+                             
+                              <div class="profit-input-div mt-1">
+                                  <input id="pips" v-model="form.pl_pips" type="text" class="form-control" name="pips"
+                                      placeholder="Pips" :class="{'is-invalid': form.errors.has('pl_pips')}"
+                                      @input="form.errors.clear('pl_pips')">  
+                              </div>
+                              <p class="error-output" v-if="form.errors.has('pl_pips') || form.errors.has('pl_currency')" v-text="'The profit field is required'"></p>
+                            </div>
                         </div>
-                        <div class="profit-input-div mt-1">
-                            <input id="pips" v-model="form.pl_pips" type="text" class="form-control" name="pips"
-                                placeholder="Pips" :class="{'is-invalid': form.errors.has('pl_pips')}"
-                                @input="form.errors.clear('pl_pips')">  
-                        </div>
-                         <p class="error-output error-trade-p mt-4 pt-2" v-if="form.errors.has('pl_pips') || form.errors.has('pl_currency')" v-text="'The profit field is required'"></p>
-                    </div>
-
+                     </div>
                     <!-- Rules -->
-                    <div class="rules-row">
-                        <div class="inline justify-content-end">
-                           <label>Rules</label>
+                    <div class="rules-row px-4">
+                        <div class="inline align-items-start">
+                           <label class="pt-1">Rules</label>
+                           <div class="rules-wrapper w-100">
                             <multiselect v-model="form.entry_rule_id" :options="entryrules" :multiple="true"
                                 :close-on-select="false" :clear-on-select="false" :preserve-search="false" :max="3"
                                 placeholder="Select entrty rules" id="entry_rules" label="name" track-by="id" :searchable="false"
@@ -141,20 +174,22 @@
                                         selected</span>
                                 </template>
                             </multiselect>
-                        </div>
-                        <multiselect v-model="form.exit_reason_id" :options="exit_reason" :searchable="false"
-                            :close-on-select="true" :show-labels="false" track-by="id" label="name"
-                            placeholder="Exit Reason"></multiselect>
+                          
+                            <multiselect v-model="form.exit_reason_id" :options="exit_reason" :searchable="false"
+                                :close-on-select="true" :show-labels="false" track-by="id" label="name"
+                                placeholder="Exit Reason"></multiselect>
 
-                        <multiselect v-model="form.strategy_id" :options="strategies" :searchable="false"
-                            :close-on-select="true" :show-labels="false" track-by="id" label="name"
-                            placeholder="Strategy">
-                        </multiselect>
+                            <multiselect v-model="form.strategy_id" :options="strategies" :searchable="false"
+                                :close-on-select="true" :show-labels="false" track-by="id" label="name"
+                                placeholder="Strategy">
+                            </multiselect>
+                         </div>
+                           </div>
                     </div>
             
                 </div>
                 <!-- Img/commentar -->
-                <div class="flex-grow-1 img-commentar-div ml-lg-4">
+                <div class="flex-grow-1 img-commentar-div ml-4 ml-lg-0">
                     <div class="">
                         <div class="trade_img text-center mb-4">
                             <div class="input-file-container js" v-if="!form.trade_img">
@@ -195,6 +230,7 @@
         </section>
       </form>
     <modal-upgrade-plan :text="upgrade_plan_modal"></modal-upgrade-plan>
+    <modal-symbol v-on:setSymbol="setSymbol($event)"></modal-symbol>
   </div>
 </template>
 
@@ -202,6 +238,7 @@
 import Multiselect from "vue-multiselect";
 import DatePick from "vue-date-pick";
 import ModalUpgradePlan from "../ModalUpgradePlan.vue";
+import ModalSymbol from "../ModalSymbol.vue";
 //import Chart from "../Chart.vue";
 
 export default {
@@ -211,22 +248,30 @@ export default {
     Multiselect,
     DatePick,
     ModalUpgradePlan,
+    ModalSymbol,
 
     //Chart,
   },
 
   data() {
     return {
+      upgrade_plan_modal: [
+        {
+          text: "Use the full power of dataTrade",
+          subtext: "Upgrade your plan to record unlimited trades",
+        },
+      ],
+
       portfolio: [],
-      Difference_in_ms: "",
+      Difference_in_ms: "EUR/USD",
       loading: true,
       form: new Form({
-        symbol: "AUD/CAD",
+        symbol: "EUR/USD",
         type_side: "buy",
-        quantity: "10000",
-        entry_price: "1.00000",
-        exit_price: "1.00000",
-        stop_loss_price: "1.00000",
+        quantity: "",
+        entry_price: "",
+        exit_price: "",
+        stop_loss_price: "",
         time_frame: "1 min",
         entry_date: "",
         exit_date: "",
@@ -310,6 +355,10 @@ export default {
       }
     },
 
+    setSymbol: function setSymbol(symbol) {
+      this.form.symbol = symbol;
+    },
+
     today() {
       var today = new Date();
       var date =
@@ -366,7 +415,6 @@ export default {
     },
 
     recordTrade() {
-      //console.log(this.form.trade_img);
       const data = new FormData();
       data.append("symbol", this.form.symbol);
       data.append("type_side", this.form.type_side);
@@ -416,10 +464,10 @@ export default {
         });
     },
     clearFileds() {
-      this.form.reset();
+      //this.form.reset();
       this.today();
       this.form.type_side = "buy";
-      this.form.symbol = "AUD/CAD";
+
       this.form.time_frame = "1 min";
     },
     /* getSymbols() {

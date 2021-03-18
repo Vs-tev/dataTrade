@@ -1,44 +1,44 @@
 
-$(function (){
-   
+$(function () {
+
 
     /*Enabel tooltip bootstrap*/
     $('[data-toggle="tooltip"]').tooltip();
 
 
     /*Handle open/close rightbar and sidebar */
-    $('.toggle-sidebar, .expand-sidebar').on('click',function(){
+    $('.toggle-sidebar, .expand-sidebar').on('click', function () {
         $('#sidebar').toggleClass('hide-show-sidebar');
         $('#dropdown-user-992px').removeClass('hide-show-dropdown-navbar');
     })
 
-    $('.expand-sidebar').on('click',function(){
+    $('.expand-sidebar').on('click', function () {
         $('#sidebar').css("display", "block");
     })
-    
-    $('#toggle-navbar').on('click',function(){
+
+    $('#toggle-navbar').on('click', function () {
         $('#dropdown-user-992px').toggleClass('hide-show-dropdown-navbar');
         $('#sidebar').addClass('hide-show-sidebar');
     })
 
-    $('.toggle-rightbar').on('click', function(){
+    $('.toggle-rightbar').on('click', function () {
         $('#rightbar_container').toggleClass('toggle-container');
         $('#cover').toggleClass('backdrop-class');
     })
 
     //Trade History switch view 
-    $('#choose-table-view').on('click',function(){
+    $('#choose-table-view').on('click', function () {
         $('#table-view').show();
         $('#large-row-view').hide();
     })
-    $('#choose-largerow-view').on('click',function(){
+    $('#choose-largerow-view').on('click', function () {
         $('#table-view').hide();
         $('#large-row-view').show();
     })
 
 })
 
-/* img slide  
+/* img slide
 
 var slideIndex = 1;
 showSlides(slideIndex);
