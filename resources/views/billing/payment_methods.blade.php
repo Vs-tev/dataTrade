@@ -90,13 +90,14 @@
                     <!-- Stripe Elements Placeholder -->
                     <label>Card number</label>
                     <div id="card-element" class=""></div>
-                    <br />
-                    <label>Card holder name</label>
-                    <br>
-                    <input id="card-holder-name" class="StripeElement" type="text" placeholder="Card holder name" required>
-                    <br>
+                    <p class="error-output pt-0"></p>
+                    
+                    <div class="mt-5">
+                      <label>Card holder name</label>
+                      <input id="card-holder-name" class="StripeElement" type="text" placeholder="Card holder name">
+                    </div>
 
-                    <div class="custom-control custom-checkbox mt-2 mb-4">
+                    <div class="custom-control custom-checkbox mt-4 mb-4">
                         <input type="checkbox" value="1" class="custom-control-input" id="default" name="default" checked>
                         <label class="custom-control-label" for="default">Mark as default</label>
                     </div>
@@ -147,8 +148,7 @@
             }
           ).then(function (result) {
             if (result.error) {
-              console.log(result)
-              alert('error')
+              $('.error-output').text(result.error.message);
             } else {
               paymentMethod = result.setupIntent.payment_method
               $('#payment-method').val(paymentMethod)

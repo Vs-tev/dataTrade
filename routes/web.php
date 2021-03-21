@@ -36,7 +36,7 @@ Route::get('/example2', function () {
 });
 /////////////////////////////////////////////end example
 
-Route::view('typography','typography.typography' );
+Route::view('typography','typography.typography' )->name('tests');
 
 
 Route::get('/', function () {

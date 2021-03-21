@@ -6469,8 +6469,14 @@ __webpack_require__.r(__webpack_exports__);
       data.append("email", this.user.email);
       data.append("country", this.user.country);
       axios.post("/user_settings/u/" + this.user.id, data).then(function (res) {
-        $("#modal-success").modal("show");
+        $("#modal-success").modal({
+          backdrop: "static",
+          keyboard: false
+        });
         _this.text = "Profil";
+        setTimeout(function () {
+          location.reload();
+        }, 1500);
       })["catch"](function (error) {
         _this.checkResponseStatus(error);
       });
@@ -43698,14 +43704,15 @@ var render = function() {
               _vm._v(" " + _vm._s(_vm.text) + " update successfully ")
             ]),
             _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-primary font-500 mx-auto mt-4",
-                attrs: { "data-dismiss": "modal" }
-              },
-              [_vm._v("Close")]
-            )
+            _c("div", {
+              staticClass: "spinner-grow spinner-grow-sm text-muted mx-2"
+            }),
+            _c("div", {
+              staticClass: "spinner-grow spinner-grow-sm text-muted mx-2"
+            }),
+            _c("div", {
+              staticClass: "spinner-grow spinner-grow-sm text-muted mx-2"
+            })
           ])
         ])
       ])

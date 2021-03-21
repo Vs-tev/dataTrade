@@ -11,7 +11,7 @@
                         </svg>
                   
                         <div class="h3 lighter font-weight-light mt-3"> {{text}} update successfully </div>
-                        <button class="btn btn-primary font-500 mx-auto mt-4" data-dismiss="modal">Close</button>
+                       <div class="spinner-grow spinner-grow-sm text-muted mx-2"></div><div class="spinner-grow spinner-grow-sm text-muted mx-2"></div><div class="spinner-grow spinner-grow-sm text-muted mx-2"></div>
                     </div>
                        
                 </div>

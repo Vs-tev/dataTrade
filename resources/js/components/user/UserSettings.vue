@@ -131,8 +131,14 @@ export default {
       axios
         .post("/user_settings/u/" + this.user.id, data)
         .then((res) => {
-          $("#modal-success").modal("show");
+          $("#modal-success").modal({
+            backdrop: "static",
+            keyboard: false,
+          });
           this.text = "Profil";
+          setTimeout(function () {
+            location.reload();
+          }, 1500);
         })
         .catch((error) => {
           this.checkResponseStatus(error);
