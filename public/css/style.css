@@ -46,8 +46,8 @@
     --breakpoint-xl: 1200px;
     --font-family-sans-serif: "Nunito", sans-serif;
     --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    --font-sm: 0.7rem;
     --font-normal: 0.8rem;
+    --font-sm: 0.7rem;
     --font-lg: 0.95rem;
 }
 
@@ -155,7 +155,7 @@ label {
 }
 
 .font-normal {
-    font-size: 0.8rem;
+    font-size: var(--font-normal)!important;
 }
 
 .font-lg {

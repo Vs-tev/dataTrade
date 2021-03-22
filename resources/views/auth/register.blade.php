@@ -4,7 +4,7 @@
 
 @include('auth.auth-aside')
 <div class="right-side pt-5">
-    <div class="login-content d-flex justify-content-center py-5">
+    <div class="login-content d-flex justify-content-center py-5 px-4 px-md-0">
 
         <form method="POST" action="{{ route('register') }}">
             @csrf

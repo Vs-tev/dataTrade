@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex justify-content-center py-5">
+    <div class="d-flex justify-content-center py-5 px-2 px-md-0">
     <div class="m-auto p-3 pm-0 ">
         <div class="text-center mb-5">
             <h2 class="uppercase font-weight-bolder primary">dataTrade </h2>

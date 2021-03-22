@@ -43,6 +43,12 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+/* Reset Password */
+Route::get('/forgot-password', function () {
+    return view('auth.passwords.email');
+})->middleware('guest')->name('password.request');
+
+
 /* User settings */
 Route::get('/user_settings', 'UserController@index')->name('user_settings');
 Route::post('/user_settings/u/{id}', 'UserController@update');

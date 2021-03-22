@@ -5,7 +5,7 @@
 
 @include('auth.auth-aside')
 <div class="right-side pt-5">
-    <div class="login-content d-flex justify-content-center py-5">
+    <div class="login-content d-flex justify-content-center py-5 px-4 px-md-0">
     <form method="POST" action="{{ route('login') }}">
         @csrf
         <div class="pb-5">
@@ -14,19 +14,19 @@
         </div>
         <div class="form-group mb-5">
             <input id="email" type="email" class="form-control auth-input @error('email') is-invalid @enderror" name="email" placeholder="Email adress">
-            @error('name')
+            @error('email')
                 <span class="invalid-feedback" role="alert">
-                    <p class="error-output">{{$message}}</p>
+                    <p class="error-output font-normal">{{$message}}</p>
                 </span>
             @enderror
         </div>
         
         
-        <div class="form-group mb-1">
+        <div class="form-group mb-4 pt-2">
             <input id="password" name="password" type="password" class="form-control auth-input @error('password') is-invalid @enderror" placeholder="Password">
             @error('password')
             <span class="invalid-feedback" role="alert">
-                <p class="error-output">{{$message}}</p>
+                <p class="error-output font-normal">{{$message}}</p>
             </span>
             @enderror
 
