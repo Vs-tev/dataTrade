@@ -59,8 +59,8 @@ Route::get('/create_first_portfolio', function () {
     return Auth::user()->portfolios()->count() == 0 ? view('auth.first_portfolio') : back();
 })->name('first_portfolio')->middleware('auth');
 
-
-Route::get('/dashboardPages/dashboard', 'HomeController@index')->name('dashboard');
+/* dashboard */
+Route::get('/dashboardPages/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 
 //portfolio actions
 Route::group(['middleware,' => 'auth', 'prefix' => 'dashboardPages'], function(){
