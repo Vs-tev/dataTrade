@@ -60,7 +60,9 @@ Route::get('/create_first_portfolio', function () {
 })->name('first_portfolio')->middleware('auth');
 
 /* dashboard */
-Route::get('/dashboardPages/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+Route::get('/dashboardPages/dashboard', function(){
+    return view('dashboardpages.dashboard');
+})->name('dashboard');
 
 //portfolio actions
 Route::group(['middleware,' => 'auth', 'prefix' => 'dashboardPages'], function(){
