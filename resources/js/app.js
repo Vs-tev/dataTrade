@@ -29,9 +29,9 @@ Vue.component('app-strategies', require('./components/strategies/Strategies.vue'
 Vue.component('app-traderecord', require('./components/trades/Traderecord.vue').default);
 Vue.component('app-navbar', require('./components/navbar/Navbar.vue').default);
 Vue.component('app-traderecord-chart-table', require('./components/trades/TraderecordChartTable.vue').default);
-Vue.component('app-traderecord-history', require('./components/trades/TradeHistory/TradeHistory.vue').default);
-Vue.component('register-first_portfolio', require('./components/portfolio/RegisterFirstPortfolio.vue').default);
-Vue.component('app-plans', require('./components/plans/plans.vue').default);
+Vue.component('app-traderecord-history', require('./components/trades/tradeHistory/TradeHistory.vue').default);
+Vue.component('register-first_portfolio', require('./components/portfolio/RegisterFIrstPortfolio.vue').default);
+Vue.component('app-plans', require('./components/plans/Plans.vue').default);
 Vue.component('user-settings', require('./components/user/UserSettings.vue').default);
 
 /**
