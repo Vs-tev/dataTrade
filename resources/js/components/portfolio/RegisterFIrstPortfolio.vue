@@ -107,7 +107,7 @@ export default {
       axios
         .post("/dashboardPages/portfolio/store", data)
         .then((res) => {
-          window.location.href = "/dashboardPages/dashboard";
+          //window.location.href = "/dashboardPages/dashboard";
         })
         .catch((error) => {
           this.checkResponseStatus(error);
