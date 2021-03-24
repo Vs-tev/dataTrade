@@ -3841,8 +3841,7 @@ __webpack_require__.r(__webpack_exports__);
       data.append("start_equity", value.start_equity);
       data.append("currency", value.currency);
       data.append("started_at", value.started_at);
-      axios.post("/dashboardPages/portfolio/store", data).then(function (res) {
-        window.location.href = "/dashboardPages/dashboard";
+      axios.post("/dashboardPages/portfolio/store", data).then(function (res) {//window.location.href = "/dashboardPages/dashboard";
       })["catch"](function (error) {
         _this.checkResponseStatus(error);
       });
@@ -46248,7 +46247,7 @@ var render = function() {
                 "button",
                 {
                   staticClass: "btn btn-primary w-100 auth-btn",
-                  attrs: { type: "submit" },
+                  attrs: { type: "button" },
                   on: {
                     click: function($event) {
                       return _vm.create_portfolio(_vm.value)

@@ -56,7 +56,7 @@
 
         <div class="form-group mb-5">
             <div class="d-flex align-items-center justify-content-between">
-                <button type="submit" class="btn btn-primary w-100 auth-btn" @click="create_portfolio(value)">
+                <button type="button" class="btn btn-primary w-100 auth-btn" @click="create_portfolio(value)">
                     Ready to go
                 </button>
             </div>
