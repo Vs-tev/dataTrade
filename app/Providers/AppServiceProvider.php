@@ -26,12 +26,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {   
 
-        if ($this->app->environment('production')) {
-
-            \URL::forceScheme('https');
-            
-        }
-
         /**Trade History*/
         View::composer(['dashboardpages.trading.trade_history'], function($view){
             $view->with('portfolios', \App\Models\Portfolio::where('user_id', auth()->id())
