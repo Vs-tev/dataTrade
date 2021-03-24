@@ -64,13 +64,12 @@ class Portfolio extends Model
     }
     
     public function fetch_portfolio($query){
-        $trade = "trade";
         $portfolio = $this->select('portfolios.id','b.action_date','name', 'start_equity', 'currency', 'is_active', 'portfolios.started_at', 
         DB::raw('SUM(amount) as current_balance,
-        COUNT(CASE WHEN action_type = "'.$trade.'" THEN 1 else NULL END) as total_trades, 
-        COUNT(CASE WHEN amount >= 0 AND action_type = "'.$trade.'" THEN 1 else NULL END)as winning_trades, 
-        COUNT(CASE WHEN amount < 0 AND action_type = "'.$trade.'" THEN 1 else NULL END)as losing_trades,
-        SUM(CASE WHEN action_type = "'.$trade.'" THEN amount ELSE 0 END)as trade_profit'))
+        COUNT(CASE WHEN action_type = "trade" THEN 1 else NULL END) as total_trades, 
+        COUNT(CASE WHEN amount >= 0 AND action_type = "trade" THEN 1 else NULL END)as winning_trades, 
+        COUNT(CASE WHEN amount < 0 AND action_type = "trade" THEN 1 else NULL END)as losing_trades,
+        SUM(CASE WHEN action_type = "trade" THEN amount ELSE 0 END)as trade_profit'))
         ->join('balances AS b', 'portfolios.id', '=', 'b.portfolio_id')
         ->where([['user_id', auth()->id()],['is_except', 0]])
         ->whereIn('is_active', $query)
