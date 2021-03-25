@@ -17,7 +17,6 @@ class CreateFeaturePlanTable extends Migration
             $table->id();
             $table->foreignId('feature_id')->constrained('features');
             $table->foreignId('plan_id')->constrained('plans');
-            $table->integer('max_amount');
         });
     }
 
