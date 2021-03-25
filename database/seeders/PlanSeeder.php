@@ -61,7 +61,7 @@ class PlanSeeder extends Seeder
           
         ];
 
-        \App\Models\Feature::insert($plan);
+        \App\Models\Plan::insert($plan);
         //php artisan db:seed --class=PlanSeeder
     }
 }
