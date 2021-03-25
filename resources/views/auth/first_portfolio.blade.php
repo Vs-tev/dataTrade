@@ -3,11 +3,11 @@
 
 @section('content')
 
-{{-- <register-first_portfolio></register-first_portfolio>
-    --}}
+<register-first_portfolio></register-first_portfolio>
+   
 
 
-    <form action="{{route('store_portfolio')}}" method="POST" >
+   {{--  <form action="{{route('store_portfolio')}}" method="POST" >
         @csrf
         <div class="d-flex justify-content-center py-5 px-2 px-md-0">
             <div class="m-auto p-3 pm-0 ">
@@ -56,5 +56,5 @@
                  
             </div>
         </div>
-    </form>
+    </form> --}}
 @endsection
