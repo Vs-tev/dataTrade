@@ -36,7 +36,6 @@ class PlanSeeder extends Seeder
                 "billing_period" => "monthly"
             ],
             
-
             [
                 "name" => "Free",
                 "price" => 0,
