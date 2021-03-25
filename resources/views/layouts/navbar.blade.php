@@ -32,7 +32,7 @@
                         <li class=" mr-3">
                             <a type="button" href="{{route('plan')}}" class="border">
                                 <span class="dark font-weight-light">Plan: </span>
-                                   plan->name
+                                {{$plan->name}}
                             </a>
                         </li>
                         <li class=""><span class="text-muted toggle-rightbar name_and_avatar">
@@ -70,7 +70,7 @@
                  <li class=" mr-3">
                     <a type="button" href="{{route('plan')}}" class="border">
                         <span class="dark font-weight-light">Plan: </span>
-                        plan->name
+                        {{$plan->name}}
                     </a>
                  </li>
 

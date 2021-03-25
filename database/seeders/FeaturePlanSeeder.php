@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class Feature_planSeeder extends Seeder
+class FeaturePlanSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,7 +14,7 @@ class Feature_planSeeder extends Seeder
      */
     public function run()
     {
-      DB::table('feature_plan')->insert(
+     $feature_plan = [
         ['feature_id' => '1','plan_id' => '1','max_amount' => '1'],
         ['feature_id' => '1','plan_id' => '2','max_amount' => '2'],
         ['feature_id' => '1','plan_id' => '3','max_amount' => '5'],
@@ -45,7 +45,9 @@ class Feature_planSeeder extends Seeder
         ['feature_id' => '3','plan_id' => '7','max_amount' => '10'],
         ['feature_id' => '4','plan_id' => '7','max_amount' => '20'],
         ['feature_id' => '5','plan_id' => '7','max_amount' => '20'],
-      );
-      //php artisan db:seed --class=Feature_planSeeder
+     ];
+
+     DB::table('feature_plan')->insert($feature_plan);
+      //php artisan db:seed --class=FeaturePlanSeeder
     }
 }
