@@ -53,7 +53,7 @@ class PortfolioController extends Controller
      */
     public function store(Request $request)
     {
-        if (Gate::allows('portfolios')){
+      
             $this->validate(request() ,[
                 'name' => [Rule::unique('portfolios')->where(function ($query) {
                     return $query->where('user_id', auth()->id());
@@ -74,7 +74,9 @@ class PortfolioController extends Controller
             $portfolio->is_active = $active = Portfolio::where('user_id', auth()->id())->count() == 0 ? 1 : $active = 0;
             $portfolio->save();
             $portfolio->add_to_balance($portfolio);
-        }
+
+            return redirect()->route('dashboard');
+        
     }
 
     /**
