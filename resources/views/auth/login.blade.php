@@ -10,7 +10,7 @@
         @csrf
         <div class="pb-5">
             <h1 class="font-weight-bold">Welcome to dataTrade</h1>
-            <h4 class="lighter font-weight-500">Don't have account? <span><a href="{{ route('register') }}" class="text-decoration-none">Create an account</a></span></h4>
+            <h4 class="lighter font-weight-500">Don't have account? <span><a href="{{ route('register') }}" class="text-decoration-none">Create ann account</a></span></h4>
         </div>
         <div class="form-group mb-5">
             <input id="email" type="email" class="form-control auth-input @error('email') is-invalid @enderror" name="email" placeholder="Email adress">
