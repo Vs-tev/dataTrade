@@ -1217,5 +1217,6 @@ class CountriesTableSeeder extends Seeder
         ];
 
         \App\Models\Country::insert($countries);
+        //php artisan db:seed --class=CountriesTableSeeder
     }
 }
