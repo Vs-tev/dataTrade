@@ -45782,10 +45782,7 @@ var render = function() {
                             },
                             [
                               _c("img", {
-                                attrs: {
-                                  src: "/storage/icons/wallet.svg",
-                                  alt: ""
-                                }
+                                attrs: { src: "/icons/wallet.svg", alt: "" }
                               })
                             ]
                           ),
@@ -45811,10 +45808,7 @@ var render = function() {
                             },
                             [
                               _c("img", {
-                                attrs: {
-                                  src: "/storage/icons/edit.svg",
-                                  alt: ""
-                                }
+                                attrs: { src: "/icons/edit.svg", alt: "" }
                               })
                             ]
                           ),
@@ -45837,10 +45831,7 @@ var render = function() {
                                 },
                                 [
                                   _c("img", {
-                                    attrs: {
-                                      src: "/storage/icons/trash.svg",
-                                      alt: ""
-                                    }
+                                    attrs: { src: "/icons/trash.svg", alt: "" }
                                   })
                                 ]
                               )

@@ -115,7 +115,5 @@ class TradeController extends Controller
         }
     }
 
-    
-
-  
+ 
 }

@@ -25,12 +25,12 @@
                     </div>
                     <div class="d-flex justify-content-between">
                           <button type="button" @click="getId(item.id, item.currency)" class="btn btn-primary mr-2" data-toggle="modal"
-                                        data-target="#transactions"><img src="/storage/icons/wallet.svg" alt=""></button>
+                                        data-target="#transactions"><img src="/icons/wallet.svg" alt=""></button>
                           <button type="button" @click="getValues(item.id, item.name, item.currency)"
                                         class="btn btn-secondary mr-2" data-toggle="modal"
-                                        data-target="#modal-form"><img src="/storage/icons/edit.svg" alt=""></button>
+                                        data-target="#modal-form"><img src="/icons/edit.svg" alt=""></button>
                           <button type="button" v-if="items.portfolio.length > 1" class="btn btn-secondary delete-item" @click="DeletePortfolio(item)" data-target="#modal-form" data-toggle="modal">
-                                  <img src="/storage/icons/trash.svg" alt="">
+                                  <img src="/icons/trash.svg" alt="">
                                 </button>
                       </div>
               </div>
