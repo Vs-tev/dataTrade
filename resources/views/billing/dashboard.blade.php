@@ -29,8 +29,8 @@
                 </div>
                 <a href="{{route('plan')}}" class="btn btn-primary font-lg">Upgrade Plan</a>
             </div>
-            <div class="col-12 col-md-8 col-lg-9 col-xl-10 text-center">
-                <h3 class="mb-4">Payment Method</h3>
+            <div class="col-12 col-md-4 col-lg-3 col-xl-3 text-center mx-auto mt-4 mt-md-0">
+                <h3 class="my-4 my-md-0">Payment Method</h3>
                 <a href="{{route('payment_methods')}}" class="btn btn-success m-auto font-lg w-15">Add Credit Card</a>
             </div>
         </div>

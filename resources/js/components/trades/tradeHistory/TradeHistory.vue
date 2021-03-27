@@ -12,7 +12,7 @@
                         name="text" placeholder="Search symbol">
                     <span class="material-icons font-sm icon-sm search-i">search</span>
                 </div>
-                <div class="d-flex align-items-center pl-1 pr-4 mt-3 mt-sm-0">
+                <div class="d-sm-flex align-items-center pl-0 pl-sm-1 pr-sm-4 mt-3 mt-sm-0">
                     <label class="lighter pr-1">Display</label>
                     <div>
                         <select @change="get_trades" v-model="show_per_page" class="form-control">
@@ -47,8 +47,8 @@
                 </div>
                
             </div>
-            <div class="col px-0 px-md-3 border-top">
-                <div class="row p-0 justify-content-start" id="table-view" style="display">
+            <div class="col px-0 border-top">
+                <div class="" id="table-view">
                     <table class="table table-sm table-hover">
                         <thead class="trade-history-thead">
                             <tr>
@@ -140,7 +140,7 @@
                                      <p class="m-0" v-if="trade.trade_performance">{{trade.trade_performance.trade_return}}%</p>
                                 </td>
                                 <td class="">
-                                    <div class="d-flex">
+                                    <div class="d-sm-flex">
                                          <button type="button" @click="editTrade(trade)" class="btn"
                                     data-target="#modal_edit_trade" data-toggle="modal"><span
                                         class="material-icons icon-sm">mode_edit</span>
@@ -158,7 +158,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="p-2" id="large-row-view" style="display:none">
+                <div class="px-0" id="large-row-view" style="display:none">
                     <div class="row p-0 my-4 shadow border rounded" v-for="trade in trades" :key="trade.id">
 
                         <div class="d-md-flex align-items-center w-100 ">
@@ -260,26 +260,26 @@
                             </div>
                         </div>
                         <div class="trade-options mx-3 w-100 border-top">
-                            <div class="trade-options-buttons py-2 d-flex ">
-                                <button type="button" @click="exept_trade(trade)" class="btn" v-if="trade.balance" data-target="#modal_delete_trade" data-toggle="modal">
+                            <div class="d-flex justify-content-center trade-options-buttons py-2">
+                                <button type="button" @click="exept_trade(trade)" class="btn ml-sm-auto mr-2" v-if="trade.balance" data-target="#modal_delete_trade" data-toggle="modal">
                                     <span class="material-icons icon-sm" :class="trade.balance.is_except == 0 ? 'lighter': 'primary'" v-html="trade.balance.is_except == 0 ? 'visibility': 'visibility_off' "></span>
                                 </button>
 
-                                <button type="button" @click="editTrade(trade)" class="btn ml-auto mr-4"
+                                <button type="button" @click="editTrade(trade)" class="btn mr-2"
                                     data-target="#modal_edit_trade" data-toggle="modal"><span
-                                        class="material-icons icon-sm">mode_edit</span></button>
+                                        class="material-icons lighter icon-sm">mode_edit</span></button>
 
                                 <button type="button" @click="deleteTrade(trade)" class="btn"
                                     data-target="#modal_delete_trade" data-toggle="modal"><span
-                                        class="material-icons icon-sm">delete</span></button>
+                                        class="material-icons lighter icon-sm">delete</span></button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- Pagination -->
-            <div class="d-flex align-items-center">
-                <div class="">
+            <div class="d-sm-flex align-items-center">
+                <div class="mb-3 text-center text-sm-left">
                     <span>Found trades: <span class="font-500">{{response.total}}</span></span>
                 </div>
                 <pagination class="m-auto" :pagination="response" :pages="pagination" v-on:setPage="setPage($event)">

@@ -5,8 +5,7 @@
 
 .img_list,
 .trade_img {
-    border: 0.12rem var(--primary) dashed;
-    border-radius: 3px;
+    border: none;
     height: auto;
     display: flex;
     justify-content: center;
@@ -197,7 +196,7 @@
 
 @media screen and (max-width: 992px) {
     .img-commentar-div {
-        margin-top: 110px;
+        margin-top: 30px;
     }
 }
 

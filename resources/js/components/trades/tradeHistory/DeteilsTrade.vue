@@ -10,8 +10,7 @@
                         <span class="material-icons ml-auto close-btn icon-sm">close</span>
                     </button>
                     </div>
-                      <div class="modal-body">
-
+                      <div class="modal-body px-0 px-md-4">
                           <div class="container-edit-trade-img-container" >
                               <div class="img_list" v-if="trade.trade_img == 'noimage.jpg' || !trade.trade_img">
                                 <div class="input-file-container js">
@@ -31,7 +30,6 @@
                               </div>
                                <img v-if="trade.trade_img !== 'noimage.jpg'" class="modal-trade-img" :src="!trade.img_mode ? '/storage/trades/' + trade.trade_img : this.new_img " alt="">
                           </div>
-                         
                           <div class="list-editable-items p-3 col-12 col-sm-10 col-lg-10 col-xl-9 mx-md-auto">
                               <ul class="list-unstyled">
                                   <li class="editable-item">

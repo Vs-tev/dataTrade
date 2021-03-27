@@ -170,7 +170,7 @@ export default {
 </script>
 
 <style scoped>
-.toggle-calendar[data-v-44cb10b9] {
+.toggle-calendar {
   width: 190px;
   text-align: left;
   height: calc(1.4em + 0.75rem + 2px);
@@ -186,50 +186,50 @@ export default {
   display: flex;
   justify-content: space-between;
 }
-.toggle-calendar[data-v-44cb10b9][data-v-44cb10b9] button {
+.toggle-calendar button {
   background: none;
   border: 0;
   text-align: left;
   white-space: nowrap;
   overflow: hidden;
 }
-.toggle-calendar[data-v-44cb10b9][data-v-44cb10b9] span {
+.toggle-calendar span {
   padding: 3px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
 }
-.start_date[data-v-44cb10b9][data-v-44cb10b9]:first-of-type {
+.start_date:first-of-type {
   border-right: none;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
-.end_date[data-v-44cb10b9][data-v-44cb10b9] {
+.end_date {
   border-left: none;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
-.between_date[data-v-44cb10b9] {
+.between_date {
   border-radius: 0;
 }
 @media screen and (max-width: 1734px) {
-  .toggle-calendar[data-v-44cb10b9][data-v-44cb10b9] {
+  .toggle-calendar {
     width: 180px;
   }
 }
 @media screen and (max-width: 1683px) {
-  .toggle-calendar[data-v-44cb10b9][data-v-44cb10b9] {
+  .toggle-calendar {
     width: 160px;
   }
 }
 @media screen and (max-width: 1190px) {
-  .toggle-calendar[data-v-44cb10b9][data-v-44cb10b9] {
+  .toggle-calendar {
     width: 140px;
   }
 }
 @media screen and (max-width: 947px) {
-  .toggle-calendar[data-v-44cb10b9][data-v-44cb10b9] {
+  .toggle-calendar {
     width: 140px;
   }
 }

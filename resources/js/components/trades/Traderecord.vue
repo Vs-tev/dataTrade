@@ -5,17 +5,17 @@
             <div class="border-bottom p-4">
                 <h4 class="font-weight-500 m-0">Trade record pandel</h4>
             </div>
-            <div class="d-lg-flex flex-block pl-0 pr-0 pr-md-4 pt-0">
+            <div class="d-lg-flex flex-block pl-0 pr-0 pr-md pt-0">
                 <!-- trade inputs -->
                 <div class="new_trade_inputs_300 mx-auto">
 
                   <div class="d-flex justify-content-start border-bottom ">
                      <div class="btn-group btn-group-toggle buy-sell-div p-0 border-right" data-toggle="buttons"
                           id="type">
-                          <button class="btn btn-type-buy buy btn-sm col-6 active" type="button" @click="buy">
+                          <button class="btn btn-type-buy buy btn-sm col-6 active" type="button" @click="this.form.type_side = 'buy' ">
                               <input class="buy" type="radio" name="type_side" id="type_buy" checked>BUY
                           </button>
-                          <button class="btn btn-type-sell sell col-6 btn-sm" type="button" @click="sell">
+                          <button class="btn btn-type-sell sell col-6 btn-sm" type="button" @click="this.form.type_side = 'sell' ">
                               <input class="sell" type="radio" name="type_side" id="type_sell">SELL
                           </button>
                       </div>
@@ -23,7 +23,7 @@
                             <div class="font-lg font-500 pl-2 symbol-div" v-html="form.symbol"></div>
                       </div>
                      
-                       <div class="form-group w-100 m-0 p-0 border-right pointer">
+                       <div class="form-group w-100 m-0 p-0 pointer">
                          <div class="font-lg font-500 pl-2 w-100 h-100">
                            <!--  -->
                              <div class="dropdown h-100">
@@ -45,22 +45,7 @@
                                   </ul> 
                                 </div>
                              </div>
-
-                           <!--  -->
-                          
                          </div>
-                            <!-- <select v-model="form.time_frame" class="form-control" name="time_frame">
-                                <option selected="" value="1 min">1 min</option>
-                                <option value="5 min">5 min</option>
-                                <option value="15 min">15 min</option>
-                                <option value="30 min">30 min</option>
-                                <option value="1 hour">1 hour</option>
-                                <option value="2 hours">2 hours</option>
-                                <option value="4 hours">4 hours</option>
-                                <option value="1 day">1 day</option>
-                                <option value="1 week">1 week</option>
-                                <option value="1 month">1 month</option>
-                            </select> -->
                         </div>
 
                   </div>
@@ -79,13 +64,13 @@
                     <div class="price-row px-4">
                         <div class="inline">
                             <label>Price</label>
-                            <input v-model="form.entry_price" type="text" class="form-control price_input"
+                            <input v-model="form.entry_price" type="text" id="entry_price" class="form-control price_input"
                                 placeholder="Entry" :class="{'is-invalid': form.errors.has('entry_price')}"
                                 @input="form.errors.clear('entry_price')">
-                            <input type="text" v-model="form.exit_price" class="form-control price_input" name="text"
+                            <input type="text" v-model="form.exit_price" class="form-control price_input" id="exit_price" name="text"
                                 placeholder="Exit" :class="{'is-invalid': form.errors.has('exit_price')}"
                                 @input="form.errors.clear('exit_price')">
-                            <input type="text" v-model="form.stop_loss_price" class="form-control price_input"
+                            <input type="text" v-model="form.stop_loss_price" id="stop_loss_price" class="form-control price_input"
                                 name="text" placeholder="Stop loss"
                                 :class="{'is-invalid': form.errors.has('stop_loss_price')}"
                                 @input="form.errors.clear('stop_loss_price')">
@@ -151,7 +136,7 @@
                               </div>
                              
                               <div class="profit-input-div mt-1">
-                                  <input id="pips" v-model="form.pl_pips" type="text" class="form-control" name="pips"
+                                  <input id="pl_pips" v-model="form.pl_pips" type="text"  class="form-control" name="pips"
                                       placeholder="Pips" :class="{'is-invalid': form.errors.has('pl_pips')}"
                                       @input="form.errors.clear('pl_pips')">  
                               </div>
@@ -189,7 +174,7 @@
             
                 </div>
                 <!-- Img/commentar -->
-                <div class="flex-grow-1 img-commentar-div ml-4 ml-lg-0">
+                <div class="flex-grow-1 img-commentar-div px-4 px-lg-0 pr-0 pr-lg-4">
                     <div class="">
                         <div class="trade_img text-center mb-4">
                             <div class="input-file-container js" v-if="!form.trade_img">
@@ -352,6 +337,11 @@ export default {
         window.location.href = "/login";
       } else {
         this.form.errors.record(error.response.data.errors);
+
+        if (this.form.errors.any()) {
+          var das = Object.keys(error.response.data.errors)[0];
+          document.getElementById(das).focus();
+        }
       }
     },
 
@@ -464,11 +454,20 @@ export default {
         });
     },
     clearFileds() {
-      //this.form.reset();
+      this.form.quantity = "";
+      this.form.entry_price = "";
+      this.form.exit_price = "";
+      this.form.stop_loss_price = "";
+      this.form.pl_currency = "";
+      this.form.fees = "";
+      this.form.pl = "";
+      this.form.pl_pips = "";
+      this.form.description = "";
+      this.form.trade_img = "";
+      this.form.thumbnail_img = "";
       this.today();
-      this.form.type_side = "buy";
-
-      this.form.time_frame = "1 min";
+      //this.form.type_side = "buy";
+      //this.form.time_frame = "1 min";
     },
     /* getSymbols() {
       axios

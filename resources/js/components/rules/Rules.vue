@@ -10,7 +10,7 @@
                   <button type="button" @click="create" class="btn btn-secondary border-0 lighter font-500"  v-text="buttonText">
                   </button>
                 </div>
-                <div class="col rule-table-div px-2 px-sm-4">
+                <div class="col rule-table-div px-4">
                     <table class="table table-rules table-hover">
                         <thead class="border-bottom-white">
                             <tr>

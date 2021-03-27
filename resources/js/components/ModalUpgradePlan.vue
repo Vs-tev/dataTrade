@@ -25,7 +25,7 @@
                         <h2 class="font-weight-bolder dark">{{text[0].text}}</h2>
                     <p class="font-lg font-weight-bold pb-4">{{text[0].subtext}}
                     </p>
-                    <a type="button" href="/plan" class="btn btn-primary font-lg mx-auto my-4 w-25 font-500">Upgrade Now!</a>
+                    <a href="/plan" class="btn btn-primary upgrade-plan font-lg mx-auto my-4 font-500">Upgrade Now!</a>
                     </div>
                 </div>
 
@@ -39,3 +39,8 @@ export default {
   props: ["text"],
 };
 </script>
+<style scoped>
+.upgrade-plan {
+  width: 150px;
+}
+</style>
