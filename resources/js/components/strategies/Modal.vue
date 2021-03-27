@@ -31,7 +31,7 @@
                                 </label>
                             </div>
                             <div class="img-content-container" v-if="item.url && item.url !== 'noimage.jpg'">
-                                <div class="remove-img" @click="removeSelectedImg"><img src="/storage/icons/remove.svg"
+                                <div class="remove-img" @click="removeSelectedImg"><img src="/icons/remove.svg"
                                         alt=""></div>
                                 <img class="url-img create" v-if="item.modal == 'create'" :src="item.url">
                                 <img class="url-img falsemode" v-if="!item.img_mode && item.modal == 'edit' "

@@ -205,7 +205,7 @@
                             </div>
                             <div class="img-content-container" v-if="form.trade_img">
                                 <div class="remove-img" @click="removeSelectedImg">
-                                    <img src="/storage/icons/remove.svg" alt="">
+                                    <img src="/icons/remove.svg" alt="">
                                 </div>
                                 <img class="url-img" :src="this.form.thumbnail_img" alt="">
                             </div>
