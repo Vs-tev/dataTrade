@@ -30,7 +30,7 @@
                               </div>
                                <img v-if="trade.trade_img !== 'noimage.jpg'" class="modal-trade-img" :src="!trade.img_mode ? '/storage/trades/' + trade.trade_img : this.new_img " alt="">
                           </div>
-                          <div class="list-editable-items p-3 col-12 col-sm-10 col-lg-10 col-xl-9 mx-md-auto">
+                          <div class="list-editable-items p-3 col-12 col-sm-10 col-lg-10 col-xl-9 mx-auto">
                               <ul class="list-unstyled">
                                   <li class="editable-item">
                                       <label class=""></label>
@@ -146,8 +146,8 @@
                                       <label class=""></label>
                                       <p class="font-500 font-lg mb-0">Trade note:</p>
                                   </li>
-                                   <li class="editable-item">
-                                      <label class="label-item"></label>
+                                   <li class="editable-item pt-0">
+                                      <label class="label-item d-none d-sm-block"></label>
                                       <div class="w-100">
                                         <textarea class="form-control border-0 bg-light" v-model="trade.trade_notes" cols="30" rows="8" :class="{'is-invalid': form.errors.has('trade_notes')}"
                                             @input="form.errors.clear('trade_notes')" placeholder="Write your analysis or thoughts about this trade"></textarea>

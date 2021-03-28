@@ -48784,7 +48784,7 @@ var render = function() {
               "div",
               {
                 staticClass:
-                  "list-editable-items p-3 col-12 col-sm-10 col-lg-10 col-xl-9 mx-md-auto"
+                  "list-editable-items p-3 col-12 col-sm-10 col-lg-10 col-xl-9 mx-auto"
               },
               [
                 _c("ul", { staticClass: "list-unstyled" }, [
@@ -49283,8 +49283,10 @@ var render = function() {
                   _vm._v(" "),
                   _vm._m(5),
                   _vm._v(" "),
-                  _c("li", { staticClass: "editable-item" }, [
-                    _c("label", { staticClass: "label-item" }),
+                  _c("li", { staticClass: "editable-item pt-0" }, [
+                    _c("label", {
+                      staticClass: "label-item d-none d-sm-block"
+                    }),
                     _vm._v(" "),
                     _c("div", { staticClass: "w-100" }, [
                       _c("textarea", {

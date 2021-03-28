@@ -4,7 +4,7 @@
 
 <div class="main-content-container">
    
-    <div class="content-container py-0 pl-5">
+    <div class="content-container py-0 pl-md-5">
         <div class="row mt-4">
             <div class="col-12 col-md-4 col-lg-3 col-xl-2">
                 <h3 class="mb-4">Current Plan</h3>
@@ -30,8 +30,8 @@
                 <a href="{{route('plan')}}" class="btn btn-primary font-lg">Upgrade Plan</a>
             </div>
             <div class="col-12 col-md-4 col-lg-3 col-xl-3 text-center mx-auto mt-4 mt-md-0">
-                <h3 class="my-4 my-md-0">Payment Method</h3>
-                <a href="{{route('payment_methods')}}" class="btn btn-success m-auto font-lg w-15">Add Credit Card</a>
+                <h3 class="mb-4 mt-4 mt-md-0">Payment Method</h3>
+                <a href="{{route('payment_methods')}}" class="m-auto font-lg">Add Credit Card</a>
             </div>
         </div>
 
