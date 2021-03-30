@@ -40,7 +40,7 @@ class ChargeSucceededJob implements ShouldQueue
                 'user_id' => $user->id,
                 'stripe_id' =>$charge['id'],
                 'subtotal' => $charge['amount'],
-                'tax' => $charge['amount'],
+                'total' => $charge['amount'],
             ]);
         }
     }
