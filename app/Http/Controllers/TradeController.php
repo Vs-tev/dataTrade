@@ -63,7 +63,7 @@ class TradeController extends Controller
                 'fees' => ['nullable', 'numeric','min:-99999999','max:99999999'],
                 'exit_reason_id' => 'exists:App\Models\ExitReason,id',
                 'strategy_id' => 'exists:App\Models\Strategy,id',
-                'trade_img' => ['nullable', 'image','dimensions:min_width=200,min_height=200'],
+                'trade_img' => ['nullable', 'image','dimensions:min_width=200,min_height=200','max:2999'],
                 'trade_notes' => ['nullable','max:10000'],
             ],[
                 'before_or_equal' => 'Entry date cannot be in the future'

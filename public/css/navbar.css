@@ -19,6 +19,8 @@ a {
     align-items: center;
 }
 
+
+
 .navbar_top .top-bar .top-left-bar ul li,
 .navbar_top .top-bar .top-right-bar ul li,
 .navbar_top .downbar ul li,
@@ -160,8 +162,14 @@ a {
         padding: 1.2rem 1.2rem 0 0rem;
     }
 
-    .navbar_top .downbar .down-left ul {
-        padding: 0.8rem 1rem 0.9rem 1rem !important;
+    .navbar_top .downbar .down-left ul{
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        margin-right: 1rem!important;
+        padding-right: 0rem;
+        padding-left: 0.5rem!important;
+        white-space: nowrap !important;
+        overflow-x: scroll;
     }
 
     .dropdown-user-992px {

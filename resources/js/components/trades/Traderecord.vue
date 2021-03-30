@@ -12,10 +12,10 @@
                   <div class="d-flex justify-content-start border-bottom ">
                      <div class="btn-group btn-group-toggle buy-sell-div p-0 border-right" data-toggle="buttons"
                           id="type">
-                          <button class="btn btn-type-buy buy btn-sm col-6 active" type="button" @click="this.form.type_side = 'buy' ">
+                          <button class="btn btn-type-buy buy btn-sm col-6 active" type="button" @click="form.type_side = 'buy' ">
                               <input class="buy" type="radio" name="type_side" id="type_buy" checked>BUY
                           </button>
-                          <button class="btn btn-type-sell sell col-6 btn-sm" type="button" @click="this.form.type_side = 'sell' ">
+                          <button class="btn btn-type-sell sell col-6 btn-sm" type="button" @click="form.type_side = 'sell' ">
                               <input class="sell" type="radio" name="type_side" id="type_sell">SELL
                           </button>
                       </div>
@@ -176,7 +176,7 @@
                 <!-- Img/commentar -->
                 <div class="flex-grow-1 img-commentar-div px-4 px-lg-0 pr-0 pr-lg-4">
                     <div class="">
-                        <div class="trade_img text-center mb-4">
+                        <div class="trade_img text-center mb-2">
                             <div class="input-file-container js" v-if="!form.trade_img">
                                 <input class="d-none" @change="onFileSelected" id="img" name="img" type="file"
                                     accept="image/x-png,image/gif,image/jpeg">
@@ -190,13 +190,13 @@
                             </div>
                             <div class="img-content-container" v-if="form.trade_img">
                                 <div class="remove-img" @click="removeSelectedImg">
-                                    <img src="/icons/remove.svg" alt="">
+                                    <img src="/icons/remove.svg" alt="" @click="form.errors.clear('trade_img')">
                                 </div>
                                 <img class="url-img" :src="this.form.thumbnail_img" alt="">
                             </div>
-                             <p class="error-output" v-if="form.errors.has('trade_img')"
-                            v-text="form.errors.get('trade_img')"></p>
                         </div>
+                           <p class="error-output position-relative" v-if="form.errors.has('trade_img')"
+                            v-text="form.errors.get('trade_img')"></p>
                        <label>Trade note:</label>
                         <textarea class="form-control" v-model="form.description" cols="30" rows="12" placeholder="Write your analysis or thoughts about this trade"></textarea>
                         <!-- <texteditor  class=""></texteditor> -->
@@ -366,14 +366,6 @@ export default {
     isFutureDate(date) {
       const currentDate = new Date();
       return date > currentDate;
-    },
-
-    buy() {
-      this.form.type_side = "buy";
-    },
-
-    sell() {
-      this.form.type_side = "sell";
     },
 
     onFileSelected() {

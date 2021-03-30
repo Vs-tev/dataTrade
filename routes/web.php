@@ -135,13 +135,11 @@ Route::group(['middleware' => 'auth'],  function(){
     Route::get('/resume/{plan_id}', 'BillingController@resume')->name('resume');
     Route::get('/payment_methods_all', 'PaymentMethodController@index')->name('payment_methods');
     Route::get('/payment_methods_all/dashboard', 'BillingController@dashboard')->name('payment_methods.dashboard');
-
     Route::get('payment-methods/default/{method_id}', 'PaymentMethodController@markDefault')->name('payment-methods.markDefault');
     Route::get('payment-methods/delete/{id}', 'PaymentMethodController@destroy')->name('payment-methods.destroy');
-
     Route::resource('payment_methods', 'PaymentMethodController');
-
 });
+Route::stripeWebhooks('stripe-webhook');
 
 Route::get('/symbols', 'SymbolController@index')->name('symbol');
 

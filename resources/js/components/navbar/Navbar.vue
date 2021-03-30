@@ -2,11 +2,12 @@
      <div class="downbar">
         <div class="down-left d-flex justify-content-start" >
             <ul class="list-unstyled" v-if="spinner">
-                <li class="font-500 dark"><span>{{portfolio.name}}: </span></li>
-                <li class="font-500 light-md"><span>{{portfolio.current_balance}} {{portfolio.currency}}
+                <li class="font-500 dark"><span>{{portfolio.name}}: </span>
+                <span class="font-500 light-md">{{portfolio.current_balance}} {{portfolio.currency}}
                   <span class="">( <span class="font-dark">Net Profit: </span><span :class="{'red' : netProfit < 0}">{{netProfit}} {{portfolio.currency}}</span>)</span>
                 </span>
                 </li>
+
                 <li class="border-left mx-2 p-1"></li>
                 <li class=""><span class="font-500">Return: </span>
                 <span class=" font-500 light-md" :class="{'red' : rci < 0}">{{rci}}%</span>

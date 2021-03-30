@@ -2823,6 +2823,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Navbar",
   data: function data() {
@@ -4940,12 +4941,6 @@ __webpack_require__.r(__webpack_exports__);
     isFutureDate: function isFutureDate(date) {
       var currentDate = new Date();
       return date > currentDate;
-    },
-    buy: function buy() {
-      this.form.type_side = "buy";
-    },
-    sell: function sell() {
-      this.form.type_side = "sell";
     },
     onFileSelected: function onFileSelected() {
       this.form.trade_img = event.target.files[0];
@@ -44440,11 +44435,9 @@ var render = function() {
       _vm.spinner
         ? _c("ul", { staticClass: "list-unstyled" }, [
             _c("li", { staticClass: "font-500 dark" }, [
-              _c("span", [_vm._v(_vm._s(_vm.portfolio.name) + ": ")])
-            ]),
-            _vm._v(" "),
-            _c("li", { staticClass: "font-500 light-md" }, [
-              _c("span", [
+              _c("span", [_vm._v(_vm._s(_vm.portfolio.name) + ": ")]),
+              _vm._v(" "),
+              _c("span", { staticClass: "font-500 light-md" }, [
                 _vm._v(
                   _vm._s(_vm.portfolio.current_balance) +
                     " " +
@@ -47549,7 +47542,7 @@ var render = function() {
                             attrs: { type: "button" },
                             on: {
                               click: function($event) {
-                                this.form.type_side = "buy"
+                                _vm.form.type_side = "buy"
                               }
                             }
                           },
@@ -47574,7 +47567,7 @@ var render = function() {
                             attrs: { type: "button" },
                             on: {
                               click: function($event) {
-                                this.form.type_side = "sell"
+                                _vm.form.type_side = "sell"
                               }
                             }
                           },
@@ -48399,7 +48392,7 @@ var render = function() {
                 },
                 [
                   _c("div", {}, [
-                    _c("div", { staticClass: "trade_img text-center mb-4" }, [
+                    _c("div", { staticClass: "trade_img text-center mb-2" }, [
                       !_vm.form.trade_img
                         ? _c(
                             "div",
@@ -48431,7 +48424,12 @@ var render = function() {
                               },
                               [
                                 _c("img", {
-                                  attrs: { src: "/icons/remove.svg", alt: "" }
+                                  attrs: { src: "/icons/remove.svg", alt: "" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.form.errors.clear("trade_img")
+                                    }
+                                  }
                                 })
                               ]
                             ),
@@ -48441,19 +48439,19 @@ var render = function() {
                               attrs: { src: this.form.thumbnail_img, alt: "" }
                             })
                           ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.form.errors.has("trade_img")
-                        ? _c("p", {
-                            staticClass: "error-output",
-                            domProps: {
-                              textContent: _vm._s(
-                                _vm.form.errors.get("trade_img")
-                              )
-                            }
-                          })
                         : _vm._e()
                     ]),
+                    _vm._v(" "),
+                    _vm.form.errors.has("trade_img")
+                      ? _c("p", {
+                          staticClass: "error-output position-relative",
+                          domProps: {
+                            textContent: _vm._s(
+                              _vm.form.errors.get("trade_img")
+                            )
+                          }
+                        })
+                      : _vm._e(),
                     _vm._v(" "),
                     _c("label", [_vm._v("Trade note:")]),
                     _vm._v(" "),
