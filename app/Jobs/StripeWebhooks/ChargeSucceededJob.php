@@ -20,11 +20,6 @@ class ChargeSucceededJob implements ShouldQueue
      public $webhookCall;
 
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
     public function __construct(WebhookCall $webhookCall)
     {
         $this->webhookCall = $webhookCall;
@@ -35,12 +30,13 @@ class ChargeSucceededJob implements ShouldQueue
         $charge = $this->webhookCall->payload['data']['object'];
 
         $user = User::where('stripe_id', $charge['customer'])->first();
+        
         if($user){
             Payment::create([
-                'user_id' => $user->id,
-                'stripe_id' =>$charge['id'],
+                'user_id'  => $user->id,
+                'stripe_id' => $charge['id'],
                 'subtotal' => $charge['amount'],
-                'total' => $charge['amount'],
+                'total'    => $charge['amount']
             ]);
         }
     }
