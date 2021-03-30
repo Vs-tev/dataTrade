@@ -25,6 +25,11 @@ return [
      * Spatie\StripeWebhooks\ProcessStripeWebhookJob.
      */
     'model' => \Spatie\StripeWebhooks\ProcessStripeWebhookJob::class,
+
+    /*
+     * When disabled, the package will not verify if the signature is valid.
+     * This can be handy in local environments.
+     */
+    'verify_signature' => env('STRIPE_SIGNATURE_VERIFY', false),
     
 ];
-
