@@ -27,3 +27,4 @@ return [
     'model' => \Spatie\StripeWebhooks\ProcessStripeWebhookJob::class,
     
 ];
+
