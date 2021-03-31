@@ -3010,6 +3010,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Plans",
   props: ["monthly_plans", "yearly_plans", "currentplan", "on_grace_period", "subscriptionstatus"],
@@ -44729,13 +44733,16 @@ var render = function() {
                             }
                           }),
                           _vm._v(" "),
-                          plan.stripe_plan_id == _vm.currentplan.stripe_plan &&
-                          _vm.on_grace_period !== 1 &&
-                          plan.name !== "Free"
-                            ? _c("a", { attrs: { href: "/cancel" } }, [
-                                _vm._v("Cancel plan")
-                              ])
-                            : _vm._e(),
+                          _c("div", { staticClass: "cancel-plan h-20" }, [
+                            plan.stripe_plan_id ==
+                              _vm.currentplan.stripe_plan &&
+                            _vm.on_grace_period !== 1 &&
+                            plan.name !== "Free"
+                              ? _c("a", { attrs: { href: "/cancel" } }, [
+                                  _vm._v("Cancel plan")
+                                ])
+                              : _vm._e()
+                          ]),
                           _vm._v(" "),
                           plan.stripe_plan_id == _vm.currentplan.stripe_plan &&
                           _vm.on_grace_period == 1

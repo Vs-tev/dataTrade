@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Plan;
 use App\Models\Feature;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 
 class BillingController extends Controller
@@ -21,7 +22,9 @@ class BillingController extends Controller
         if(!is_null($currentplan)){
             $currentplan->withCasts(['ends_at' => 'datetime:d M Y']);
         }
-        return view('billing.index', compact('monthlyPlans', 'yearlyPlans', 'currentplan', 'paymentMethods', 'subscriptionstatus'));
+        $payments = Payment::where('user_id', auth()->id())->latest()->get();
+
+        return view('billing.index', compact('monthlyPlans', 'yearlyPlans', 'currentplan', 'paymentMethods', 'subscriptionstatus', 'payments'));
     }
 
     public function cancel()
@@ -61,4 +64,14 @@ class BillingController extends Controller
         return view('billing.dashboard', compact('userFeatures'));
     }
 
+    public function downloadInvoice($paymentId){
+        $payment = Payment::where('user_id', auth()->id())->where('id', $paymentId)->firstOrFail();
+        $filename = storage_path('app/invoices/' . $payment->user_id . '.pdf');
+        if(!file_exists($filename)){
+            abort(404);
+        }
+        return response()->download($filename);
+    }
+
 }
+

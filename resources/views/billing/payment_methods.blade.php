@@ -13,7 +13,7 @@
               <a href="{{ route('plan') }}" class="pointer mr-2 " title="back">
                   <span class="material-icons primary">arrow_back</span>
               </a> 
-              <h4> Payment methods</h4>
+              <h4 class="mb-0"> Payment methods</h4>
           </div>
       
             <div class="p-4">

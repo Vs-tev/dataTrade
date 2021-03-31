@@ -52,8 +52,12 @@
                         class="btn btn-primary font-weight-500 p-3 mb-2" 
                         :class="plan.stripe_plan_id == currentplan.stripe_plan ? 'disabled cursor-auto' : '' " 
                         v-html="plan.stripe_plan_id == currentplan.stripe_plan ? 'YOUR CURRENT PLAN': 'GET THIS PLAN'"></a>
-                
-                        <a v-if="plan.stripe_plan_id == currentplan.stripe_plan && on_grace_period !== 1 && plan.name !== 'Free'" href="/cancel">Cancel plan</a>
+                        
+                        <div class="cancel-plan h-20">
+                          <a  href="/cancel" v-if="plan.stripe_plan_id == currentplan.stripe_plan && on_grace_period !== 1 && plan.name !== 'Free'">Cancel plan</a>
+                        </div>
+
+                        
                         <div v-if="plan.stripe_plan_id == currentplan.stripe_plan && on_grace_period == 1">
                           <p v-if="on_grace_period == 1 && plan.stripe_plan_id == currentplan.stripe_plan">
                           Your subscription will end at {{currentplan.ends_at}} and will continue with Free Plan</p>

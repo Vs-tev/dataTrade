@@ -138,6 +138,7 @@ Route::group(['middleware' => 'auth'],  function(){
     Route::get('payment-methods/default/{method_id}', 'PaymentMethodController@markDefault')->name('payment-methods.markDefault');
     Route::get('payment-methods/delete/{id}', 'PaymentMethodController@destroy')->name('payment-methods.destroy');
     Route::resource('payment_methods', 'PaymentMethodController');
+    Route::get('invoice/download/{paymentId}', 'BillingController@downloadInvoice')->name('invoices.download');
 });
 Route::stripeWebhooks('stripe-webhook');
 
