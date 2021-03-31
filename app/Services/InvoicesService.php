@@ -17,7 +17,7 @@ class InvoicesService{
             ],
         ]);
 
-        $plan = \App\Models\Plan::where('stripe_plan_id', auth()->user()->subscription('default')->stripe_plan)->first();
+        $plan = \App\Models\Plan::where('stripe_plan_id', $payment->user->subscription('default')->stripe_plan)->first();
 
         $item = (new InvoiceItem())->title('Subscription plan' . $plan->name . $plan->billing_period)->pricePerUnit(number_format($payment->total / 100,2));
 
