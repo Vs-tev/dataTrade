@@ -17,11 +17,13 @@ class InvoicesService{
             ],
         ]);
 
-        $item = (new InvoiceItem())->title('plan name here')->pricePerUnit(number_format($payment->total / 100,2));
+        $plan = \App\Models\Plan::where('stripe_plan_id', auth()->user()->subscription('default')->stripe_plan)->first();
+
+        $item = (new InvoiceItem())->title('Subscription plan' . $plan->name . $plan->billing_period)->pricePerUnit(number_format($payment->total / 100,2));
 
         $invoice = Invoice::make()
             ->buyer($customer)
-            ->filename('invoices/' . $payment->id)
+            ->filename('invoices/' . $payment->user->name)
             ->addItem($item);
 
         return $invoice->save();
