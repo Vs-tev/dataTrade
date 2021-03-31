@@ -31,6 +31,10 @@ class CheckoutController extends Controller
        
         try{
             auth()->user()->newSubscription('default', $plan->stripe_plan_id)->create($request->input('payment-method'));
+            auth()->user()->update([
+                'country' => $request->input('country'),
+                'postcode' => $request->input('postcode')
+            ]);
             return redirect()->route('plan')->withMessage('Subscribed successfully');
         }catch(\Exception $e){
             return redirect()->back()->withError($e->getMessage());

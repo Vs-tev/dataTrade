@@ -16,6 +16,7 @@
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.1",
+        "laraveldaily/laravel-invoices": "^2.0",
         "spatie/laravel-stripe-webhooks": "^2.5"
     },
     "require-dev": {

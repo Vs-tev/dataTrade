@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
         'country',
+        'postcode',
     ];
 
     /**
@@ -63,5 +64,9 @@ class User extends Authenticatable
     public function trades(){
         return $this->hasMany(Trade::class);
     }
+
+    /* public function plan(){
+        return $this->belongsTo(Plan::class);
+    } */
 
 }

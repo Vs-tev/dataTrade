@@ -57,14 +57,17 @@
                         <div class="col-12 col-md-6">
                            <label>Country</label>
                            <br>
-                            <select name="country_id" class="StripeElement">
-                                <option value="Germany">Germany</option>
+                            <select name="country" class="StripeElement">
+                              @foreach ($countries as $country)
+                                <option value="{{$country->name}}" {{auth()->user()->country == $country->name ? 'selected' : '' }}>{{$country->name}}</option>
+                              @endforeach
+                             
                             </select>
                         </div>
                         <div class="col-12 col-md-6">
                             <label>Postcode</label>
                             <br>
-                            <input type="text" name="postcote" class="StripeElement" placeholder="Postcode" required>
+                            <input type="text" name="postcode" class="StripeElement" placeholder="Postcode" required>
                         </div>
                        
                     </div>

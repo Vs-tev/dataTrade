@@ -60,7 +60,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         /* Countries */
-        View::composer(['auth.user-settings'], function($view){
+        View::composer(['auth.user-settings', 'billing.checkout'], function($view){
             $view->with('countries', \App\Models\Country::all());
         });
 

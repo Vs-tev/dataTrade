@@ -6,12 +6,13 @@ use App\Models\Plan;
 use App\Models\Feature;
 use Illuminate\Http\Request;
 
+
+
 class BillingController extends Controller
 {
 
     public function index()
     {
-        //dd(auth()->user()->subscribedToPlan(Plan::free_plan_price_id()->first(), 'default'));
         $monthlyPlans = Plan::where('billing_period', 'monthly')->get();
         $yearlyPlans = Plan::where('billing_period', 'yearly')->get();
         $currentplan = auth()->user()->subscription('default') ?? NULL;
