@@ -12,6 +12,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Spatie\WebhookClient\Models\WebhookCall;
 use App\Services\InvoicesService;
+use App\Models\Plan;
 
 class ChargeSucceededJob implements ShouldQueue
 {
@@ -33,7 +34,7 @@ class ChargeSucceededJob implements ShouldQueue
 
         $user = User::where('stripe_id', $charge['customer'])->first();
         
-        $plan = \App\Models\Plan::where('stripe_plan_id', $user->subscription('default')->stripe_plan)->first();
+        $plan = Plan::where('stripe_plan_id', $user->subscription('default')->stripe_plan)->first();
         
         if($user){
           $payment = Payment::create([
