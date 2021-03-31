@@ -8,7 +8,7 @@ use LaravelDaily\Invoices\Classes\InvoiceItem;
 
 class InvoicesService{
 
-    public function generateInvoice($payment){
+    public function generateInvoice($payment, $plan){
 
         $customer = new Buyer([
             'name'          => $payment->user->name,
@@ -16,8 +16,6 @@ class InvoicesService{
                 'email' => $payment->user->email,
             ],
         ]);
-
-        $plan = \App\Models\Plan::where('stripe_plan_id', $payment->user->subscription('default')->stripe_plan)->first();
 
         $item = (new InvoiceItem())->title('Subscription plan' . $plan->name . $plan->billing_period)->pricePerUnit(number_format($payment->total / 100,2));
 
