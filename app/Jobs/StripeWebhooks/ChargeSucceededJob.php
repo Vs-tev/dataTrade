@@ -37,7 +37,7 @@ class ChargeSucceededJob implements ShouldQueue
         $plan = Plan::where('stripe_plan_id', $user->subscription('default')->stripe_plan)->first();
         
         if($user){
-          $payment = Payment::create([
+            $payment = Payment::create([
                 'user_id'  => $user->id,
                 'stripe_id' => $charge['id'],
                 'subtotal' => $charge['amount'],

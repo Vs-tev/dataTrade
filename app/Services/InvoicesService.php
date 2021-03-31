@@ -16,12 +16,12 @@ class InvoicesService{
                 'email' => $payment->user->email,
             ],
         ]);
-
-        $item = (new InvoiceItem())->title('Subscription plan' . $plan->name . $plan->billing_period)->pricePerUnit(number_format($payment->total / 100,2));
+        
+        $item = (new InvoiceItem())->title('Subscription ' . $plan->name .' '. $plan->billing_period)->pricePerUnit(number_format($payment->total / 100,2));
 
         $invoice = Invoice::make()
             ->buyer($customer)
-            ->filename('invoices/' . $payment->user->name)
+            ->filename('invoices/' . $payment->user->id)
             ->addItem($item);
 
         return $invoice->save();
