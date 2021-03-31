@@ -21,9 +21,11 @@ class InvoicesService{
 
         $invoice = Invoice::make()
             ->buyer($customer)
+            ->sequence($payment->user->id)
             ->filename('invoices/' . $payment->user->id)
             ->addItem($item);
 
         return $invoice->save();
     }
+
 }

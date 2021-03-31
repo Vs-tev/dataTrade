@@ -6,8 +6,6 @@ use App\Models\Plan;
 use App\Models\Feature;
 use Illuminate\Http\Request;
 
-
-
 class BillingController extends Controller
 {
 
