@@ -44603,7 +44603,7 @@ var render = function() {
                   class:
                     plan.stripe_plan_id == _vm.currentplan.stripe_plan
                       ? "shadow border-primary"
-                      : "border-dark"
+                      : "border"
                 },
                 [
                   _c("div", { staticClass: "plan-content p-4 text-center" }, [

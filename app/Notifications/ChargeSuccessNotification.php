@@ -19,10 +19,10 @@ class ChargeSuccessNotification extends Notification
      *
      * @return void
      */
-    public function __construct(Payment $payment)
+    /* public function __construct(Payment $payment)
     {
         $this->payment = $payment;
-    }
+    } */
 
     /**
      * Get the notification's delivery channels.
@@ -43,7 +43,7 @@ class ChargeSuccessNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        $message = (new MailMessage)
+       /*  $message = (new MailMessage)
             ->line('Your invoice is now available! '.number_format($this->payment->total / 100, 2). 'Eur')
             ->line(" We've attached a copy of your invoice for your records. ")
             ->line('Thank you for using our application!');
@@ -52,7 +52,17 @@ class ChargeSuccessNotification extends Notification
                 $message->attach($filename);
             }
             
+            return $message; */
+
+            $message = (new MailMessage)
+            ->line('Your invoice is now available!')
+            ->line(" We've attached a copy of your invoice for your records. ")
+            ->line('Thank you for using our application!');
+            
             return $message;
+
+
+
     }
 
     /**

@@ -12,7 +12,7 @@
               :key="index">
             
               <div class="bg-white d-flex flex-column pt-3 rounded border"
-              :class="plan.stripe_plan_id == currentplan.stripe_plan ? 'shadow border-primary': 'border-dark'">
+              :class="plan.stripe_plan_id == currentplan.stripe_plan ? 'shadow border-primary': 'border'">
                   <div class="plan-content p-4 text-center">
                       <span class="font-weight-bold cardTitle text-dark pt-4 pb-3">{{plan.name}}</span>
                       <h5 class="font-weight-light mt-2 mb-4 h-80">{{plan.plan_description}}</h5>
