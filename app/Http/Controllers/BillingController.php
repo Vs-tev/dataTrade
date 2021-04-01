@@ -8,15 +8,12 @@ use App\Models\Payment;
 use Illuminate\Http\Request;
 
 
-use App\Notifications\ChargeSuccessNotification;
 class BillingController extends Controller
 {
 
     public function index()
     {
-        auth()->user()->notify(new ChargeSuccessNotification());
 
-       // dd(auth()->user()->subscription('default')->stripe_plan);
         $monthlyPlans = Plan::where('billing_period', 'monthly')->get();
         $yearlyPlans = Plan::where('billing_period', 'yearly')->get();
         $currentplan = auth()->user()->subscription('default') ?? NULL;
