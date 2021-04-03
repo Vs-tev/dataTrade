@@ -54,15 +54,6 @@ class ChargeSuccessNotification extends Notification
             
             return $message;
 
-            /* $message = (new MailMessage)
-            ->line('Your invoice is now available!')
-            ->line(" We've attached a copy of your invoice for your records. ")
-            ->line('Thank you for using our application!');
-            
-            return $message;
- */
-
-
     }
 
     /**

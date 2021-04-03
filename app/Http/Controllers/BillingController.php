@@ -7,13 +7,14 @@ use App\Models\Feature;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 
-
 class BillingController extends Controller
 {
+    
 
     public function index()
     {
 
+       // dd(auth()->user()->subscription('default')->stripe_plan);
         $monthlyPlans = Plan::where('billing_period', 'monthly')->get();
         $yearlyPlans = Plan::where('billing_period', 'yearly')->get();
         $currentplan = auth()->user()->subscription('default') ?? NULL;
