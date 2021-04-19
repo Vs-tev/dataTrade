@@ -12,9 +12,8 @@
         <div class="d-flex justify-content-center justify-content-sm-between flex-wrap ">
             <div class="top-left-bar">
                 <ul class="list-unstyled text-center">
-                    <li class=""><a href="#" class="text-muted">Trade Analysis</a></li>
-                    <li class=""><a href="#" class="text-muted">Strategy Analysis</a></li>
-                    <li class=""><a href="#" class="text-muted ">Rules Analysis</a></li>
+                    <li class="mr-1"><a href="{{route('trade_analysis')}}" class="text-muted active-btn">Trade Analysis</a></li>
+                    <li class="mr-1"><a href="{{route('trading_setups_analysis')}}" class="text-muted">Trading Setups Analysis</a></li>
                 </ul> 
             </div>
             <div class="top-right-bar">
@@ -32,7 +31,7 @@
                         <li class=" mr-3">
                             <a type="button" href="{{route('plan')}}" class="border">
                                 <span class="dark font-weight-light">Plan: </span>
-                                {{$plan->name}}
+                                {{$plan->name ?? ""}}
                             </a>
                         </li>
                         <li class=""><span class="text-muted toggle-rightbar name_and_avatar">
@@ -47,9 +46,8 @@
     <div class="top-bar d-flex justify-content-between">
         <div class="top-left-bar">
             <ul class="list-unstyled">
-                <li class="mr-1"><a href="#" class="text-muted active-btn">Trade Analysis</a></li>
-                <li class="mr-1"><a href="#" class="text-muted">Strategy Analysis</a></li>
-                <li class="mr-1"><a href="#" class="text-muted">Rules Analysis</a></li>
+                <li class="mr-1"><a href="{{route('trade_analysis')}}" class="text-muted">Trade Analysis</a></li>
+                <li class="mr-1"><a href="{{route('trading_setups_analysis')}}" class="text-muted">Trading Setups Analysis</a></li>
             </ul> 
         </div>
         
@@ -70,7 +68,7 @@
                  <li class=" mr-3">
                     <a type="button" href="{{route('plan')}}" class="border">
                         <span class="dark font-weight-light">Plan: </span>
-                        {{$plan->name}}
+                        {{$plan->name ?? ""}}
                     </a>
                  </li>
 

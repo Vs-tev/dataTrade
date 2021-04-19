@@ -140,13 +140,21 @@ Route::group(['middleware' => 'auth'],  function(){
     Route::resource('payment_methods', 'PaymentMethodController');
     Route::get('invoice/download/{paymentId}', 'BillingController@downloadInvoice')->name('invoices.download');
 });
+
 Route::stripeWebhooks('stripe-webhook');
 
 Route::get('/symbols', 'SymbolController@index')->name('symbol');
 
-
 Auth::routes();
 
-//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index']);
+/* Trade analysis */
+
+Route::get('/trade_analysis', function () {
+    return view('trade_analysis.trade_analysis');
+})->middleware('auth')->name('trade_analysis');
+
+Route::get('/trading_setups_analysis', function () {
+    return view('setups_analysis.trading_setups_analysis');
+})->middleware('auth')->name('trading_setups_analysis');
 
 
