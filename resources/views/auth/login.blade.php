@@ -23,7 +23,7 @@
         
         
         <div class="form-group mb-4 pt-2">
-            <input id="password" name="password" type="password" class="form-control auth-input @error('password') is-invalid @enderror" placeholder="Password">
+            <input id="password" value="password" name="password" type="password" class="form-control auth-input @error('password') is-invalid @enderror" placeholder="Password">
             @error('password')
             <span class="invalid-feedback" role="alert">
                 <p class="error-output font-normal">{{$message}}</p>
