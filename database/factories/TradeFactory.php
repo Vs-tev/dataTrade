@@ -23,22 +23,22 @@ class TradeFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => 1,
-            'portfolio_id' => 51,
-            'symbol' => $this->faker->randomElement(['EUR/CAD', 'ERU/USD']),
+            'user_id' => 2,
+            'portfolio_id' => 2,
+            'symbol' => $this->faker->randomElement(['AUD/NZD']),
             'type_side' => $this->faker->randomElement(['sell', 'buy']),
-            'quantity' => rand(500, 10000),
-            'entry_price' => rand(1.0000, 1.2500),
-            'exit_price' => rand(1.0000, 1.2500),
-            'stop_loss_price' => rand(1.0000, 1.2500),
-            'time_frame' => $this->faker->randomElement(['1 min', '15 min']),
-            'entry_date' => $this->faker->dateTimeBetween('2021-03-06', '2021-03-07'),
-            'exit_date' => $this->faker->dateTimeBetween('2021-03-07', 'now'),
-            'pl_currency' => rand(-250, 40),
-            'pl_pips' => rand(-20, 10),
+            'quantity' => rand(1000, 10000),
+            'entry_price' => $this->faker->numerify('1.#####'),
+            'exit_price' => $this->faker->numerify('1.#####'),
+            'stop_loss_price' => $this->faker->numerify('1.#####'),
+            'time_frame' => $this->faker->randomElement(['1 min', '4 hours']),
+            'entry_date' => $this->faker->dateTimeBetween('2021-04-26', '2021-04-27'),
+            'exit_date' => $this->faker->dateTimeBetween('2021-04-27', 'now'),
+            'pl_currency' => rand(-10, 194),
+            'pl_pips' => rand(-10, 40),
             'fees' => rand(2, 12),
             'trade_img' => 'noimage.jpg',
-            'trade_notes' => 'asjdhbaskjdnaksdjnasjdnlasdk',
+            'trade_notes' => 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Est in hic laudantium cumque voluptas. Dolor repellendus ipsam similique error sunt odit nemo dignissimos minus beatae necessitatibus! Facilis dolores cupiditate explicabo.',
         ];
     }
 }

@@ -439,7 +439,6 @@ export default {
 
     sort(name) {
       this.column_name = name;
-      //this.sort = "asc";
       if (this.order == "ASC") {
         this.order = "DESC";
       } else {

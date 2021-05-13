@@ -47,9 +47,10 @@ class TradeHistoryController extends Controller
         if($request->search_symbol !== ""){
             $trades = $trades->where('symbol', 'LIKE', '%'. $request->search_symbol. '%');
         };
-        if($request->column[0] !== null){
-            $trades = $trades->orderBy($request->column[0], $request->column[1]);
-        };
+        
+        $trades = $trades->when($request->column[0] ?? null, function($query) use($request){
+            $query->orderBy($request->column[0], $request->column[1]); 
+        });
 
         if($request->boolean('except_trade') == true){
             $trades->whereHas('balance', function($query){
@@ -64,7 +65,7 @@ class TradeHistoryController extends Controller
         ])
         ->orderBy('exit_date', 'desc')
         ->paginate(request()->display);
-
+           // dd($trades);
         return $trades;
     }
 
