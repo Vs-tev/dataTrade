@@ -3,22 +3,9 @@
 @section('content')
 <div class="main-content-container">
 
-    <div class="content-container d-flex justify-content-center pt-0 align-items-center h-50 align-content-center">
-
-        <div class="text-center">
-           
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-wand" width="160" height="160" viewBox="0 0 24 24" stroke-width="0.3" stroke="#3f4254" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                <polyline points="6 21 21 6 18 3 3 18 6 21" />
-                <line x1="15" y1="6" x2="18" y2="9" />
-                <path d="M9 3a2 2 0 0 0 2 2a2 2 0 0 0 -2 2a2 2 0 0 0 -2 -2a2 2 0 0 0 2 -2" />
-                <path d="M19 13a2 2 0 0 0 2 2a2 2 0 0 0 -2 2a2 2 0 0 0 -2 -2a2 2 0 0 0 2 -2" />
-              </svg>
-            <div class="font-weight-lighter h2">New features coming soon</div>
-        </div>
-       
-           
-    </div>  
+    <app-trade-analysis
+    :portfolios="{{$portfolios}}" 
+    ></app-trade-analysis>
    
 </div>
 

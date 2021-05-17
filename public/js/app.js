@@ -2824,6 +2824,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Navbar",
   data: function data() {
@@ -2845,28 +2846,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     rci: function rci() {
-      var rci = (((this.portfolio.current_balance - this.portfolio.start_equity) / this.portfolio.start_equity || 0) * 100).toFixed(2);
+      var rci = this.portfolio.return_capital_investment;
 
       if (rci > 0) {
         return "+" + rci;
       } else {
         return rci;
-      }
-    },
-    trade_profit: function trade_profit() {
-      if (this.portfolio.trade_profit > 0) {
-        return "+" + this.portfolio.trade_profit;
-      } else {
-        return this.portfolio.trade_profit;
-      }
-    },
-    netProfit: function netProfit() {
-      var netprofit = (this.portfolio.current_balance - this.portfolio.start_equity).toFixed(2);
-
-      if (netprofit > 0) {
-        return "+" + netprofit;
-      } else {
-        return netprofit;
       }
     }
   },
@@ -3388,7 +3373,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ModalUpgradePlan__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../ModalUpgradePlan */ "./resources/js/components/ModalUpgradePlan.vue");
 /* harmony import */ var vue_apexcharts__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-apexcharts */ "./node_modules/vue-apexcharts/dist/vue-apexcharts.js");
 /* harmony import */ var vue_apexcharts__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_apexcharts__WEBPACK_IMPORTED_MODULE_3__);
-//
 //
 //
 //
@@ -4473,6 +4457,860 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         _this5.checkResponseStatus(error);
       });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/AreaChart.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trade_analysis/AreaChart.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ["portfolio"],
+  name: "AreaChart",
+  data: function data() {
+    return {
+      port: "",
+      series: [{
+        name: "Equity",
+        data: []
+      }],
+      options: {
+        chart: {
+          background: "#fff"
+        },
+        type: "area",
+        stacked: false,
+        height: 350,
+        zoom: {
+          type: "x",
+          enabled: true,
+          autoScaleYaxis: true
+        },
+        toolbar: {
+          autoSelected: "zoom"
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: "straight"
+        },
+        title: {
+          text: "Portfolio Grow",
+          align: "left",
+          offsetY: 0,
+          style: {
+            fontSize: "20px",
+            fontWeight: "400",
+            colors: "#343a40"
+          }
+        },
+        subtitle: {
+          text: "",
+          align: "left",
+          offsetX: 0,
+          style: {
+            fontSize: "16px",
+            fontWeight: "400",
+            color: "#6c757d"
+          }
+        },
+        markers: {
+          size: 4
+        },
+        fill: {
+          type: "gradient",
+          gradient: {
+            shadeIntensity: 1,
+            inverseColors: false,
+            opacityFrom: 0.5,
+            opacityTo: 0,
+            stops: [0, 90, 100]
+          }
+        },
+        grid: {
+          row: {
+            colors: ["#fff"],
+            // takes an array which will be repeated on columns
+            opacity: 0.5
+          }
+        },
+        yaxis: {
+          show: true,
+          showAlways: true,
+          labels: {
+            style: {
+              colors: [],
+              fontSize: "14px",
+              fontFamily: "Helvetica, Arial, sans-serif",
+              fontWeight: 400
+            }
+          }
+        },
+        xaxis: {
+          type: "datetime",
+          categories: this.$props.portfolio.running_total.map(function (arr) {
+            return arr.action_date;
+          }).reverse()
+        }
+      }
+    };
+  },
+  watch: {
+    portfolio: function portfolio(newProtfolio, oldVal) {
+      this.series[0].data = newProtfolio.running_total.map(function (item) {
+        return parseFloat(item.running_total);
+      }).reverse();
+
+      if (newProtfolio) {
+        this.portfolio_data();
+      }
+    }
+  },
+  mounted: function mounted() {
+    this.portfolio_data();
+  },
+  methods: {
+    portfolio_data: function portfolio_data() {
+      console.log(this.$props.portfolio.running_total);
+      this.series[0].data = this.$props.portfolio.running_total.map(function (item) {
+        return parseFloat(item.running_total);
+      });
+      this.updateSeriesLine();
+    },
+    updateSeriesLine: function updateSeriesLine() {
+      this.options = _objectSpread(_objectSpread({}, this.options), {
+        xaxis: {
+          type: "datetime",
+          categories: this.$props.portfolio.running_total.map(function (arr) {
+            return arr.action_date;
+          }).reverse()
+        },
+        subtitle: {
+          text: this.$props.portfolio.name,
+          align: "left"
+        }
+      });
+      this.$refs.realtimeChart.updateOptions(this.options, false, true);
+      this.$refs.realtimeChart.updateSeries([{
+        data: this.series[0].data.reverse()
+      }]);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/DonutChart.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trade_analysis/DonutChart.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_apexcharts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-apexcharts */ "./node_modules/vue-apexcharts/dist/vue-apexcharts.js");
+/* harmony import */ var vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_apexcharts__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+
+Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ["data"],
+  data: function data() {
+    return {
+      series: "",
+      chartOptions: {
+        chart: {
+          type: "radialBar",
+          toolbar: {
+            show: false
+          }
+        },
+        plotOptions: {
+          radialBar: {
+            hollow: {
+              margin: 0,
+              size: "81%",
+              background: "#fff",
+              position: "front",
+              dropShadow: {
+                enabled: true,
+                top: 1,
+                left: 0,
+                blur: 1,
+                opacity: 0.2
+              }
+            },
+            track: {
+              background: "#fff",
+              strokeWidth: "67%",
+              margin: 0,
+              // margin is in pixels
+              dropShadow: {
+                enabled: true,
+                top: 0.51,
+                left: 0,
+                blur: 0.5,
+                opacity: 0.1
+              }
+            },
+            dataLabels: {
+              show: true,
+              name: {
+                offsetY: -7,
+                show: true,
+                color: "#b7c0d5",
+                fontSize: "16px"
+              },
+              value: {
+                offsetY: 7,
+                fontSize: "22px",
+                fontWeight: "500",
+                colors: "#343a40",
+                show: true
+              }
+            }
+          }
+        },
+        fill: {
+          colors: [function (_ref) {
+            var value = _ref.value,
+                seriesIndex = _ref.seriesIndex,
+                w = _ref.w;
+
+            if (value <= 30) {
+              return " #f8030381";
+            } else {
+              if (value <= 49) {
+                return "#6575cdad";
+              } else {
+                return "#3699ff";
+              }
+            }
+          }],
+          opacity: 0.9,
+          type: "solid"
+        },
+        stroke: {
+          lineCap: "round"
+        },
+        labels: ["Win rate"]
+      }
+    };
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/TradeAnalysis.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trade_analysis/TradeAnalysis.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _DonutChart_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DonutChart.vue */ "./resources/js/components/trade_analysis/DonutChart.vue");
+/* harmony import */ var _AreaChart_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AreaChart.vue */ "./resources/js/components/trade_analysis/AreaChart.vue");
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_2__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "TradeAnalysis",
+  components: {
+    AreaChart: _AreaChart_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    DonutChart: _DonutChart_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_2___default.a
+  },
+  props: ["portfolios"],
+  data: function data() {
+    return {
+      selectedPortfolio: this.$props.portfolios[0],
+      portfolio: "",
+      spinner: true,
+      sparklinechart: {
+        chart: {
+          type: "radialBar",
+          toolbar: {
+            show: false
+          },
+          sparkline: {
+            enabled: true
+          }
+        },
+        plotOptions: {
+          radialBar: {
+            hollow: {
+              margin: 0,
+              size: "70%",
+              background: "#fff",
+              position: "front",
+              dropShadow: {
+                enabled: true,
+                top: 1,
+                left: 0,
+                blur: 1,
+                opacity: 0.2
+              }
+            },
+            track: {
+              background: "#fff",
+              strokeWidth: "75%",
+              margin: 0,
+              // margin is in pixels
+              dropShadow: {
+                enabled: true,
+                top: 0.51,
+                left: 0,
+                blur: 0.5,
+                opacity: 0.1
+              }
+            },
+            dataLabels: {
+              show: true,
+              name: {
+                show: false
+              },
+              value: {
+                offsetY: 4,
+                fontSize: "14px",
+                fontWeight: "600",
+                colors: "#343a40",
+                show: true
+              }
+            }
+          }
+        },
+        fill: {
+          colors: [function (_ref) {
+            var value = _ref.value,
+                seriesIndex = _ref.seriesIndex,
+                w = _ref.w;
+
+            if (value <= 30) {
+              return "#f80303e3";
+            } else {
+              if (value <= 49) {
+                return "#6575cdfa";
+              } else {
+                return "#0160be";
+              }
+            }
+          }],
+          opacity: 0.9,
+          type: "solid"
+        },
+        stroke: {
+          lineCap: "round"
+        }
+      }
+    };
+  },
+  mounted: function mounted() {
+    this.getActivePortfolio();
+  },
+  computed: {
+    winrate: function winrate() {
+      return [((this.portfolio.winning_trades / this.portfolio.total_trades || 0) * 100).toFixed(2)];
+    },
+    losingrate: function losingrate() {
+      return ((this.portfolio.losing_trades / this.portfolio.total_trades || 0) * 100).toFixed(2);
+    }
+  },
+  methods: {
+    getActivePortfolio: function getActivePortfolio() {
+      var _this = this;
+
+      axios.get("/tradeAnalysis/portfolioData/" + this.selectedPortfolio.id).then(function (res) {
+        // console.log(res.data);
+        _this.portfolio = res.data[0];
+        _this.spinner = false;
+      })["catch"](function (error) {});
     }
   }
 });
@@ -6235,7 +7073,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     },
     sort: function sort(name) {
-      this.column_name = name; //this.sort = "asc";
+      this.column_name = name;
 
       if (this.order == "ASC") {
         this.order = "DESC";
@@ -44434,7 +45272,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "downbar" }, [
+  return _c("div", { staticClass: "downbar shadow-sm" }, [
     _c("div", { staticClass: "down-left d-flex justify-content-start" }, [
       _vm.spinner
         ? _c("ul", { staticClass: "list-unstyled" }, [
@@ -44446,22 +45284,23 @@ var render = function() {
                   _vm._s(_vm.portfolio.current_balance) +
                     " " +
                     _vm._s(_vm.portfolio.currency) +
-                    "\n              "
-                ),
-                _c("span", {}, [
-                  _vm._v("( "),
-                  _c("span", { staticClass: "font-dark" }, [
-                    _vm._v("Net Profit: ")
-                  ]),
-                  _c("span", { class: { red: _vm.netProfit < 0 } }, [
-                    _vm._v(
-                      _vm._s(_vm.netProfit) +
-                        " " +
-                        _vm._s(_vm.portfolio.currency)
-                    )
-                  ]),
-                  _vm._v(")")
-                ])
+                    "\n            "
+                )
+              ]),
+              _vm._v(" "),
+              _c("span", {}, [
+                _vm._v("( "),
+                _c("span", { staticClass: "font-dark" }, [
+                  _vm._v("Net Profit: ")
+                ]),
+                _c("span", { class: { red: this.portfolio.netProfit < 0 } }, [
+                  _vm._v(
+                    _vm._s(this.portfolio.netProfit) +
+                      " " +
+                      _vm._s(_vm.portfolio.currency)
+                  )
+                ]),
+                _vm._v(")")
               ])
             ]),
             _vm._v(" "),
@@ -44491,9 +45330,9 @@ var render = function() {
                 "span",
                 {
                   staticClass: " font-500 light-md",
-                  class: { red: _vm.trade_profit < 0 }
+                  class: { red: this.portfolio.trade_profit < 0 }
                 },
-                [_vm._v(_vm._s(_vm.trade_profit))]
+                [_vm._v(_vm._s(this.portfolio.trade_profit))]
               )
             ])
           ])
@@ -45898,7 +46737,6 @@ var render = function() {
                           options: {
                             chart: {
                               width: "100%",
-
                               type: "area",
                               sparkline: {
                                 enabled: true
@@ -47451,6 +48289,1277 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "border-bottom py-3 px-4" }, [
       _c("label", {}, [_vm._v("Description:")])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/AreaChart.vue?vue&type=template&id=9d17b578&":
+/*!***************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trade_analysis/AreaChart.vue?vue&type=template&id=9d17b578& ***!
+  \***************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("apexchart", {
+        ref: "realtimeChart",
+        attrs: {
+          type: "area",
+          height: "450",
+          options: _vm.options,
+          series: _vm.series
+        }
+      })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/DonutChart.vue?vue&type=template&id=32d2fc0e&":
+/*!****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trade_analysis/DonutChart.vue?vue&type=template&id=32d2fc0e& ***!
+  \****************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { attrs: { id: "card" } }, [
+    _c(
+      "div",
+      { attrs: { id: "chart" } },
+      [
+        _c("apexchart", {
+          attrs: {
+            type: "radialBar",
+            height: "255",
+            options: _vm.chartOptions,
+            series: _vm.data
+          }
+        })
+      ],
+      1
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/TradeAnalysis.vue?vue&type=template&id=11f61d53&":
+/*!*******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trade_analysis/TradeAnalysis.vue?vue&type=template&id=11f61d53& ***!
+  \*******************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "content-container pt-0 " }, [
+    _c("div", { staticClass: "mb-3 col-12 dashboard_container_content p-0" }, [
+      _c(
+        "div",
+        {
+          staticClass:
+            "d-flex justify-content-between align-items-center border-bottom px-4 py-3"
+        },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "font-500 h4 text-capitalize font-weight-normal m-0 "
+            },
+            [_vm._v("\n                Portfolio Performance \n            ")]
+          ),
+          _vm._v(" "),
+          _c("multiselect", {
+            staticClass: "w-25",
+            attrs: {
+              "preselect-first": true,
+              options: _vm.portfolios,
+              searchable: false,
+              "close-on-select": true,
+              "allow-empty": false,
+              "show-labels": false,
+              label: "name",
+              "track-by": "id"
+            },
+            on: {
+              input: function($event) {
+                return _vm.getActivePortfolio()
+              }
+            },
+            model: {
+              value: _vm.selectedPortfolio,
+              callback: function($$v) {
+                _vm.selectedPortfolio = $$v
+              },
+              expression: "selectedPortfolio"
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      !_vm.spinner
+        ? _c(
+            "div",
+            {
+              staticClass:
+                "no-gutters row justify-content-between align-items-start"
+            },
+            [
+              _c("div", { staticClass: "col-sm-6 col-xl-2 px-4 py-3" }, [
+                _c("div", { staticClass: "text-left" }, [
+                  _c("div", {}, [
+                    _c(
+                      "div",
+                      { staticClass: "text-capitalize text-muted font-lg" },
+                      [_vm._v("Start Capital")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "h2 font-weight-bold text-dark text-uppercase"
+                      },
+                      [
+                        _vm._v(
+                          _vm._s(_vm.portfolio.start_equity) +
+                            " " +
+                            _vm._s(_vm.portfolio.currency)
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "text-muted font-500" }, [
+                      _vm._v(
+                        "\n                            Opening Date\n                            "
+                      ),
+                      _c("div", { staticClass: "d-inline text-primary pr-1" }, [
+                        _c("span", { staticClass: "pl-1" }, [
+                          _vm._v(_vm._s(_vm.portfolio.action_date))
+                        ])
+                      ])
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-sm-6 col-xl-2 px-4 py-3" }, [
+                _c("div", { staticClass: "text-left" }, [
+                  _c("div", {}, [
+                    _c(
+                      "div",
+                      { staticClass: "text-capitalize text-muted font-lg" },
+                      [_vm._v("Balance")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "h2 font-weight-bold text-dark" },
+                      [
+                        _vm._v(
+                          _vm._s(_vm.portfolio.current_balance) +
+                            " " +
+                            _vm._s(_vm.portfolio.currency)
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "text-muted font-500" }, [
+                      _c("div", { staticClass: "d-inline text-primary pr-1" }, [
+                        _c(
+                          "span",
+                          {
+                            staticClass: "pl-1",
+                            class: {
+                              red: _vm.portfolio.return_capital_investment < 0
+                            }
+                          },
+                          [
+                            _vm._v(
+                              _vm._s(_vm.portfolio.return_capital_investment) +
+                                "%"
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(
+                        "\n                            Rate of Return\n                        "
+                      )
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-sm-6 col-xl-2 px-4 py-3" }, [
+                _c("div", { staticClass: "text-left" }, [
+                  _c("div", {}, [
+                    _c(
+                      "div",
+                      { staticClass: "text-capitalize text-muted font-lg" },
+                      [_vm._v("Total Net Profit")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "h2 font-weight-bold ",
+                        class: _vm.portfolio.netProfit < 0 ? "red" : "text-dark"
+                      },
+                      [_vm._v(_vm._s(_vm.portfolio.netProfit) + " EUR")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "text-muted font-500" }, [
+                      _c("div", { staticClass: "d-inline text-primary pr-1" }, [
+                        _c(
+                          "span",
+                          {
+                            staticClass: "pl-1",
+                            class: { red: _vm.portfolio.trade_profit < 0 }
+                          },
+                          [_vm._v(_vm._s(_vm.portfolio.trade_profit) + " Eur")]
+                        )
+                      ]),
+                      _vm._v(
+                        "\n                        Trade Profit\n                    "
+                      )
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-sm-6 col-xl-2 px-4 py-3" }, [
+                _c("div", { staticClass: "text-left" }, [
+                  _c("div", {}, [
+                    _c(
+                      "div",
+                      { staticClass: "text-capitalize text-muted font-lg" },
+                      [_vm._v("Gained Pips")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "h2 font-weight-bold",
+                        class:
+                          _vm.portfolio.gained_pisp < 0 ? "red" : "text-dark"
+                      },
+                      [_vm._v(_vm._s(_vm.portfolio.gained_pisp))]
+                    )
+                  ])
+                ])
+              ])
+            ]
+          )
+        : _c("div", [_vm._m(0)])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row mx-0 p-0 mt-3" }, [
+      _c("div", { staticClass: "col-md-9 pl-0" }, [
+        _c(
+          "div",
+          { staticClass: "col-12 p-3 dashboard_container_content p-0 h-100" },
+          [
+            _vm.portfolio
+              ? _c("area-chart", { attrs: { portfolio: _vm.portfolio } })
+              : _vm._e()
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-3 pr-0" }, [
+        _c("div", { staticClass: "dashboard_container_content p-0 h-100" }, [
+          _c(
+            "div",
+            { staticClass: "w-100 pt-5" },
+            [
+              _c("donut-chart", {
+                staticClass: "m-auto",
+                attrs: { data: _vm.winrate }
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "p-4 mt-2" }, [
+                _c("div", { staticClass: "d-flex justify-content-between " }, [
+                  _c("div", { staticClass: "h3 text-dark" }, [
+                    _vm._v(
+                      "\n                              " +
+                        _vm._s(_vm.losingrate) +
+                        "%\n                            "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "text-muted font-lg" }, [
+                    _vm._v(
+                      "\n                                Losing Rate\n                            "
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "progress h-12" }, [
+                  _c("div", {
+                    staticClass: "progress-bar bg-danger h-12",
+                    style: { width: _vm.losingrate + "%" },
+                    attrs: {
+                      role: "progressbar",
+                      "aria-valuenow": _vm.losingrate,
+                      "aria-valuemin": "0",
+                      "aria-valuemax": "100"
+                    }
+                  })
+                ])
+              ])
+            ],
+            1
+          )
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "mx-0 p-0 mt-5" }, [
+      _vm._m(1),
+      _vm._v(" "),
+      _c("div", { staticClass: "row mt-3 mb-5" }, [
+        _c("div", { staticClass: "col-md-6" }, [
+          _c("div", { staticClass: "col-12 dashboard_container_content p-0" }, [
+            _vm._m(2),
+            _vm._v(" "),
+            _c("ul", { staticClass: "list-group list-group-flush px-1" }, [
+              _vm._m(3),
+              _vm._v(" "),
+              _vm._m(4),
+              _vm._v(" "),
+              _vm._m(5),
+              _vm._v(" "),
+              _c("li", { staticClass: "list-group-item  py-1" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "d-flex justify-content-between align-items-center p-0"
+                  },
+                  [
+                    _vm._m(6),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "w-15" },
+                      [
+                        _c("apexchart", {
+                          staticClass: "text-right",
+                          attrs: {
+                            type: "radialBar",
+                            height: "75",
+                            options: _vm.sparklinechart,
+                            series: [25]
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ]
+                )
+              ])
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(7),
+        _vm._v(" "),
+        _vm._m(8),
+        _vm._v(" "),
+        _vm._m(9)
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", { staticClass: "list-unstyled" }, [
+      _c("li", { staticClass: "text-center py-4" }, [
+        _c("div", { staticClass: "spinner-border text-primary" })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "col-12 pt-3 dashboard_container_content p-0" },
+      [
+        _c(
+          "ul",
+          {
+            staticClass: "nav nav-tabs justify-content-center border-0",
+            attrs: { role: "tablist" }
+          },
+          [
+            _c("li", { staticClass: "nav-item text-dark" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "nav-link active font-lg mx-4 px-2 pb-3",
+                  attrs: {
+                    href: "#all",
+                    role: "tab",
+                    "data-toggle": "tab",
+                    "aria-selected": "true"
+                  }
+                },
+                [_vm._v("ALL")]
+              )
+            ]),
+            _vm._v(" "),
+            _c("li", { staticClass: "nav-item" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "nav-link font-lg mx-4 px-2 pb-3",
+                  attrs: {
+                    href: "#buy",
+                    role: "tab",
+                    "data-toggle": "tab",
+                    "aria-selected": "true"
+                  }
+                },
+                [_vm._v("BUY")]
+              )
+            ]),
+            _vm._v(" "),
+            _c("li", { staticClass: "nav-item" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "nav-link font-lg mx-4 px-2 pb-3",
+                  attrs: {
+                    href: "#sell",
+                    role: "tab",
+                    "data-toggle": "tab",
+                    "aria-selected": "true"
+                  }
+                },
+                [_vm._v("SELL")]
+              )
+            ])
+          ]
+        )
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "d-flex justify-content-between align-items-center  font-500 h4 text-capitalize font-weight-normal m-0 border-bottom px-4 py-3"
+      },
+      [
+        _c("h4", { staticClass: "p-0 m-0" }, [
+          _vm._v(
+            "\n                            Trades\n                        "
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", {}, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-link text-muted border-0 dropdown-toggle",
+              attrs: { type: "button", "data-toggle": "dropdown" }
+            },
+            [_vm._v("Period ")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "dropdown-menu dropdown-menu-right" }, [
+            _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
+              _vm._v("All ime")
+            ]),
+            _vm._v(" "),
+            _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
+              _vm._v("1 Day")
+            ]),
+            _vm._v(" "),
+            _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
+              _vm._v("7 Days")
+            ]),
+            _vm._v(" "),
+            _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
+              _vm._v("30 Days")
+            ])
+          ])
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "list-group-item" }, [
+      _c(
+        "div",
+        {
+          staticClass: "d-flex justify-content-between align-items-center p-0"
+        },
+        [
+          _c("div", { staticClass: "text-capitalize primary-color font-lg" }, [
+            _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+              _vm._v(
+                "\n                                        Total Recorded Trades\n                                    "
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "text-muted font-normal" }, [
+              _vm._v(
+                "\n                                        last 7 days: 4 trades\n                                    "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "h3 font-500 text-dark" }, [
+            _vm._v("\n                                    148 "),
+            _c("span", { staticClass: "text-muted font-500 font-sm" }, [
+              _vm._v("Trades")
+            ])
+          ])
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "list-group-item" }, [
+      _c(
+        "div",
+        {
+          staticClass: "d-flex justify-content-between align-items-center p-0"
+        },
+        [
+          _c("div", { staticClass: "text-capitalize primary-color font-lg" }, [
+            _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+              _vm._v(
+                "\n                                        Winners\n                                    "
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "text-muted font-normal" }, [
+              _vm._v(
+                "\n                                        last 7 days: 2 winners\n                                    "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "h3 font-500 text-success" }, [
+            _vm._v("\n                                    148 "),
+            _c("span", { staticClass: "text-muted font-500 font-sm" }, [
+              _vm._v("Trades")
+            ])
+          ])
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "list-group-item border-bottom" }, [
+      _c(
+        "div",
+        {
+          staticClass: "d-flex justify-content-between align-items-center p-0"
+        },
+        [
+          _c("div", { staticClass: "text-capitalize primary-color font-lg" }, [
+            _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+              _vm._v(
+                "\n                                        Losers\n                                    "
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "text-muted font-normal" }, [
+              _vm._v(
+                "\n                                        last 7 days: 2 Losers\n                                    "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "h3 font-500 text-danger" }, [
+            _vm._v("\n                                    33 "),
+            _c("span", { staticClass: "text-muted font-500 font-sm" }, [
+              _vm._v("Trades")
+            ])
+          ])
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-capitalize text-dark font-lg" }, [
+      _c("div", { staticClass: "primary-color font-weight-bold font-xl" }, [
+        _vm._v(
+          "\n                                        Win Rate\n                                    "
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-6" }, [
+      _c("div", { staticClass: "col-12 dashboard_container_content p-0" }, [
+        _c(
+          "div",
+          {
+            staticClass:
+              "d-flex justify-content-between align-items-center  font-500 h4 text-capitalize font-weight-normal m-0 border-bottom px-4 py-3"
+          },
+          [
+            _c("h4", { staticClass: "p-0 m-0" }, [
+              _vm._v(
+                "\n                            Profit\n                        "
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", {}, [
+              _c(
+                "button",
+                {
+                  staticClass:
+                    "btn btn-link text-muted border-0 dropdown-toggle",
+                  attrs: { type: "button", "data-toggle": "dropdown" }
+                },
+                [_vm._v("Period ")]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "dropdown-menu dropdown-menu-right" }, [
+                _c(
+                  "a",
+                  { staticClass: "dropdown-item", attrs: { href: "#" } },
+                  [_vm._v("All ime")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  { staticClass: "dropdown-item", attrs: { href: "#" } },
+                  [_vm._v("1 Day")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  { staticClass: "dropdown-item", attrs: { href: "#" } },
+                  [_vm._v("7 Days")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  { staticClass: "dropdown-item", attrs: { href: "#" } },
+                  [_vm._v("30 Days")]
+                )
+              ])
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c("ul", { staticClass: "list-group list-group-flush px-1" }, [
+          _c("li", { staticClass: "list-group-item" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex justify-content-between align-items-center p-0"
+              },
+              [
+                _c(
+                  "div",
+                  { staticClass: "text-capitalize primary-color font-lg" },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "primary-color font-500 font-lg" },
+                      [
+                        _vm._v(
+                          "\n                                        Gross Profit\n                                    "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "text-muted font-normal" }, [
+                      _vm._v(
+                        "\n                                        last 7 days: 4 trades\n                                    "
+                      )
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "h4 font-500 text-dark" }, [
+                  _vm._v(
+                    "\n                                    1248.21 EUR\n                                "
+                  )
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "list-group-item" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex justify-content-between align-items-center p-0"
+              },
+              [
+                _c(
+                  "div",
+                  { staticClass: "text-capitalize primary-color font-lg" },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "primary-color font-500 font-lg" },
+                      [
+                        _vm._v(
+                          "\n                                        Gross Loss\n                                    "
+                        )
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "h4 font-500 text-danger" }, [
+                  _vm._v(
+                    "\n                                   688.47 EUR\n                                "
+                  )
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "list-group-item" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex justify-content-between align-items-center p-0 text-capitalize primary-color font-500 font-lg"
+              },
+              [
+                _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+                  _vm._v(
+                    "\n                                    Profit Factor\n                                "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "h4 font-500 text-dark" }, [
+                  _vm._v(
+                    "\n                                    2.56\n                                "
+                  )
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "list-group-item" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex justify-content-between align-items-center p-0 text-capitalize primary-color font-500 font-lg"
+              },
+              [
+                _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+                  _vm._v(
+                    "\n                                     Average Trade Profit\n                                "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "h4 font-500" }, [
+                  _vm._v(
+                    "\n                                   52.75 EUR\n                                "
+                  )
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "list-group-item" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex justify-content-between align-items-center p-0 text-capitalize primary-color font-500 font-lg"
+              },
+              [
+                _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+                  _vm._v(
+                    "\n                                     Winning Average\n                                "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "h4 font-500" }, [
+                  _vm._v("\n                                     212.38 EUR "),
+                  _c("span", { staticClass: "text-muted font-normal" }, [
+                    _vm._v("(2.09 %) (2.6 Pips)")
+                  ])
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "list-group-item" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex justify-content-between align-items-center p-0 text-capitalize primary-color font-500 font-lg"
+              },
+              [
+                _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+                  _vm._v(
+                    "\n                                     Losing Average\n                                "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "h4 font-500 text-danger" }, [
+                  _vm._v("\n                                     -84.13 EUR "),
+                  _c("span", { staticClass: "font-normal" }, [
+                    _vm._v("(-0.82 %) (-0.3 Pips)")
+                  ])
+                ])
+              ]
+            )
+          ])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-6 mt-3" }, [
+      _c("div", { staticClass: "col-12 dashboard_container_content p-0" }, [
+        _c(
+          "div",
+          {
+            staticClass:
+              "font-500 h4 text-capitalize font-weight-normal m-0 border-bottom px-4 py-3"
+          },
+          [
+            _c("h4", { staticClass: "p-0 m-0" }, [
+              _vm._v(
+                "\n                            Trade Duration\n                        "
+              )
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c("ul", { staticClass: "list-group list-group-flush px-1" }, [
+          _c("li", { staticClass: "list-group-item" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex justify-content-between align-items-center p-0"
+              },
+              [
+                _c(
+                  "div",
+                  { staticClass: "text-capitalize primary-color font-lg" },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "primary-color font-500 font-lg" },
+                      [
+                        _vm._v(
+                          "\n                                        Duration Average\n                                    "
+                        )
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "font-lg font-500 text-muted" }, [
+                  _vm._v(
+                    "\n                                    1 day / 3h / 15 min\n                                "
+                  )
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "list-group-item" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex justify-content-between align-items-center p-0"
+              },
+              [
+                _c(
+                  "div",
+                  { staticClass: "text-capitalize primary-color font-lg" },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "primary-color font-500 font-lg" },
+                      [
+                        _vm._v(
+                          "\n                                        Winning Duration Average\n                                    "
+                        )
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "font-lg font-500 text-muted" }, [
+                  _vm._v(
+                    "\n                                    1 day / 3h / 15 min\n                                "
+                  )
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "list-group-item" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex justify-content-between align-items-center p-0 text-capitalize primary-color font-500 font-lg"
+              },
+              [
+                _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+                  _vm._v(
+                    "\n                                    Losing Duration Average\n                                "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "font-lg font-500 text-muted" }, [
+                  _vm._v(
+                    "\n                                    1 day / 3h / 15 min\n                                "
+                  )
+                ])
+              ]
+            )
+          ])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-6 mt-3" }, [
+      _c("div", { staticClass: "col-12 dashboard_container_content p-0 p-0" }, [
+        _c(
+          "div",
+          {
+            staticClass:
+              "font-500 h4 text-capitalize font-weight-normal m-0 border-bottom px-4 py-3"
+          },
+          [
+            _c("h4", { staticClass: "p-0 m-0" }, [
+              _vm._v(
+                "\n                            Miscelaneous \n                        "
+              )
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c("ul", { staticClass: "list-group list-group-flush px-1" }, [
+          _c("li", { staticClass: "list-group-item" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex justify-content-between align-items-center p-0"
+              },
+              [
+                _c(
+                  "div",
+                  { staticClass: "text-capitalize primary-color font-lg" },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "primary-color font-500 font-lg" },
+                      [
+                        _vm._v(
+                          "\n                                        Biggest Win\n                                    "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "text-muted font-normal" }, [
+                      _vm._v(
+                        "\n                                        last 7 days: 2 Losers\n                                    "
+                      )
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "font-lg font-500" }, [
+                  _vm._v(
+                    "\n                                        260 EUR\n                                "
+                  )
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "list-group-item" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex justify-content-between align-items-center p-0"
+              },
+              [
+                _c(
+                  "div",
+                  { staticClass: "text-capitalize primary-color font-lg" },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "primary-color font-500 font-lg" },
+                      [
+                        _vm._v(
+                          "\n                                        Biggest Los\n                                    "
+                        )
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "font-lg font-500 text-danger" }, [
+                  _vm._v(
+                    "\n                                    -180 EUR\n                                "
+                  )
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "list-group-item" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex justify-content-between align-items-center p-0"
+              },
+              [
+                _c(
+                  "div",
+                  { staticClass: "text-capitalize primary-color font-lg" },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "primary-color font-500 font-lg" },
+                      [
+                        _vm._v(
+                          "\n                                        Best winning streak\n                                    "
+                        )
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "font-lg font-500" }, [
+                  _vm._v("\n                                        4 "),
+                  _c("span", { staticClass: "text-muted font-500 font-sm" }, [
+                    _vm._v("Trades")
+                  ])
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "list-group-item" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex justify-content-between align-items-center p-0"
+              },
+              [
+                _c(
+                  "div",
+                  { staticClass: "text-capitalize primary-color font-lg" },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "primary-color font-500 font-lg" },
+                      [
+                        _vm._v(
+                          "\n                                        Worst Losing Streak\n                                    "
+                        )
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "font-lg font-500" }, [
+                  _vm._v("\n                                        8 "),
+                  _c("span", { staticClass: "text-muted font-500 font-sm" }, [
+                    _vm._v("Trades")
+                  ])
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "list-group-item" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex justify-content-between align-items-center p-0"
+              },
+              [
+                _c(
+                  "div",
+                  { staticClass: "text-capitalize primary-color font-lg" },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "primary-color font-500 font-lg" },
+                      [
+                        _vm._v(
+                          "\n                                        Av. Risk Rewar Ratio\n                                    "
+                        )
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "font-lg font-500" }, [
+                  _vm._v(
+                    "\n                                    3.25\n                                "
+                  )
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "list-group-item" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex justify-content-between align-items-center p-0"
+              },
+              [
+                _c(
+                  "div",
+                  { staticClass: "text-capitalize primary-color font-lg" },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "primary-color font-500 font-lg" },
+                      [
+                        _vm._v(
+                          "\n                                        Expected Trade Return\n                                    "
+                        )
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "font-lg font-500" }, [
+                  _vm._v(
+                    "\n                                    1.52%\n                                "
+                  )
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "list-group-item" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex justify-content-between align-items-center p-0"
+              },
+              [
+                _c(
+                  "div",
+                  { staticClass: "text-capitalize primary-color font-lg" },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "primary-color font-500 font-lg" },
+                      [
+                        _vm._v(
+                          "\n                                        Standart deviation\n                                    "
+                        )
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "font-lg font-500" }, [
+                  _vm._v(
+                    "\n                                    1.89%\n                                "
+                  )
+                ])
+              ]
+            )
+          ])
+        ])
+      ])
     ])
   }
 ]
@@ -64236,6 +66345,7 @@ Vue.component('app-traderecord-history', __webpack_require__(/*! ./components/tr
 Vue.component('register-first_portfolio', __webpack_require__(/*! ./components/portfolio/RegisterFIrstPortfolio.vue */ "./resources/js/components/portfolio/RegisterFIrstPortfolio.vue")["default"]);
 Vue.component('app-plans', __webpack_require__(/*! ./components/plans/Plans.vue */ "./resources/js/components/plans/Plans.vue")["default"]);
 Vue.component('user-settings', __webpack_require__(/*! ./components/user/UserSettings.vue */ "./resources/js/components/user/UserSettings.vue")["default"]);
+Vue.component('app-trade-analysis', __webpack_require__(/*! ./components/trade_analysis/TradeAnalysis.vue */ "./resources/js/components/trade_analysis/TradeAnalysis.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -64253,38 +66363,6 @@ if (document.querySelector('#register')) {
     el: '#register'
   });
 }
-/* if (document.querySelector('#VuePortfolio')) { // this line check if #VuePortfolio exist
-    const app = new Vue({
-        el: '#VuePortfolio',
-
-    });
-}
-
-if (document.querySelector('#VueRules')) {
-    const rules = new Vue({
-        el: '#VueRules',
-
-    })
-}
-
-if (document.querySelector('#VueStrategies')) {
-    const strategies = new Vue({
-        el: '#VueStrategies'
-
-    })
-}
-
-    const traderecord = new Vue({
-        el: '#VueTradeRecord',
-        data: {
-            title: 'vueee',
-        },
-        methods: {
-            changetitle: function () {
-                console.log(rules)
-              },
-        },
-    }) */
 
 /***/ }),
 
@@ -65508,6 +67586,214 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Strategies_vue_vue_type_template_id_5f6c7034___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Strategies_vue_vue_type_template_id_5f6c7034___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/trade_analysis/AreaChart.vue":
+/*!**************************************************************!*\
+  !*** ./resources/js/components/trade_analysis/AreaChart.vue ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _AreaChart_vue_vue_type_template_id_9d17b578___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AreaChart.vue?vue&type=template&id=9d17b578& */ "./resources/js/components/trade_analysis/AreaChart.vue?vue&type=template&id=9d17b578&");
+/* harmony import */ var _AreaChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AreaChart.vue?vue&type=script&lang=js& */ "./resources/js/components/trade_analysis/AreaChart.vue?vue&type=script&lang=js&");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _AreaChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _AreaChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _AreaChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _AreaChart_vue_vue_type_template_id_9d17b578___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _AreaChart_vue_vue_type_template_id_9d17b578___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/trade_analysis/AreaChart.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/trade_analysis/AreaChart.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/trade_analysis/AreaChart.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AreaChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./AreaChart.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/AreaChart.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AreaChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/trade_analysis/AreaChart.vue?vue&type=template&id=9d17b578&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/components/trade_analysis/AreaChart.vue?vue&type=template&id=9d17b578& ***!
+  \*********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AreaChart_vue_vue_type_template_id_9d17b578___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./AreaChart.vue?vue&type=template&id=9d17b578& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/AreaChart.vue?vue&type=template&id=9d17b578&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AreaChart_vue_vue_type_template_id_9d17b578___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AreaChart_vue_vue_type_template_id_9d17b578___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/trade_analysis/DonutChart.vue":
+/*!***************************************************************!*\
+  !*** ./resources/js/components/trade_analysis/DonutChart.vue ***!
+  \***************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _DonutChart_vue_vue_type_template_id_32d2fc0e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DonutChart.vue?vue&type=template&id=32d2fc0e& */ "./resources/js/components/trade_analysis/DonutChart.vue?vue&type=template&id=32d2fc0e&");
+/* harmony import */ var _DonutChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DonutChart.vue?vue&type=script&lang=js& */ "./resources/js/components/trade_analysis/DonutChart.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _DonutChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _DonutChart_vue_vue_type_template_id_32d2fc0e___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _DonutChart_vue_vue_type_template_id_32d2fc0e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/trade_analysis/DonutChart.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/trade_analysis/DonutChart.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/trade_analysis/DonutChart.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DonutChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./DonutChart.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/DonutChart.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DonutChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/trade_analysis/DonutChart.vue?vue&type=template&id=32d2fc0e&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/components/trade_analysis/DonutChart.vue?vue&type=template&id=32d2fc0e& ***!
+  \**********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DonutChart_vue_vue_type_template_id_32d2fc0e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./DonutChart.vue?vue&type=template&id=32d2fc0e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/DonutChart.vue?vue&type=template&id=32d2fc0e&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DonutChart_vue_vue_type_template_id_32d2fc0e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DonutChart_vue_vue_type_template_id_32d2fc0e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/trade_analysis/TradeAnalysis.vue":
+/*!******************************************************************!*\
+  !*** ./resources/js/components/trade_analysis/TradeAnalysis.vue ***!
+  \******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TradeAnalysis_vue_vue_type_template_id_11f61d53___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TradeAnalysis.vue?vue&type=template&id=11f61d53& */ "./resources/js/components/trade_analysis/TradeAnalysis.vue?vue&type=template&id=11f61d53&");
+/* harmony import */ var _TradeAnalysis_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TradeAnalysis.vue?vue&type=script&lang=js& */ "./resources/js/components/trade_analysis/TradeAnalysis.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TradeAnalysis_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TradeAnalysis_vue_vue_type_template_id_11f61d53___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TradeAnalysis_vue_vue_type_template_id_11f61d53___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/trade_analysis/TradeAnalysis.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/trade_analysis/TradeAnalysis.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/components/trade_analysis/TradeAnalysis.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TradeAnalysis_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./TradeAnalysis.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/TradeAnalysis.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TradeAnalysis_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/trade_analysis/TradeAnalysis.vue?vue&type=template&id=11f61d53&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/trade_analysis/TradeAnalysis.vue?vue&type=template&id=11f61d53& ***!
+  \*************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TradeAnalysis_vue_vue_type_template_id_11f61d53___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./TradeAnalysis.vue?vue&type=template&id=11f61d53& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/TradeAnalysis.vue?vue&type=template&id=11f61d53&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TradeAnalysis_vue_vue_type_template_id_11f61d53___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TradeAnalysis_vue_vue_type_template_id_11f61d53___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

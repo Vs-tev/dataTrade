@@ -11,7 +11,6 @@ import Form from './Form'
 window.Form = Form
 
 
-
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -33,6 +32,8 @@ Vue.component('app-traderecord-history', require('./components/trades/tradeHisto
 Vue.component('register-first_portfolio', require('./components/portfolio/RegisterFIrstPortfolio.vue').default);
 Vue.component('app-plans', require('./components/plans/Plans.vue').default);
 Vue.component('user-settings', require('./components/user/UserSettings.vue').default);
+Vue.component('app-trade-analysis', require('./components/trade_analysis/TradeAnalysis.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -52,36 +53,5 @@ if (document.querySelector('#register')) {
     });
 }
 
-/* if (document.querySelector('#VuePortfolio')) { // this line check if #VuePortfolio exist
-    const app = new Vue({
-        el: '#VuePortfolio',
 
-    });
-}
-
-if (document.querySelector('#VueRules')) {
-    const rules = new Vue({
-        el: '#VueRules',
-
-    })
-}
-
-if (document.querySelector('#VueStrategies')) {
-    const strategies = new Vue({
-        el: '#VueStrategies'
-
-    })
-}
-
-    const traderecord = new Vue({
-        el: '#VueTradeRecord',
-        data: {
-            title: 'vueee',
-        },
-        methods: {
-            changetitle: function () {
-                console.log(rules)
-              },
-        },
-    }) */
 

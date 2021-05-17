@@ -13,7 +13,7 @@ class InvoicesService{
         $customer = new Buyer([
             'name'          => $payment->user->name,
             'custom_fields' => [
-                'email' => $payment->user->email,
+            'email' => $payment->user->email,
             ],
         ]);
         

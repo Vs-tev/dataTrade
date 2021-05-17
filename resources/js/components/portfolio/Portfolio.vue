@@ -38,7 +38,6 @@
                         <apexchart type="area" height="270" 
                         :options="{chart:{
                             width:'100%', 
-      
                             type: 'area', 
                             sparkline: {
                               enabled: true,

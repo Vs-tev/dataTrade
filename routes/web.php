@@ -149,10 +149,12 @@ Auth::routes();
 
 /* Trade analysis */
 
-Route::get('/trade_analysis', function () {
-    return view('trade_analysis.trade_analysis');
-})->middleware('auth')->name('trade_analysis');
+Route::group(['prefix' => 'tradeAnalysis'], function(){
+    
+    Route::get('/', 'Analysis\TradeAnalysisController@index')->name('trade_analysis');
+    Route::get('/portfolioData/{portfolio_id}', 'Analysis\TradeAnalysisController@portfolioData');
 
+});
 Route::get('/trading_setups_analysis', function () {
     return view('setups_analysis.trading_setups_analysis');
 })->middleware('auth')->name('trading_setups_analysis');

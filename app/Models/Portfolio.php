@@ -63,33 +63,4 @@ class Portfolio extends Model
         ->get();
     }
     
-    public function fetch_portfolio($query){
-        $portfolio = $this->select('portfolios.id','b.action_date','name', 'start_equity', 'currency', 'is_active', 'portfolios.started_at', 
-        DB::raw('SUM(amount) as current_balance,
-        COUNT(CASE WHEN action_type = "trade" THEN 1 else NULL END) as total_trades, 
-        COUNT(CASE WHEN amount >= 0 AND action_type = "trade" THEN 1 else NULL END)as winning_trades, 
-        COUNT(CASE WHEN amount < 0 AND action_type = "trade" THEN 1 else NULL END)as losing_trades,
-        SUM(CASE WHEN action_type = "trade" THEN amount ELSE 0 END)as trade_profit'))
-        ->join('balances AS b', 'portfolios.id', '=', 'b.portfolio_id')
-        ->where([['user_id', auth()->id()],['is_except', 0]])
-        ->whereIn('is_active', $query)
-        ->groupBy('portfolios.id')
-        ->get();
-
-
-        $new = $portfolio->map(function($object){
-        $object->running_total = Portfolio::runningtotal($object->id);
-        //$object->current_balance = number_format($object->current_balance,2, '.','');
-        return $object;
-        });
-        
-      /*   $data = [
-            mojem da si postroim object s razlichni array ili objects vytre kato api
-            'portfolio' => $new,
-        ]; */
-        return response()->json(
-             $new
-        );
-    }
-
 }

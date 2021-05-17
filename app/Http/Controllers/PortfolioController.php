@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;
+use App\Services\PortfolioPerformanceService;
 
 
 class PortfolioController extends Controller
@@ -32,9 +33,11 @@ class PortfolioController extends Controller
 
     public function index()
     {
-        $portfolio = new Portfolio;
-        $query = [0, 1];
-        return $portfolio->fetch_portfolio($query);
+        $is_active = [0, 1];
+
+        $portfolio = (new PortfolioPerformanceService())->PortfolioData($is_active, []);
+       
+        return $portfolio;
     }
 
 
@@ -83,13 +86,13 @@ class PortfolioController extends Controller
      * @param  \App\Models\portfolio  $portfolio
      * @return \Illuminate\Http\Response
      */
-    public function show(portfolio $portfolio)
+    public function show()
     {
-        $portfolio = new Portfolio;
+        $is_active = [1];
 
-        $query = [1];
+        $portfolio = (new PortfolioPerformanceService())->PortfolioData($is_active, []);
 
-        return $portfolio->fetch_portfolio($query);
+        return $portfolio;
     }
 
 

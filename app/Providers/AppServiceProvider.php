@@ -27,36 +27,22 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {   
 
-        /**Trade History*/
-        View::composer(['dashboardpages.trading.trade_history'], function($view){
+        /**Portfolios send to "Trade History", "Trade Analysis"*/
+        View::composer(['dashboardpages.trading.trade_history', 'trade_analysis.trade_analysis'], function($view){
             $view->with('portfolios', \App\Models\Portfolio::where('user_id', auth()->id())
             ->orderBy('is_active', 'DESC')
             ->get());
         });
 
-        View::composer(['dashboardpages.trading.trade_history'], function($view){
+        View::composer(['dashboardpages.trading.trade_history', 'dashboardpages.trading.trade_record'], function($view){
             $view->with('strategy', \App\Models\Strategy::where('user_id', auth()->id())->get());
         });
 
-        View::composer(['dashboardpages.trading.trade_history'], function($view){
+        View::composer(['dashboardpages.trading.trade_history', 'dashboardpages.trading.trade_record'], function($view){
             $view->with('exitReasons', \App\Models\ExitReason::where('user_id', auth()->id())->get());
         });
 
-        View::composer(['dashboardpages.trading.trade_history'], function($view){
-            $view->with('entryRules', \App\Models\EntryRules::where('user_id', auth()->id())->get());
-        });
-
-
-        /**Trade Record*/
-        View::composer(['dashboardpages.trading.trade_record'], function($view){
-            $view->with('strategy', \App\Models\Strategy::where('user_id', auth()->id())->get());
-        });
-
-        View::composer(['dashboardpages.trading.trade_record'], function($view){
-            $view->with('exitReasons', \App\Models\ExitReason::where('user_id', auth()->id())->get());
-        });
-
-        View::composer(['dashboardpages.trading.trade_record'], function($view){
+        View::composer(['dashboardpages.trading.trade_history', 'dashboardpages.trading.trade_record'], function($view){
             $view->with('entryRules', \App\Models\EntryRules::where('user_id', auth()->id())->get());
         });
 

@@ -176,6 +176,7 @@ export default {
         })
         .catch((error) => {});
     },
+
     updateSeriesLine() {
       this.$refs.realtimeChart.updateSeries([
         {

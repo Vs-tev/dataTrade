@@ -8769,6 +8769,7 @@ button.bg-dark:focus {
 
 .w-15{
     width: 15% !important;
+  
 }
 
 .w-25 {
@@ -8809,6 +8810,9 @@ button.bg-dark:focus {
 
 .h-auto {
     height: auto !important;
+}
+.h-12{
+    height: 12px !important;
 }
 
 .mw-100 {
