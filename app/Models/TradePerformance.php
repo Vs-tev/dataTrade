@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Trade_performance extends Model
+class TradePerformance extends Model
 {
     use HasFactory;
 
@@ -21,5 +21,4 @@ class Trade_performance extends Model
         return $this->belongsTo(Trade::class);
     }
 
-    
 }

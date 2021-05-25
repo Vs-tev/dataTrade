@@ -33,6 +33,7 @@ export default {
         toolbar: {
           autoSelected: "zoom",
         },
+
         dataLabels: {
           enabled: false,
         },
@@ -42,7 +43,6 @@ export default {
         title: {
           text: "Portfolio Grow",
           align: "left",
-
           offsetY: 0,
           style: {
             fontSize: "20px",
@@ -53,8 +53,8 @@ export default {
         subtitle: {
           text: "",
           align: "left",
+          margin: 15,
           offsetX: 0,
-
           style: {
             fontSize: "16px",
             fontWeight: "400",
@@ -119,16 +119,14 @@ export default {
 
   methods: {
     portfolio_data() {
-      console.log(this.$props.portfolio.running_total);
-
       this.series[0].data = this.$props.portfolio.running_total.map((item) =>
         parseFloat(item.running_total)
       );
 
-      this.updateSeriesLine();
+      this.updateSeriesLine(this.$props.portfolio.currency);
     },
 
-    updateSeriesLine() {
+    updateSeriesLine(currency) {
       this.options = {
         ...this.options,
         ...{
@@ -141,6 +139,17 @@ export default {
           subtitle: {
             text: this.$props.portfolio.name,
             align: "left",
+          },
+
+          tooltip: {
+            x: {
+              format: "dd / MMM / yy",
+            },
+            y: {
+              formatter: function (val) {
+                return val.toFixed(2) + " " + currency;
+              },
+            },
           },
         },
       };

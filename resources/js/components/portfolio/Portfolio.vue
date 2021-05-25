@@ -55,7 +55,7 @@
                           },
                           colors: index === 0 ? ['#3490dc']: ['#1bc5bd'],
                           title: {
-                            text: item.current_balance +' '+ item.currency + ' '+ '('+ ((item.current_balance - item.start_equity)/ item.start_equity * 100).toFixed(2) + '%' + ')' ,
+                            text: item.current_balance +' '+ item.currency + ' '+ '('+ item.return_capital_investment + '%' + ')' ,
                             align: 'center',
                             margin: 0,
                             offsetX: 0,
@@ -85,14 +85,12 @@
                             },
                              tooltip: {
                               x: {
-                                format: 'dd/MMM/yy'
+                                format: 'dd / MMM / yy'
                               },
                               y: {
-                                labels: {
                                   formatter: function(val) {
-                                    return val.toFixed(2);
+                                    return val.toFixed(2) + ' ' + item.currency;
                                   }
-                                }
                               }
                               
                             },

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class Trade extends Model
 {
@@ -41,8 +42,8 @@ class Trade extends Model
         return $this->hasOne(Balance::class);
     }
 
-    public function trade_performance(){
-        return $this->hasOne(Trade_performance::class);
+    public function tradePerformance(){
+        return $this->hasOne(TradePerformance::class);
     }
 
     public function portfolio(){
@@ -88,11 +89,40 @@ class Trade extends Model
     }
 
     public function add_to_trade_performance($request){
-        $this->trade_performance()->create([
+        
+       $retun_avg = TradePerformance::where('portfolio_id', \App\Models\Portfolio::isactive()->first())
+       ->avg('trade_return');
+
+        $this->tradePerformance()->create([
             'trade_return' => $request->trade_return,
             'trade_id' => $this->id,
             'ratio' => $request->risk_reward,
+            'pow_2' => pow(($retun_avg - $request->trade_return), 2),
             'portfolio_id' => \App\Models\Portfolio::isactive()->first(),
         ]);
+    }
+
+    public function scopeDurationAvg($query, $portfolio_id, $side, $compare, $period){
+        
+        $query = $this->select(
+            DB::raw('AVG(TIMESTAMPDIFF(MINUTE, entry_date, exit_date)) as avg_duration'))
+        ->where('portfolio_id', $portfolio_id)
+        ->when($side !== 'all' ?? null, function($query) use($side){
+            $query->where('type_side', $side);
+        })
+        ->when(!is_null($compare) ?? null , function($query) use($compare){
+            $query->where('pl_currency', $compare, 0);
+        })
+        ->when($period ?? null , function($query) use($period){
+            $query->where('entry_date', '>=', $period);
+        })
+        ->get();
+
+        if($query[0]->avg_duration){
+            return $query[0]->avg_duration;
+        }else{
+            return 0;
+        }
+
     }
 }

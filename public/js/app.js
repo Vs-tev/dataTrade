@@ -3482,8 +3482,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 
@@ -4529,6 +4527,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         subtitle: {
           text: "",
           align: "left",
+          margin: 15,
           offsetX: 0,
           style: {
             fontSize: "16px",
@@ -4593,13 +4592,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     portfolio_data: function portfolio_data() {
-      console.log(this.$props.portfolio.running_total);
       this.series[0].data = this.$props.portfolio.running_total.map(function (item) {
         return parseFloat(item.running_total);
       });
-      this.updateSeriesLine();
+      this.updateSeriesLine(this.$props.portfolio.currency);
     },
-    updateSeriesLine: function updateSeriesLine() {
+    updateSeriesLine: function updateSeriesLine(currency) {
       this.options = _objectSpread(_objectSpread({}, this.options), {
         xaxis: {
           type: "datetime",
@@ -4610,12 +4608,143 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         subtitle: {
           text: this.$props.portfolio.name,
           align: "left"
+        },
+        tooltip: {
+          x: {
+            format: "dd / MMM / yy"
+          },
+          y: {
+            formatter: function formatter(val) {
+              return val.toFixed(2) + " " + currency;
+            }
+          }
         }
       });
       this.$refs.realtimeChart.updateOptions(this.options, false, true);
       this.$refs.realtimeChart.updateSeries([{
         data: this.series[0].data.reverse()
       }]);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "BarChartSymbol",
+  props: ["height", "barChartdata", "title", "color"],
+  data: function data() {
+    return {
+      series: [{
+        name: "Trades",
+        data: []
+      }],
+      chartOptions: {
+        chart: {
+          height: 300,
+          stacked: true,
+          type: "bar"
+        },
+        colors: this.$props.color ? this.$props.color : "",
+        plotOptions: {
+          bar: {
+            borderRadius: 5,
+            columnWidth: "35%",
+            dataLabels: {
+              position: "top" // top, center, bottom
+
+            }
+          }
+        },
+        dataLabels: {
+          enabled: true,
+          formatter: function formatter(val) {
+            return val + " Trades";
+          },
+          offsetY: -20,
+          style: {
+            fontSize: "12px",
+            colors: ["#304758"]
+          }
+        },
+        xaxis: {
+          categories: this.$props.barChartdata ? this.$props.barChartdata.map(function (i) {
+            return i.category;
+          }) : "",
+          position: "top",
+          axisBorder: {
+            show: false
+          },
+          axisTicks: {
+            show: false
+          },
+          crosshairs: {
+            fill: {
+              type: "gradient",
+              gradient: {
+                colorFrom: "#D8E3F0",
+                colorTo: "#BED1E6",
+                stops: [0, 100],
+                opacityFrom: 0.4,
+                opacityTo: 0.5
+              }
+            }
+          },
+          tooltip: {
+            enabled: true
+          }
+        },
+        yaxis: {
+          axisBorder: {
+            show: false
+          },
+          axisTicks: {
+            show: false
+          },
+          labels: {
+            show: false,
+            formatter: function formatter(val) {
+              return val + " Trades";
+            }
+          }
+        },
+        title: {
+          text: this.$props.title ? this.$props.title : "",
+          floating: false,
+          align: "left",
+          margin: 15,
+          offsetY: 0,
+          style: {
+            fontSize: "18px",
+            fontWeight: "400",
+            colors: "#343a40"
+          }
+        }
+      }
+    };
+  },
+  mounted: function mounted() {
+    this.getData();
+  },
+  methods: {
+    getData: function getData() {
+      if (this.$props.barChartdata) {
+        this.series[0].data = this.$props.barChartdata.map(function (item) {
+          return parseFloat(item.trades);
+        });
+      }
     }
   }
 });
@@ -4730,489 +4859,23 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/TradeAnalysis.vue?vue&type=script&lang=js&":
-/*!***************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trade_analysis/TradeAnalysis.vue?vue&type=script&lang=js& ***!
-  \***************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/SparklineDonutChart.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trade_analysis/SparklineDonutChart.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _DonutChart_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DonutChart.vue */ "./resources/js/components/trade_analysis/DonutChart.vue");
-/* harmony import */ var _AreaChart_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AreaChart.vue */ "./resources/js/components/trade_analysis/AreaChart.vue");
-/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
-/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_2__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "TradeAnalysis",
-  components: {
-    AreaChart: _AreaChart_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    DonutChart: _DonutChart_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_2___default.a
-  },
-  props: ["portfolios"],
+  name: "SparklineDonutChart",
+  props: ["winrate"],
   data: function data() {
     return {
-      selectedPortfolio: this.$props.portfolios[0],
-      portfolio: "",
-      spinner: true,
       sparklinechart: {
         chart: {
           type: "radialBar",
@@ -5227,7 +4890,7 @@ __webpack_require__.r(__webpack_exports__);
           radialBar: {
             hollow: {
               margin: 0,
-              size: "70%",
+              size: "80%",
               background: "#fff",
               position: "front",
               dropShadow: {
@@ -5240,7 +4903,7 @@ __webpack_require__.r(__webpack_exports__);
             },
             track: {
               background: "#fff",
-              strokeWidth: "75%",
+              strokeWidth: "79%",
               margin: 0,
               // margin is in pixels
               dropShadow: {
@@ -5254,10 +4917,13 @@ __webpack_require__.r(__webpack_exports__);
             dataLabels: {
               show: true,
               name: {
-                show: false
+                show: true,
+                offsetY: -4,
+                color: "#b7c0d5",
+                fontSize: "12px"
               },
               value: {
-                offsetY: 4,
+                offsetY: 2,
                 fontSize: "14px",
                 fontWeight: "600",
                 colors: "#343a40",
@@ -5273,12 +4939,12 @@ __webpack_require__.r(__webpack_exports__);
                 w = _ref.w;
 
             if (value <= 30) {
-              return "#f80303e3";
+              return " #f8030381";
             } else {
               if (value <= 49) {
-                return "#6575cdfa";
+                return "#6575cdad";
               } else {
-                return "#0160be";
+                return "#3699ff";
               }
             }
           }],
@@ -5287,8 +4953,167 @@ __webpack_require__.r(__webpack_exports__);
         },
         stroke: {
           lineCap: "round"
-        }
+        },
+        labels: ["Win rate"]
       }
+    };
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/TradeAnalysis.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trade_analysis/TradeAnalysis.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _DonutChart_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DonutChart.vue */ "./resources/js/components/trade_analysis/DonutChart.vue");
+/* harmony import */ var _AreaChart_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AreaChart.vue */ "./resources/js/components/trade_analysis/AreaChart.vue");
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _TradesMonitoring_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./TradesMonitoring.vue */ "./resources/js/components/trade_analysis/TradesMonitoring.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "TradeAnalysis",
+  components: {
+    AreaChart: _AreaChart_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    DonutChart: _DonutChart_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_2___default.a,
+    TradesMonitoring: _TradesMonitoring_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+  },
+  props: ["portfolios"],
+  data: function data() {
+    return {
+      selectedPortfolio: this.$props.portfolios[0],
+      portfolio: "",
+      spinner: true
     };
   },
   mounted: function mounted() {
@@ -5310,6 +5135,489 @@ __webpack_require__.r(__webpack_exports__);
         // console.log(res.data);
         _this.portfolio = res.data[0];
         _this.spinner = false;
+      })["catch"](function (error) {});
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/TradesMonitoring.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trade_analysis/TradesMonitoring.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _BarChartSymbols_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BarChartSymbols.vue */ "./resources/js/components/trade_analysis/BarChartSymbols.vue");
+/* harmony import */ var _SparklineDonutChart_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SparklineDonutChart.vue */ "./resources/js/components/trade_analysis/SparklineDonutChart.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    SparklineDonutChart: _SparklineDonutChart_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    BarChartSymbols: _BarChartSymbols_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  name: "TradeMonitoring",
+  props: ["selectedPortfolio"],
+  data: function data() {
+    return {
+      side: "all",
+      period: "all_time",
+      period_text: "All Time",
+      response: [],
+      miscelaneous_response: [],
+      response_profit_data: [],
+      barChartdata: null,
+      timeFrameFrequence: null
+    };
+  },
+  computed: {
+    winrate: function winrate() {
+      return [this.response.winrate];
+    }
+  },
+  watch: {
+    selectedPortfolio: function selectedPortfolio(newPortfolio, oldPortfolio) {
+      if (newPortfolio) {
+        this.setPeriod(this.period, this.period_text);
+        this.mostTradedSymbols();
+      }
+    }
+  },
+  mounted: function mounted() {
+    this.setPeriod(this.period, this.period_text);
+    this.mostTradedSymbols();
+    this.timeFrameTrades();
+  },
+  methods: {
+    setPeriod: function setPeriod(period, text) {
+      if (period || text) {
+        this.period = period;
+        this.period_text = text;
+      }
+
+      this.getTradeMonitoringData();
+      this.getProfitData();
+      this.miscelaneous();
+    },
+    setSide: function setSide(type) {
+      this.side = type;
+      this.setPeriod(this.period, this.period_text);
+    },
+    getTradeMonitoringData: function getTradeMonitoringData() {
+      var _this = this;
+
+      axios.get("/tradeAnalysis/TradesMonitoring/" + this.$props.selectedPortfolio + "/" + this.period + "/" + this.side).then(function (res) {
+        _this.response = res.data[0];
+      })["catch"](function (error) {});
+    },
+    getProfitData: function getProfitData() {
+      var _this2 = this;
+
+      axios.get("/tradeAnalysis/Profit/" + this.$props.selectedPortfolio + "/" + this.period + "/" + this.side).then(function (res) {
+        _this2.response_profit_data = res.data[0];
+      })["catch"](function (error) {});
+    },
+    miscelaneous: function miscelaneous() {
+      var _this3 = this;
+
+      axios.get("/tradeAnalysis/Miscelaneous/" + this.$props.selectedPortfolio + "/" + this.side).then(function (res) {
+        _this3.miscelaneous_response = res.data[0];
+      })["catch"](function (error) {});
+    },
+    mostTradedSymbols: function mostTradedSymbols() {
+      var _this4 = this;
+
+      axios.get("/tradeAnalysis/MostTradedSymbols/" + this.$props.selectedPortfolio).then(function (res) {
+        _this4.barChartdata = res.data; //console.log(this.barChartdata);
+      })["catch"](function (error) {});
+    },
+    timeFrameTrades: function timeFrameTrades() {
+      var _this5 = this;
+
+      axios.get("/tradeAnalysis/timeFrameFrequence/" + this.$props.selectedPortfolio).then(function (res) {
+        _this5.timeFrameFrequence = res.data; //console.log(this.barChartdata);
       })["catch"](function (error) {});
     }
   }
@@ -5751,9 +6059,11 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     trade_return: function trade_return() {
-      var trade_return = ((this.form.pl / this.portfolio.current_balance || 0) * 100).toFixed(2);
-      this.form.current_trade_return = trade_return;
-      return trade_return + "%";
+      if (this.form.pl) {
+        var trade_return = ((this.form.pl / this.portfolio.current_balance.replace(/\s/g, "") || 0) * 100).toFixed(2);
+        this.form.current_trade_return = trade_return;
+        return trade_return + "%";
+      }
     }
   },
   methods: {
@@ -6067,6 +6377,16 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
           },
           subtitle: {
             text: data.name
+          },
+          tooltip: {
+            x: {
+              format: "dd / MMM / yy"
+            },
+            y: {
+              formatter: function formatter(val) {
+                return val.toFixed(2) + " " + data.currency;
+              }
+            }
           }
         });
 
@@ -11873,6 +12193,25 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 // module
 exports.push([module.i, "\n.toggle-calendar button {\r\n  background: none;\r\n  border: 0;\r\n  text-align: left;\r\n  white-space: nowrap;\r\n  overflow: hidden;\n}\n.toggle-calendar {\r\n  padding-left: 5px;\r\n  border: none;\r\n  background-color: var(--light);\r\n  border-radius: 10px;\r\n  font-size: var(--font-lg);\r\n  height: 60px;\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n  line-height: 1.2;\n}\n.toggle-calendar span {\r\n  padding: 6px;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  cursor: pointer;\r\n  margin-right: 5px;\n}\r\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=style&index=0&id=fde9abfa&scoped=true&lang=css&":
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=style&index=0&id=fde9abfa&scoped=true&lang=css& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* colors: [\"#41B883\", \"#E46651\", \"#E46651\"], */\n.das[data-v-fde9abfa] {\r\n  color: #919191;\n}\r\n", ""]);
 
 // exports
 
@@ -43256,6 +43595,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=style&index=0&id=fde9abfa&scoped=true&lang=css&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=style&index=0&id=fde9abfa&scoped=true&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./BarChartSymbols.vue?vue&type=style&index=0&id=fde9abfa&scoped=true&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=style&index=0&id=fde9abfa&scoped=true&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trades/tradeHistory/SortingTrades.vue?vue&type=style&index=0&id=5a608499&scoped=true&lang=css&":
 /*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trades/tradeHistory/SortingTrades.vue?vue&type=style&index=0&id=5a608499&scoped=true&lang=css& ***!
@@ -46760,11 +47129,7 @@ var render = function() {
                                 item.currency +
                                 " " +
                                 "(" +
-                                (
-                                  ((item.current_balance - item.start_equity) /
-                                    item.start_equity) *
-                                  100
-                                ).toFixed(2) +
+                                item.return_capital_investment +
                                 "%" +
                                 ")",
                               align: "center",
@@ -46798,13 +47163,11 @@ var render = function() {
                             },
                             tooltip: {
                               x: {
-                                format: "dd/MMM/yy"
+                                format: "dd / MMM / yy"
                               },
                               y: {
-                                labels: {
-                                  formatter: function(val) {
-                                    return val.toFixed(2)
-                                  }
+                                formatter: function(val) {
+                                  return val.toFixed(2) + " " + item.currency
                                 }
                               }
                             }
@@ -48336,6 +48699,37 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=template&id=fde9abfa&scoped=true&":
+/*!*********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=template&id=fde9abfa&scoped=true& ***!
+  \*********************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("apexchart", {
+    attrs: {
+      type: "bar",
+      height: _vm.height,
+      options: _vm.chartOptions,
+      series: _vm.series
+    }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/DonutChart.vue?vue&type=template&id=32d2fc0e&":
 /*!****************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trade_analysis/DonutChart.vue?vue&type=template&id=32d2fc0e& ***!
@@ -48376,6 +48770,38 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/SparklineDonutChart.vue?vue&type=template&id=50888180&":
+/*!*************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trade_analysis/SparklineDonutChart.vue?vue&type=template&id=50888180& ***!
+  \*************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("apexchart", {
+    staticClass: "text-right",
+    attrs: {
+      type: "radialBar",
+      height: "120",
+      options: _vm.sparklinechart,
+      series: [_vm.winrate]
+    }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/TradeAnalysis.vue?vue&type=template&id=11f61d53&":
 /*!*******************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trade_analysis/TradeAnalysis.vue?vue&type=template&id=11f61d53& ***!
@@ -48391,326 +48817,317 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "content-container pt-0 " }, [
-    _c("div", { staticClass: "mb-3 col-12 dashboard_container_content p-0" }, [
+  return _c(
+    "div",
+    { staticClass: "content-container pt-0 " },
+    [
       _c(
         "div",
-        {
-          staticClass:
-            "d-flex justify-content-between align-items-center border-bottom px-4 py-3"
-        },
+        { staticClass: "mb-3 col-12 dashboard_container_content p-0" },
         [
           _c(
             "div",
             {
-              staticClass: "font-500 h4 text-capitalize font-weight-normal m-0 "
-            },
-            [_vm._v("\n                Portfolio Performance \n            ")]
-          ),
-          _vm._v(" "),
-          _c("multiselect", {
-            staticClass: "w-25",
-            attrs: {
-              "preselect-first": true,
-              options: _vm.portfolios,
-              searchable: false,
-              "close-on-select": true,
-              "allow-empty": false,
-              "show-labels": false,
-              label: "name",
-              "track-by": "id"
-            },
-            on: {
-              input: function($event) {
-                return _vm.getActivePortfolio()
-              }
-            },
-            model: {
-              value: _vm.selectedPortfolio,
-              callback: function($$v) {
-                _vm.selectedPortfolio = $$v
-              },
-              expression: "selectedPortfolio"
-            }
-          })
-        ],
-        1
-      ),
-      _vm._v(" "),
-      !_vm.spinner
-        ? _c(
-            "div",
-            {
               staticClass:
-                "no-gutters row justify-content-between align-items-start"
+                "d-flex justify-content-between align-items-center border-bottom px-4 py-3"
             },
             [
-              _c("div", { staticClass: "col-sm-6 col-xl-2 px-4 py-3" }, [
-                _c("div", { staticClass: "text-left" }, [
-                  _c("div", {}, [
-                    _c(
-                      "div",
-                      { staticClass: "text-capitalize text-muted font-lg" },
-                      [_vm._v("Start Capital")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "h2 font-weight-bold text-dark text-uppercase"
-                      },
-                      [
-                        _vm._v(
-                          _vm._s(_vm.portfolio.start_equity) +
-                            " " +
-                            _vm._s(_vm.portfolio.currency)
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "text-muted font-500" }, [
-                      _vm._v(
-                        "\n                            Opening Date\n                            "
-                      ),
-                      _c("div", { staticClass: "d-inline text-primary pr-1" }, [
-                        _c("span", { staticClass: "pl-1" }, [
-                          _vm._v(_vm._s(_vm.portfolio.action_date))
-                        ])
-                      ])
-                    ])
-                  ])
-                ])
-              ]),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "font-500 h4 text-capitalize font-weight-normal m-0 "
+                },
+                [
+                  _vm._v(
+                    "\n                Portfolio Performance \n            "
+                  )
+                ]
+              ),
               _vm._v(" "),
-              _c("div", { staticClass: "col-sm-6 col-xl-2 px-4 py-3" }, [
-                _c("div", { staticClass: "text-left" }, [
-                  _c("div", {}, [
-                    _c(
-                      "div",
-                      { staticClass: "text-capitalize text-muted font-lg" },
-                      [_vm._v("Balance")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "h2 font-weight-bold text-dark" },
-                      [
-                        _vm._v(
-                          _vm._s(_vm.portfolio.current_balance) +
-                            " " +
-                            _vm._s(_vm.portfolio.currency)
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "text-muted font-500" }, [
-                      _c("div", { staticClass: "d-inline text-primary pr-1" }, [
+              _c("multiselect", {
+                staticClass: "w-25",
+                attrs: {
+                  "preselect-first": true,
+                  options: _vm.portfolios,
+                  searchable: false,
+                  "close-on-select": true,
+                  "allow-empty": false,
+                  "show-labels": false,
+                  label: "name",
+                  "track-by": "id"
+                },
+                on: {
+                  input: function($event) {
+                    return _vm.getActivePortfolio()
+                  }
+                },
+                model: {
+                  value: _vm.selectedPortfolio,
+                  callback: function($$v) {
+                    _vm.selectedPortfolio = $$v
+                  },
+                  expression: "selectedPortfolio"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          !_vm.spinner
+            ? _c(
+                "div",
+                {
+                  staticClass:
+                    "no-gutters row justify-content-between align-items-start"
+                },
+                [
+                  _c("div", { staticClass: "col-sm-6 col-xl-2 px-4 py-3" }, [
+                    _c("div", { staticClass: "text-left" }, [
+                      _c("div", {}, [
                         _c(
-                          "span",
+                          "div",
+                          { staticClass: "text-capitalize text-muted font-lg" },
+                          [_vm._v("Start Capital")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
                           {
-                            staticClass: "pl-1",
-                            class: {
-                              red: _vm.portfolio.return_capital_investment < 0
-                            }
+                            staticClass:
+                              "h2 font-weight-bold text-dark text-uppercase"
                           },
                           [
                             _vm._v(
-                              _vm._s(_vm.portfolio.return_capital_investment) +
-                                "%"
+                              _vm._s(_vm.portfolio.start_equity) +
+                                " " +
+                                _vm._s(_vm.portfolio.currency)
                             )
                           ]
-                        )
-                      ]),
-                      _vm._v(
-                        "\n                            Rate of Return\n                        "
-                      )
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "text-muted font-500" }, [
+                          _vm._v(
+                            "\n                            Opening Date\n                            "
+                          ),
+                          _c(
+                            "div",
+                            { staticClass: "d-inline text-primary pr-1" },
+                            [
+                              _c("span", { staticClass: "pl-1" }, [
+                                _vm._v(_vm._s(_vm.portfolio.action_date))
+                              ])
+                            ]
+                          )
+                        ])
+                      ])
                     ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-sm-6 col-xl-2 px-4 py-3" }, [
-                _c("div", { staticClass: "text-left" }, [
-                  _c("div", {}, [
-                    _c(
-                      "div",
-                      { staticClass: "text-capitalize text-muted font-lg" },
-                      [_vm._v("Total Net Profit")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "h2 font-weight-bold ",
-                        class: _vm.portfolio.netProfit < 0 ? "red" : "text-dark"
-                      },
-                      [_vm._v(_vm._s(_vm.portfolio.netProfit) + " EUR")]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "text-muted font-500" }, [
-                      _c("div", { staticClass: "d-inline text-primary pr-1" }, [
-                        _c(
-                          "span",
-                          {
-                            staticClass: "pl-1",
-                            class: { red: _vm.portfolio.trade_profit < 0 }
-                          },
-                          [_vm._v(_vm._s(_vm.portfolio.trade_profit) + " Eur")]
-                        )
-                      ]),
-                      _vm._v(
-                        "\n                        Trade Profit\n                    "
-                      )
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-sm-6 col-xl-2 px-4 py-3" }, [
-                _c("div", { staticClass: "text-left" }, [
-                  _c("div", {}, [
-                    _c(
-                      "div",
-                      { staticClass: "text-capitalize text-muted font-lg" },
-                      [_vm._v("Gained Pips")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "h2 font-weight-bold",
-                        class:
-                          _vm.portfolio.gained_pisp < 0 ? "red" : "text-dark"
-                      },
-                      [_vm._v(_vm._s(_vm.portfolio.gained_pisp))]
-                    )
-                  ])
-                ])
-              ])
-            ]
-          )
-        : _c("div", [_vm._m(0)])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "row mx-0 p-0 mt-3" }, [
-      _c("div", { staticClass: "col-md-9 pl-0" }, [
-        _c(
-          "div",
-          { staticClass: "col-12 p-3 dashboard_container_content p-0 h-100" },
-          [
-            _vm.portfolio
-              ? _c("area-chart", { attrs: { portfolio: _vm.portfolio } })
-              : _vm._e()
-          ],
-          1
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-3 pr-0" }, [
-        _c("div", { staticClass: "dashboard_container_content p-0 h-100" }, [
-          _c(
-            "div",
-            { staticClass: "w-100 pt-5" },
-            [
-              _c("donut-chart", {
-                staticClass: "m-auto",
-                attrs: { data: _vm.winrate }
-              }),
-              _vm._v(" "),
-              _c("div", { staticClass: "p-4 mt-2" }, [
-                _c("div", { staticClass: "d-flex justify-content-between " }, [
-                  _c("div", { staticClass: "h3 text-dark" }, [
-                    _vm._v(
-                      "\n                              " +
-                        _vm._s(_vm.losingrate) +
-                        "%\n                            "
-                    )
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "text-muted font-lg" }, [
-                    _vm._v(
-                      "\n                                Losing Rate\n                            "
-                    )
+                  _c("div", { staticClass: "col-sm-6 col-xl-2 px-4 py-3" }, [
+                    _c("div", { staticClass: "text-left" }, [
+                      _c("div", {}, [
+                        _c(
+                          "div",
+                          { staticClass: "text-capitalize text-muted font-lg" },
+                          [_vm._v("Balance")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "h2 font-weight-bold text-dark" },
+                          [
+                            _vm._v(
+                              _vm._s(_vm.portfolio.current_balance) +
+                                " " +
+                                _vm._s(_vm.portfolio.currency)
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "text-muted font-500" }, [
+                          _c(
+                            "div",
+                            { staticClass: "d-inline text-primary pr-1" },
+                            [
+                              _c(
+                                "span",
+                                {
+                                  staticClass: "pl-1",
+                                  class: {
+                                    red:
+                                      _vm.portfolio.return_capital_investment <
+                                      0
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.portfolio.return_capital_investment
+                                    ) + "%"
+                                  )
+                                ]
+                              )
+                            ]
+                          ),
+                          _vm._v(
+                            "\n                            Rate of Return\n                        "
+                          )
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-6 col-xl-2 px-4 py-3" }, [
+                    _c("div", { staticClass: "text-left" }, [
+                      _c("div", {}, [
+                        _c(
+                          "div",
+                          { staticClass: "text-capitalize text-muted font-lg" },
+                          [_vm._v("Total Net Profit")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "h2 font-weight-bold ",
+                            class:
+                              _vm.portfolio.netProfit < 0 ? "red" : "text-dark"
+                          },
+                          [_vm._v(_vm._s(_vm.portfolio.netProfit) + " EUR")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "text-muted font-500" }, [
+                          _c(
+                            "div",
+                            { staticClass: "d-inline text-primary pr-1" },
+                            [
+                              _c(
+                                "span",
+                                {
+                                  staticClass: "pl-1",
+                                  class: { red: _vm.portfolio.trade_profit < 0 }
+                                },
+                                [
+                                  _vm._v(
+                                    _vm._s(_vm.portfolio.trade_profit) + " Eur"
+                                  )
+                                ]
+                              )
+                            ]
+                          ),
+                          _vm._v(
+                            "\n                        Trade Profit\n                    "
+                          )
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-6 col-xl-2 px-4 py-3" }, [
+                    _c("div", { staticClass: "text-left" }, [
+                      _c("div", {}, [
+                        _c(
+                          "div",
+                          { staticClass: "text-capitalize text-muted font-lg" },
+                          [_vm._v("Gained Pips")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "h2 font-weight-bold",
+                            class:
+                              _vm.portfolio.gained_pisp < 0
+                                ? "red"
+                                : "text-dark"
+                          },
+                          [_vm._v(_vm._s(_vm.portfolio.gained_pisp))]
+                        )
+                      ])
+                    ])
                   ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "progress h-12" }, [
-                  _c("div", {
-                    staticClass: "progress-bar bg-danger h-12",
-                    style: { width: _vm.losingrate + "%" },
-                    attrs: {
-                      role: "progressbar",
-                      "aria-valuenow": _vm.losingrate,
-                      "aria-valuemin": "0",
-                      "aria-valuemax": "100"
-                    }
-                  })
-                ])
-              ])
+                ]
+              )
+            : _c("div", [_vm._m(0)])
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "row mx-0 p-0 mt-3" }, [
+        _c("div", { staticClass: "col-md-9 pl-0" }, [
+          _c(
+            "div",
+            { staticClass: "col-12 p-3 dashboard_container_content h-100" },
+            [
+              _vm.portfolio
+                ? _c("area-chart", { attrs: { portfolio: _vm.portfolio } })
+                : _vm._e()
             ],
             1
           )
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "mx-0 p-0 mt-5" }, [
-      _vm._m(1),
-      _vm._v(" "),
-      _c("div", { staticClass: "row mt-3 mb-5" }, [
-        _c("div", { staticClass: "col-md-6" }, [
-          _c("div", { staticClass: "col-12 dashboard_container_content p-0" }, [
-            _vm._m(2),
-            _vm._v(" "),
-            _c("ul", { staticClass: "list-group list-group-flush px-1" }, [
-              _vm._m(3),
-              _vm._v(" "),
-              _vm._m(4),
-              _vm._v(" "),
-              _vm._m(5),
-              _vm._v(" "),
-              _c("li", { staticClass: "list-group-item  py-1" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "d-flex justify-content-between align-items-center p-0"
-                  },
-                  [
-                    _vm._m(6),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "w-15" },
-                      [
-                        _c("apexchart", {
-                          staticClass: "text-right",
-                          attrs: {
-                            type: "radialBar",
-                            height: "75",
-                            options: _vm.sparklinechart,
-                            series: [25]
-                          }
-                        })
-                      ],
-                      1
-                    )
-                  ]
-                )
-              ])
-            ])
-          ])
         ]),
         _vm._v(" "),
-        _vm._m(7),
-        _vm._v(" "),
-        _vm._m(8),
-        _vm._v(" "),
-        _vm._m(9)
-      ])
-    ])
-  ])
+        _c("div", { staticClass: "col-md-3 pr-0" }, [
+          _c("div", { staticClass: "dashboard_container_content p-0 h-100" }, [
+            _c(
+              "div",
+              { staticClass: "w-100 pt-5" },
+              [
+                _c("donut-chart", {
+                  staticClass: "m-auto",
+                  attrs: { data: _vm.winrate }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "p-4 mt-2" }, [
+                  _c(
+                    "div",
+                    { staticClass: "d-flex justify-content-between " },
+                    [
+                      _c("div", { staticClass: "h3 text-dark" }, [
+                        _vm._v(
+                          "\n                              " +
+                            _vm._s(_vm.losingrate) +
+                            "%\n                            "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "text-muted font-lg" }, [
+                        _vm._v(
+                          "\n                                Losing Rate\n                            "
+                        )
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "progress h-12" }, [
+                    _c("div", {
+                      staticClass: "progress-bar bg-danger h-12",
+                      style: { width: _vm.losingrate + "%" },
+                      attrs: {
+                        role: "progressbar",
+                        "aria-valuenow": _vm.losingrate,
+                        "aria-valuemin": "0",
+                        "aria-valuemax": "100"
+                      }
+                    })
+                  ])
+                ])
+              ],
+              1
+            )
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("trades-monitoring", {
+        attrs: {
+          winrate: _vm.winrate,
+          selectedPortfolio: _vm.selectedPortfolio.id
+        }
+      })
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
@@ -48722,14 +49139,36 @@ var staticRenderFns = [
         _c("div", { staticClass: "spinner-border text-primary" })
       ])
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/TradesMonitoring.vue?vue&type=template&id=d89807d8&":
+/*!**********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trade_analysis/TradesMonitoring.vue?vue&type=template&id=d89807d8& ***!
+  \**********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "mx-0 p-0 mt-5" }, [
+    _c(
       "div",
-      { staticClass: "col-12 pt-3 dashboard_container_content p-0" },
+      {
+        staticClass:
+          "col-12 pt-3 d-flex justify-content-center dashboard_container_content p-0"
+      },
       [
         _c(
           "ul",
@@ -48738,16 +49177,21 @@ var staticRenderFns = [
             attrs: { role: "tablist" }
           },
           [
-            _c("li", { staticClass: "nav-item text-dark" }, [
+            _c("li", { staticClass: "nav-item" }, [
               _c(
-                "a",
+                "button",
                 {
-                  staticClass: "nav-link active font-lg mx-4 px-2 pb-3",
+                  staticClass:
+                    "nav-link bg-transparent text-dark font-500 active font-lg mx-4 px-2 pb-3",
                   attrs: {
-                    href: "#all",
                     role: "tab",
                     "data-toggle": "tab",
                     "aria-selected": "true"
+                  },
+                  on: {
+                    click: function($event) {
+                      return _vm.setSide("all")
+                    }
                   }
                 },
                 [_vm._v("ALL")]
@@ -48756,14 +49200,19 @@ var staticRenderFns = [
             _vm._v(" "),
             _c("li", { staticClass: "nav-item" }, [
               _c(
-                "a",
+                "button",
                 {
-                  staticClass: "nav-link font-lg mx-4 px-2 pb-3",
+                  staticClass:
+                    "nav-link bg-transparent text-dark font-500 font-lg mx-4 px-2 pb-3",
                   attrs: {
-                    href: "#buy",
                     role: "tab",
                     "data-toggle": "tab",
                     "aria-selected": "true"
+                  },
+                  on: {
+                    click: function($event) {
+                      return _vm.setSide("buy")
+                    }
                   }
                 },
                 [_vm._v("BUY")]
@@ -48772,415 +49221,853 @@ var staticRenderFns = [
             _vm._v(" "),
             _c("li", { staticClass: "nav-item" }, [
               _c(
-                "a",
+                "button",
                 {
-                  staticClass: "nav-link font-lg mx-4 px-2 pb-3",
+                  staticClass:
+                    "nav-link bg-transparent text-dark font-500 font-lg mx-4 px-2 pb-3",
                   attrs: {
-                    href: "#sell",
                     role: "tab",
                     "data-toggle": "tab",
                     "aria-selected": "true"
+                  },
+                  on: {
+                    click: function($event) {
+                      return _vm.setSide("sell")
+                    }
                   }
                 },
                 [_vm._v("SELL")]
               )
             ])
           ]
-        )
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "d-flex justify-content-between align-items-center  font-500 h4 text-capitalize font-weight-normal m-0 border-bottom px-4 py-3"
-      },
-      [
-        _c("h4", { staticClass: "p-0 m-0" }, [
-          _vm._v(
-            "\n                            Trades\n                        "
-          )
-        ]),
+        ),
         _vm._v(" "),
         _c("div", {}, [
           _c(
             "button",
             {
-              staticClass: "btn btn-link text-muted border-0 dropdown-toggle",
+              staticClass:
+                "btn btn-link font-lg pt-2 text-muted border-0 font-500 dropdown-toggle",
               attrs: { type: "button", "data-toggle": "dropdown" }
             },
-            [_vm._v("Period ")]
+            [
+              _vm._v("Period "),
+              _c("span", { staticClass: "lighter ml-1" }, [
+                _vm._v(_vm._s(_vm.period_text) + " ")
+              ])
+            ]
           ),
           _vm._v(" "),
           _c("div", { staticClass: "dropdown-menu dropdown-menu-right" }, [
-            _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
-              _vm._v("All ime")
-            ]),
+            _c(
+              "button",
+              {
+                staticClass: "dropdown-item",
+                on: {
+                  click: function($event) {
+                    return _vm.setPeriod("all_time", "All Time")
+                  }
+                }
+              },
+              [_vm._v("All Time")]
+            ),
             _vm._v(" "),
-            _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
-              _vm._v("1 Day")
-            ]),
+            _c(
+              "button",
+              {
+                staticClass: "dropdown-item",
+                on: {
+                  click: function($event) {
+                    return _vm.setPeriod("day", "Today")
+                  }
+                }
+              },
+              [_vm._v("Today")]
+            ),
             _vm._v(" "),
-            _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
-              _vm._v("7 Days")
-            ]),
+            _c(
+              "button",
+              {
+                staticClass: "dropdown-item",
+                on: {
+                  click: function($event) {
+                    return _vm.setPeriod("week", "7 Days")
+                  }
+                }
+              },
+              [_vm._v("7 Days")]
+            ),
             _vm._v(" "),
-            _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
-              _vm._v("30 Days")
-            ])
+            _c(
+              "button",
+              {
+                staticClass: "dropdown-item",
+                on: {
+                  click: function($event) {
+                    return _vm.setPeriod("month", "30 Days")
+                  }
+                }
+              },
+              [_vm._v("30 Days")]
+            )
           ])
         ])
       ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "list-group-item" }, [
-      _c(
-        "div",
-        {
-          staticClass: "d-flex justify-content-between align-items-center p-0"
-        },
-        [
-          _c("div", { staticClass: "text-capitalize primary-color font-lg" }, [
-            _c("div", { staticClass: "primary-color font-500 font-lg" }, [
-              _vm._v(
-                "\n                                        Total Recorded Trades\n                                    "
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "text-muted font-normal" }, [
-              _vm._v(
-                "\n                                        last 7 days: 4 trades\n                                    "
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "h3 font-500 text-dark" }, [
-            _vm._v("\n                                    148 "),
-            _c("span", { staticClass: "text-muted font-500 font-sm" }, [
-              _vm._v("Trades")
-            ])
-          ])
-        ]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "list-group-item" }, [
-      _c(
-        "div",
-        {
-          staticClass: "d-flex justify-content-between align-items-center p-0"
-        },
-        [
-          _c("div", { staticClass: "text-capitalize primary-color font-lg" }, [
-            _c("div", { staticClass: "primary-color font-500 font-lg" }, [
-              _vm._v(
-                "\n                                        Winners\n                                    "
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "text-muted font-normal" }, [
-              _vm._v(
-                "\n                                        last 7 days: 2 winners\n                                    "
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "h3 font-500 text-success" }, [
-            _vm._v("\n                                    148 "),
-            _c("span", { staticClass: "text-muted font-500 font-sm" }, [
-              _vm._v("Trades")
-            ])
-          ])
-        ]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "list-group-item border-bottom" }, [
-      _c(
-        "div",
-        {
-          staticClass: "d-flex justify-content-between align-items-center p-0"
-        },
-        [
-          _c("div", { staticClass: "text-capitalize primary-color font-lg" }, [
-            _c("div", { staticClass: "primary-color font-500 font-lg" }, [
-              _vm._v(
-                "\n                                        Losers\n                                    "
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "text-muted font-normal" }, [
-              _vm._v(
-                "\n                                        last 7 days: 2 Losers\n                                    "
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "h3 font-500 text-danger" }, [
-            _vm._v("\n                                    33 "),
-            _c("span", { staticClass: "text-muted font-500 font-sm" }, [
-              _vm._v("Trades")
-            ])
-          ])
-        ]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "text-capitalize text-dark font-lg" }, [
-      _c("div", { staticClass: "primary-color font-weight-bold font-xl" }, [
-        _vm._v(
-          "\n                                        Win Rate\n                                    "
-        )
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-6" }, [
-      _c("div", { staticClass: "col-12 dashboard_container_content p-0" }, [
-        _c(
-          "div",
-          {
-            staticClass:
-              "d-flex justify-content-between align-items-center  font-500 h4 text-capitalize font-weight-normal m-0 border-bottom px-4 py-3"
-          },
-          [
-            _c("h4", { staticClass: "p-0 m-0" }, [
-              _vm._v(
-                "\n                            Profit\n                        "
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", {}, [
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "row align-items-center" }, [
+      _c("div", { staticClass: "col-md-4" }, [
+        _c("div", { staticClass: "col-12 dashboard_container_content p-0" }, [
+          _c(
+            "div",
+            {
+              staticClass:
+                "font-500 h4 d-flex align-items-center text-capitalize font-weight-normal m-0 border-bottom p-4"
+            },
+            [
               _c(
-                "button",
+                "div",
                 {
                   staticClass:
-                    "btn btn-link text-muted border-0 dropdown-toggle",
-                  attrs: { type: "button", "data-toggle": "dropdown" }
+                    "font-500 h4 text-capitalize font-weight-normal m-0 text-nowrap"
                 },
-                [_vm._v("Period ")]
+                [
+                  _vm._v(
+                    "\r\n                        Trades Monitoring\r\n                    "
+                  )
+                ]
               ),
               _vm._v(" "),
-              _c("div", { staticClass: "dropdown-menu dropdown-menu-right" }, [
+              _c(
+                "span",
+                {
+                  staticClass:
+                    "text-white rounded-pill ml-2 font-500 py-1 px-2 font-normal bg-lighter"
+                },
+                [_vm._v(_vm._s(_vm.period_text))]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c("ul", { staticClass: "list-group list-group-flush px-1" }, [
+            _c("li", { staticClass: "list-group-item py-1" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "d-block d-lg-flex justify-content-start align-items-center py-2"
+                },
+                [
+                  _c(
+                    "div",
+                    { staticClass: "w-50" },
+                    [
+                      _c("sparkline-donut-chart", {
+                        attrs: { winrate: _vm.winrate }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "ml-3" }, [
+                    _c(
+                      "div",
+                      { staticClass: "font-lg font-weight-normal lighter" },
+                      [
+                        _vm._v(
+                          "\r\n                                    Profit\r\n                                "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _vm.response.current_balance
+                      ? _c(
+                          "div",
+                          {
+                            staticClass:
+                              "h2 font-weight-bold primary-color text-nowrap"
+                          },
+                          [
+                            _vm.response_profit_data.portfolio
+                              ? _c("span", [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.response_profit_data.portfolio
+                                        .currency
+                                    ) + ":"
+                                  )
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              {
+                                class:
+                                  _vm.response.current_balance < 0 ? "red" : ""
+                              },
+                              [_vm._v(_vm._s(_vm.response.current_balance))]
+                            )
+                          ]
+                        )
+                      : _c("div", { staticClass: "h2" }, [
+                          _vm._v(
+                            "\r\n                                    0.00 \r\n                                "
+                          )
+                        ])
+                  ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("li", { staticClass: "list-group-item" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "d-flex justify-content-between align-items-center p-0"
+                },
+                [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "font-lg font-500 text-dark" }, [
+                    _vm._v(
+                      "\r\n                                " +
+                        _vm._s(_vm.response.total_trades) +
+                        " "
+                    ),
+                    _c("span", { staticClass: "text-muted font-500 font-sm" }, [
+                      _vm._v("Trades")
+                    ])
+                  ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("li", { staticClass: "list-group-item" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "d-flex justify-content-between align-items-center p-0"
+                },
+                [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "font-lg font-500 text-success" }, [
+                    _vm._v(
+                      "\r\n                                " +
+                        _vm._s(_vm.response.winning_trades) +
+                        " "
+                    ),
+                    _c("span", { staticClass: "text-muted font-500 font-sm" }, [
+                      _vm._v("Trades")
+                    ])
+                  ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("li", { staticClass: "list-group-item" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "d-flex justify-content-between align-items-center p-0"
+                },
+                [
+                  _vm._m(2),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "font-lg font-500 text-danger" }, [
+                    _vm._v(
+                      "\r\n                                " +
+                        _vm._s(_vm.response.losing_trades) +
+                        " \r\n                                "
+                    ),
+                    _c("span", { staticClass: "text-muted font-500 font-sm" }, [
+                      _vm._v("Trades")
+                    ])
+                  ])
+                ]
+              )
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-4" }, [
+        _c("div", { staticClass: "col-12 dashboard_container_content p-0" }, [
+          _c(
+            "div",
+            {
+              staticClass:
+                "font-500 h4 d-flex align-items-center text-capitalize font-weight-normal m-0 border-bottom p-4"
+            },
+            [
+              _vm._v("\r\n                    Profit\r\n                    "),
+              _c(
+                "span",
+                {
+                  staticClass:
+                    "text-white rounded-pill ml-2 font-500 py-1 px-2 font-normal bg-lighter"
+                },
+                [_vm._v(_vm._s(_vm.period_text))]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c("ul", { staticClass: "list-group list-group-flush px-1" }, [
+            _c("li", { staticClass: "list-group-item" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "d-flex justify-content-between align-items-center p-0"
+                },
+                [
+                  _vm._m(3),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "font-lg font-500 text-dark" }, [
+                    _vm._v(
+                      "\r\n                                " +
+                        _vm._s(_vm.response_profit_data.gross_profit) +
+                        " "
+                    ),
+                    _vm.response_profit_data.portfolio
+                      ? _c("span", [
+                          _vm._v(
+                            _vm._s(_vm.response_profit_data.portfolio.currency)
+                          )
+                        ])
+                      : _vm._e()
+                  ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("li", { staticClass: "list-group-item" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "d-flex justify-content-between align-items-center p-0"
+                },
+                [
+                  _vm._m(4),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "font-lg font-500 text-danger" }, [
+                    _vm._v(
+                      "\r\n                                " +
+                        _vm._s(_vm.response_profit_data.gross_loss) +
+                        " "
+                    ),
+                    _vm.response_profit_data.portfolio
+                      ? _c("span", [
+                          _vm._v(
+                            _vm._s(_vm.response_profit_data.portfolio.currency)
+                          )
+                        ])
+                      : _vm._e()
+                  ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("li", { staticClass: "list-group-item" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "d-flex justify-content-between align-items-center p-0 text-capitalize primary-color font-500 font-lg"
+                },
+                [
+                  _vm._m(5),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "font-lg font-500 text-dark" }, [
+                    _vm._v(
+                      "\r\n                            " +
+                        _vm._s(_vm.response_profit_data.profit_factor) +
+                        "\r\n                            "
+                    )
+                  ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("li", { staticClass: "list-group-item" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "d-flex justify-content-between align-items-center p-0 text-capitalize primary-color font-500 font-lg"
+                },
+                [
+                  _vm._m(6),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "font-lg font-500 text-nowrap text-truncate",
+                      class:
+                        _vm.response_profit_data.av_trade_profit < 0
+                          ? "red"
+                          : ""
+                    },
+                    [
+                      _vm._v(
+                        "\r\n                                " +
+                          _vm._s(_vm.response_profit_data.av_trade_profit) +
+                          " "
+                      ),
+                      _vm.response_profit_data.portfolio
+                        ? _c("span", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.response_profit_data.portfolio.currency
+                              )
+                            )
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "text-muted font-normal" }, [
+                        _vm._v(
+                          "(" +
+                            _vm._s(_vm.response_profit_data.avg_return) +
+                            "%)"
+                        )
+                      ])
+                    ]
+                  )
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("li", { staticClass: "list-group-item" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "d-flex justify-content-between align-items-center p-0 text-capitalize primary-color font-500 font-lg"
+                },
+                [
+                  _vm._m(7),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "font-lg font-500" }, [
+                    _vm._v(
+                      "\r\n                                " +
+                        _vm._s(_vm.response_profit_data.avg_winning_trade) +
+                        " "
+                    ),
+                    _vm.response_profit_data.portfolio
+                      ? _c("span", [
+                          _vm._v(
+                            _vm._s(_vm.response_profit_data.portfolio.currency)
+                          )
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "text-muted font-normal" }, [
+                      _vm._v(
+                        "(" +
+                          _vm._s(_vm.response_profit_data.avg_winning_return) +
+                          "%)"
+                      )
+                    ])
+                  ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("li", { staticClass: "list-group-item" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "d-flex justify-content-between align-items-center p-0 text-capitalize primary-color font-500 font-lg"
+                },
+                [
+                  _vm._m(8),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "font-lg font-500 text-danger" }, [
+                    _vm._v(
+                      "\r\n                                " +
+                        _vm._s(_vm.response_profit_data.avg_losing_trade) +
+                        " "
+                    ),
+                    _vm.response_profit_data.portfolio
+                      ? _c("span", [
+                          _vm._v(
+                            _vm._s(_vm.response_profit_data.portfolio.currency)
+                          )
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "text-muted font-normal" }, [
+                      _vm._v(
+                        "(" +
+                          _vm._s(_vm.response_profit_data.avg_losing_return) +
+                          "%)"
+                      )
+                    ])
+                  ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("li", { staticClass: "list-group-item" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "d-flex justify-content-between align-items-center p-0"
+                },
+                [
+                  _vm._m(9),
+                  _vm._v(" "),
+                  _vm.response_profit_data.biggest_win !== null
+                    ? _c("div", { staticClass: "font-lg font-500" }, [
+                        _vm._v(
+                          "\r\n                                    " +
+                            _vm._s(_vm.response_profit_data.biggest_win) +
+                            " "
+                        ),
+                        _vm.response_profit_data.portfolio
+                          ? _c("span", [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.response_profit_data.portfolio.currency
+                                )
+                              )
+                            ])
+                          : _vm._e()
+                      ])
+                    : _c("div", { staticClass: "font-lg font-500" }, [
+                        _vm._v("No Trades")
+                      ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("li", { staticClass: "list-group-item" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "d-flex justify-content-between align-items-center p-0"
+                },
+                [
+                  _vm._m(10),
+                  _vm._v(" "),
+                  _vm.response_profit_data.biggest_loss !== null
+                    ? _c(
+                        "div",
+                        { staticClass: "font-lg font-500 text-danger" },
+                        [
+                          _vm._v(
+                            "\r\n                               " +
+                              _vm._s(_vm.response_profit_data.biggest_loss) +
+                              " "
+                          ),
+                          _vm.response_profit_data.portfolio
+                            ? _c("span", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.response_profit_data.portfolio.currency
+                                  )
+                                )
+                              ])
+                            : _vm._e()
+                        ]
+                      )
+                    : _c("div", { staticClass: "font-lg font-500" }, [
+                        _vm._v("No Trades")
+                      ])
+                ]
+              )
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-4" }, [
+        _c("div", { staticClass: "col-12 dashboard_container_content p-0" }, [
+          _c(
+            "div",
+            {
+              staticClass:
+                "font-500 h4 d-flex align-items-center text-capitalize font-weight-normal m-0 border-bottom p-4 text-nowrap"
+            },
+            [
+              _vm._v(
+                "\r\n                    Trade Duration \r\n                    "
+              ),
+              _c(
+                "span",
+                {
+                  staticClass:
+                    "text-white rounded-pill ml-2 font-500 py-1 px-2 font-normal bg-lighter"
+                },
+                [_vm._v(_vm._s(_vm.period_text))]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c("ul", { staticClass: "list-group list-group-flush px-1" }, [
+            _c("li", { staticClass: "list-group-item" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "d-flex justify-content-between align-items-center p-0"
+                },
+                [
+                  _vm._m(11),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "font-lg font-500 text-dark" }, [
+                    _vm._v(
+                      "\r\n                                " +
+                        _vm._s(_vm.response.duration_avg) +
+                        "\r\n                            "
+                    )
+                  ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("li", { staticClass: "list-group-item" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "d-flex justify-content-between align-items-center p-0"
+                },
+                [
+                  _vm._m(12),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "font-lg font-500" }, [
+                    _vm._v(
+                      "\r\n                                " +
+                        _vm._s(_vm.response.winning_duration_avg) +
+                        "\r\n                            "
+                    )
+                  ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("li", { staticClass: "list-group-item" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "d-flex justify-content-between align-items-center p-0 text-capitalize primary-color font-500 font-lg"
+                },
+                [
+                  _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+                    _vm._v(
+                      "\r\n                                Losing Trades Duration Avg.\r\n                            "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "font-lg font-500" }, [
+                    _vm._v(
+                      "\r\n                                " +
+                        _vm._s(_vm.response.losing_duration_avg) +
+                        "\r\n                            "
+                    )
+                  ])
+                ]
+              )
+            ])
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row mb-5" }, [
+      _vm._m(13),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-5" }, [
+        _c(
+          "div",
+          { staticClass: "col-12 dashboard_container_content p-0 p-0" },
+          [
+            _c("ul", { staticClass: "list-group list-group-flush px-1" }, [
+              _c("li", { staticClass: "list-group-item" }, [
                 _c(
-                  "a",
-                  { staticClass: "dropdown-item", attrs: { href: "#" } },
-                  [_vm._v("All ime")]
-                ),
-                _vm._v(" "),
+                  "div",
+                  {
+                    staticClass:
+                      "d-flex justify-content-between align-items-center p-0"
+                  },
+                  [
+                    _vm._m(14),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "font-lg font-500" }, [
+                      _vm._v(
+                        "\r\n                                    " +
+                          _vm._s(_vm.miscelaneous_response.winning_streak) +
+                          " "
+                      ),
+                      _c(
+                        "span",
+                        { staticClass: "text-muted font-500 font-sm" },
+                        [_vm._v("Trades")]
+                      )
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("li", { staticClass: "list-group-item" }, [
                 _c(
-                  "a",
-                  { staticClass: "dropdown-item", attrs: { href: "#" } },
-                  [_vm._v("1 Day")]
-                ),
-                _vm._v(" "),
+                  "div",
+                  {
+                    staticClass:
+                      "d-flex justify-content-between align-items-center p-0"
+                  },
+                  [
+                    _vm._m(15),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "font-lg font-500" }, [
+                      _vm._v(
+                        "\r\n                                    " +
+                          _vm._s(_vm.miscelaneous_response.losing_streak) +
+                          " "
+                      ),
+                      _c(
+                        "span",
+                        { staticClass: "text-muted font-500 font-sm" },
+                        [_vm._v("Trades")]
+                      )
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("li", { staticClass: "list-group-item" }, [
                 _c(
-                  "a",
-                  { staticClass: "dropdown-item", attrs: { href: "#" } },
-                  [_vm._v("7 Days")]
-                ),
-                _vm._v(" "),
+                  "div",
+                  {
+                    staticClass:
+                      "d-flex justify-content-between align-items-center p-0"
+                  },
+                  [
+                    _vm._m(16),
+                    _vm._v(" "),
+                    _vm.miscelaneous_response.trade_performance_avg_ratio
+                      ? _c("div", { staticClass: "font-lg font-500" }, [
+                          _vm._v(
+                            "\r\n                                " +
+                              _vm._s(
+                                _vm.miscelaneous_response
+                                  .trade_performance_avg_ratio
+                              ) +
+                              "\r\n                            "
+                          )
+                        ])
+                      : _vm._e()
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("li", { staticClass: "list-group-item" }, [
                 _c(
-                  "a",
-                  { staticClass: "dropdown-item", attrs: { href: "#" } },
-                  [_vm._v("30 Days")]
+                  "div",
+                  {
+                    staticClass:
+                      "d-flex justify-content-between align-items-center p-0"
+                  },
+                  [
+                    _vm._m(17),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "font-lg font-500" }, [
+                      _vm._v(
+                        "\r\n                               " +
+                          _vm._s(_vm.response_profit_data.avg_return) +
+                          "%\r\n                            "
+                      )
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("li", { staticClass: "list-group-item" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "d-flex justify-content-between align-items-center p-0"
+                  },
+                  [
+                    _vm._m(18),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "font-lg font-500" }, [
+                      _vm._v(
+                        "\r\n                                " +
+                          _vm._s(_vm.miscelaneous_response.standart_deviation) +
+                          "%\r\n                            "
+                      )
+                    ])
+                  ]
                 )
               ])
             ])
           ]
         ),
         _vm._v(" "),
-        _c("ul", { staticClass: "list-group list-group-flush px-1" }, [
-          _c("li", { staticClass: "list-group-item" }, [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "d-flex justify-content-between align-items-center p-0"
-              },
-              [
-                _c(
-                  "div",
-                  { staticClass: "text-capitalize primary-color font-lg" },
-                  [
-                    _c(
-                      "div",
-                      { staticClass: "primary-color font-500 font-lg" },
-                      [
-                        _vm._v(
-                          "\n                                        Gross Profit\n                                    "
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "text-muted font-normal" }, [
-                      _vm._v(
-                        "\n                                        last 7 days: 4 trades\n                                    "
-                      )
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "h4 font-500 text-dark" }, [
-                  _vm._v(
-                    "\n                                    1248.21 EUR\n                                "
-                  )
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "list-group-item" }, [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "d-flex justify-content-between align-items-center p-0"
-              },
-              [
-                _c(
-                  "div",
-                  { staticClass: "text-capitalize primary-color font-lg" },
-                  [
-                    _c(
-                      "div",
-                      { staticClass: "primary-color font-500 font-lg" },
-                      [
-                        _vm._v(
-                          "\n                                        Gross Loss\n                                    "
-                        )
-                      ]
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "h4 font-500 text-danger" }, [
-                  _vm._v(
-                    "\n                                   688.47 EUR\n                                "
-                  )
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "list-group-item" }, [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "d-flex justify-content-between align-items-center p-0 text-capitalize primary-color font-500 font-lg"
-              },
-              [
-                _c("div", { staticClass: "primary-color font-500 font-lg" }, [
-                  _vm._v(
-                    "\n                                    Profit Factor\n                                "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "h4 font-500 text-dark" }, [
-                  _vm._v(
-                    "\n                                    2.56\n                                "
-                  )
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "list-group-item" }, [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "d-flex justify-content-between align-items-center p-0 text-capitalize primary-color font-500 font-lg"
-              },
-              [
-                _c("div", { staticClass: "primary-color font-500 font-lg" }, [
-                  _vm._v(
-                    "\n                                     Average Trade Profit\n                                "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "h4 font-500" }, [
-                  _vm._v(
-                    "\n                                   52.75 EUR\n                                "
-                  )
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "list-group-item" }, [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "d-flex justify-content-between align-items-center p-0 text-capitalize primary-color font-500 font-lg"
-              },
-              [
-                _c("div", { staticClass: "primary-color font-500 font-lg" }, [
-                  _vm._v(
-                    "\n                                     Winning Average\n                                "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "h4 font-500" }, [
-                  _vm._v("\n                                     212.38 EUR "),
-                  _c("span", { staticClass: "text-muted font-normal" }, [
-                    _vm._v("(2.09 %) (2.6 Pips)")
-                  ])
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "list-group-item" }, [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "d-flex justify-content-between align-items-center p-0 text-capitalize primary-color font-500 font-lg"
-              },
-              [
-                _c("div", { staticClass: "primary-color font-500 font-lg" }, [
-                  _vm._v(
-                    "\n                                     Losing Average\n                                "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "h4 font-500 text-danger" }, [
-                  _vm._v("\n                                     -84.13 EUR "),
-                  _c("span", { staticClass: "font-normal" }, [
-                    _vm._v("(-0.82 %) (-0.3 Pips)")
-                  ])
-                ])
-              ]
-            )
-          ])
-        ])
+        _c(
+          "div",
+          { staticClass: "col-12 dashboard_container_content pt-3 pb-1" },
+          [
+            _vm.timeFrameFrequence
+              ? _c("bar-chart-symbols", {
+                  attrs: {
+                    color: "#3ac47d",
+                    title: "Trades by Time Frame",
+                    barChartdata: _vm.timeFrameFrequence,
+                    height: 220
+                  }
+                })
+              : _vm._e()
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-7" }, [
+        _c(
+          "div",
+          { staticClass: "col-12 dashboard_container_content pt-3 pb-1" },
+          [
+            _vm.barChartdata
+              ? _c("bar-chart-symbols", {
+                  attrs: {
+                    color: "#49a3ff",
+                    title: "Most Traded Symbols",
+                    barChartdata: _vm.barChartdata,
+                    height: 350
+                  }
+                })
+              : _vm._e()
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _vm._m(19)
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-capitalize primary-color font-lg" }, [
+      _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+        _vm._v(
+          "\r\n                                    Total Recorded Trades\r\n                                "
+        )
       ])
     ])
   },
@@ -49188,113 +50075,11 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-6 mt-3" }, [
-      _c("div", { staticClass: "col-12 dashboard_container_content p-0" }, [
-        _c(
-          "div",
-          {
-            staticClass:
-              "font-500 h4 text-capitalize font-weight-normal m-0 border-bottom px-4 py-3"
-          },
-          [
-            _c("h4", { staticClass: "p-0 m-0" }, [
-              _vm._v(
-                "\n                            Trade Duration\n                        "
-              )
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c("ul", { staticClass: "list-group list-group-flush px-1" }, [
-          _c("li", { staticClass: "list-group-item" }, [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "d-flex justify-content-between align-items-center p-0"
-              },
-              [
-                _c(
-                  "div",
-                  { staticClass: "text-capitalize primary-color font-lg" },
-                  [
-                    _c(
-                      "div",
-                      { staticClass: "primary-color font-500 font-lg" },
-                      [
-                        _vm._v(
-                          "\n                                        Duration Average\n                                    "
-                        )
-                      ]
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "font-lg font-500 text-muted" }, [
-                  _vm._v(
-                    "\n                                    1 day / 3h / 15 min\n                                "
-                  )
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "list-group-item" }, [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "d-flex justify-content-between align-items-center p-0"
-              },
-              [
-                _c(
-                  "div",
-                  { staticClass: "text-capitalize primary-color font-lg" },
-                  [
-                    _c(
-                      "div",
-                      { staticClass: "primary-color font-500 font-lg" },
-                      [
-                        _vm._v(
-                          "\n                                        Winning Duration Average\n                                    "
-                        )
-                      ]
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "font-lg font-500 text-muted" }, [
-                  _vm._v(
-                    "\n                                    1 day / 3h / 15 min\n                                "
-                  )
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "list-group-item" }, [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "d-flex justify-content-between align-items-center p-0 text-capitalize primary-color font-500 font-lg"
-              },
-              [
-                _c("div", { staticClass: "primary-color font-500 font-lg" }, [
-                  _vm._v(
-                    "\n                                    Losing Duration Average\n                                "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "font-lg font-500 text-muted" }, [
-                  _vm._v(
-                    "\n                                    1 day / 3h / 15 min\n                                "
-                  )
-                ])
-              ]
-            )
-          ])
-        ])
+    return _c("div", { staticClass: "text-capitalize primary-color font-lg" }, [
+      _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+        _vm._v(
+          "\r\n                                    Winners\r\n                                "
+        )
       ])
     ])
   },
@@ -49302,262 +50087,230 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-6 mt-3" }, [
-      _c("div", { staticClass: "col-12 dashboard_container_content p-0 p-0" }, [
-        _c(
-          "div",
-          {
-            staticClass:
-              "font-500 h4 text-capitalize font-weight-normal m-0 border-bottom px-4 py-3"
-          },
-          [
-            _c("h4", { staticClass: "p-0 m-0" }, [
-              _vm._v(
-                "\n                            Miscelaneous \n                        "
-              )
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c("ul", { staticClass: "list-group list-group-flush px-1" }, [
-          _c("li", { staticClass: "list-group-item" }, [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "d-flex justify-content-between align-items-center p-0"
-              },
-              [
-                _c(
-                  "div",
-                  { staticClass: "text-capitalize primary-color font-lg" },
-                  [
-                    _c(
-                      "div",
-                      { staticClass: "primary-color font-500 font-lg" },
-                      [
-                        _vm._v(
-                          "\n                                        Biggest Win\n                                    "
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "text-muted font-normal" }, [
-                      _vm._v(
-                        "\n                                        last 7 days: 2 Losers\n                                    "
-                      )
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "font-lg font-500" }, [
-                  _vm._v(
-                    "\n                                        260 EUR\n                                "
-                  )
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "list-group-item" }, [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "d-flex justify-content-between align-items-center p-0"
-              },
-              [
-                _c(
-                  "div",
-                  { staticClass: "text-capitalize primary-color font-lg" },
-                  [
-                    _c(
-                      "div",
-                      { staticClass: "primary-color font-500 font-lg" },
-                      [
-                        _vm._v(
-                          "\n                                        Biggest Los\n                                    "
-                        )
-                      ]
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "font-lg font-500 text-danger" }, [
-                  _vm._v(
-                    "\n                                    -180 EUR\n                                "
-                  )
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "list-group-item" }, [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "d-flex justify-content-between align-items-center p-0"
-              },
-              [
-                _c(
-                  "div",
-                  { staticClass: "text-capitalize primary-color font-lg" },
-                  [
-                    _c(
-                      "div",
-                      { staticClass: "primary-color font-500 font-lg" },
-                      [
-                        _vm._v(
-                          "\n                                        Best winning streak\n                                    "
-                        )
-                      ]
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "font-lg font-500" }, [
-                  _vm._v("\n                                        4 "),
-                  _c("span", { staticClass: "text-muted font-500 font-sm" }, [
-                    _vm._v("Trades")
-                  ])
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "list-group-item" }, [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "d-flex justify-content-between align-items-center p-0"
-              },
-              [
-                _c(
-                  "div",
-                  { staticClass: "text-capitalize primary-color font-lg" },
-                  [
-                    _c(
-                      "div",
-                      { staticClass: "primary-color font-500 font-lg" },
-                      [
-                        _vm._v(
-                          "\n                                        Worst Losing Streak\n                                    "
-                        )
-                      ]
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "font-lg font-500" }, [
-                  _vm._v("\n                                        8 "),
-                  _c("span", { staticClass: "text-muted font-500 font-sm" }, [
-                    _vm._v("Trades")
-                  ])
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "list-group-item" }, [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "d-flex justify-content-between align-items-center p-0"
-              },
-              [
-                _c(
-                  "div",
-                  { staticClass: "text-capitalize primary-color font-lg" },
-                  [
-                    _c(
-                      "div",
-                      { staticClass: "primary-color font-500 font-lg" },
-                      [
-                        _vm._v(
-                          "\n                                        Av. Risk Rewar Ratio\n                                    "
-                        )
-                      ]
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "font-lg font-500" }, [
-                  _vm._v(
-                    "\n                                    3.25\n                                "
-                  )
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "list-group-item" }, [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "d-flex justify-content-between align-items-center p-0"
-              },
-              [
-                _c(
-                  "div",
-                  { staticClass: "text-capitalize primary-color font-lg" },
-                  [
-                    _c(
-                      "div",
-                      { staticClass: "primary-color font-500 font-lg" },
-                      [
-                        _vm._v(
-                          "\n                                        Expected Trade Return\n                                    "
-                        )
-                      ]
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "font-lg font-500" }, [
-                  _vm._v(
-                    "\n                                    1.52%\n                                "
-                  )
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "list-group-item" }, [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "d-flex justify-content-between align-items-center p-0"
-              },
-              [
-                _c(
-                  "div",
-                  { staticClass: "text-capitalize primary-color font-lg" },
-                  [
-                    _c(
-                      "div",
-                      { staticClass: "primary-color font-500 font-lg" },
-                      [
-                        _vm._v(
-                          "\n                                        Standart deviation\n                                    "
-                        )
-                      ]
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "font-lg font-500" }, [
-                  _vm._v(
-                    "\n                                    1.89%\n                                "
-                  )
-                ])
-              ]
-            )
-          ])
+    return _c("div", { staticClass: "text-capitalize primary-color font-lg" }, [
+      _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+        _vm._v(
+          "\r\n                                    Losers\r\n                                "
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-capitalize primary-color font-lg" }, [
+      _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+        _vm._v(
+          "\r\n                                    Gross Profit\r\n                                "
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-capitalize primary-color font-lg" }, [
+      _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+        _vm._v(
+          "\r\n                                    Gross Loss\r\n                                "
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-capitalize primary-color font-lg" }, [
+      _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+        _vm._v(
+          "\r\n                                    Profit Factor\r\n                                "
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-capitalize primary-color font-lg" }, [
+      _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+        _vm._v(
+          "\r\n                                Trade Profit Average\r\n                            "
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "text-muted font-normal " })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-capitalize primary-color font-lg" }, [
+      _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+        _vm._v(
+          "\r\n                                    Winning Average\r\n                            "
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-capitalize primary-color font-lg" }, [
+      _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+        _vm._v(
+          "\r\n                                    Losing Average\r\n                            "
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-capitalize primary-color font-lg" }, [
+      _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+        _vm._v(
+          "\r\n                                    Biggest Win\r\n                                "
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-capitalize primary-color font-lg" }, [
+      _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+        _vm._v(
+          "\r\n                                    Biggest Loss\r\n                                "
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-capitalize primary-color font-lg" }, [
+      _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+        _vm._v(
+          "\r\n                                    Trades Duration Average\r\n                                "
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-capitalize primary-color font-lg" }, [
+      _c("div", { staticClass: "primary-color font-500 font-lg " }, [
+        _vm._v(
+          "\r\n                                    Winning Trades Duration Avg.\r\n                                "
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-12 my-3" }, [
+      _c("h3", { staticClass: "text-muted" }, [_vm._v("Miscelaneous")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-capitalize primary-color font-lg" }, [
+      _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+        _vm._v(
+          "\r\n                                    Best winning streak\r\n                                "
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-capitalize primary-color font-lg" }, [
+      _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+        _vm._v(
+          "\r\n                                    Worst Losing Streak\r\n                                "
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-capitalize primary-color font-lg" }, [
+      _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+        _vm._v(
+          "\r\n                                     Risk Rewar Ratio Avg.\r\n                                "
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-capitalize primary-color font-lg" }, [
+      _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+        _vm._v(
+          "\r\n                                    Expected Trade Return\r\n                                "
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-capitalize primary-color font-lg" }, [
+      _c("div", { staticClass: "primary-color font-500 font-lg" }, [
+        _vm._v(
+          "\r\n                                    Standart deviation\r\n                                "
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "d-md-flex" }, [
+      _c("div", { staticClass: "col-md-4 px-0 pr-md-3" }, [
+        _c("div", { staticClass: "col-12 dashboard_container_content" }, [
+          _vm._v(
+            "\r\n                     Trades used strategy\r\n                "
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-4 px-0 px-md-2" }, [
+        _c("div", { staticClass: "col-12 dashboard_container_content" }, [
+          _vm._v(
+            "\r\n                Trades used entry rule\r\n                "
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-4 px-0 pl-md-3" }, [
+        _c("div", { staticClass: "col-12 dashboard_container_content" }, [
+          _vm._v(
+            "\r\n                Trades used exit reason\r\n                "
+          )
         ])
       ])
     ])
@@ -67595,15 +68348,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!**************************************************************!*\
   !*** ./resources/js/components/trade_analysis/AreaChart.vue ***!
   \**************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AreaChart_vue_vue_type_template_id_9d17b578___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AreaChart.vue?vue&type=template&id=9d17b578& */ "./resources/js/components/trade_analysis/AreaChart.vue?vue&type=template&id=9d17b578&");
 /* harmony import */ var _AreaChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AreaChart.vue?vue&type=script&lang=js& */ "./resources/js/components/trade_analysis/AreaChart.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _AreaChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _AreaChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -67633,7 +68385,7 @@ component.options.__file = "resources/js/components/trade_analysis/AreaChart.vue
 /*!***************************************************************************************!*\
   !*** ./resources/js/components/trade_analysis/AreaChart.vue?vue&type=script&lang=js& ***!
   \***************************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -67656,6 +68408,93 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AreaChart_vue_vue_type_template_id_9d17b578___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AreaChart_vue_vue_type_template_id_9d17b578___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/trade_analysis/BarChartSymbols.vue":
+/*!********************************************************************!*\
+  !*** ./resources/js/components/trade_analysis/BarChartSymbols.vue ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _BarChartSymbols_vue_vue_type_template_id_fde9abfa_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BarChartSymbols.vue?vue&type=template&id=fde9abfa&scoped=true& */ "./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=template&id=fde9abfa&scoped=true&");
+/* harmony import */ var _BarChartSymbols_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BarChartSymbols.vue?vue&type=script&lang=js& */ "./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _BarChartSymbols_vue_vue_type_style_index_0_id_fde9abfa_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./BarChartSymbols.vue?vue&type=style&index=0&id=fde9abfa&scoped=true&lang=css& */ "./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=style&index=0&id=fde9abfa&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _BarChartSymbols_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _BarChartSymbols_vue_vue_type_template_id_fde9abfa_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _BarChartSymbols_vue_vue_type_template_id_fde9abfa_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "fde9abfa",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/trade_analysis/BarChartSymbols.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BarChartSymbols_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./BarChartSymbols.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BarChartSymbols_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=style&index=0&id=fde9abfa&scoped=true&lang=css&":
+/*!*****************************************************************************************************************************!*\
+  !*** ./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=style&index=0&id=fde9abfa&scoped=true&lang=css& ***!
+  \*****************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_BarChartSymbols_vue_vue_type_style_index_0_id_fde9abfa_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./BarChartSymbols.vue?vue&type=style&index=0&id=fde9abfa&scoped=true&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=style&index=0&id=fde9abfa&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_BarChartSymbols_vue_vue_type_style_index_0_id_fde9abfa_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_BarChartSymbols_vue_vue_type_style_index_0_id_fde9abfa_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_BarChartSymbols_vue_vue_type_style_index_0_id_fde9abfa_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_BarChartSymbols_vue_vue_type_style_index_0_id_fde9abfa_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+
+
+/***/ }),
+
+/***/ "./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=template&id=fde9abfa&scoped=true&":
+/*!***************************************************************************************************************!*\
+  !*** ./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=template&id=fde9abfa&scoped=true& ***!
+  \***************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BarChartSymbols_vue_vue_type_template_id_fde9abfa_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./BarChartSymbols.vue?vue&type=template&id=fde9abfa&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=template&id=fde9abfa&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BarChartSymbols_vue_vue_type_template_id_fde9abfa_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BarChartSymbols_vue_vue_type_template_id_fde9abfa_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -67730,6 +68569,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/trade_analysis/SparklineDonutChart.vue":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/trade_analysis/SparklineDonutChart.vue ***!
+  \************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SparklineDonutChart_vue_vue_type_template_id_50888180___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SparklineDonutChart.vue?vue&type=template&id=50888180& */ "./resources/js/components/trade_analysis/SparklineDonutChart.vue?vue&type=template&id=50888180&");
+/* harmony import */ var _SparklineDonutChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SparklineDonutChart.vue?vue&type=script&lang=js& */ "./resources/js/components/trade_analysis/SparklineDonutChart.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _SparklineDonutChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SparklineDonutChart_vue_vue_type_template_id_50888180___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _SparklineDonutChart_vue_vue_type_template_id_50888180___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/trade_analysis/SparklineDonutChart.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/trade_analysis/SparklineDonutChart.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/trade_analysis/SparklineDonutChart.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SparklineDonutChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./SparklineDonutChart.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/SparklineDonutChart.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SparklineDonutChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/trade_analysis/SparklineDonutChart.vue?vue&type=template&id=50888180&":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/js/components/trade_analysis/SparklineDonutChart.vue?vue&type=template&id=50888180& ***!
+  \*******************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SparklineDonutChart_vue_vue_type_template_id_50888180___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./SparklineDonutChart.vue?vue&type=template&id=50888180& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/SparklineDonutChart.vue?vue&type=template&id=50888180&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SparklineDonutChart_vue_vue_type_template_id_50888180___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SparklineDonutChart_vue_vue_type_template_id_50888180___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/trade_analysis/TradeAnalysis.vue":
 /*!******************************************************************!*\
   !*** ./resources/js/components/trade_analysis/TradeAnalysis.vue ***!
@@ -67794,6 +68702,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TradeAnalysis_vue_vue_type_template_id_11f61d53___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TradeAnalysis_vue_vue_type_template_id_11f61d53___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/trade_analysis/TradesMonitoring.vue":
+/*!*********************************************************************!*\
+  !*** ./resources/js/components/trade_analysis/TradesMonitoring.vue ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TradesMonitoring_vue_vue_type_template_id_d89807d8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TradesMonitoring.vue?vue&type=template&id=d89807d8& */ "./resources/js/components/trade_analysis/TradesMonitoring.vue?vue&type=template&id=d89807d8&");
+/* harmony import */ var _TradesMonitoring_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TradesMonitoring.vue?vue&type=script&lang=js& */ "./resources/js/components/trade_analysis/TradesMonitoring.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TradesMonitoring_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TradesMonitoring_vue_vue_type_template_id_d89807d8___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TradesMonitoring_vue_vue_type_template_id_d89807d8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/trade_analysis/TradesMonitoring.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/trade_analysis/TradesMonitoring.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/components/trade_analysis/TradesMonitoring.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TradesMonitoring_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./TradesMonitoring.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/TradesMonitoring.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TradesMonitoring_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/trade_analysis/TradesMonitoring.vue?vue&type=template&id=d89807d8&":
+/*!****************************************************************************************************!*\
+  !*** ./resources/js/components/trade_analysis/TradesMonitoring.vue?vue&type=template&id=d89807d8& ***!
+  \****************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TradesMonitoring_vue_vue_type_template_id_d89807d8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./TradesMonitoring.vue?vue&type=template&id=d89807d8& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/TradesMonitoring.vue?vue&type=template&id=d89807d8&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TradesMonitoring_vue_vue_type_template_id_d89807d8___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TradesMonitoring_vue_vue_type_template_id_d89807d8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

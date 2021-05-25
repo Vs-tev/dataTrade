@@ -153,6 +153,11 @@ Route::group(['prefix' => 'tradeAnalysis'], function(){
     
     Route::get('/', 'Analysis\TradeAnalysisController@index')->name('trade_analysis');
     Route::get('/portfolioData/{portfolio_id}', 'Analysis\TradeAnalysisController@portfolioData');
+    Route::get('/TradesMonitoring/{portfolio_id}/{period}/{side}', 'Analysis\TradeAnalysisController@tradesMonitoring');
+    Route::get('/Profit/{portfolio_id}/{period}/{side}', 'Analysis\TradeAnalysisController@profit');
+    Route::get('/Miscelaneous/{portfolio_id}/{side}', 'Analysis\TradeAnalysisController@miscelaneous');
+    Route::get('/MostTradedSymbols/{portfolio_id}', 'Analysis\TradeAnalysisController@mostTradedSymbols');
+    Route::get('/timeFrameFrequence/{portfolio_id}', 'Analysis\TradeAnalysisController@timeFrameFrequence');
 
 });
 Route::get('/trading_setups_analysis', function () {

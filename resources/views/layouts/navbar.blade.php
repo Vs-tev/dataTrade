@@ -12,7 +12,7 @@
         <div class="d-flex justify-content-center justify-content-sm-between flex-wrap ">
             <div class="top-left-bar">
                 <ul class="list-unstyled text-center">
-                    <li class="mr-1 " ><a href="{{route('trade_analysis')}}" class=" {{Request::is('trade_analysis') ? 'active-btn text-muted' : '' }}">Trade Analysis</a></li>
+                    <li class="mr-1 " ><a href="{{route('trade_analysis')}}" class=" {{Request::is('tradeAnalysis') ? 'active-btn text-muted' : '' }}">Trade Analysis</a></li>
                     <li class="mr-1"><a href="{{route('trading_setups_analysis')}}" class="text-muted {{Request::is('trading_setups_analysis') ? 'active-btn' : '' }}">Trading Setups Analysis</a></li>
                 </ul> 
             </div>
@@ -46,7 +46,7 @@
     <div class="top-bar d-flex justify-content-between">
         <div class="top-left-bar">
             <ul class="list-unstyled">
-                <li class="mr-1"><a href="{{route('trade_analysis')}}" class="text-muted {{Request::is('trade_analysis') ? 'active-btn' : '' }}">Trade Analysis</a></li>
+                <li class="mr-1"><a href="{{route('trade_analysis')}}" class="text-muted {{Request::is('tradeAnalysis') ? 'active-btn' : '' }}">Trade Analysis</a></li>
                 <li class="mr-1"><a href="{{route('trading_setups_analysis')}}" class="text-muted {{Request::is('trading_setups_analysis') ? 'active-btn' : '' }}">Trading Setups Analysis</a></li>
             </ul> 
         </div>

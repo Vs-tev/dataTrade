@@ -323,11 +323,14 @@ export default {
     },
 
     trade_return: function () {
-      var trade_return = (
-        (this.form.pl / this.portfolio.current_balance || 0) * 100
-      ).toFixed(2);
-      this.form.current_trade_return = trade_return;
-      return trade_return + "%";
+      if (this.form.pl) {
+        var trade_return = (
+          (this.form.pl / this.portfolio.current_balance.replace(/\s/g, "") ||
+            0) * 100
+        ).toFixed(2);
+        this.form.current_trade_return = trade_return;
+        return trade_return + "%";
+      }
     },
   },
 

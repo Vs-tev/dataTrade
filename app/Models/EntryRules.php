@@ -20,7 +20,7 @@ class EntryRules extends Model
     }
 
 
-    //since the tables "entry rules" and "trades" has no relationship 
+    //since the tables "entry_rules" and "trades" has no relationship 
     //we use hasManyThrough with class Used_entry_rules::class to connect both models 
     public function trade(){
         return $this->hasManyThrough(Trade::class, Used_entry_rules::class, 'entry_rule_id', 'id', 'id', 'trade_id');

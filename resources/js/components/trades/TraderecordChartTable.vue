@@ -159,6 +159,16 @@ export default {
             subtitle: {
               text: data.name,
             },
+            tooltip: {
+              x: {
+                format: "dd / MMM / yy",
+              },
+              y: {
+                formatter: function (val) {
+                  return val.toFixed(2) + " " + data.currency;
+                },
+              },
+            },
           },
         };
         this.$refs.realtimeChart.updateOptions(this.options, false, true);

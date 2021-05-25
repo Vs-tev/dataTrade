@@ -24,6 +24,10 @@ class Balance extends Model
         return $this->belongsTo(Portfolio::class);
     }
 
+    public function tradePerformance(){
+        return $this->hasOne(TradePerformance::class, 'trade_id', 'trade_id');
+    }
+
     public function trades(){
         return $this->belongsTo(Trade::class);
     }
@@ -35,5 +39,9 @@ class Balance extends Model
         ->limit(100)
         ->get();
     }
+
+    
+
+  
 
 }
