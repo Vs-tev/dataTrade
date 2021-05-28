@@ -24,7 +24,10 @@ class TradesAnalysisService{
             break; 
             case 'month':
                 $period = today()->subDays(30);
-            break; 
+            break;
+            case 'all_time':
+                $period = null;
+            break;     
         }
         
         $tradesMonitoring = Balance::select(['balances.portfolio_id', DB::raw('
@@ -69,6 +72,9 @@ class TradesAnalysisService{
             break; 
             case 'month':
                 $period = today()->subDays(30);
+            break;
+            case 'all_time':
+                $period = null;
             break; 
         }
 
