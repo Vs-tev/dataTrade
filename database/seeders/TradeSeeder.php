@@ -32,7 +32,7 @@ class TradeSeeder extends Seeder
             ->has(\App\Models\TradePerformance::factory()
             ->state(function(array $attributes, Trade $trade){
                 return[
-                    'trade_return' => ($trade->pl_currency / 13265) * 100,
+                    'trade_return' => ($trade->pl_currency / 9800) * 100,
                     'ratio' => ($trade->entry_price - $trade->exit_price) / ($trade->stop_loss_price - $trade->entry_price) ,
                     'portfolio_id' => $trade->portfolio_id,
                 ];
