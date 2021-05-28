@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\User;
 use App\Models\Trade;
+use App\Models\Symbol;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Auth;
 class TradeFactory extends Factory
@@ -23,9 +24,9 @@ class TradeFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => 3,
-            'portfolio_id' => 3,
-            'symbol' => $this->faker->randomElement(['AUD/NZD']),
+            'user_id' => 2,
+            'portfolio_id' => 2,
+            'symbol' => Symbol::all()->random()->symbol,
             'type_side' => $this->faker->randomElement(['sell', 'buy']),
             'quantity' => rand(1000, 10000),
             'entry_price' => $this->faker->numerify('1.#####'),
