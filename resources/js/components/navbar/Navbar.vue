@@ -2,7 +2,7 @@
      <div class="downbar shadow-sm">
         <div class="down-left d-flex justify-content-start" >
             <ul class="list-unstyled" v-if="spinner">
-                <li class="font-500 dark"><span>{{portfolio.name}}: </span>
+                <li class="font-500 dark"><span class="text-muted font-500">Active - </span><span>{{portfolio.name}}: </span>
                 <span class="font-500 light-md">{{portfolio.current_balance}} {{portfolio.currency}}
                 </span>
                 <span class="">( <span class="font-dark">Net Profit: </span><span :class="{'red' : this.portfolio.netProfit < 0}">{{this.portfolio.netProfit}} {{portfolio.currency}}</span>)</span>

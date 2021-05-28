@@ -53,8 +53,9 @@ class AppServiceProvider extends ServiceProvider
 
          /* Plan */
          View::composer(['billing.dashboard', 'layouts.navbar'], function($view){
-            $view->with('plan',  $plan = \App\Models\Plan::where('stripe_plan_id',  auth()->user()->subscribed('default') == true ? auth()->user()->subscription('default')->stripe_plan : \App\Models\Plan::free_plan_price_id()->first())->first()
-            );
+          
+            $view->with('plan',  $plan = \App\Models\Plan::where('stripe_plan_id',  auth()->user()->subscribed('default') == true ? auth()->user()->subscription('default')->stripe_plan : \App\Models\Plan::free_plan_price_id()->first())->first());
+         
         });
 
     }

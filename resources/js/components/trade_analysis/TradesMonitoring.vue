@@ -269,11 +269,8 @@
 
     <!--Miscelaneous-->
     <div class="row mb-5">
-
         <div class="col-12 my-3">
-           
-                    <h3 class="text-muted">Miscelaneous</h3>  
-              
+            <h3 class="text-muted" ref="miscelaneous">Miscelaneous</h3>     
         </div>
 
         <div class="col-md-5">
@@ -343,32 +340,43 @@
                 </ul>
             </div>
             <div class="col-12 dashboard_container_content pt-3 pb-1">
-                 <bar-chart-symbols v-if="timeFrameFrequence" :color="'#3ac47d'" :title="'Trades by Time Frame'" :barChartdata="timeFrameFrequence"  :height="220"></bar-chart-symbols>
+                 <bar-chart-symbols v-if="timeFrameFrequence" :color="'#3ac47d'" :title="'Trades by Time Frame'" :barChartdata="timeFrameFrequence"  :height="280"></bar-chart-symbols>
             </div>
         </div>
 
         <div class="col-md-7">
 
             <div class="col-12 dashboard_container_content pt-3 pb-1">
-                <bar-chart-symbols v-if="barChartdata" :color="'#49a3ff'" :title="'Most Traded Symbols'" :barChartdata="barChartdata" :height="350"></bar-chart-symbols>
+                <bar-chart-symbols v-if="barChartdata" :color="'#49a3ff'" :title="'Most Traded Symbols'" :barChartdata="barChartdata" :height="360"></bar-chart-symbols>
             </div>
             <div class="d-md-flex">
                 <div class="col-md-4 px-0 pr-md-3">
-                <div class="col-12 dashboard_container_content">
-                     Trades used strategy
+                    <div class="col-12 dashboard_container_content p-3" v-if="usedFeatures">
+                         <div class="h5 text-muted font-weight-light"> Trades used <a href="/dashboardPages/strategy">Strategy</a></div>
+                        <div class="d-flex justify-content-between items-content-center pt-3">
+                            <div class="h2 m-0 font-weight-light ">{{usedFeatures.withStrategy}} <span class="h5 text-muted" v-html="usedFeatures.withStrategy > 1 ? ' Trades': ' Trade' "></span></div>
+                            <div class="my-auto"><a href="/trading_setups_analysis">Deteils</a> </div>
+                        </div>
+                    </div>
                 </div>
-               
-            </div>
-            <div class="col-md-4 px-0 px-md-2">
-                <div class="col-12 dashboard_container_content">
-                Trades used entry rule
+                <div class="col-md-4 px-0 px-md-2">
+                    <div class="col-12 dashboard_container_content p-3" v-if="usedFeatures">
+                    <div class="h5 text-muted font-weight-light"> Trades with <a href="/dashboardPages/tradingrules">Entry Rules</a></div>
+                        <div class="d-flex justify-content-between items-content-center pt-3">
+                            <div class="h2 m-0 font-weight-light ">{{usedFeatures.entryRules}}<span class="h5 text-muted" v-html="usedFeatures.entryRules > 1 ? ' Trades': ' Trade' "></span></div>
+                            <div class="my-auto"><a href="trading_setups_analysis">Deteils</a> </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4 px-0 pl-md-3">
-                <div class="col-12 dashboard_container_content">
-                Trades used exit reason
+                <div class="col-md-4 px-0 pl-md-3">
+                    <div class="col-12 dashboard_container_content p-3" v-if="usedFeatures">
+                     <div class="h5 text-muted font-weight-light"> Trades with <a href="/dashboardPages/tradingrules">Exit Reason Rule</a></div>
+                        <div class="d-flex justify-content-between items-content-center pt-3">
+                            <div class="h2 m-0 font-weight-light ">{{usedFeatures.withExitReason}}<span class="h5 text-muted" v-html="usedFeatures.withExitReason > 1 ? ' Trades': ' Trade' "></span></div>
+                            <div class="my-auto"><a href="trading_setups_analysis">Deteils</a> </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
             </div>
             
         </div>
@@ -390,10 +398,17 @@ export default {
       period: "all_time",
       period_text: "All Time",
       response: [],
-      miscelaneous_response: [],
       response_profit_data: [],
+
+      miscelaneous_response: [],
       barChartdata: null,
       timeFrameFrequence: null,
+      usedFeatures: null,
+
+      queriedMiscelaneous_response: false,
+      queriedBarChartdata: false,
+      queriedTimeFrameFrequence: false,
+      queriedUsedFeatures: false,
     };
   },
   computed: {
@@ -406,18 +421,48 @@ export default {
     selectedPortfolio: function (newPortfolio, oldPortfolio) {
       if (newPortfolio) {
         this.setPeriod(this.period, this.period_text);
+        this.queriedMiscelaneous_response = false;
+        this.miscelaneous();
+
+        this.queriedBarChartdata = false;
         this.mostTradedSymbols();
+
+        this.queriedTimeFrameFrequence = false;
+        this.timeFrameTrades();
+
+        this.queriedUsedFeatures = false;
+        this.tradesUsedFeatures();
       }
     },
   },
 
   mounted() {
     this.setPeriod(this.period, this.period_text);
-    this.mostTradedSymbols();
-    this.timeFrameTrades();
+    this.$nextTick(function () {
+      window.addEventListener("scroll", this.onScroll);
+      this.onScroll(); // needed for initial loading on page
+    });
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.onScroll);
   },
 
   methods: {
+    onScroll() {
+      var miscelaneousHeading = this.$refs["miscelaneous"];
+      if (miscelaneousHeading) {
+        var marginTop = miscelaneousHeading.getBoundingClientRect().top;
+        var innerHeight = window.innerHeight;
+
+        if (marginTop - innerHeight < -50) {
+          this.mostTradedSymbols();
+          this.timeFrameTrades();
+          this.tradesUsedFeatures();
+          this.miscelaneous();
+        }
+      }
+    },
+
     setPeriod(period, text) {
       if (period || text) {
         this.period = period;
@@ -425,7 +470,6 @@ export default {
       }
       this.getTradeMonitoringData();
       this.getProfitData();
-      this.miscelaneous();
     },
 
     setSide(type) {
@@ -466,41 +510,62 @@ export default {
     },
 
     miscelaneous() {
-      axios
-        .get(
-          "/tradeAnalysis/Miscelaneous/" +
-            this.$props.selectedPortfolio +
-            "/" +
-            this.side
-        )
-        .then((res) => {
-          this.miscelaneous_response = res.data[0];
-        })
-        .catch((error) => {});
+      if (!this.queriedMiscelaneous_response) {
+        this.queriedMiscelaneous_response = true;
+        axios
+          .get(
+            "/tradeAnalysis/Miscelaneous/" +
+              this.$props.selectedPortfolio +
+              "/" +
+              this.side
+          )
+          .then((res) => {
+            this.miscelaneous_response = res.data[0];
+          })
+          .catch((error) => {});
+      }
     },
 
     mostTradedSymbols() {
-      axios
-        .get(
-          "/tradeAnalysis/MostTradedSymbols/" + this.$props.selectedPortfolio
-        )
-        .then((res) => {
-          this.barChartdata = res.data;
-          //console.log(this.barChartdata);
-        })
-        .catch((error) => {});
+      if (!this.queriedBarChartdata) {
+        this.queriedBarChartdata = true;
+        axios
+          .get(
+            "/tradeAnalysis/MostTradedSymbols/" + this.$props.selectedPortfolio
+          )
+          .then((res) => {
+            this.barChartdata = res.data;
+          })
+          .catch((error) => {});
+      }
     },
 
     timeFrameTrades() {
-      axios
-        .get(
-          "/tradeAnalysis/timeFrameFrequence/" + this.$props.selectedPortfolio
-        )
-        .then((res) => {
-          this.timeFrameFrequence = res.data;
-          //console.log(this.barChartdata);
-        })
-        .catch((error) => {});
+      if (!this.queriedTimeFrameFrequence) {
+        this.queriedTimeFrameFrequence = true;
+        axios
+          .get(
+            "/tradeAnalysis/timeFrameFrequence/" + this.$props.selectedPortfolio
+          )
+          .then((res) => {
+            this.timeFrameFrequence = res.data;
+          })
+          .catch((error) => {});
+      }
+    },
+
+    tradesUsedFeatures() {
+      if (!this.queriedUsedFeatures) {
+        this.queriedUsedFeatures = true;
+        axios
+          .get(
+            "/tradeAnalysis/tradesUsedFeatures/" + this.$props.selectedPortfolio
+          )
+          .then((res) => {
+            this.usedFeatures = res.data[0];
+          })
+          .catch((error) => {});
+      }
     },
   },
 };

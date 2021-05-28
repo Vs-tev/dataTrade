@@ -35,7 +35,7 @@ class Trade extends Model
     }
 
     public function used_entry_rules(){
-        return $this->hasMany(Used_entry_rules::class);
+        return $this->hasMany(Used_entry_rules::class, 'trade_id');
     }
 
     public function balance(){

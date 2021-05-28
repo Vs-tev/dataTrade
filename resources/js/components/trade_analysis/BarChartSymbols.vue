@@ -1,5 +1,5 @@
 <template>
-    <apexchart type="bar" :height="height" :options="chartOptions" :series="series"></apexchart>
+    <apexchart ref="realtimeChart" type="bar" :height="height" :options="chartOptions" :series="series"></apexchart>
 </template>
 <script>
 export default {
@@ -42,7 +42,18 @@ export default {
             colors: ["#304758"],
           },
         },
-
+        noData: {
+          text: "No Recorded Trades",
+          align: "center",
+          verticalAlign: "middle",
+          offsetX: 0,
+          offsetY: 0,
+          style: {
+            color: "#b7c0d5",
+            fontSize: "20px",
+            fontFamily: undefined,
+          },
+        },
         xaxis: {
           categories: this.$props.barChartdata
             ? this.$props.barChartdata.map((i) => i.category)
@@ -100,6 +111,14 @@ export default {
     };
   },
 
+  watch: {
+    barChartdata: function (newProtfolio, oldVal) {
+      if (newProtfolio) {
+        this.getData();
+      }
+    },
+  },
+
   mounted() {
     this.getData();
   },
@@ -110,14 +129,29 @@ export default {
         this.series[0].data = this.$props.barChartdata.map((item) =>
           parseFloat(item.trades)
         );
+        this.updateSeriesBar();
       }
+    },
+
+    updateSeriesBar() {
+      this.options = {
+        ...this.options,
+        ...{
+          xaxis: {
+            categories: this.$props.barChartdata
+              ? this.$props.barChartdata.map((i) => i.category)
+              : "",
+          },
+        },
+      };
+
+      this.$refs.realtimeChart.updateOptions(this.options, false, true);
+      this.$refs.realtimeChart.updateSeries([
+        {
+          data: this.$props.barChartdata.map((item) => parseFloat(item.trades)),
+        },
+      ]);
     },
   },
 };
 </script>
-<style scoped>
-/* colors: ["#41B883", "#E46651", "#E46651"], */
-.das {
-  color: #919191;
-}
-</style>

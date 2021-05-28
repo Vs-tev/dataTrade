@@ -58,7 +58,7 @@ class TradeHistoryController extends Controller
             }); 
         }
 
-        $trades = $trades->with(['portfolio', 'strategy', 'used_entry_rules.entry_rule', 'exit_reason', 'balance', 'trade_performance'])
+        $trades = $trades->with(['portfolio', 'strategy', 'used_entry_rules.entry_rule', 'exit_reason', 'balance', 'tradePerformance'])
         ->where([
             ['user_id', auth()->id()],
             ['portfolio_id', $request->p_id],
@@ -125,7 +125,7 @@ class TradeHistoryController extends Controller
         $used_entry_rules = $trade->used_entry_rules();
         $used_entry_rules->delete();
 
-        $trade->trade_performance()->update(['ratio' => $request->input('risk_reward')]);   
+        $trade->tradePerformance()->update(['ratio' => $request->input('risk_reward')]);   
 
         if($request->input('entry_rule_id')){
             $trade->add_to_used_entry_rules($request);

@@ -5,8 +5,10 @@ namespace App\Services;
 use App\Models\Balance;
 use App\Models\Portfolio;
 use App\Models\Trade;
+use App\Models\Used_entry_rules;
 use Illuminate\Support\Facades\DB;
 use Carbon\CarbonInterval;
+use Illuminate\Database\Eloquent\Builder;
 
 
 class TradesAnalysisService{
@@ -162,5 +164,23 @@ class TradesAnalysisService{
 
        return $timeFrame;
    }
+
+    public function tradesUsedFeatures($portfolio_id){
+   
+        $tradeFeature = Trade::select([ DB::raw('
+        COUNT(CASE WHEN strategy_id IS NOT NULL THEN id else NULL END)as withStrategy,
+        COUNT(CASE WHEN exit_reason_id IS NOT NULL THEN id else NULL END)as withExitReason'
+        ),
+        'entryRules' => Used_entry_rules::selectRaw('COUNT(DISTINCT(trade_id))')
+        ->whereHas('trade', function (Builder $query) use($portfolio_id) {
+            $query->where('portfolio_id', $portfolio_id);
+        })
+        ])
+        ->where('portfolio_id', $portfolio_id)
+        ->get();
+
+        return $tradeFeature;
+
+    }
 
 }

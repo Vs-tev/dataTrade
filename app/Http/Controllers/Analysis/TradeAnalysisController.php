@@ -79,4 +79,12 @@ class TradeAnalysisController extends Controller
         return $timeFrame;
 
     }
+
+    public function tradesUsedFeatures($portfolio_id){
+        
+        $tradeFeature = (new TradesAnalysisService())->tradesUsedFeatures($portfolio_id);
+
+        return $tradeFeature;
+
+    }
 }

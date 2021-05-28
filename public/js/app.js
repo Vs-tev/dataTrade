@@ -4639,6 +4639,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -4677,6 +4683,18 @@ __webpack_require__.r(__webpack_exports__);
           style: {
             fontSize: "12px",
             colors: ["#304758"]
+          }
+        },
+        noData: {
+          text: "No Recorded Trades",
+          align: "center",
+          verticalAlign: "middle",
+          offsetX: 0,
+          offsetY: 0,
+          style: {
+            color: "#b7c0d5",
+            fontSize: "20px",
+            fontFamily: undefined
           }
         },
         xaxis: {
@@ -4735,6 +4753,13 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
   },
+  watch: {
+    barChartdata: function barChartdata(newProtfolio, oldVal) {
+      if (newProtfolio) {
+        this.getData();
+      }
+    }
+  },
   mounted: function mounted() {
     this.getData();
   },
@@ -4744,7 +4769,23 @@ __webpack_require__.r(__webpack_exports__);
         this.series[0].data = this.$props.barChartdata.map(function (item) {
           return parseFloat(item.trades);
         });
+        this.updateSeriesBar();
       }
+    },
+    updateSeriesBar: function updateSeriesBar() {
+      this.options = _objectSpread(_objectSpread({}, this.options), {
+        xaxis: {
+          categories: this.$props.barChartdata ? this.$props.barChartdata.map(function (i) {
+            return i.category;
+          }) : ""
+        }
+      });
+      this.$refs.realtimeChart.updateOptions(this.options, false, true);
+      this.$refs.realtimeChart.updateSeries([{
+        data: this.$props.barChartdata.map(function (item) {
+          return parseFloat(item.trades);
+        })
+      }]);
     }
   }
 });
@@ -5531,6 +5572,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -5546,10 +5595,15 @@ __webpack_require__.r(__webpack_exports__);
       period: "all_time",
       period_text: "All Time",
       response: [],
-      miscelaneous_response: [],
       response_profit_data: [],
+      miscelaneous_response: [],
       barChartdata: null,
-      timeFrameFrequence: null
+      timeFrameFrequence: null,
+      usedFeatures: null,
+      queriedMiscelaneous_response: false,
+      queriedBarChartdata: false,
+      queriedTimeFrameFrequence: false,
+      queriedUsedFeatures: false
     };
   },
   computed: {
@@ -5561,16 +5615,43 @@ __webpack_require__.r(__webpack_exports__);
     selectedPortfolio: function selectedPortfolio(newPortfolio, oldPortfolio) {
       if (newPortfolio) {
         this.setPeriod(this.period, this.period_text);
+        this.queriedMiscelaneous_response = false;
+        this.miscelaneous();
+        this.queriedBarChartdata = false;
         this.mostTradedSymbols();
+        this.queriedTimeFrameFrequence = false;
+        this.timeFrameTrades();
+        this.queriedUsedFeatures = false;
+        this.tradesUsedFeatures();
       }
     }
   },
   mounted: function mounted() {
     this.setPeriod(this.period, this.period_text);
-    this.mostTradedSymbols();
-    this.timeFrameTrades();
+    this.$nextTick(function () {
+      window.addEventListener("scroll", this.onScroll);
+      this.onScroll(); // needed for initial loading on page
+    });
+  },
+  beforeDestroy: function beforeDestroy() {
+    window.removeEventListener("scroll", this.onScroll);
   },
   methods: {
+    onScroll: function onScroll() {
+      var miscelaneousHeading = this.$refs["miscelaneous"];
+
+      if (miscelaneousHeading) {
+        var marginTop = miscelaneousHeading.getBoundingClientRect().top;
+        var innerHeight = window.innerHeight;
+
+        if (marginTop - innerHeight < -50) {
+          this.mostTradedSymbols();
+          this.timeFrameTrades();
+          this.tradesUsedFeatures();
+          this.miscelaneous();
+        }
+      }
+    },
     setPeriod: function setPeriod(period, text) {
       if (period || text) {
         this.period = period;
@@ -5579,7 +5660,6 @@ __webpack_require__.r(__webpack_exports__);
 
       this.getTradeMonitoringData();
       this.getProfitData();
-      this.miscelaneous();
     },
     setSide: function setSide(type) {
       this.side = type;
@@ -5602,23 +5682,42 @@ __webpack_require__.r(__webpack_exports__);
     miscelaneous: function miscelaneous() {
       var _this3 = this;
 
-      axios.get("/tradeAnalysis/Miscelaneous/" + this.$props.selectedPortfolio + "/" + this.side).then(function (res) {
-        _this3.miscelaneous_response = res.data[0];
-      })["catch"](function (error) {});
+      if (!this.queriedMiscelaneous_response) {
+        this.queriedMiscelaneous_response = true;
+        axios.get("/tradeAnalysis/Miscelaneous/" + this.$props.selectedPortfolio + "/" + this.side).then(function (res) {
+          _this3.miscelaneous_response = res.data[0];
+        })["catch"](function (error) {});
+      }
     },
     mostTradedSymbols: function mostTradedSymbols() {
       var _this4 = this;
 
-      axios.get("/tradeAnalysis/MostTradedSymbols/" + this.$props.selectedPortfolio).then(function (res) {
-        _this4.barChartdata = res.data; //console.log(this.barChartdata);
-      })["catch"](function (error) {});
+      if (!this.queriedBarChartdata) {
+        this.queriedBarChartdata = true;
+        axios.get("/tradeAnalysis/MostTradedSymbols/" + this.$props.selectedPortfolio).then(function (res) {
+          _this4.barChartdata = res.data;
+        })["catch"](function (error) {});
+      }
     },
     timeFrameTrades: function timeFrameTrades() {
       var _this5 = this;
 
-      axios.get("/tradeAnalysis/timeFrameFrequence/" + this.$props.selectedPortfolio).then(function (res) {
-        _this5.timeFrameFrequence = res.data; //console.log(this.barChartdata);
-      })["catch"](function (error) {});
+      if (!this.queriedTimeFrameFrequence) {
+        this.queriedTimeFrameFrequence = true;
+        axios.get("/tradeAnalysis/timeFrameFrequence/" + this.$props.selectedPortfolio).then(function (res) {
+          _this5.timeFrameFrequence = res.data;
+        })["catch"](function (error) {});
+      }
+    },
+    tradesUsedFeatures: function tradesUsedFeatures() {
+      var _this6 = this;
+
+      if (!this.queriedUsedFeatures) {
+        this.queriedUsedFeatures = true;
+        axios.get("/tradeAnalysis/tradesUsedFeatures/" + this.$props.selectedPortfolio).then(function (res) {
+          _this6.usedFeatures = res.data[0];
+        })["catch"](function (error) {});
+      }
     }
   }
 });
@@ -12193,25 +12292,6 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 // module
 exports.push([module.i, "\n.toggle-calendar button {\r\n  background: none;\r\n  border: 0;\r\n  text-align: left;\r\n  white-space: nowrap;\r\n  overflow: hidden;\n}\n.toggle-calendar {\r\n  padding-left: 5px;\r\n  border: none;\r\n  background-color: var(--light);\r\n  border-radius: 10px;\r\n  font-size: var(--font-lg);\r\n  height: 60px;\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n  line-height: 1.2;\n}\n.toggle-calendar span {\r\n  padding: 6px;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  cursor: pointer;\r\n  margin-right: 5px;\n}\r\n", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=style&index=0&id=fde9abfa&scoped=true&lang=css&":
-/*!************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=style&index=0&id=fde9abfa&scoped=true&lang=css& ***!
-  \************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* colors: [\"#41B883\", \"#E46651\", \"#E46651\"], */\n.das[data-v-fde9abfa] {\r\n  color: #919191;\n}\r\n", ""]);
 
 // exports
 
@@ -43595,36 +43675,6 @@ if(false) {}
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=style&index=0&id=fde9abfa&scoped=true&lang=css&":
-/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=style&index=0&id=fde9abfa&scoped=true&lang=css& ***!
-  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./BarChartSymbols.vue?vue&type=style&index=0&id=fde9abfa&scoped=true&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=style&index=0&id=fde9abfa&scoped=true&lang=css&");
-
-if(typeof content === 'string') content = [[module.i, content, '']];
-
-var transform;
-var insertInto;
-
-
-
-var options = {"hmr":true}
-
-options.transform = transform
-options.insertInto = undefined;
-
-var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
-
-if(content.locals) module.exports = content.locals;
-
-if(false) {}
-
-/***/ }),
-
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trades/tradeHistory/SortingTrades.vue?vue&type=style&index=0&id=5a608499&scoped=true&lang=css&":
 /*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trades/tradeHistory/SortingTrades.vue?vue&type=style&index=0&id=5a608499&scoped=true&lang=css& ***!
@@ -45646,6 +45696,9 @@ var render = function() {
       _vm.spinner
         ? _c("ul", { staticClass: "list-unstyled" }, [
             _c("li", { staticClass: "font-500 dark" }, [
+              _c("span", { staticClass: "text-muted font-500" }, [
+                _vm._v("Active - ")
+              ]),
               _c("span", [_vm._v(_vm._s(_vm.portfolio.name) + ": ")]),
               _vm._v(" "),
               _c("span", { staticClass: "font-500 light-md" }, [
@@ -48699,10 +48752,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=template&id=fde9abfa&scoped=true&":
-/*!*********************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=template&id=fde9abfa&scoped=true& ***!
-  \*********************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=template&id=fde9abfa&":
+/*!*********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=template&id=fde9abfa& ***!
+  \*********************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -48715,6 +48768,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("apexchart", {
+    ref: "realtimeChart",
     attrs: {
       type: "bar",
       height: _vm.height,
@@ -49884,7 +49938,11 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "row mb-5" }, [
-      _vm._m(13),
+      _c("div", { staticClass: "col-12 my-3" }, [
+        _c("h3", { ref: "miscelaneous", staticClass: "text-muted" }, [
+          _vm._v("Miscelaneous")
+        ])
+      ]),
       _vm._v(" "),
       _c("div", { staticClass: "col-md-5" }, [
         _c(
@@ -49900,7 +49958,7 @@ var render = function() {
                       "d-flex justify-content-between align-items-center p-0"
                   },
                   [
-                    _vm._m(14),
+                    _vm._m(13),
                     _vm._v(" "),
                     _c("div", { staticClass: "font-lg font-500" }, [
                       _vm._v(
@@ -49926,7 +49984,7 @@ var render = function() {
                       "d-flex justify-content-between align-items-center p-0"
                   },
                   [
-                    _vm._m(15),
+                    _vm._m(14),
                     _vm._v(" "),
                     _c("div", { staticClass: "font-lg font-500" }, [
                       _vm._v(
@@ -49952,7 +50010,7 @@ var render = function() {
                       "d-flex justify-content-between align-items-center p-0"
                   },
                   [
-                    _vm._m(16),
+                    _vm._m(15),
                     _vm._v(" "),
                     _vm.miscelaneous_response.trade_performance_avg_ratio
                       ? _c("div", { staticClass: "font-lg font-500" }, [
@@ -49978,7 +50036,7 @@ var render = function() {
                       "d-flex justify-content-between align-items-center p-0"
                   },
                   [
-                    _vm._m(17),
+                    _vm._m(16),
                     _vm._v(" "),
                     _c("div", { staticClass: "font-lg font-500" }, [
                       _vm._v(
@@ -49999,7 +50057,7 @@ var render = function() {
                       "d-flex justify-content-between align-items-center p-0"
                   },
                   [
-                    _vm._m(18),
+                    _vm._m(17),
                     _vm._v(" "),
                     _c("div", { staticClass: "font-lg font-500" }, [
                       _vm._v(
@@ -50025,7 +50083,7 @@ var render = function() {
                     color: "#3ac47d",
                     title: "Trades by Time Frame",
                     barChartdata: _vm.timeFrameFrequence,
-                    height: 220
+                    height: 280
                   }
                 })
               : _vm._e()
@@ -50045,7 +50103,7 @@ var render = function() {
                     color: "#49a3ff",
                     title: "Most Traded Symbols",
                     barChartdata: _vm.barChartdata,
-                    height: 350
+                    height: 360
                   }
                 })
               : _vm._e()
@@ -50053,7 +50111,130 @@ var render = function() {
           1
         ),
         _vm._v(" "),
-        _vm._m(19)
+        _c("div", { staticClass: "d-md-flex" }, [
+          _c("div", { staticClass: "col-md-4 px-0 pr-md-3" }, [
+            _vm.usedFeatures
+              ? _c(
+                  "div",
+                  { staticClass: "col-12 dashboard_container_content p-3" },
+                  [
+                    _vm._m(18),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "d-flex justify-content-between items-content-center pt-3"
+                      },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "h2 m-0 font-weight-light " },
+                          [
+                            _vm._v(_vm._s(_vm.usedFeatures.withStrategy) + " "),
+                            _c("span", {
+                              staticClass: "h5 text-muted",
+                              domProps: {
+                                innerHTML: _vm._s(
+                                  _vm.usedFeatures.withStrategy > 1
+                                    ? " Trades"
+                                    : " Trade"
+                                )
+                              }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _vm._m(19)
+                      ]
+                    )
+                  ]
+                )
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-md-4 px-0 px-md-2" }, [
+            _vm.usedFeatures
+              ? _c(
+                  "div",
+                  { staticClass: "col-12 dashboard_container_content p-3" },
+                  [
+                    _vm._m(20),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "d-flex justify-content-between items-content-center pt-3"
+                      },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "h2 m-0 font-weight-light " },
+                          [
+                            _vm._v(_vm._s(_vm.usedFeatures.entryRules)),
+                            _c("span", {
+                              staticClass: "h5 text-muted",
+                              domProps: {
+                                innerHTML: _vm._s(
+                                  _vm.usedFeatures.entryRules > 1
+                                    ? " Trades"
+                                    : " Trade"
+                                )
+                              }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _vm._m(21)
+                      ]
+                    )
+                  ]
+                )
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-md-4 px-0 pl-md-3" }, [
+            _vm.usedFeatures
+              ? _c(
+                  "div",
+                  { staticClass: "col-12 dashboard_container_content p-3" },
+                  [
+                    _vm._m(22),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "d-flex justify-content-between items-content-center pt-3"
+                      },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "h2 m-0 font-weight-light " },
+                          [
+                            _vm._v(_vm._s(_vm.usedFeatures.withExitReason)),
+                            _c("span", {
+                              staticClass: "h5 text-muted",
+                              domProps: {
+                                innerHTML: _vm._s(
+                                  _vm.usedFeatures.withExitReason > 1
+                                    ? " Trades"
+                                    : " Trade"
+                                )
+                              }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _vm._m(23)
+                      ]
+                    )
+                  ]
+                )
+              : _vm._e()
+          ])
+        ])
       ])
     ])
   ])
@@ -50221,14 +50402,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-12 my-3" }, [
-      _c("h3", { staticClass: "text-muted" }, [_vm._v("Miscelaneous")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "text-capitalize primary-color font-lg" }, [
       _c("div", { staticClass: "primary-color font-500 font-lg" }, [
         _vm._v(
@@ -50289,29 +50462,62 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "d-md-flex" }, [
-      _c("div", { staticClass: "col-md-4 px-0 pr-md-3" }, [
-        _c("div", { staticClass: "col-12 dashboard_container_content" }, [
-          _vm._v(
-            "\r\n                     Trades used strategy\r\n                "
-          )
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-4 px-0 px-md-2" }, [
-        _c("div", { staticClass: "col-12 dashboard_container_content" }, [
-          _vm._v(
-            "\r\n                Trades used entry rule\r\n                "
-          )
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-4 px-0 pl-md-3" }, [
-        _c("div", { staticClass: "col-12 dashboard_container_content" }, [
-          _vm._v(
-            "\r\n                Trades used exit reason\r\n                "
-          )
-        ])
+    return _c("div", { staticClass: "h5 text-muted font-weight-light" }, [
+      _vm._v(" Trades used "),
+      _c("a", { attrs: { href: "/dashboardPages/strategy" } }, [
+        _vm._v("Strategy")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "my-auto" }, [
+      _c("a", { attrs: { href: "/trading_setups_analysis" } }, [
+        _vm._v("Deteils")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "h5 text-muted font-weight-light" }, [
+      _vm._v(" Trades with "),
+      _c("a", { attrs: { href: "/dashboardPages/tradingrules" } }, [
+        _vm._v("Entry Rules")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "my-auto" }, [
+      _c("a", { attrs: { href: "trading_setups_analysis" } }, [
+        _vm._v("Deteils")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "h5 text-muted font-weight-light" }, [
+      _vm._v(" Trades with "),
+      _c("a", { attrs: { href: "/dashboardPages/tradingrules" } }, [
+        _vm._v("Exit Reason Rule")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "my-auto" }, [
+      _c("a", { attrs: { href: "trading_setups_analysis" } }, [
+        _vm._v("Deteils")
       ])
     ])
   }
@@ -68422,11 +68628,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _BarChartSymbols_vue_vue_type_template_id_fde9abfa_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BarChartSymbols.vue?vue&type=template&id=fde9abfa&scoped=true& */ "./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=template&id=fde9abfa&scoped=true&");
+/* harmony import */ var _BarChartSymbols_vue_vue_type_template_id_fde9abfa___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BarChartSymbols.vue?vue&type=template&id=fde9abfa& */ "./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=template&id=fde9abfa&");
 /* harmony import */ var _BarChartSymbols_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BarChartSymbols.vue?vue&type=script&lang=js& */ "./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _BarChartSymbols_vue_vue_type_style_index_0_id_fde9abfa_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./BarChartSymbols.vue?vue&type=style&index=0&id=fde9abfa&scoped=true&lang=css& */ "./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=style&index=0&id=fde9abfa&scoped=true&lang=css&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -68434,13 +68638,13 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _BarChartSymbols_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _BarChartSymbols_vue_vue_type_template_id_fde9abfa_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _BarChartSymbols_vue_vue_type_template_id_fde9abfa_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _BarChartSymbols_vue_vue_type_template_id_fde9abfa___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _BarChartSymbols_vue_vue_type_template_id_fde9abfa___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  "fde9abfa",
+  null,
   null
   
 )
@@ -68466,35 +68670,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=style&index=0&id=fde9abfa&scoped=true&lang=css&":
-/*!*****************************************************************************************************************************!*\
-  !*** ./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=style&index=0&id=fde9abfa&scoped=true&lang=css& ***!
-  \*****************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_BarChartSymbols_vue_vue_type_style_index_0_id_fde9abfa_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./BarChartSymbols.vue?vue&type=style&index=0&id=fde9abfa&scoped=true&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=style&index=0&id=fde9abfa&scoped=true&lang=css&");
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_BarChartSymbols_vue_vue_type_style_index_0_id_fde9abfa_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_BarChartSymbols_vue_vue_type_style_index_0_id_fde9abfa_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_BarChartSymbols_vue_vue_type_style_index_0_id_fde9abfa_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_BarChartSymbols_vue_vue_type_style_index_0_id_fde9abfa_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-
-
-/***/ }),
-
-/***/ "./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=template&id=fde9abfa&scoped=true&":
-/*!***************************************************************************************************************!*\
-  !*** ./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=template&id=fde9abfa&scoped=true& ***!
-  \***************************************************************************************************************/
+/***/ "./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=template&id=fde9abfa&":
+/*!***************************************************************************************************!*\
+  !*** ./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=template&id=fde9abfa& ***!
+  \***************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BarChartSymbols_vue_vue_type_template_id_fde9abfa_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./BarChartSymbols.vue?vue&type=template&id=fde9abfa&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=template&id=fde9abfa&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BarChartSymbols_vue_vue_type_template_id_fde9abfa_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BarChartSymbols_vue_vue_type_template_id_fde9abfa___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./BarChartSymbols.vue?vue&type=template&id=fde9abfa& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trade_analysis/BarChartSymbols.vue?vue&type=template&id=fde9abfa&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BarChartSymbols_vue_vue_type_template_id_fde9abfa___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BarChartSymbols_vue_vue_type_template_id_fde9abfa_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BarChartSymbols_vue_vue_type_template_id_fde9abfa___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

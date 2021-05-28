@@ -100,7 +100,7 @@ Route::group(['prefix' => 'dashboardPages/tradehistory'], function(){
 
 /* Trading rules */
 Route::group(['prefix' => 'dashboardPages/tradingrules'], function(){
-    Route::view('/', 'dashboardpages.trading_rules.trading_rules')->name('trading_rules');
+    Route::view('/', 'dashboardpages.trading_rules.trading_rules')->middleware('auth')->name('trading_rules');
     Route::get('/entry_rules/g', 'EntryRulesController@index');
     Route::get('/exit_reasons/g', 'ExitReasonController@index');
     Route::get('/exit_reasons', 'ExitReasonController@create');
@@ -158,6 +158,8 @@ Route::group(['prefix' => 'tradeAnalysis'], function(){
     Route::get('/Miscelaneous/{portfolio_id}/{side}', 'Analysis\TradeAnalysisController@miscelaneous');
     Route::get('/MostTradedSymbols/{portfolio_id}', 'Analysis\TradeAnalysisController@mostTradedSymbols');
     Route::get('/timeFrameFrequence/{portfolio_id}', 'Analysis\TradeAnalysisController@timeFrameFrequence');
+    Route::get('/tradesUsedFeatures/{portfolio_id}', 'Analysis\TradeAnalysisController@tradesUsedFeatures');
+
 
 });
 Route::get('/trading_setups_analysis', function () {
