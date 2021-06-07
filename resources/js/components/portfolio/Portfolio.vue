@@ -168,7 +168,11 @@ export default {
       if (error.response.status === 419 || error.response.status == 401) {
         window.location.href = "/login";
       } else {
-        this.form.errors.record(error.response.data.errors);
+        if (error.response.status === 403) {
+          console.log(error.response.data.message);
+        } else {
+          this.form.errors.record(error.response.data.errors);
+        }
       }
     },
 
@@ -252,11 +256,12 @@ export default {
       var item_id = value.id;
       var item_name = value.name;
       var item_currency = value.currency;
-      let data = new FormData();
-      data.append("name", item_name);
-      data.append("currency", item_currency);
       axios
-        .post("/dashboardPages/portfolio/u/" + item_id, data)
+        .put("/dashboardPages/portfolio/update/" + item_id, {
+          id: item_id,
+          name: item_name,
+          currency: item_currency,
+        })
         .then((res) => {
           $("#modal-form").modal("hide");
           this.fetchportfolio();
@@ -276,7 +281,7 @@ export default {
 
     destroy: function destroy(value) {
       axios
-        .post("/dashboardPages/portfolio/d/" + value.id)
+        .delete("/dashboardPages/portfolio/d/" + value.id)
         .then((res) => {
           $("#modal-form").modal("hide");
           this.fetchportfolio();
@@ -321,8 +326,8 @@ export default {
 
     storeTransaction: function storeTransaction(value) {
       let data = new FormData();
-      data.append("amount_transaction", value.amount_transaction);
-      data.append("transaction_date", value.transaction_date);
+      data.append("amount", value.amount_transaction);
+      data.append("action_date", value.transaction_date);
       data.append("portfolio_id", value.id);
       axios
         .post("/dashboardPages/portfolio/storeTransactions", data)

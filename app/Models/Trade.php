@@ -15,21 +15,25 @@ class Trade extends Model
     use HasFactory;
 
     protected $fillable = [
-    'trade_img',
-    'symbol',
-    'type_side',
-    'quantity',
-    'entry_price',
-    'exit_price',
-    'stop_loss_price',
-    'time_frame',
-    'entry_date',
-    'exit_date',
-    'trade_notes',
-    'trade_img',
-    'strategy',
-    'exit_reason'
+        'symbol',
+        'type_side',
+        'quantity',
+        'entry_price',
+        'exit_price',
+        'stop_loss_price',
+        'time_frame',
+        'entry_date',
+        'exit_date',
+        'pl_currency',
+        'pl_pips',
+        'trade_notes',
+        'trade_img',
+        'strategy_id',
+        'exit_reason_id',
+        'user_id',
+        'portfolio_id'
     ];
+    
     public function user(){
         return $this->belongsTo(User::class);
     }
@@ -63,11 +67,11 @@ class Trade extends Model
         'entry_date' => 'datetime: d-M-Y H:i',
     ];
 
-    public function add_to_used_entry_rules($request){
+    public function add_to_used_entry_rules($entry_rule_id){
         /* $rules = $request->entry_rule_id;
         $array = explode(',', $rules);*/     
         
-        $array = Str::of($request->entry_rule_id)->explode(',');
+        $array = Str::of($entry_rule_id)->explode(',');
         foreach($array as $item){
             $this->used_entry_rules()->create([
                 'trade_id' => $this->id,
@@ -88,16 +92,16 @@ class Trade extends Model
         ]);
     }
 
-    public function add_to_trade_performance($request){
-        
-       $retun_avg = TradePerformance::where('portfolio_id', \App\Models\Portfolio::isactive()->first())
+    public function add_to_trade_performance($trade)
+    {
+       $return_avg = TradePerformance::where('portfolio_id', \App\Models\Portfolio::isactive()->first())
        ->avg('trade_return');
 
         $this->tradePerformance()->create([
-            'trade_return' => $request->trade_return,
+            'trade_return' => $trade["trade_return"],
             'trade_id' => $this->id,
-            'ratio' => $request->risk_reward,
-            'pow_2' => pow(($retun_avg - $request->trade_return), 2),
+            'ratio' => $trade["risk_reward"],
+            'pow_2' => pow(($return_avg - $trade["trade_return"]), 2),
             'portfolio_id' => \App\Models\Portfolio::isactive()->first(),
         ]);
     }
@@ -114,7 +118,7 @@ class Trade extends Model
             $query->where('pl_currency', $compare, 0);
         })
         ->when($period ?? null , function($query) use($period){
-            $query->where('entry_date', '>=', $period);
+            $query->where('exit_date', '>=', $period);
         })
         ->get();
 

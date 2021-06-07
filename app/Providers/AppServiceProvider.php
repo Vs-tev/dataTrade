@@ -34,15 +34,15 @@ class AppServiceProvider extends ServiceProvider
             ->get());
         });
 
-        View::composer(['dashboardpages.trading.trade_history', 'dashboardpages.trading.trade_record'], function($view){
+        View::composer(['dashboardpages.trading.trade_history', 'dashboardpages.trading.trade_record', 'setups_analysis.trading_setups_analysis'], function($view){
             $view->with('strategy', \App\Models\Strategy::where('user_id', auth()->id())->get());
         });
 
-        View::composer(['dashboardpages.trading.trade_history', 'dashboardpages.trading.trade_record'], function($view){
+        View::composer(['dashboardpages.trading.trade_history', 'dashboardpages.trading.trade_record', 'setups_analysis.trading_setups_analysis'], function($view){
             $view->with('exitReasons', \App\Models\ExitReason::where('user_id', auth()->id())->get());
         });
 
-        View::composer(['dashboardpages.trading.trade_history', 'dashboardpages.trading.trade_record'], function($view){
+        View::composer(['dashboardpages.trading.trade_history', 'dashboardpages.trading.trade_record', 'setups_analysis.trading_setups_analysis'], function($view){
             $view->with('entryRules', \App\Models\EntryRules::where('user_id', auth()->id())->get());
         });
 

@@ -11,7 +11,7 @@
                 </multiselect>
                 
             </div>
-            <div class="no-gutters row justify-content-between align-items-start" v-if="!spinner">
+            <div class="no-gutters row justify-content-between align-items-start" v-if="portfolio">
                 <div class="col-sm-6 col-xl-2 px-4 py-3">
                     <div class="text-left">
                         <div class="">
@@ -66,12 +66,8 @@
                     </div>  
                 </div>
             </div>
-            <div v-else>
-                <ul class="list-unstyled">
-                <li class="text-center py-4">
-                    <div class="spinner-border text-primary"></div>
-                </li>
-            </ul> 
+            <div class="p-4" v-else>
+                <skeletion-box :minWidth="100" :height="'4em'" class="rounded-sm my-2"></skeletion-box>
             </div>
            
         </div>
@@ -80,6 +76,7 @@
             <!-- chart -->
             <div class="col-md-9 pl-0">
                 <div class="col-12 p-3 dashboard_container_content h-100">
+                    <skeletion-bar-chart v-if="!portfolio"></skeletion-bar-chart>
                     <area-chart v-if="portfolio" :portfolio="portfolio"></area-chart>
                 </div>
             </div>
@@ -123,6 +120,8 @@ import DonutChart from "./DonutChart.vue";
 import AreaChart from "./AreaChart.vue";
 import Multiselect from "vue-multiselect";
 import TradesMonitoring from "./TradesMonitoring.vue";
+import SkeletionBox from "../Skeletion/SkeletionBox.vue";
+import SkeletionBarChart from "../Skeletion/SkeletionBarChart.vue";
 
 export default {
   name: "TradeAnalysis",
@@ -131,6 +130,8 @@ export default {
     DonutChart,
     Multiselect,
     TradesMonitoring,
+    SkeletionBox,
+    SkeletionBarChart,
   },
 
   props: ["portfolios"],

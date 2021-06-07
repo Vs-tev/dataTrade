@@ -1,5 +1,6 @@
 <template>
     <apexchart ref="realtimeChart" type="bar" :height="height" :options="chartOptions" :series="series"></apexchart>
+    
 </template>
 <script>
 export default {
@@ -58,6 +59,7 @@ export default {
           categories: this.$props.barChartdata
             ? this.$props.barChartdata.map((i) => i.category)
             : "",
+          labels: { trim: true, rotate: -45 },
           position: "top",
           axisBorder: {
             show: false,

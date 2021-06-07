@@ -33,13 +33,7 @@ Vue.component('register-first_portfolio', require('./components/portfolio/Regist
 Vue.component('app-plans', require('./components/plans/Plans.vue').default);
 Vue.component('user-settings', require('./components/user/UserSettings.vue').default);
 Vue.component('app-trade-analysis', require('./components/trade_analysis/TradeAnalysis.vue').default);
-
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+Vue.component('app-trade-setup-analysis', require('./components/trading_setup_analysis/SetupAnalysis.vue').default);
 
 if (document.querySelector('#app')) {
     const app = new Vue({

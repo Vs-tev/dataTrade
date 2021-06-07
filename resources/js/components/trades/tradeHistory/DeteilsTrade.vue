@@ -255,7 +255,7 @@ export default {
         )
       );
       axios
-        .post("/dashboardPages/tradehistory/u/" + this.trade.id, data)
+        .post("/dashboardPages/tradehistory/update/" + this.trade.id, data)
         .then((res) => {
           this.$emit("update");
           $("#modal_edit_trade").modal("hide");
@@ -264,11 +264,13 @@ export default {
           this.checkResponseStatus(error);
         });
     },
+
     onFileSelected() {
       this.trade.img_mode = true;
       this.trade.trade_img = event.target.files[0];
       this.new_img = URL.createObjectURL(this.trade.trade_img);
     },
+
     removeTradeImg() {
       this.trade.trade_img = "";
       this.new_img = "";

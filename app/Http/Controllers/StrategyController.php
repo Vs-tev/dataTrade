@@ -7,10 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Gate;
+use App\Traits\StoreImgTraits;
+use App\Http\Requests\StoreStrategyRequest;
 
 
 class StrategyController extends Controller
 {
+    use StoreImgTraits;
+    
     public function __construct()
     {
         $this->middleware(['auth','hasPortfolio']);
@@ -28,8 +32,9 @@ class StrategyController extends Controller
         }])
         ->where('user_id', auth()->id())
         ->get();
-        
+
         return $strategy;
+
     }
 
     /**
@@ -50,65 +55,18 @@ class StrategyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreStrategyRequest $request)
     {
         if (Gate::allows('strategies')){
-            $this->validate(request() ,[
-                'name' => [Rule::unique('strategies')->where(function ($query) {
-                    return $query->where('user_id', auth()->id());
-                }),'required', 'string', 'min:2', 'max:40'],
-                'description' => 'required',
-                'img_strategy' => 'image|mimes:jpeg,png,jpg,gif,svg|nullable|max:2999'
-                ],
-                ['img_strategy.image' => 'Allowed file types: jpg,png,gif']
-            );
+            
+            $fileNameToStore = $this->storeImg($request->file('img_strategy'), 'strategies');
 
-            if(request()->hasFile('img_strategy')){
-                //Get filename with extention
-                $filenameWithExt = request()->file('img_strategy')->getClientOriginalName();
-                //Get just filename
-                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                //Get just ext
-                $extention = request()->file('img_strategy')->getClientOriginalExtension();
-                //Filename to store
-                $fileNameToStore = $filename.'_'.time().'.'.$extention;
-                //Upload Image
-                $path = request()->file('img_strategy')->storeAs('public/strategies', $fileNameToStore);
-            }else {
-                $fileNameToStore = 'noimage.jpg';
-            }
-
-            $strategy = new Strategy;
-            $strategy->name = $request->input('name');
-            $strategy->img_strategy = $fileNameToStore;
-            $strategy->user_id = auth()->id();
-            $strategy->description = $request->input('description');
-        
-            $strategy->save();
+            $strategy = Strategy::create([
+                'user_id' => auth()->id(),
+                'img_strategy' => $fileNameToStore,
+            ] + $request->validated());
 
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\strategy  $strategy
-     * @return \Illuminate\Http\Response
-     */
-    public function show(strategy $strategy)
-    {
-        
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\strategy  $strategy
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(strategy $strategy)
-    {
-        //
     }
 
     /**
@@ -118,51 +76,22 @@ class StrategyController extends Controller
      * @param  \App\Models\strategy  $strategy
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreStrategyRequest $request, Strategy $strategy)
     {
-       
-        $strategy = Strategy::findOrFail($id);
-        if(request('img_strategy') == $strategy->img_strategy){
-            $fileNameToStore = $strategy->img_strategy;
-            $this->validate(request() ,[
-                'name' => ['required','unique:strategies,name,'.$id.'', 'string', 'min:2', 'max:40'],
-                'description' => 'required',]
-            );
+        if(!request()->hasFile('img_strategy')){
+            $fileNameToStore =  request('img_strategy') == $strategy->img_strategy ? $strategy->img_strategy : 'noimage.jpg';
         }else{
-            if(request()->hasFile('img_strategy')){
-            $this->validate(request() ,[
-                'name' => ['required','unique:strategies,name,'.$id.'', 'string', 'min:2', 'max:40'],
-                'description' => 'required',
-                'img_strategy' => 'image|mimes:jpeg,png,jpg,gif,svg|nullable|max:2999'
-            ],
-            ['img_strategy.image' => 'Allowed file types: jpg,png,gif']
-            );
-             //Get filename with extention
-             $filenameWithExt = request()->file('img_strategy')->getClientOriginalName();
-             //Get just filename
-             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-             //Get just ext
-             $extention = request()->file('img_strategy')->getClientOriginalExtension();
-             //Filename to store
-             $fileNameToStore = $filename.'_'.time().'.'.$extention;
-             //Upload Image
-             $path = request()->file('img_strategy')->storeAs('public/strategies', $fileNameToStore);
-             if($strategy->img_strategy !== 'noimage.jpg'){
-                Storage::delete('public/strategies/'.$strategy->img_strategy);
-            }
-            }else {
-                $fileNameToStore = 'noimage.jpg';
-                if($strategy->img_strategy !== 'noimage.jpg'){
-                    Storage::delete('public/strategies/'.$strategy->img_strategy);
-                }
-            }
+            $validated = $request->validate([
+                'img_strategy' => 'image|mimes:jpeg,png,jpg,gif,svg|nullable|max:2999',
+            ]);
+            $fileNameToStore = $this->storeImg($request->file('img_strategy'), 'strategies');
         }
 
-        $strategy->user_id = auth()->id();
-        $strategy->name = $request->get('name');
-        $strategy->description = $request->get('description');
-        $strategy->img_strategy = $fileNameToStore;
-        $strategy->save();
+        if($strategy->img_strategy !== 'noimage.jpg'){
+            Storage::delete('public/strategies/'.$strategy->img_strategy);
+        }
+
+        $strategy->update($request->validated() + ['img_strategy' => $fileNameToStore]);
 
         return $strategy; 
     }

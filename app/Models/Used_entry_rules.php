@@ -9,9 +9,8 @@ class Used_entry_rules extends Model
 {
 
     use HasFactory;
+
     protected $fillable = ['entry_rule_id', 'trade_id', 'user_id'];
-
-
 
    /*  public function trade(){
         return $this->belongsTo(Trade::class);

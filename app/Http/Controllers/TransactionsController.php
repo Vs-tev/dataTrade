@@ -36,21 +36,11 @@ class TransactionsController extends Controller
     public function store(Request $request)
     {
         $this->validate(request() ,[
-            'amount_transaction' => ['required','numeric','max:99999999999', ],
-            'transaction_date' => ['required', new PortfolioDateOverlapping]
+            'amount' => ['required','numeric','max:99999999999', ],
+            'action_date' => ['required', new PortfolioDateOverlapping]
         ]);
       
-        if (Auth::check()) {
-            $transaction = new Balance;
-            $transaction->portfolio_id = $request->input('portfolio_id');
-            $transaction->amount = $request->input('amount_transaction');
-            $transaction->action_date = $request->input('transaction_date');
-            $transaction->action_type = 'transaction';
-            
-            $transaction->save();
-        }else{
-            return route('login'); 
-        }
+        Balance::create($request->all() + ['action_type' => 'transaction']);
     }
 
 

@@ -9,7 +9,7 @@ class Strategy extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name, description', 'img_strategy'];
+    protected $fillable = ['name', 'description', 'img_strategy', 'user_id'];
 
     public function user(){
         return $this->belongsTo(User::class);

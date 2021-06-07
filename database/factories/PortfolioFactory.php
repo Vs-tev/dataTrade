@@ -26,7 +26,7 @@ class PortfolioFactory extends Factory
             'start_equity' => rand(500, 10000),
             'started_at' => $this->faker->dateTimeBetween('2021-03-06', '2021-03-07'),
             'currency' => $this->faker->randomElement(['EUR', 'CAD']),
-            'user_id' => 2,
+            'user_id' => \App\Models\User::all()->random()->id,
             'is_active' => 1,
         ];
     }

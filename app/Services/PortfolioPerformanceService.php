@@ -9,8 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class PortfolioPerformanceService{
 
-    
-
     public function PortfolioData($query, $portfolio_id){
        
         $portfolio = Portfolio::select(['portfolios.id','b.action_date','name', 'start_equity', 'currency', 'is_active', 'portfolios.started_at', 
@@ -44,11 +42,6 @@ class PortfolioPerformanceService{
             
             return $object;
         });
-        
-      /*   $data = [
-            mojem da si postroim object s razlichni array ili objects vytre kato api
-            'portfolio' => $new,
-        ]; */
 
         return response()->json(
              $new

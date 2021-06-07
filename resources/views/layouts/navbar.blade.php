@@ -13,7 +13,7 @@
             <div class="top-left-bar">
                 <ul class="list-unstyled text-center">
                     <li class="mr-1 " ><a href="{{route('trade_analysis')}}" class=" {{Request::is('tradeAnalysis') ? 'active-btn text-muted' : '' }}">Trade Analysis</a></li>
-                    <li class="mr-1"><a href="{{route('trading_setups_analysis')}}" class="text-muted {{Request::is('trading_setups_analysis') ? 'active-btn' : '' }}">Trading Setups Analysis</a></li>
+                    <li class="mr-1"><a href="{{route('setups_analysis')}}" class="text-muted {{Request::is('setups_analysis') ? 'active-btn' : '' }}">Trading Setups Analysis</a></li>
                 </ul> 
             </div>
             <div class="top-right-bar">
@@ -47,7 +47,7 @@
         <div class="top-left-bar">
             <ul class="list-unstyled">
                 <li class="mr-1"><a href="{{route('trade_analysis')}}" class="text-muted {{Request::is('tradeAnalysis') ? 'active-btn' : '' }}">Trade Analysis</a></li>
-                <li class="mr-1"><a href="{{route('trading_setups_analysis')}}" class="text-muted {{Request::is('trading_setups_analysis') ? 'active-btn' : '' }}">Trading Setups Analysis</a></li>
+                <li class="mr-1"><a href="{{route('setups_analysis')}}" class="text-muted {{Request::is('setups_analysis') ? 'active-btn' : '' }}">Trading Setups Analysis</a></li>
             </ul> 
         </div>
         

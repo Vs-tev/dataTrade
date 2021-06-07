@@ -152,6 +152,7 @@ export default {
         this.form.img_error = "Undefine file type";
       } else {
         const data = new FormData();
+        data.append("create", true);
         data.append("img_strategy", value.img_strategy);
         data.append("name", value.name);
         data.append("description", value.description);
@@ -185,6 +186,7 @@ export default {
         this.form.img_error = "Undefine file type";
       } else {
         const data = new FormData();
+        data.append("id", value.id);
         data.append("img_strategy", value.img_strategy);
         data.append("name", value.name);
         data.append("description", value.description);

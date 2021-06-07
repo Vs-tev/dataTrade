@@ -67,10 +67,10 @@ Route::group(['prefix' => 'dashboardPages'], function(){
     Route::get('/portfolio', 'PortfolioController@view_portfolio')->name('portfolio');
     Route::get('/portfolio/g', 'PortfolioController@index');
     Route::get('/portfolioIsActive/g', 'PortfolioController@show');
-    Route::post('/portfolio/u/{id}', 'PortfolioController@update');
+    Route::put('/portfolio/update/{portfolio}', 'PortfolioController@update');
     Route::get('/portfolio/create', 'PortfolioController@create');
     Route::post('/portfolio/store', 'PortfolioController@store')->name('store_portfolio');
-    Route::post('/portfolio/d/{id}', 'PortfolioController@destroy');
+    Route::delete('/portfolio/d/{portfolio}', 'PortfolioController@destroy');
     Route::post('/portfolio/toggle_active/{id}', 'PortfolioController@toggle_is_active_portfolio');
 });
 
@@ -93,33 +93,33 @@ Route::group(['prefix' => 'dashboardPages/traderecord'], function(){
 Route::group(['prefix' => 'dashboardPages/tradehistory'], function(){
     Route::get('/', 'TradeHistoryController@index')->name('trade_history');
     Route::get('/g', 'TradeHistoryController@tradehistoryTradesTable');
-    Route::post('/u/{id}', 'TradeHistoryController@update');
+    Route::post('/update/{trade}', 'TradeHistoryController@update');
     Route::post('/exept/{id}', 'TradeHistoryController@update_excepted_trade');
-    Route::post('/d/{id}', 'TradeHistoryController@destroy');
+    Route::delete('/delete/{trade}', 'TradeHistoryController@destroy');
 });
 
 /* Trading rules */
 Route::group(['prefix' => 'dashboardPages/tradingrules'], function(){
-    Route::view('/', 'dashboardpages.trading_rules.trading_rules')->middleware('auth')->name('trading_rules');
+    Route::view('/', 'dashboardpages.trading_rules.trading_rules')->middleware(['auth','hasPortfolio'])->name('trading_rules');
     Route::get('/entry_rules/g', 'EntryRulesController@index');
     Route::get('/exit_reasons/g', 'ExitReasonController@index');
     Route::get('/exit_reasons', 'ExitReasonController@create');
     Route::get('/entry_rules', 'EntryRulesController@create');
     Route::post('/entry_rules/p', 'EntryRulesController@store');
     Route::post('/exit_reasons/p', 'ExitReasonController@store');
-    Route::post('/entry_rules/u/{id}', 'EntryRulesController@update');
-    Route::post('/exit_reasons/u/{id}', 'ExitReasonController@update');
-    Route::post('/entry_rules/d/{id}', 'EntryRulesController@destroy');
-    Route::post('/exit_reasons/d/{id}', 'ExitReasonController@destroy');
+    Route::put('/entry_rules/u/{EntryRules}', 'EntryRulesController@update');
+    Route::put('/exit_reasons/u/{ExitReason}', 'ExitReasonController@update');
+    Route::delete('/entry_rules/d/{EntryRules}', 'EntryRulesController@destroy');
+    Route::delete('/exit_reasons/d/{ExitReason}', 'ExitReasonController@destroy');
 });
 
 /* Trading strategy */
 Route::group(['prefix' => 'dashboardPages/strategy'], function(){
-    Route::view('/', 'dashboardpages.strategy.strategy')->middleware('auth')->name('strategy');
+    Route::view('/', 'dashboardpages.strategy.strategy')->middleware(['auth','hasPortfolio'])->name('strategy');
     Route::get('/g', 'StrategyController@index');
     Route::get('/create', 'StrategyController@create');
     Route::post('/p', 'StrategyController@store');
-    Route::post('/u/{id}', 'StrategyController@update');
+    Route::post('/u/{strategy}', 'StrategyController@update');
     Route::post('/d/{id}', 'StrategyController@destroy');
 });
 
@@ -127,8 +127,8 @@ Route::group(['prefix' => 'dashboardPages/strategy'], function(){
 Route::get('/dashboardPages/traderecord/sparkline', 'BalanceController@getSparklineRuningTotal');
 
 /**Plans*/
-Route::group(['middleware' => 'auth'],  function(){
-    Route::get('/plan', 'BillingController@index')->middleware('auth')->name('plan');
+Route::group(['middleware' => ['auth','hasPortfolio']],  function(){
+    Route::get('/plan', 'BillingController@index')->name('plan');
     Route::get('/checkout/{plan_id}', 'CheckoutController@checkout')->name('checkout');
     Route::post('/checkout', 'CheckoutController@processCheckout')->name('checkout.process');
     Route::get('/cancel', 'BillingController@cancel')->name('cancels');
@@ -150,7 +150,6 @@ Auth::routes();
 /* Trade analysis */
 
 Route::group(['prefix' => 'tradeAnalysis'], function(){
-    
     Route::get('/', 'Analysis\TradeAnalysisController@index')->name('trade_analysis');
     Route::get('/portfolioData/{portfolio_id}', 'Analysis\TradeAnalysisController@portfolioData');
     Route::get('/TradesMonitoring/{portfolio_id}/{period}/{side}', 'Analysis\TradeAnalysisController@tradesMonitoring');
@@ -159,11 +158,11 @@ Route::group(['prefix' => 'tradeAnalysis'], function(){
     Route::get('/MostTradedSymbols/{portfolio_id}', 'Analysis\TradeAnalysisController@mostTradedSymbols');
     Route::get('/timeFrameFrequence/{portfolio_id}', 'Analysis\TradeAnalysisController@timeFrameFrequence');
     Route::get('/tradesUsedFeatures/{portfolio_id}', 'Analysis\TradeAnalysisController@tradesUsedFeatures');
-
-
 });
-Route::get('/trading_setups_analysis', function () {
-    return view('setups_analysis.trading_setups_analysis');
-})->middleware('auth')->name('trading_setups_analysis');
+
+Route::group(['prefix' => 'setupsAnalysis'], function(){
+    Route::get('/', 'Analysis\SetupsAnalysisController@index')->name('setups_analysis');
+    
+});
 
 

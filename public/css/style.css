@@ -256,7 +256,9 @@ label {
 .primary {
     color: var(--primary) !important;
 }
-
+.underline{
+    text-decoration: underline;
+}
 .avatar-letter {
     background-color: var(--badge-entry-rule);
     position: absolute;
@@ -591,6 +593,10 @@ input {
     font-size: var(--font-sm);
     padding-top: 0.3rem;
     position: absolute;
+}
+
+.opacity-09{
+    opacity: 0.9
 }
 
 button,
@@ -5751,14 +5757,14 @@ input[type=button].btn-block {
 
 .badge {
     display: inline-block;
-    padding: 0.2rem 0.45rem !important;
+    padding: 0.15rem 0.65rem !important;
     font-size: var(--font-sm);
     font-weight: 500;
     line-height: 1;
     text-align: center;
     white-space: nowrap;
     vertical-align: baseline;
-    border-radius: 3px !important;
+    border-radius: 3px;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     -webkit-box-shadow: 0px 0px 8px -8px rgba(0, 0, 0, 1);
     -moz-box-shadow: 0px 0px 8px -8px rgba(0, 0, 0, 1);
@@ -7668,6 +7674,7 @@ button.bg-dark:focus {
 }
 
 @media (min-width: 576px) {
+
     .d-sm-none {
         display: none !important;
     }
@@ -7706,6 +7713,10 @@ button.bg-dark:focus {
 }
 
 @media (min-width: 768px) {
+    .d-md-border-right-block {
+        border-right: 1px solid #dee2e6!important;
+    }
+    
     .d-md-none {
         display: none !important;
     }
@@ -8776,6 +8787,12 @@ button.bg-dark:focus {
 
 .w-25 {
     width: 25% !important;
+}
+.w-30 {
+    width: 30% !important;
+}
+.w-40 {
+    width: 40% !important;
 }
 
 

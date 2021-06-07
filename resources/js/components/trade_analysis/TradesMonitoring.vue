@@ -8,7 +8,9 @@
             <li class="nav-item"><button class="nav-link bg-transparent text-dark font-500 font-lg mx-4 px-2 pb-3" @click="setSide('sell')" role="tab" data-toggle="tab" aria-selected="true">SELL</button></li>
         </ul>
         <div class="">
-            <button type="button" class="btn btn-link font-lg pt-2 text-muted border-0 font-500 dropdown-toggle" data-toggle="dropdown">Period <span class="lighter ml-1">{{period_text}} </span></button>
+            <button type="button" class="btn btn-link font-lg pt-2 text-muted border-0 font-500 dropdown-toggle" data-toggle="dropdown">Period 
+                <span class="lighter px-2 underline">{{period_text}} </span>
+            </button>
             <div class="dropdown-menu dropdown-menu-right">
                 <button class="dropdown-item" @click="setPeriod('all_time', 'All Time')">All Time</button>
                 <button class="dropdown-item" @click="setPeriod('day', 'Today')">Today</button>
@@ -20,7 +22,7 @@
     <div class="row align-items-center">
         <!-- Trades Monitoring -->
         <div class="col-md-4">
-            <div class="col-12 dashboard_container_content p-0">
+            <div class="col-12 dashboard_container_content p-0" >
                 <div class="font-500 h4 d-flex align-items-center text-capitalize font-weight-normal m-0 border-bottom p-4">
                     <div class="font-500 h4 text-capitalize font-weight-normal m-0 text-nowrap">
                         Trades Monitoring
@@ -91,6 +93,7 @@
                    
                 </ul>
             </div>
+           
         </div>
 
         <!-- Profit -->
@@ -274,9 +277,14 @@
         </div>
 
         <div class="col-md-5">
-            <div class="col-12 dashboard_container_content p-0 p-0">
+             <div class="dashboard_container_content" v-if="!miscelaneous_response">
+                <skeletion-box :minWidth="100" :height="'1.5em'" class="rounded-sm my-2"></skeletion-box>
+                <skeletion-box :minWidth="100" :height="'1.5em'" class="rounded-sm my-2"></skeletion-box>
+                <skeletion-box :minWidth="100" :height="'1.5em'" class="rounded-sm my-2"></skeletion-box>
+                <skeletion-box :minWidth="100" :height="'1.5em'" class="rounded-sm my-2"></skeletion-box>
+            </div>
+            <div class="col-12 dashboard_container_content p-0 p-0" v-else>
                 <ul class="list-group list-group-flush px-1">
-                   
                     <li class="list-group-item">
                         <div class="d-flex justify-content-between align-items-center p-0">
                             <div class="text-capitalize primary-color font-lg">
@@ -339,18 +347,26 @@
                     </li>
                 </ul>
             </div>
+
             <div class="col-12 dashboard_container_content pt-3 pb-1">
-                 <bar-chart-symbols v-if="timeFrameFrequence" :color="'#3ac47d'" :title="'Trades by Time Frame'" :barChartdata="timeFrameFrequence"  :height="280"></bar-chart-symbols>
+                <bar-chart-symbols v-if="timeFrameFrequence" :color="'#3ac47d'" :title="'Trades by Time Frame'" :barChartdata="timeFrameFrequence"  :height="280"></bar-chart-symbols>
+                <skeletion-bar-chart v-if="!timeFrameFrequence"></skeletion-bar-chart>
             </div>
         </div>
 
         <div class="col-md-7">
-
-            <div class="col-12 dashboard_container_content pt-3 pb-1">
+           
+            <div class="col-12 dashboard_container_content pt-3 pb-1" >
                 <bar-chart-symbols v-if="barChartdata" :color="'#49a3ff'" :title="'Most Traded Symbols'" :barChartdata="barChartdata" :height="360"></bar-chart-symbols>
+                 <skeletion-bar-chart v-if="!barChartdata"></skeletion-bar-chart>
             </div>
             <div class="d-md-flex">
                 <div class="col-md-4 px-0 pr-md-3">
+
+                    <div class="dashboard_container_content" v-if="!usedFeatures">
+                        <skeletion-box class="rounded-sm my-2"></skeletion-box>
+                        <skeletion-box class="rounded-sm my-2"></skeletion-box>
+                    </div>
                     <div class="col-12 dashboard_container_content p-3" v-if="usedFeatures">
                          <div class="h5 text-muted font-weight-light"> Trades used <a href="/dashboardPages/strategy">Strategy</a></div>
                         <div class="d-flex justify-content-between items-content-center pt-3">
@@ -360,6 +376,10 @@
                     </div>
                 </div>
                 <div class="col-md-4 px-0 px-md-2">
+                    <div class="dashboard_container_content" v-if="!usedFeatures">
+                        <skeletion-box class="rounded-sm my-2"></skeletion-box>
+                        <skeletion-box class="rounded-sm my-2"></skeletion-box>
+                    </div>
                     <div class="col-12 dashboard_container_content p-3" v-if="usedFeatures">
                     <div class="h5 text-muted font-weight-light"> Trades with <a href="/dashboardPages/tradingrules">Entry Rules</a></div>
                         <div class="d-flex justify-content-between items-content-center pt-3">
@@ -369,6 +389,10 @@
                     </div>
                 </div>
                 <div class="col-md-4 px-0 pl-md-3">
+                    <div class="dashboard_container_content" v-if="!usedFeatures">
+                        <skeletion-box class="rounded-sm my-2"></skeletion-box>
+                        <skeletion-box class="rounded-sm my-2"></skeletion-box>
+                    </div>
                     <div class="col-12 dashboard_container_content p-3" v-if="usedFeatures">
                      <div class="h5 text-muted font-weight-light"> Trades with <a href="/dashboardPages/tradingrules">Exit Reason Rule</a></div>
                         <div class="d-flex justify-content-between items-content-center pt-3">
@@ -385,10 +409,17 @@
 </div>
 </template>
 <script>
+import SkeletionBarChart from "../Skeletion/SkeletionBarChart.vue";
+import SkeletionBox from "../Skeletion/SkeletionBox.vue";
 import BarChartSymbols from "./BarChartSymbols.vue";
 import SparklineDonutChart from "./SparklineDonutChart.vue";
 export default {
-  components: { SparklineDonutChart, BarChartSymbols },
+  components: {
+    SparklineDonutChart,
+    BarChartSymbols,
+    SkeletionBox,
+    SkeletionBarChart,
+  },
   name: "TradeMonitoring",
   props: ["selectedPortfolio"],
 
@@ -400,7 +431,7 @@ export default {
       response: [],
       response_profit_data: [],
 
-      miscelaneous_response: [],
+      miscelaneous_response: null,
       barChartdata: null,
       timeFrameFrequence: null,
       usedFeatures: null,

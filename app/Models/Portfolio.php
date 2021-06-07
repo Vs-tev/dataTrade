@@ -12,7 +12,7 @@ class Portfolio extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name, currency'];
+    protected $fillable = ['name', 'start_equity', 'started_at', 'currency', 'user_id', 'is_active'];
 
     protected $casts = [
         'started_at' => 'datetime:d M Y',
@@ -60,7 +60,6 @@ class Portfolio extends Model
     }
 
     public function scopeRunningTotal($query, $id){
-
         //running total for all portfolios used in portfolio page
          return $query = DB::table('balances')->select('action_date', 'id' , DB::raw('SUM(amount) OVER(ORDER BY action_date)as running_total'))
         ->where([['portfolio_id', $id],['is_except', 0]])

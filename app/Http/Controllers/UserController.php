@@ -57,7 +57,7 @@ class UserController extends Controller
             'confirm_password' => ['required','same:new_password'],
         ]);
         
-            //dd($request->current_password);
+        
         if(!(Hash::check($request->get('current_password'), auth()->user()->password))){
             return response()->json([
                 'errors' => [

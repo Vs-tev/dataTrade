@@ -59,10 +59,6 @@
                                             class="unicode-arrow">&#8645;</span></div>
                                 </th>
                                 <th>
-                                    <div class="d-none d-md-block">Side<span class="unicode-arrow">&#8645;</span>
-                                    </div>
-                                </th>
-                                <th>
                                     <div class="d-none d-lg-block">Fees</div>
                                 </th>
                                 <th>
@@ -103,14 +99,15 @@
                         </tbody>
                         <tbody>
                             <tr v-for="trade in trades" :key="trade.id" >
-                                <td class="font-500">{{trade.symbol}} &#8226; <span
-                                        class="dark font-500">{{trade.time_frame}}</span></td>
+                                <td class="font-500 text-nowrap">
+                                    <span class="text-truncate d-block text-dark w-75">{{trade.symbol}}</span> 
+                                    <span class="dark font-weight-normal text-muted">&#8226; {{trade.time_frame}}</span>
+                                    <span class="badge badge-pill opacity-09 shadow-sm font-weight-normal text-capitalize font-sm ml-1" :class="trade.type_side == 'buy' ? 'badge-primary': 'badge-danger' ">{{trade.type_side}}</span>
+                                  </td>
                                 <td>
                                     <div class="d-none d-md-block">{{trade.quantity}}</div>
                                 </td>
-                                <td>
-                                    <div class="d-none d-md-block">{{trade.type_side}}</div>
-                                </td>
+                               
                                 <td>
                                     <div class="d-none d-lg-block">{{trade.fees}} {{trade.portfolio.currency}}</div>
                                 </td>
@@ -500,7 +497,7 @@ export default {
 
     destroyTrade: function destroyTrade(trade) {
       axios
-        .post("/dashboardPages/tradehistory/d/" + trade)
+        .delete("/dashboardPages/tradehistory/delete/" + trade)
         .then((res) => {
           $("#modal_delete_trade").modal("hide");
           this.get_trades();

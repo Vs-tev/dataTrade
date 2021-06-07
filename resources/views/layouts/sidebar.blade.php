@@ -34,7 +34,7 @@
                     <span class="material-icons">payment</span>Payment methods</a> 
                 </li>  
                 <li class=""><a href="{{route('payment_methods.dashboard')}}" class="">
-                    <span class="material-icons">dashboard_customize</span>Dashboard</a> 
+                    <span class="material-icons">dashboard_customize</span>Feautures</a> 
                 </li>                    
             </ul>
         </div>

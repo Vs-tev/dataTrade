@@ -10,6 +10,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;
 use App\Services\PortfolioPerformanceService;
+use App\Http\Requests\StorePortfolioRequest;
 
 
 class PortfolioController extends Controller
@@ -17,7 +18,9 @@ class PortfolioController extends Controller
     
     public function __construct()
     {
-        $this->middleware(['auth','hasPortfolio'])->except('store');
+        $this->middleware('auth');
+        $this->middleware('hasPortfolio')->except('store');
+
     }
     /**
      * Display a listing of the resource.
@@ -51,31 +54,18 @@ class PortfolioController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     *  @param  \App\Http\Requests\StorePortfolioRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePortfolioRequest $request)
     {
         if (Gate::allows('portfolios')){
-            $this->validate(request() ,[
-                'name' => [Rule::unique('portfolios')->where(function ($query) {
-                    return $query->where('user_id', auth()->id());
-                }),'required', 'min:2', 'max:80'],
-                'start_equity' => ['required','numeric','max:99999999999'],
-                'currency' => Rule::in(["EUR", "USD", "AUD", "CAD", "CHF"]),
-                'started_at' => ['required','date', 'before_or_equal: '.date("Y/m/d h:i:sa").''],
-            ],[
-                'before_or_equal' => 'The start date cannot be in the future'
-            ]);
-                
-            $portfolio = new Portfolio;
-            $portfolio->name = $request->input('name');
-            $portfolio->start_equity = $request->input('start_equity');
-            $portfolio->user_id = auth()->id();
-            $portfolio->currency = $request->input('currency');
-            $portfolio->started_at = $request->input('started_at');
-            $portfolio->is_active = $active = Portfolio::where('user_id', auth()->id())->count() == 0 ? 1 : $active = 0;
-            $portfolio->save();
+
+            $portfolio = Portfolio::create([
+                'user_id' => auth()->id(),
+                'is_active' => $active = Portfolio::where('user_id', auth()->id())->count() == 0 ? 1 : $active = 0,
+            ] + $request->validated());
+
             $portfolio->add_to_balance($portfolio);
         }
     }
@@ -83,7 +73,7 @@ class PortfolioController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\portfolio  $portfolio
+     * @param  \App\Models\Portfolio  $portfolio
      * @return \Illuminate\Http\Response
      */
     public function show()
@@ -103,19 +93,12 @@ class PortfolioController extends Controller
      * @param  \App\Models\portfolio  $portfolio
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id){
+    public function update(StorePortfolioRequest $request, Portfolio $portfolio){
 
-        $this->validate(request() ,[
-            'name' => ['required','unique:portfolios,name,'.$id.'', 'string', 'min:2', 'max:80'],
-            'currency' => Rule::in(["EUR", "USD", "AUD", "CAD", "CHF"]),
-        ]);
-        
-        $data = Portfolio::findOrFail($id);
-        $data->name = $request->get('name');
-        $data->currency = $request->get('currency');
-        $data->update($request->all());
+        $portfolio->update($request->validated());
 
-        return $data;
+        return $portfolio;
+
     }
 
     /**
@@ -124,26 +107,22 @@ class PortfolioController extends Controller
      * @param  \App\Models\portfolio  $portfolio
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Portfolio $portfolio)
     {
-        $portfolio = Portfolio::find($id);
-        if(auth()->user()->id !== $portfolio->user_id){
-            return redirect('/')->with('error', 'Unauthorize Page');
-        } 
-
         if(auth()->user()->portfolios()->count() > 1){
             $portfolio->delete();
-        }
 
-        if($portfolio->is_active == 1 ){
-            Portfolio::where([
-                ['id', '<>', $id],
-                ['user_id', '=', auth()->id()]
-                ])->limit(1)->update([
-                'is_active' => 1
-            ]);
+            if($portfolio->is_active == 1){
+                Portfolio::where([
+                    ['id', '<>', $portfolio->id],
+                    ['user_id', '=', auth()->id()]
+                    ])->limit(1)->update([
+                    'is_active' => 1
+                ]);
+            }
+        }else{
+           return abort(403, 'This portfolio cannot be deleted');
         }
-        
     }
 
     public function toggle_is_active_portfolio(Request $request, $id){     

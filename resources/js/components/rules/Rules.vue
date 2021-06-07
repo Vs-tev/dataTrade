@@ -175,9 +175,12 @@ export default {
       data.append("name", item_name);
 
       axios
-        .post(
+        .put(
           "/dashboardPages/tradingrules/" + this.typeRule + "/u/" + item_id,
-          data
+          {
+            id: item_id,
+            name: item_name,
+          }
         )
         .then((res) => {
           $("#modal-rule").modal("hide");
@@ -197,7 +200,7 @@ export default {
 
     destroyRule: function destroy(value) {
       axios
-        .post(
+        .delete(
           "/dashboardPages/tradingrules/" + this.typeRule + "/d/" + value.id
         )
         .then((res) => {

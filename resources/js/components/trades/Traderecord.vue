@@ -7,7 +7,7 @@
             </div>
             <div class="d-lg-flex flex-block pl-0 pr-0 pr-md pt-0">
                 <!-- trade inputs -->
-                <div class="new_trade_inputs_300 mx-auto">
+                <div class="new_trade_inputs_300 border-0 d-md-border-right-block mx-auto">
 
                   <div class="d-flex justify-content-start border-bottom ">
                      <div class="btn-group btn-group-toggle buy-sell-div p-0 border-right" data-toggle="buttons"
@@ -174,9 +174,9 @@
             
                 </div>
                 <!-- Img/commentar -->
-                <div class="flex-grow-1 img-commentar-div px-4 px-lg-0 pr-0 pr-lg-4">
+                <div class="flex-grow-1 img-commentar-div p-4 pr-0 pr-lg-4">
                     <div class="">
-                        <div class="trade_img text-center mb-2">
+                        <div class="trade_img text-center mb-4">
                             <div class="input-file-container js" v-if="!form.trade_img">
                                 <input class="d-none" @change="onFileSelected" id="img" name="img" type="file"
                                     accept="image/x-png,image/gif,image/jpeg">
@@ -198,7 +198,7 @@
                            <p class="error-output position-relative" v-if="form.errors.has('trade_img')"
                             v-text="form.errors.get('trade_img')"></p>
                        <label>Trade note:</label>
-                        <textarea class="form-control" v-model="form.description" cols="30" rows="12" placeholder="Write your analysis or thoughts about this trade"></textarea>
+                        <textarea class="form-control" v-model="form.description" cols="30" rows="8" placeholder="Write your analysis or thoughts about this trade"></textarea>
                         <!-- <texteditor  class=""></texteditor> -->
                     </div>
                   
@@ -206,7 +206,7 @@
               
             </div>
 
-            <div class="d-flex justify-content-end p-4">
+            <div class="d-flex justify-content-end border-top p-4">
                 <button type="button" id="tests" class="btn btn-secondary mr-3"
                     @click="clearFileds">Clear</button>
                 <button type="button" class="btn bt btn-primary mr-0" @click="recordTrade">Record
@@ -401,6 +401,7 @@ export default {
 
     recordTrade() {
       const data = new FormData();
+      data.append("create", true);
       data.append("symbol", this.form.symbol);
       data.append("type_side", this.form.type_side);
       data.append("quantity", this.form.quantity);
@@ -457,32 +458,17 @@ export default {
       this.form.fees = "";
       this.form.pl = "";
       this.form.pl_pips = "";
+      this.form.exit_reason_id = "";
+      this.form.entry_rule_id = [];
+      this.form.strategy_id = "";
       this.form.description = "";
       this.form.trade_img = "";
       this.form.thumbnail_img = "";
+
       this.today();
       //this.form.type_side = "buy";
       //this.form.time_frame = "1 min";
     },
-    /* getSymbols() {
-      axios
-        .get(
-          "https://eodhistoricaldata.com/api/eod/EUR.FOREX?api_token=OeAFFmMliFG5orCUuwAKQ8l4WWFQ67YX&order=d&fmt=json",
-          {
-            transformRequest: [
-              (data, headers) => {
-                delete headers.common["X-Requested-With"];
-                delete headers.common["Access-Control-Allow-Origin"];
-                return data;
-              },
-            ],
-          }
-        )
-        .then((response) => {
-          this.symbols = response.data;
-        })
-        .catch((error) => {});
-    }, */
   },
 };
 </script>

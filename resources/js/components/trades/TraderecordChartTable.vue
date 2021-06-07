@@ -8,17 +8,19 @@
             <div class="table-div-min-height">
             <table class="table table-sm table-hover">
                 <thead>
-                    <tr class="text-center">
-                        <th>Symbol</th>
-                        <th>Exit date</th>
-                        <th>Profit</th>
+                    <tr class="">
+                        <th class="w-30 text-center">Symbol</th>
+                        <th class="w-40 text-center">Exit date</th>
+                        <th class="w-30 text-center">Profit</th>
                     </tr>
                 </thead>
                 <tbody v-if="trades.length">
-                    <tr v-for="(item, index) in trades" :key="index" class="text-center">
-                        <td class="text-muted font-500">{{item.symbol}}</td>
-                        <td class="font-500">{{item.exit_date}}</td>
-                        <td class="font-500" :class="item.pl_currency < 0 ?'red' : 'primary' ">{{item.pl_currency}}</td>
+                    <tr v-for="(item, index) in trades" :key="index" class="">
+                        <td class="text-muted font-500">
+                          <div class="max-width-80 text-truncate d-block ml-2">{{item.symbol}}</div>
+                        </td>
+                        <td class="font-500 ">{{item.exit_date}}</td>
+                        <td class="font-500 text-center" :class="item.pl_currency < 0 ?'red' : 'primary' ">{{item.pl_currency}}</td>
                     </tr>
                 </tbody>
                 <tbody v-else>
@@ -204,3 +206,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.max-width-80 {
+  max-width: 80px;
+}
+</style>

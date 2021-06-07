@@ -6,6 +6,7 @@ use App\Models\Balance;
 use App\Models\Portfolio;
 use App\Models\Trade;
 use App\Models\Used_entry_rules;
+use App\Traits\TestTraits;
 use Illuminate\Support\Facades\DB;
 use Carbon\CarbonInterval;
 use Illuminate\Database\Eloquent\Builder;
@@ -13,20 +14,12 @@ use Illuminate\Database\Eloquent\Builder;
 
 class TradesAnalysisService{
 
+    use TestTraits;
+    
     public function TradesMonitoring($portfolio_id, $period, $side){
+ 
+        $period = $this->setperiod($period);
        
-        switch($period){
-            case 'day':
-                $period = today();
-            break; 
-            case 'week':
-                $period = today()->subDays(7);
-            break; 
-            case 'month':
-                $period = today()->subDays(30);
-            break; 
-        }
-        
         $tradesMonitoring = Balance::select(['balances.portfolio_id', DB::raw('
             SUM(amount) as current_balance,
             COUNT(CASE WHEN action_type = "trade" THEN 1 else NULL END) as total_trades,
@@ -41,10 +34,10 @@ class TradesAnalysisService{
         })
         ->join('trades', 'trades.id', '=', 'balances.trade_id')
         ->get();
-
+        
         $new = $tradesMonitoring->map(function($object) use($side, $period){
-            $object->winrate = number_format($object->winning_trades  / ($object->total_trades !== 0 ? $object->total_trades : 1) * 100,2, '.','');
            
+            $object->winrate = number_format($object->winning_trades  / ($object->total_trades !== 0 ? $object->total_trades : 1) * 100,2, '.','');
             /*Trade Duration */
             $object->duration_avg = CarbonInterval::minutes(Trade::durationAvg($object->portfolio_id, $side, null, $period))->cascade()->forHumans(['short' => true, 'join' => ', ']);
             $object->winning_duration_avg = CarbonInterval::minutes(Trade::durationAvg($object->portfolio_id, $side, '>', $period))->cascade()->forHumans(['short' => true, 'join' => ', ']); 
@@ -60,17 +53,8 @@ class TradesAnalysisService{
 
     public function porfit($portfolio_id, $period, $side){
        
-        switch($period){
-            case 'day':
-                $period = today();
-            break; 
-            case 'week':
-                $period = today()->subDays(7);
-            break; 
-            case 'month':
-                $period = today()->subDays(30);
-            break; 
-        }
+        $period = $this->setperiod($period);
+        
 
         $profit = Balance::select(['balances.portfolio_id', 'balances.id',
             DB::raw('SUM(amount) as net_profit,

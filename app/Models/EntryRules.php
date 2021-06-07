@@ -9,7 +9,7 @@ class EntryRules extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'user_id'];
 
     protected $casts = [
         'created_at' => 'datetime:d-M-Y',

@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
+
 //Look at RouteServiceProvider
 /* Route::group(['middleware' => 'auth'], function() {
     Route::resource('strategy', StrategyController::class);

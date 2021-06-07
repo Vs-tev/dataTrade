@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 class Balance extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'portfolio_id',
         'amount',
@@ -39,9 +40,4 @@ class Balance extends Model
         ->limit(100)
         ->get();
     }
-
-    
-
-  
-
 }
