@@ -120,7 +120,6 @@ class PortfolioFeatureTest extends TestCase
           $this->assertEquals(Balance::first()->amount, $portfolio->start_equity);
           $this->assertEquals(Balance::first()->action_type, 'start_capital');
           $this->assertEquals(Balance::first()->action_date, $portfolio->started_at);
-         
       }
   
       /** @test */ 
@@ -137,6 +136,44 @@ class PortfolioFeatureTest extends TestCase
         $response = $this->deleteJson('/dashboardPages/portfolio/d/'.$portfolio->id);
         
         $response->assertForbidden();
+    }
+
+    /** @test */ 
+    public function check_if_toggle_active_portfolio_is_working()
+    {
+        $this->actingAs($this->user);
+
+        //Create First Portfolio
+        $first_portfolio = Portfolio::factory()->create();
+
+        //check if is active
+        $this->assertCount(1, $first_portfolio->where('is_active',1)->get());
+
+        //Create secon portfolio 
+        $this->postJson('/dashboardPages/portfolio/store', [
+            'id' => 2,
+            'name' => 'Test name',
+            'currency' => 'EUR',
+            'start_equity' => 4568,
+            'started_at' => now()->subDays(7),
+        ]);
+
+        //check if 'is_active' is 0
+        $this->assertEquals(0, Portfolio::find(2)->is_active);
+
+        //Set inative portfolio to active to active
+        $this->postJson('/dashboardPages/portfolio/toggle_active/' .Portfolio::find(2)->id, ['active' => 1]);
+        //check if second portfolio is active
+        $this->assertEquals(1, Portfolio::find(2)->is_active);
+        //check if first portfolio is inactive
+        $this->assertEquals(0, Portfolio::first()->is_active);
+
+        //set active portfolio to inactive
+        $this->postJson('/dashboardPages/portfolio/toggle_active/' .Portfolio::find(2)->id, ['active' => 0]);
+        //check if second portfolio is inactive
+        $this->assertEquals(0, Portfolio::find(2)->is_active);
+        //check if first portfolio is active
+        $this->assertEquals(1, Portfolio::first()->is_active);
     }
 
 

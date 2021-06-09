@@ -142,7 +142,7 @@ class PortfolioController extends Controller
                     ])->update([
                     'is_active' => 0
                     ]);
-            }else if(request('active') == 0){
+            }else{
                 Portfolio::where([
                     ['id', '<>', $id],
                     ['user_id', '=', auth()->id()]

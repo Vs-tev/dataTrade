@@ -159,6 +159,8 @@ class TradeTest extends TestCase
         //Creating Trade
         $trade = Trade::factory()->create(['user_id' => 1, 'portfolio_id' => 1 ]);
       
+        $this->assertCount(1, Trade::all());
+
         //Add data to balance
         $trade->add_to_balance($trade); 
         //add data to trade_performance table
