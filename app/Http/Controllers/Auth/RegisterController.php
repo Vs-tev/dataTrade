@@ -73,13 +73,9 @@ class RegisterController extends Controller
 
         //By user register, we sing up for free plan, but only localy (not in stripe)
         //In case of upgrading plan, we update this row with stripe data
-        DB::table('subscriptions')->insert([
-            'user_id' => $user->id,
-            'name' => 'default',
-            'stripe_id' => '',
-            'stripe_status' => 'active',
-            'stripe_plan' => \App\Models\Plan::free_plan_price_id()->first() //this is Free stripe plan price id form Stripe
-            ]);   
+        $user->newSubscription(
+            'default', \App\Models\Plan::free_plan_price_id()->first()
+        )->create();
 
         return $user;
     }
