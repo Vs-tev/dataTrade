@@ -3,4 +3,5 @@
 3. Set Env file with database settings
 4. generate key with 'php artisan key:generate'
 5. npm install && npm run dev
-6. php artisan 
+6. php artisan serve
+7. npm run watch
