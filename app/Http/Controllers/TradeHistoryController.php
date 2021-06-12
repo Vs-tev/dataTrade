@@ -29,45 +29,43 @@ class TradeHistoryController extends Controller
     }
 
     public function tradehistoryTradesTable(Request $request){
-        
-        $trades = new Trade;
-
-        if($request->start_date !== null){
-            $trades = $trades->where('exit_date', '>=' , $request->start_date);
-        }
-        if($request->end_date !== null){
-            $trades = $trades->where('exit_date', '<=' ,$request->end_date);
-        }
-        if($request->time_frame){
-            $trades = $trades->whereIn('time_frame', $request->time_frame);
-        }
-        if($request->sort_pl == 'Winners'){
-            $trades = $trades->where('pl_currency', '>=', 0);
-        }else if($request->sort_pl == 'Losers'){
-            $trades = $trades->where('pl_currency', '<', 0);
-        };
-
-        if($request->search_symbol !== ""){
-            $trades = $trades->where('symbol', 'LIKE', '%'. $request->search_symbol. '%');
-        };
-        
-        $trades = $trades->when($request->column[0] ?? null, function($query) use($request){
-            $query->orderBy($request->column[0], $request->column[1]); 
-        });
-
-        if($request->boolean('except_trade') == true){
-            $trades->whereHas('balance', function($query){
-                $query->where('is_except', 1);
-            }); 
-        }
-
-        $trades = $trades->with(['portfolio', 'strategy', 'used_entry_rules.entry_rule', 'exit_reason', 'balance', 'tradePerformance'])
+    
+        $trades = Trade::with(['portfolio', 'strategy', 'used_entry_rules.entry_rule', 'exit_reason', 'balance', 'tradePerformance'])
         ->where([
             ['user_id', auth()->id()],
-            ['portfolio_id', $request->p_id],
+            ['portfolio_id', $request->portfolio_id],
         ])
+        ->when($request->time_frame, function($query) use($request){
+            $query->whereIn('time_frame', $request->time_frame);
+        })
+        ->when($request->start_date, function($query) use($request){
+            $query->where('exit_date', '>=' , $request->start_date);
+        })
+        ->when($request->end_date, function($query) use($request){
+            $query->where('exit_date', '<=' ,$request->end_date);
+        })
+        ->when($request->end_date, function($query) use($request){
+            $query->where('exit_date', '<=' ,$request->end_date);
+        })
+        ->when($request->sort_pl == 'Winners', function($query) use($request){
+            $query->where('pl_currency', '>=', 0);
+        })
+        ->when($request->sort_pl == 'Losers', function($query) use($request){
+            $query->where('pl_currency', '<', 0);
+        })
+        ->when($request->search_symbol !== "", function($query) use($request){
+            $query->where('symbol', 'LIKE', '%'. $request->search_symbol. '%');
+        })
+        ->when($request->column[0] ?? null, function($query) use($request){
+            $query->orderBy($request->column[0], $request->column[1]); 
+        })
+        ->when($request->boolean('except_trade') == true, function($query){
+            $query->whereHas('balance', function($query){
+                $query->where('is_except', 1);
+            }); 
+        })
         ->orderBy('exit_date', 'desc')
-        ->paginate(request()->display);
+        ->paginate(10);
           
         return $trades;
     }
@@ -78,9 +76,9 @@ class TradeHistoryController extends Controller
      * @param  \App\Models\Trade  $trade
      * @return \Illuminate\Http\Response
      */
-    public function update_excepted_trade(Trade $trade, $id)
+    public function update_excepted_trade(Trade $trade)
     {
-        $trade = Trade::where('user_id', auth()->id())->find($id);
+        $trade->where('user_id', auth()->id())->get();
        
         if($trade->balance->is_except == 0){
             $trade->balance()->update(['is_except' => 1]);

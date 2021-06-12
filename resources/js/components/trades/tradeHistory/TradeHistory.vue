@@ -17,7 +17,7 @@
                     <div>
                         <select @change="get_trades" v-model="show_per_page" class="form-control">
                             <option value="10" selected="selected">10</option>
-                            <option value="20">25</option>
+                            <option value="25">25</option>
                             <option value="50">50</option>
                             <option value="100">100</option>
                         </select>
@@ -367,7 +367,7 @@ export default {
       axios
         .get("/dashboardPages/tradehistory/g", {
           params: {
-            p_id: this.portfolio_id,
+            portfolio_id: this.portfolio_id,
             sort_pl: this.sort_pl,
             start_date: this.start_date,
             end_date: this.end_date,
@@ -420,7 +420,7 @@ export default {
         axios
           .get(page, {
             params: {
-              p_id: this.portfolio_id,
+              portfolio_id: this.portfolio_id,
               sort_pl: this.sort_pl,
               start_date: this.start_date,
               end_date: this.end_date,

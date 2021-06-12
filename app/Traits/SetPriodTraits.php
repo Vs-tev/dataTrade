@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-trait TestTraits {
+trait SetPriodTraits {
 
     public function setperiod($period)
     {

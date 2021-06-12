@@ -3309,14 +3309,15 @@ fieldset:disabled a.btn {
 
 .btn-danger {
     color: #fff;
-    background-color: #e3342f;
-    border-color: #e3342f;
+    background-color: #ff514ad6;
+    letter-spacing: 0.2px;
+    font-weight: 500;
 }
 
 .btn-danger:hover {
     color: #fff;
-    background-color: #d0211c;
-    border-color: #c51f1a;
+    background-color: #ff504a;
+  
 }
 
 .btn-danger:focus,

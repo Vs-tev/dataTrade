@@ -25,7 +25,6 @@ class TransactionsController extends Controller
         $transaction->onEachSide(1)->links();
         return  response()->json($transaction);
     }
-   
 
     /**
      * Store a newly created resource in storage.
@@ -38,11 +37,10 @@ class TransactionsController extends Controller
         $this->validate(request() ,[
             'amount' => ['required','numeric','max:99999999999', ],
             'action_date' => ['required', new PortfolioDateOverlapping]
-        ]);
+        ],['action_date' => 'Error']);
       
         Balance::create($request->all() + ['action_type' => 'transaction']);
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -53,6 +51,6 @@ class TransactionsController extends Controller
     public function destroy($id)
     {
         $transaction = Balance::find($id);
-        $transaction->delete();
+        $transaction->forceDelete();
     }
 }

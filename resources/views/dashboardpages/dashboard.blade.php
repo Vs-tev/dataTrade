@@ -15,7 +15,7 @@
                     </svg>
                     <span class="material-icons cyan icon-xl">manage_accounts</span>
                     <div class="ml-4">
-                        <div  class="dark font-weight-bold m-0">
+                        <div class="dark font-weight-bold m-0">
                             <h4>User</h4>
                         </div>
                         <p class="m-0 text-muted">Edit User</p>

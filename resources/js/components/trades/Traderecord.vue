@@ -3,7 +3,7 @@
     <form action="">
         <section class="dashboard_container_content p-0">
             <div class="border-bottom p-4">
-                <h4 class="font-weight-500 m-0">Trade record pandel</h4>
+                <h4 class="font-weight-normal m-0">Trade record pandel</h4>
             </div>
             <div class="d-lg-flex flex-block pl-0 pr-0 pr-md pt-0">
                 <!-- trade inputs -->
@@ -473,4 +473,48 @@ export default {
 };
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
-<style src="vue-date-pick/dist/vueDatePick.css"></style>
+<style>
+.vdpComponent {
+  position: relative;
+  display: inline-block;
+  font-size: 9.5px;
+  color: #303030;
+  width: 100%;
+}
+.vdpComponent.vdpWithInput > input {
+  width: 100%;
+  height: calc(1.6em + 0.6rem + 2px);
+  padding: 0.4rem 0.45rem;
+  font-size: var(--font-normal);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--primary-color);
+  border: 1px solid #ced4da;
+  border-radius: 0.2rem;
+}
+.vdpClearInput {
+  font-size: var(--font-normal) !important;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 3em;
+}
+.vdpClearInput:before {
+  content: "\D7";
+  width: 1.4em;
+  height: 1.4em;
+  line-height: 1.3em;
+  box-sizing: border-box;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: -0.7em 0 0 -0.7em;
+  color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 50%;
+  background-color: #fff;
+}
+</style>
+
+

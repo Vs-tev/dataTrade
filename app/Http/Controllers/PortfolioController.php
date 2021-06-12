@@ -31,7 +31,6 @@ class PortfolioController extends Controller
     public function view_portfolio()
     {
        return view('dashboardpages.portfolio.portfolio');
-       
     }
 
     public function index()
@@ -60,7 +59,7 @@ class PortfolioController extends Controller
     public function store(StorePortfolioRequest $request)
     {
         if (Gate::allows('portfolios')){
-
+            
             $portfolio = Portfolio::create([
                 'user_id' => auth()->id(),
                 'is_active' => $active = Portfolio::where('user_id', auth()->id())->count() == 0 ? 1 : $active = 0,
@@ -79,7 +78,6 @@ class PortfolioController extends Controller
     public function show()
     {
         $is_active = [1];
-
         $portfolio = (new PortfolioPerformanceService())->PortfolioData($is_active, []);
 
         return $portfolio;
@@ -93,24 +91,29 @@ class PortfolioController extends Controller
      * @param  \App\Models\portfolio  $portfolio
      * @return \Illuminate\Http\Response
      */
-    public function update(StorePortfolioRequest $request, Portfolio $portfolio){
-
+    public function update(StorePortfolioRequest $request, Portfolio $portfolio)
+    {
         $portfolio->update($request->validated());
 
         return $portfolio;
-
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\portfolio  $portfolio
-     * @return \Illuminate\Http\Response
-     */
+
+
+    public function clear(Portfolio $portfolio)
+    {
+        $portfolio->balance()->where('action_type', 'transaction')->delete();
+        $portfolio->trades()->delete();
+    }
+   
     public function destroy(Portfolio $portfolio)
     {
         if(auth()->user()->portfolios()->count() > 1){
             $portfolio->delete();
+            $portfolio->balance()->delete();
+            $portfolio->trades()->delete();
+
+
 
             if($portfolio->is_active == 1){
                 Portfolio::where([
@@ -125,11 +128,27 @@ class PortfolioController extends Controller
         }
     }
 
-    public function toggle_is_active_portfolio(Request $request, $id){     
-      
+    public function restore($id)
+    {   
+        $portfolio = Portfolio::where([['id', $id],['user_id', auth()->id()]])
+        ->withTrashed()->first();
+        $portfolio->restore();
+        $portfolio->balance()->restore();
+        $portfolio->trades()->restore();
+    }
+
+    public function forceDelete()    
+    {
+        Portfolio::where('id', $id)->forceDelete();
+
+    }
+    
+
+    public function toggle_is_active_portfolio(Request $request, Portfolio $portfolio)
+    {     
         if(Portfolio::where('user_id', auth()->id())->count() > 1){
             Portfolio::where([
-                ['id', $id],
+                ['id', $portfolio->id],
                 ['user_id', '=', auth()->id()]
                 ])->update([
                 'is_active' => request('active') 
@@ -137,14 +156,14 @@ class PortfolioController extends Controller
 
             if(request('active') == 1){
                 Portfolio::where([
-                    ['id', '<>', $id],
+                    ['id', '<>', $portfolio->id],
                     ['user_id', '=', auth()->id()]
                     ])->update([
                     'is_active' => 0
                     ]);
             }else{
                 Portfolio::where([
-                    ['id', '<>', $id],
+                    ['id', '<>', $portfolio->id],
                     ['user_id', '=', auth()->id()]
                 ])->limit(1)->update([
                     'is_active' => 1

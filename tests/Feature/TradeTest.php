@@ -183,4 +183,58 @@ class TradeTest extends TestCase
         $this->assertCount(0, TradePerformance::all());
         $this->assertCount(0, Balance::all());
     }
+
+     /** @test */ 
+    public function trade_history_table_test()
+    {       
+       // $this->withoutExceptionHandling();
+        $this->actingAs($this->user);
+        Portfolio::factory()->create(['user_id' => 1]);
+        
+        $trade = new Trade;
+
+        $trade = $trade->factory(14)->create([
+            'symbol' => 'EUR/USD',
+            'type_side' => 'buy',
+            'exit_date' => '2021-05-01 21:34:46',
+            'user_id' => 1, 'portfolio_id' => 1, 
+            'time_frame' => '1 min',
+            'pl_currency' => 20
+            ]);
+
+        Trade::factory(16)->create([
+            'symbol' => 'EUR/CAD',
+            'type_side' => 'sell',
+            'exit_date' => '2021-05-03 21:34:46',
+            'user_id' => 1, 
+            'portfolio_id' => 2, 
+            'time_frame' => '15 min',
+            'pl_currency' => -20
+        ]);
+
+        $params = [
+        "portfolio_id" => 2,
+        "sort_pl" => "All",
+        'type_side' => 'sell',
+        "start_date" => '2021-05-02 21:34:46',
+        "end_date" => '2021-05-04 21:34:46',
+        "display" => 10,
+        "search_symbol" => 'EUR/CAD',
+        "column" => [
+          0 => null,
+          1 => "ASC",
+        ],
+        "except_trade" => false,
+        "time_frame" => [
+            0 => "15 min",
+          ]
+        ];
+
+        $response = $this->json('GET','/dashboardPages/tradehistory/g', $params)->assertOk();
+      
+        $data = json_decode($response->getContent(), true);
+    
+        $this->assertEquals(10, count($data['data']));
+
+    }
 }

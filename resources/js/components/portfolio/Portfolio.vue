@@ -1,110 +1,129 @@
 <template>
     <div class="row justify-content-center p-4"> 
+      <undo-action-message :undo_id="undo_id" v-on:undo="undo($event)" ref="action"></undo-action-message>
+      
       <div class="col-12 col-md-11 col-lg-8 pb-3 p-0">
-        
-          <div class="dashboard_container_content border d-flex align-items-center">
-              <button type="button" class="btn btn-secondary border-0 lighter font-500"
-                v-on:click="create">
-                    Add New
-                </button>
-          </div>
+        <div class="dashboard_container_content border d-flex align-items-center">
+            <button type="button" class="btn btn-secondary border-0 lighter font-500"
+              v-on:click="create">
+                  Add New
+              </button>
+        </div>
       </div>
-         
-        <main class="col-12 col-md-11 col-lg-8 p-0 new-item" v-if="items.portfolio">
-           <div class="dashboard_container_content portfolio-wrapper border p-0" :class="{'inactive_portfolio': item.is_active == 0 }"
-                    v-for="(item, index) in items.portfolio" :key="item.id">
-              <div class="container-portfolio-action-buttons d-flex justify-content-between align-items-center p-3 mb-2">
-                     <div class="custom-control custom-switch switch_portfolio">
-                       <div v-if="items.portfolio.length > 1">
-                        <input @click="toogleActive(item, $event)" type="checkbox"
-                            class="custom-control-input activate_portfolio" :id="item.id"
-                            :checked="item.is_active == true ? 'checked': '' " :value="item.id">
-                        <label class="custom-control-label" :for="item.id"
-                            v-text="item.is_active == 0 ? 'Inactive' : 'Active' "></label>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                          <button type="button" @click="getId(item.id, item.currency)" class="btn btn-primary mr-2" data-toggle="modal"
-                                        data-target="#transactions"><img src="/icons/wallet.svg" alt=""></button>
-                          <button type="button" @click="getValues(item.id, item.name, item.currency)"
-                                        class="btn btn-secondary mr-2" data-toggle="modal"
-                                        data-target="#modal-form"><img src="/icons/edit.svg" alt=""></button>
-                          <button type="button" v-if="items.portfolio.length > 1" class="btn btn-secondary delete-item" @click="DeletePortfolio(item)" data-target="#modal-form" data-toggle="modal">
-                                  <img src="/icons/trash.svg" alt="">
-                                </button>
-                      </div>
-              </div>
-               <div class="chart-wrapper">
-                        <apexchart type="area" height="270" 
-                        :options="{chart:{
-                            width:'100%', 
-                            type: 'area', 
-                            sparkline: {
-                              enabled: true,
-                            }
-                          }, 
-                          stroke: {
-                            curve: 'smooth',
-                          },
-                           fill: {
-                            opacity: 0.2,
-                          },
-                          yaxis: {
-                             show: false,
-                             showAlways: false,
-                          },
-                          colors: index === 0 ? ['#3490dc']: ['#1bc5bd'],
-                          title: {
-                            text: item.current_balance +' '+ item.currency + ' '+ '('+ item.return_capital_investment + '%' + ')' ,
-                            align: 'center',
-                            margin: 0,
-                            offsetX: 0,
-                            offsetY: 0,
-                            style: {
-                              fontSize: '24px',
-                              fontWeight: '500',
-                              colors: '#343a40',
-                            },
-                          },
-                            subtitle: {
-                              text: item.name + ' • ' + item.started_at,
-                              align: 'center',
-                              margin: 10,
-                              offsetX: 0,
-                              style: {
-                                fontSize: '18px',
-                                fontWeight: '400',
-                                color: '#343a40',
-                              },
-                            },
-                            xaxis: {
-                              type: 'datetime',
-                              categories: item.running_total.map(arr =>
-                               arr.action_date
-                                ).reverse()
-                            },
-                             tooltip: {
-                              x: {
-                                format: 'dd / MMM / yy'
-                              },
-                              y: {
-                                  formatter: function(val) {
-                                    return val.toFixed(2) + ' ' + item.currency;
-                                  }
-                              }
-                              
-                            },
-                        }" :series="[{name: 'Balance', data : item.running_total.map(arr =>
-                 parseFloat(arr.running_total)
-                 ).reverse()}]"></apexchart>
-               </div>  
-                
+      
+      <main class="col-12 col-md-11 col-lg-8 p-0 new-item" v-if="items.portfolio">
+          <div class="dashboard_container_content portfolio-wrapper border p-0" :class="{'inactive_portfolio': item.is_active == 0 }"
+                  v-for="(item, index) in items.portfolio" :key="item.id">
+            <div class="container-portfolio-action-buttons d-flex justify-content-between align-items-center p-3 mb-2">
+              <div class="custom-control custom-switch switch_portfolio">
+                <div v-if="items.portfolio.length > 1">
+                <input @click="toogleActive(item, $event)" type="checkbox"
+                    class="custom-control-input activate_portfolio" :id="item.id"
+                    :checked="item.is_active == true ? 'checked': '' " :value="item.id">
+                <label class="custom-control-label" :for="item.id"
+                    v-text="item.is_active == 0 ? 'Inactive' : 'Active' "></label>
+                </div>
             </div>
-        </main>
+            <div class="d-flex justify-content-between buttons-portfolio-options">
+              <button type="button" v-if="items.portfolio.length > 1" class="btn mr-2" @click="DeletePortfolio(item)" data-target="#modal-form" data-toggle="modal">
+                <span class="material-icons-outlined icon-sm red">delete</span>
+              </button>
+              
+              <button type="button" @click="getId(item.id, item.currency)" class="btn mr-2" data-toggle="modal"
+                data-target="#transactions"><span class="material-icons-outlined icon-sm cyan">paid</span>
+              </button>
+              
+              <button type="button" @click="getValues(item.id, item.name, item.currency)"
+                  class="btn mr-2 font-weight-bold lighter" data-toggle="modal" data-target="#modal-form">
+                  Edit
+              </button>
+
+              <button type="button" class="btn mr-2" @click="openClearPortfolioModal(item.id)" data-target="#modal-form" data-toggle="modal">
+                <span class="material-icons-outlined icon-sm lighter">clear</span>
+              </button>
+            </div>
+          </div>
+            <div class="chart-wrapper">
+                    <apexchart type="area" height="270" 
+                    :options="{chart:{
+                        width:'100%', 
+                        type: 'area', 
+                        sparkline: {
+                          enabled: true,
+                        }
+                      }, 
+                      stroke: {
+                        curve: 'smooth',
+                      },
+                        fill: {
+                        opacity: 0.2,
+                      },
+                      yaxis: {
+                          show: false,
+                          showAlways: false,
+                      },
+                      colors: index === 0 ? ['#3490dc']: ['#1bc5bd'],
+                      title: {
+                        text: item.current_balance +' '+ item.currency + ' '+ '('+ item.return_capital_investment + '%' + ')' ,
+                        align: 'center',
+                        margin: 0,
+                        offsetX: 0,
+                        offsetY: 0,
+                        style: {
+                          fontSize: '24px',
+                          fontWeight: '500',
+                          colors: '#343a40',
+                        },
+                      },
+                        subtitle: {
+                          text: item.name + ' • ' + item.started_at,
+                          align: 'center',
+                          margin: 10,
+                          offsetX: 0,
+                          style: {
+                            fontSize: '18px',
+                            fontWeight: '400',
+                            color: '#343a40',
+                          },
+                        },
+                        xaxis: {
+                          type: 'datetime',
+                          categories: item.running_total.map(arr =>
+                            arr.action_date
+                            ).reverse()
+                        },
+                          tooltip: {
+                          x: {
+                            format: 'dd / MMM / yy'
+                          },
+                          y: {
+                              formatter: function(val) {
+                                return val.toFixed(2) + ' ' + item.currency;
+                              }
+                          }
+                          
+                        },
+                    }" :series="[{name: 'Balance', data : item.running_total.map(arr =>
+              parseFloat(arr.running_total)
+              ).reverse()}]"></apexchart>
+            </div>  
+              
+          </div>
+      </main>
         
-        <modal :item="form" v-on:edit="edit($event)" v-on:store="store($event)" v-on:destroy="destroy($event)"></modal>
-        <modal-transaction :currency="portfolioCurrency" :transaction="transactions" :links="pagination" :item="form" v-on:setPage="setPage($event)" v-on:storeTransaction="storeTransaction($event)" v-on:delete_transaction="delete_transaction($event)"></modal-transaction>
-        <modal-upgrade-plan :text="upgrade_plan_modal"></modal-upgrade-plan>
+      <modal :item="form" 
+        v-on:clear="clear($event)" 
+        v-on:edit="edit($event)" 
+        v-on:store="store($event)" 
+        v-on:destroy="destroy($event)">
+      </modal>
+      <modal-transaction :currency="portfolioCurrency" :transaction="transactions" :links="pagination" :item="form" 
+        v-on:setPage="setPage($event)" 
+        v-on:storeTransaction="storeTransaction($event)" 
+        v-on:delete_transaction="delete_transaction($event)">
+      </modal-transaction>
+      <modal-upgrade-plan :text="upgrade_plan_modal"></modal-upgrade-plan>
+
     </div>
 </template>
 <script>
@@ -112,6 +131,7 @@ import Modal from "./Modal";
 import ModalTransaction from "./ModalTransaction";
 import ModalUpgradePlan from "../ModalUpgradePlan";
 import VueApexCharts from "vue-apexcharts";
+import UndoActionMessage from "../UndoActionMessage.vue";
 Vue.component("apexchart", VueApexCharts);
 export default {
   name: "Portfolio",
@@ -119,6 +139,7 @@ export default {
     Modal,
     ModalTransaction,
     ModalUpgradePlan,
+    UndoActionMessage,
   },
   data() {
     return {
@@ -156,6 +177,7 @@ export default {
       }),
       modal: "create",
       title: "",
+      undo_id: "",
     };
   },
   mounted: function mounted() {
@@ -205,6 +227,13 @@ export default {
       this.form.currency = item_currency;
     },
 
+    openClearPortfolioModal(item_id) {
+      this.form.modal = "clearPortfolio";
+      this.form.title = "Clear Portfolio";
+      this.form.errors.clear();
+      this.form.id = item_id;
+    },
+
     fetchportfolio() {
       axios
         .get("/dashboardPages/portfolio/g")
@@ -222,7 +251,6 @@ export default {
       axios
         .get("/dashboardPages/portfolio/create")
         .then((res) => {
-          //$("#modal-form").modal("show");
           this.form.reset();
           this.form.title = "Create Portfolio";
           this.form.modal = "create";
@@ -271,6 +299,19 @@ export default {
         });
     },
 
+    clear: function clear(value) {
+      var item_id = value.id;
+      axios
+        .delete("/dashboardPages/portfolio/clear/" + item_id)
+        .then((res) => {
+          $("#modal-form").modal("hide");
+          this.fetchportfolio();
+        })
+        .catch((error) => {
+          this.checkResponseStatus(error);
+        });
+    },
+
     DeletePortfolio: function DeletePortfolio(value) {
       this.form.reset();
       this.form.title = "Delete Portfolio";
@@ -280,14 +321,28 @@ export default {
     },
 
     destroy: function destroy(value) {
+      this.undo_id = value.id;
       axios
         .delete("/dashboardPages/portfolio/d/" + value.id)
         .then((res) => {
           $("#modal-form").modal("hide");
           this.fetchportfolio();
+          this.$refs.action.deleted("Portfolio has been deleted");
         })
         .catch((error) => {
           this.checkResponseStatus(error);
+        });
+    },
+
+    undo: function undo(id) {
+      axios
+        .get("/dashboardPages/portfolio/restore/" + id)
+        .then((res) => {
+          this.fetchportfolio();
+          this.$refs.action.undoMessage("Portfolio has been restored");
+        })
+        .catch((error) => {
+          console.log(error);
         });
     },
 
@@ -320,9 +375,6 @@ export default {
         });
       }
     },
-    /*  getTransactions: function getTransactions() {
-     
-    }, */
 
     storeTransaction: function storeTransaction(value) {
       let data = new FormData();

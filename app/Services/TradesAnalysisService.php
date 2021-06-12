@@ -6,7 +6,7 @@ use App\Models\Balance;
 use App\Models\Portfolio;
 use App\Models\Trade;
 use App\Models\Used_entry_rules;
-use App\Traits\TestTraits;
+use App\Traits\SetPriodTraits;
 use Illuminate\Support\Facades\DB;
 use Carbon\CarbonInterval;
 use Illuminate\Database\Eloquent\Builder;
@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class TradesAnalysisService{
 
-    use TestTraits;
+    use SetPriodTraits;
     
     public function TradesMonitoring($portfolio_id, $period, $side){
  
@@ -48,13 +48,11 @@ class TradesAnalysisService{
         return response()->json(
             $new
         );
-        
     }
 
     public function porfit($portfolio_id, $period, $side){
        
         $period = $this->setperiod($period);
-        
 
         $profit = Balance::select(['balances.portfolio_id', 'balances.id',
             DB::raw('SUM(amount) as net_profit,

@@ -8,6 +8,7 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Balance;
 use App\Models\Portfolio;
+use App\Models\Trade;
 use Illuminate\Support\Facades\Gate;
 
 
@@ -176,5 +177,50 @@ class PortfolioFeatureTest extends TestCase
         $this->assertEquals(1, Portfolio::first()->is_active);
     }
 
+     /** @test */ 
+    public function respore_portfolio_with_related_data()
+    {
+        $this->actingAs($this->user);
+
+        $portfolios = Portfolio::factory(2)->create();
+     
+        foreach($portfolios as $portfolio){
+            $portfolio->add_to_balance($portfolio);
+        }
+
+        $this->assertCount(2, Balance::all());
+
+        $this->deleteJson('/dashboardPages/portfolio/d/'. Portfolio::first()->id);
+
+        $this->assertCount(1, Portfolio::all());
+        $this->assertCount(1, Balance::all());
+        $this->assertCount(0, Trade::all());
+
+        $deleted_portfolio = Portfolio::withTrashed()->first();
+        
+        $response = $this->getJson('/dashboardPages/portfolio/restore/'. $deleted_portfolio->id);
+      
+        $this->assertCount(2, Portfolio::all());
+
+        $this->assertCount(2, Balance::all());
+    }
+
+     /** @test */ 
+    public function portfolio_can_be_permanently_deleted()
+    {   
+        $this->actingAs($this->user);
+
+        Portfolio::factory(2)->create();   
+
+        $this->deleteJson('/dashboardPages/portfolio/d/'. Portfolio::first()->id);
+
+        $this->assertCount(1, Portfolio::all());
+
+        $deleted_portfolio = Portfolio::withTrashed()->first();
+        
+        $response = $this->postJson('/dashboardPages/portfolio/forceDelete/'. $deleted_portfolio->id)->assertOk();
+
+        $this->assertCount(1, Portfolio::withTrashed()->get());
+    }
 
 }

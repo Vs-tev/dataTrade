@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Transaction "Test Portfolio"</h5>
+                <h5 class="modal-title font-weight-normal">Transaction "Test Portfolio"</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span class="material-icons icon-sm ml-auto close-btn">close</span>
                 </button>
@@ -26,11 +26,11 @@
                                         class="form-control-big"
                                         placeholder="For withdrawal type '-' "
                                         id="amount_transaction"
-                                        @keyup="item.errors.clear('amount_transaction')">
+                                        @keyup="item.errors.clear('amount')">
                                         <p
                                             class="error-output "
-                                            v-if="item.errors.has('amount_transaction')"
-                                            v-text="item.errors.get('amount_transaction')"></p>
+                                            v-if="item.errors.has('amount')"
+                                            v-text="item.errors.get('amount')"></p>
                                     </div>
                                 </li>
                                 <li class="editable-item">
@@ -42,8 +42,8 @@
                                             :isDateDisabled="isFutureDate"
                                             :format="'YYYY-MM-DD'"
                                             :inputAttributes="{readonly: true}"
-                                            @input="item.errors.clear('transaction_date')"
-                                            :class="{'is-invalid': item.errors.has('transaction_date')}">
+                                            @input="item.errors.clear('action_date')"
+                                            :class="{'is-invalid': item.errors.has('action_date')}">
                                             <template v-slot:default="{toggle, inputValue}">
                                                 <div class="toggle-calendar transaction_date">
                                                     <button class="flex-grow-1" @click="toggle">
@@ -58,8 +58,8 @@
                                         </date-pick>
                                         <p
                                             class="error-output"
-                                            v-if="item.errors.has('transaction_date')"
-                                            v-text="item.errors.get('transaction_date')"></p>
+                                            v-if="item.errors.has('action_date')"
+                                            v-text="item.errors.get('action_date')"></p>
                                     </div>
                                 </li>
                                 <li class="editable-item pb-3 pt-4">

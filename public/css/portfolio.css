@@ -44,3 +44,7 @@ div.switch_portfolio {
     z-index: 3;
 
 }
+
+.buttons-portfolio-options button:hover{
+    background: var(--light);
+}

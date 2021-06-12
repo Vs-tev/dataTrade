@@ -4,20 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class Portfolio extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', 1);
+    }
 
     protected $fillable = ['name', 'start_equity', 'started_at', 'currency', 'user_id', 'is_active'];
 
     protected $casts = [
         'started_at' => 'datetime:d M Y',
     ];
-    
 
     public function user(){
         return $this->belongsTo(User::class);
@@ -25,6 +30,10 @@ class Portfolio extends Model
 
     public function balance(){
         return $this->hasMany(Balance::class);
+    }
+
+    public function trades(){
+        return $this->hasMany(Trade::class);
     }
 
     public function tradePerformance(){
@@ -87,3 +96,4 @@ class Portfolio extends Model
     }
     
 }
+

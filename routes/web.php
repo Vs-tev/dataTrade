@@ -71,7 +71,12 @@ Route::group(['prefix' => 'dashboardPages'], function(){
     Route::get('/portfolio/create', 'PortfolioController@create');
     Route::post('/portfolio/store', 'PortfolioController@store')->name('store_portfolio');
     Route::delete('/portfolio/d/{portfolio}', 'PortfolioController@destroy');
-    Route::post('/portfolio/toggle_active/{id}', 'PortfolioController@toggle_is_active_portfolio');
+    Route::delete('/portfolio/clear/{portfolio}', 'PortfolioController@clear');
+    Route::get('/portfolio/restore/{id}', 'PortfolioController@restore');
+    Route::post('/portfolio/forceDelete/{id}', 'PortfolioController@forceDelete');
+
+
+    Route::post('/portfolio/toggle_active/{portfolio}', 'PortfolioController@toggle_is_active_portfolio');
 });
 
 //transactions
@@ -94,7 +99,7 @@ Route::group(['prefix' => 'dashboardPages/tradehistory'], function(){
     Route::get('/', 'TradeHistoryController@index')->name('trade_history');
     Route::get('/g', 'TradeHistoryController@tradehistoryTradesTable');
     Route::post('/update/{trade}', 'TradeHistoryController@update');
-    Route::post('/exept/{id}', 'TradeHistoryController@update_excepted_trade');
+    Route::post('/exept/{trade}', 'TradeHistoryController@update_excepted_trade');
     Route::delete('/delete/{trade}', 'TradeHistoryController@destroy');
 });
 
@@ -148,7 +153,6 @@ Route::get('/symbols', 'SymbolController@index')->name('symbol');
 Auth::routes();
 
 /* Trade analysis */
-
 Route::group(['prefix' => 'tradeAnalysis'], function(){
     Route::get('/', 'Analysis\TradeAnalysisController@index')->name('trade_analysis');
     Route::get('/portfolioData/{portfolio_id}', 'Analysis\TradeAnalysisController@portfolioData');

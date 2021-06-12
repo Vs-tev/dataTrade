@@ -3,13 +3,17 @@
             <div class="modal-dialog">
                 <form  class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">{{item.title}}</h5>
+                        <h5 class="modal-title font-weight-normal">{{item.title}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span class="material-icons ml-auto close-btn icon-sm" >close</span>
                         </button>
                     </div>
-
-                    <div class="modal-body" v-if="item.modal !== 'delete'">
+                    <div class="modal-body" v-if="item.modal == 'clearPortfolio' ">
+                      You will keep this portfolio but, you will lose all your trades (include trade images),  and transactions. <br>
+                      <br>
+                      <b>Are You sure want to proceed?</b> 
+                    </div>
+                    <div class="modal-body" v-if="item.modal !== 'delete' && item.modal !== 'clearPortfolio' ">
                         <div class="modal-body">
                         <input type="hidden" id="id" v-model="item.id" class="form-control">
 
@@ -20,7 +24,7 @@
                             v-if="item.errors.has('name')" v-text="item.errors.get('name')"></p>
                         </div>
 
-                         <div class="form-group mb-5"  v-if="item.modal == 'create' ">
+                        <div class="form-group mb-5"  v-if="item.modal == 'create' ">
                             <label for="start_equity">Equity</label>
                             <input type="text" id="start_equity" v-model="item.start_equity" name="start_equity" class="form-control" placeholder="Enter start equity">
                                 <p class="error-output"
@@ -61,17 +65,18 @@
 
                     </div>
                     </div>
-                      <div class="modal-body" v-if="item.modal == 'delete'">
-                          <p>Are you sure want to delete <span class="font-weight-bold">"{{item.name}}"?</span> <br>
-                          You'll lose all recorded trades and transactions.
-                          </p>
-                      </div>
+                    <div class="modal-body" v-if="item.modal == 'delete'">
+                        <p>Are you sure want to delete <span class="font-weight-bold">"{{item.name}}"?</span> <br>
+                        <b>You'll lose all recorded trades and transactions.</b> 
+                        </p>
+                    </div>
                     <!-- Modal footer -->
                     <div class="modal-footer">
                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" @click="edit" class="btn btn-primary" v-if="item.modal == 'edit'">Save</button>
                         <button type="button" @click="store" class="btn btn-primary" v-if="item.modal == 'create'">Create</button>
                         <button type="button" @click="destroy" class="btn btn-danger" v-if="item.modal == 'delete'">Delete</button>
+                        <button type="button" @click="clear" class="btn btn-danger" v-if="item.modal == 'clearPortfolio'">Yes, clear portfolio</button>
                        
                     </div>
 
@@ -105,6 +110,10 @@ export default {
 
     destroy: function () {
       this.$emit("destroy", this.item);
+    },
+
+    clear: function () {
+      this.$emit("clear", this.item);
     },
   },
 };

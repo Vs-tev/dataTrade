@@ -1,14 +1,14 @@
 <template>
      <section class="dashboard_container_content p-0">  
           <div class="border-bottom px-4 py-3">
-                <h4 class="font-weight-500 m-0">Trade History</h4>
+                <h4 class="font-weight-normal m-0">Trade History</h4>
                 <p class="lighter font-500 mb-0">All recorded trades in one place</p>
             </div>
             <div class="d-md-flex flex-wrap mb-3 px-2 pt-3">
                 <div class="form-group col-12 col-lg-3 ">
                     <label>Portfolio:</label>
                     <multiselect v-model="selectedPortfolio" @input="change_portfolio" :options="portfolios" :searchable="false" 
-                            :close-on-select="true" :allow-empty="false"  :show-labels="false" label="name" track-by="id">
+                            :close-on-select="true" class="font-sm" :allow-empty="false"  :show-labels="false" label="name" track-by="id">
                     </multiselect>
 
                 </div>
@@ -78,7 +78,7 @@
             <div class="d-flex col-12 px-4 pb-4">
                 <div class="custom-control custom-checkbox">
                     <input type="checkbox" v-model="except_trade" @change="toggle_excepted_trade" class="custom-control-input" id="exept_trades" name="example1">
-                    <label class="custom-control-label" for="exept_trades">Except trades</label>
+                    <label class="custom-control-label" for="exept_trades">Show Except trades</label>
                 </div>
             </div>
         </section>
@@ -105,7 +105,6 @@ export default {
         "1 month",
       ],
       sort_by: ["All", "Winners", "Losers"],
-
       selected_frame: [],
       start_date: "",
       exit_date: "",
@@ -168,7 +167,26 @@ export default {
   },
 };
 </script>
-
+<style>
+.multiselect__tags {
+  font-size: var(--font-normal) !important;
+  min-height: 30px;
+  padding: 4px 40px 0 8px;
+}
+.multiselect__select {
+  height: 32px;
+  right: 1px;
+  top: 0px;
+}
+.multiselect,
+.multiselect__input,
+.multiselect__single {
+  font-size: var(--font-normal);
+}
+.multiselect__placeholder {
+  margin-bottom: 6px;
+}
+</style>
 <style scoped>
 .toggle-calendar {
   width: 190px;
