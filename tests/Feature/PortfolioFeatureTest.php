@@ -178,7 +178,7 @@ class PortfolioFeatureTest extends TestCase
     }
 
      /** @test */ 
-    public function respore_portfolio_with_related_data()
+    public function restore_portfolio_with_related_data()
     {
         $this->actingAs($this->user);
 
@@ -193,8 +193,7 @@ class PortfolioFeatureTest extends TestCase
         $this->deleteJson('/dashboardPages/portfolio/d/'. Portfolio::first()->id);
 
         $this->assertCount(1, Portfolio::all());
-        $this->assertCount(1, Balance::all());
-        $this->assertCount(0, Trade::all());
+        $this->assertCount(2, Balance::all());
 
         $deleted_portfolio = Portfolio::withTrashed()->first();
         
@@ -208,6 +207,7 @@ class PortfolioFeatureTest extends TestCase
      /** @test */ 
     public function portfolio_can_be_permanently_deleted()
     {   
+        $this->withoutExceptionHandling();
         $this->actingAs($this->user);
 
         Portfolio::factory(2)->create();   

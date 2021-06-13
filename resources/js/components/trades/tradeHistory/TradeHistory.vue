@@ -1,6 +1,6 @@
 <template>
-
     <div class="content-container">
+      <undo-action-message ref="action"></undo-action-message>
         <sorting-trades :portfolios="portfolios" v-on:change_portfolio="change_portfolio($event)"
             v-on:sort_by_time_frame="sort_by_time_frame($event)" v-on:sort_by_profit="sort_by_profit($event)" v-on:searchDateRange="searchDateRange($event)" v-on:toggle_excepted_trade="toggle_excepted_trade($event)">
         </sorting-trades>
@@ -293,6 +293,7 @@ import SortingTrades from "./SortingTrades.vue";
 import DeteilsTrade from "./DeteilsTrade.vue";
 import Pagination from "../../Pagination.vue";
 import ModalDeleteExceptTrade from "./ModalDeleteExceptTrade.vue";
+import UndoActionMessage from "../../UndoActionMessage.vue";
 
 export default {
   components: {
@@ -300,6 +301,7 @@ export default {
     DeteilsTrade,
     Pagination,
     ModalDeleteExceptTrade,
+    UndoActionMessage,
   },
   name: "TradeHistory",
   props: ["portfolios", "strategies", "exit_reason", "entryrules"],
@@ -415,7 +417,7 @@ export default {
       this.get_trades();
     },
 
-    setPage: function setPage(page) {
+    setPage(page) {
       if (page !== null) {
         axios
           .get(page, {
@@ -495,13 +497,14 @@ export default {
       this.modal_data.modal_type = "delete";
     },
 
-    destroyTrade: function destroyTrade(trade) {
+    destroyTrade: function destroyTrade(trade_id) {
       axios
-        .delete("/dashboardPages/tradehistory/delete/" + trade)
+        .delete("/dashboardPages/tradehistory/delete/" + trade_id)
         .then((res) => {
           $("#modal_delete_trade").modal("hide");
           this.get_trades();
           this.$root.$emit("portfolio_balance"); //here we update navbar data to show current balance status
+          this.$refs.action.undoMessage("Trade has been deleted");
         })
         .catch((error) => {
           this.checkResponseStatus(error);

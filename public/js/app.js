@@ -2897,34 +2897,54 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["undo_id"],
   name: "UndoActionMessage",
   data: function data() {
     return {
+      display: false,
       undo_delete: false,
-      message: ""
+      message: "",
+      item: ""
     };
   },
   methods: {
     undo: function undo() {
-      this.$emit("undo", this.undo_id);
+      this.$emit("undo", this.item);
     },
-    deleted: function deleted(message) {
-      $(".undo-message-box").show();
-      $(".undo-message-box").addClass("slideDown");
+    deleted: function deleted(message, item_id) {
+      this.display = true;
+      this.item = item_id;
+      setTimeout(function () {
+        $(".undo-message-box").addClass("slideDown");
+      }, 200);
       this.undo_delete = true;
       this.message = message;
     },
     undoMessage: function undoMessage(message) {
+      var _this = this;
+
+      this.display = true;
+      setTimeout(function () {
+        $(".undo-message-box").addClass("slideDown");
+      }, 400);
       this.undo_delete = false;
       this.message = message;
+      setTimeout(function () {
+        $(".undo-message-box").removeClass("slideDown");
+      }, 4000);
+      setTimeout(function () {
+        return _this.display = false;
+      }, 4200);
     },
     close: function close() {
+      var _this2 = this;
+
       $(".undo-message-box").removeClass("slideDown");
       setTimeout(function () {
-        $(".undo-message-box").hide();
-      }, 400);
+        return _this2.display = false;
+      }, 1000);
     }
   }
 });
@@ -3833,16 +3853,15 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_3___default.a
       this.form.name = value.name;
       this.form.id = value.id;
     },
-    destroy: function destroy(value) {
+    destroy: function destroy(portfolio) {
       var _this7 = this;
 
-      this.undo_id = value.id;
-      axios["delete"]("/dashboardPages/portfolio/d/" + value.id).then(function (res) {
+      axios["delete"]("/dashboardPages/portfolio/d/" + portfolio.id).then(function (res) {
         $("#modal-form").modal("hide");
 
         _this7.fetchportfolio();
 
-        _this7.$refs.action.deleted("Portfolio has been deleted");
+        _this7.$refs.action.deleted("Portfolio has been deleted", portfolio.id);
       })["catch"](function (error) {
         _this7.checkResponseStatus(error);
       });
@@ -6099,6 +6118,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_date_pick__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_date_pick__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _ModalUpgradePlan_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../ModalUpgradePlan.vue */ "./resources/js/components/ModalUpgradePlan.vue");
 /* harmony import */ var _ModalSymbol_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../ModalSymbol.vue */ "./resources/js/components/ModalSymbol.vue");
+/* harmony import */ var _UndoActionMessage_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../UndoActionMessage.vue */ "./resources/js/components/UndoActionMessage.vue");
+//
 //
 //
 //
@@ -6323,7 +6344,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
- //import Chart from "../Chart.vue";
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Traderecord",
@@ -6332,8 +6353,8 @@ __webpack_require__.r(__webpack_exports__);
     Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default.a,
     DatePick: vue_date_pick__WEBPACK_IMPORTED_MODULE_1___default.a,
     ModalUpgradePlan: _ModalUpgradePlan_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
-    ModalSymbol: _ModalSymbol_vue__WEBPACK_IMPORTED_MODULE_3__["default"] //Chart,
-
+    ModalSymbol: _ModalSymbol_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+    UndoActionMessage: _UndoActionMessage_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
   data: function data() {
     return {
@@ -6510,6 +6531,8 @@ __webpack_require__.r(__webpack_exports__);
         _this2.getPortfolioEquity();
 
         _this2.clearFileds();
+
+        _this2.$refs.action.undoMessage("Trade has been successfully recorded");
       })["catch"](function (error) {
         if (error.response.status === 402) {
           $("#modal-upgrade-plan").modal("show");
@@ -7305,6 +7328,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _DeteilsTrade_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DeteilsTrade.vue */ "./resources/js/components/trades/tradeHistory/DeteilsTrade.vue");
 /* harmony import */ var _Pagination_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Pagination.vue */ "./resources/js/components/Pagination.vue");
 /* harmony import */ var _ModalDeleteExceptTrade_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ModalDeleteExceptTrade.vue */ "./resources/js/components/trades/tradeHistory/ModalDeleteExceptTrade.vue");
+/* harmony import */ var _UndoActionMessage_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../UndoActionMessage.vue */ "./resources/js/components/UndoActionMessage.vue");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 //
@@ -7601,12 +7625,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     SortingTrades: _SortingTrades_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     DeteilsTrade: _DeteilsTrade_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     Pagination: _Pagination_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
-    ModalDeleteExceptTrade: _ModalDeleteExceptTrade_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+    ModalDeleteExceptTrade: _ModalDeleteExceptTrade_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+    UndoActionMessage: _UndoActionMessage_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
   name: "TradeHistory",
   props: ["portfolios", "strategies", "exit_reason", "entryrules"],
@@ -7787,16 +7813,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.modal_data.data = trade;
       this.modal_data.modal_type = "delete";
     },
-    destroyTrade: function destroyTrade(trade) {
+    destroyTrade: function destroyTrade(trade_id) {
       var _this4 = this;
 
-      axios["delete"]("/dashboardPages/tradehistory/delete/" + trade).then(function (res) {
+      axios["delete"]("/dashboardPages/tradehistory/delete/" + trade_id).then(function (res) {
         $("#modal_delete_trade").modal("hide");
 
         _this4.get_trades();
 
         _this4.$root.$emit("portfolio_balance"); //here we update navbar data to show current balance status
 
+
+        _this4.$refs.action.undoMessage("Trade has been deleted");
       })["catch"](function (error) {
         _this4.checkResponseStatus(error);
       });
@@ -12623,7 +12651,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.undo-message-box {\r\n  position: fixed;\r\n  top: -70px;\r\n  z-index: 99;\r\n  transition: all 0.3s ease-in-out;\n}\n.slideDown {\r\n  top: 20px;\r\n  transition: all 0.3s ease-in-out;\n}\r\n", ""]);
+exports.push([module.i, "\n.undo-message-box {\r\n  position: fixed;\r\n  top: -90px;\r\n  z-index: 99;\r\n  transition: all 0.3s ease-in-out;\n}\n.slideDown {\r\n  top: 20px;\r\n  transition: all 0.3s ease-in-out 0.3s;\n}\r\n", ""]);
 
 // exports
 
@@ -46376,73 +46404,83 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "undo-message-box bg-dark rounded shadow p-3" },
-    [
-      _vm.undo_delete
-        ? _c(
-            "div",
-            {
-              staticClass: "d-flex justify-content-between align-items-center"
-            },
-            [
-              _c("div", { staticClass: "light font-500 mr-4" }, [
-                _vm._v(_vm._s(_vm.message))
-              ]),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn cyan font-500 mr-4 border-0",
-                  attrs: { type: "button" },
-                  on: { click: _vm.undo }
-                },
-                [_vm._v("Undo")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "close",
-                  attrs: { type: "button" },
-                  on: { click: _vm.close }
-                },
-                [
-                  _c("span", { staticClass: "material-icons light icon-sm" }, [
-                    _vm._v("close")
-                  ])
-                ]
-              )
-            ]
-          )
-        : _c(
-            "div",
-            {
-              staticClass: "d-flex justify-content-between align-items-center"
-            },
-            [
-              _c("div", { staticClass: "light font-500 mr-4" }, [
-                _vm._v(_vm._s(_vm.message))
-              ]),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "close",
-                  attrs: { type: "button" },
-                  on: { click: _vm.close }
-                },
-                [
-                  _c("span", { staticClass: "material-icons light icon-sm" }, [
-                    _vm._v("close")
-                  ])
-                ]
-              )
-            ]
-          )
-    ]
-  )
+  return _vm.display
+    ? _c("div", { staticClass: "w-100 d-flex justify-content-center" }, [
+        _c(
+          "div",
+          { staticClass: "undo-message-box bg-dark rounded shadow p-3" },
+          [
+            _vm.undo_delete
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "d-flex justify-content-between align-items-center"
+                  },
+                  [
+                    _c("div", { staticClass: "light font-500 mr-4" }, [
+                      _vm._v(_vm._s(_vm.message))
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn cyan font-500 mr-4 border-0",
+                        attrs: { type: "button" },
+                        on: { click: _vm.undo }
+                      },
+                      [_vm._v("Undo")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "close",
+                        attrs: { type: "button" },
+                        on: { click: _vm.close }
+                      },
+                      [
+                        _c(
+                          "span",
+                          { staticClass: "material-icons light icon-sm" },
+                          [_vm._v("close")]
+                        )
+                      ]
+                    )
+                  ]
+                )
+              : _c(
+                  "div",
+                  {
+                    staticClass:
+                      "d-flex justify-content-between align-items-center"
+                  },
+                  [
+                    _c("div", { staticClass: "light font-500 mr-4" }, [
+                      _vm._v(_vm._s(_vm.message))
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "close",
+                        attrs: { type: "button" },
+                        on: { click: _vm.close }
+                      },
+                      [
+                        _c(
+                          "span",
+                          { staticClass: "material-icons light icon-sm" },
+                          [_vm._v("close")]
+                        )
+                      ]
+                    )
+                  ]
+                )
+          ]
+        )
+      ])
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -47792,7 +47830,6 @@ var render = function() {
     [
       _c("undo-action-message", {
         ref: "action",
-        attrs: { undo_id: _vm.undo_id },
         on: {
           undo: function($event) {
             return _vm.undo($event)
@@ -51513,6 +51550,8 @@ var render = function() {
   return _c(
     "div",
     [
+      _c("undo-action-message", { ref: "action" }),
+      _vm._v(" "),
       _c("form", { attrs: { action: "" } }, [
         _c("section", { staticClass: "dashboard_container_content p-0" }, [
           _vm._m(0),
@@ -54097,6 +54136,8 @@ var render = function() {
     "div",
     { staticClass: "content-container" },
     [
+      _c("undo-action-message", { ref: "action" }),
+      _vm._v(" "),
       _c("sorting-trades", {
         attrs: { portfolios: _vm.portfolios },
         on: {

@@ -1,6 +1,6 @@
 <template>
     <div class="row justify-content-center p-4"> 
-      <undo-action-message :undo_id="undo_id" v-on:undo="undo($event)" ref="action"></undo-action-message>
+      <undo-action-message v-on:undo="undo($event)" ref="action"></undo-action-message>
       
       <div class="col-12 col-md-11 col-lg-8 pb-3 p-0">
         <div class="dashboard_container_content border d-flex align-items-center">
@@ -320,14 +320,13 @@ export default {
       this.form.id = value.id;
     },
 
-    destroy: function destroy(value) {
-      this.undo_id = value.id;
+    destroy: function destroy(portfolio) {
       axios
-        .delete("/dashboardPages/portfolio/d/" + value.id)
+        .delete("/dashboardPages/portfolio/d/" + portfolio.id)
         .then((res) => {
           $("#modal-form").modal("hide");
           this.fetchportfolio();
-          this.$refs.action.deleted("Portfolio has been deleted");
+          this.$refs.action.deleted("Portfolio has been deleted", portfolio.id);
         })
         .catch((error) => {
           this.checkResponseStatus(error);

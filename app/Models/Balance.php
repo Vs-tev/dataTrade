@@ -5,11 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Balance extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $fillable = [
         'portfolio_id',
@@ -37,6 +36,10 @@ class Balance extends Model
     public function runningTotalSparkline(){
         return $this->select('action_date' , DB::raw('SUM(amount) OVER(ORDER BY action_date)as running_total'))
         ->where([['portfolio_id', \App\Models\Portfolio::isactive()->first()], ['is_except', 0]])
+        ->when(\App\Models\Balance::where('portfolio_id', \App\Models\Portfolio::isactive()->first())->count() > 300 ?? null, function($query){
+            $query->groupBy(DB::raw("DAY(action_date)"));
+            //$query->limit(50);
+        })
         ->orderBy('action_date', 'DESC')
         ->limit(100)
         ->get();

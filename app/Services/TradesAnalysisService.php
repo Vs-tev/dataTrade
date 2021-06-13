@@ -115,8 +115,10 @@ class TradesAnalysisService{
             $object->winning_streak = Portfolio::streak($portfolio_id, '>', '<');
             $object->losing_streak = Portfolio::streak($portfolio_id, '<', '>');
             $object->trade_performance_avg_ratio = number_format($object->trade_performance_avg_ratio,2, '.','');
-            $object->standart_deviation = sqrt($object->trade_performance_sum_pow_2 / ($object->trade_performance_count-1)); 
-            $object->standart_deviation =  number_format($object->standart_deviation,2, '.','');
+            $object->trade_performance_count > 1 
+            ? $object->standart_deviation = sqrt($object->trade_performance_sum_pow_2 / ($object->trade_performance_count-1)) 
+            : 0; 
+            $object->standart_deviation = number_format($object->standart_deviation,2, '.','');
 
             return $object;
         });

@@ -16,13 +16,6 @@ class UsersTest extends TestCase
      /** @test */ 
    public function new_user_is_with_free_plan_regitered()
    {
-      $this->withoutExceptionHandling();
-       /* $response = $this->post('register', [
-           'name' => 'Test name',
-           'email' => 'example@maol.com',
-           'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
-       ]); */
-
        $user = User::factory()->create();
     
        $this->actingAs($user);

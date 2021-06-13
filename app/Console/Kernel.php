@@ -25,8 +25,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->call(function () {
-            \App\Models\Portfolio::onlyTrashed()->forceDelete();
-        })->everyMinute();
+            \App\Models\Portfolio::where("deleted_at", "<", now()->subHour(1))->onlyTrashed()->forceDelete();
+        })->weekly();
     }
 
     /**

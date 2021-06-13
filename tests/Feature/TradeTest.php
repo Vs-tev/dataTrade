@@ -151,38 +151,7 @@ class TradeTest extends TestCase
         $this->assertEquals(1.5, TradePerformance::first()->ratio);
     }
 
-     /** @test */ 
-    public function delete_all_foreigen_data_when_trade_is_deleted()
-    {
-        $this->actingAs($this->user);
-
-        //Creating Trade
-        $trade = Trade::factory()->create(['user_id' => 1, 'portfolio_id' => 1 ]);
-      
-        $this->assertCount(1, Trade::all());
-
-        //Add data to balance
-        $trade->add_to_balance($trade); 
-        //add data to trade_performance table
-        $trade->add_to_trade_performance(array_merge($trade->getRawOriginal(), ['trade_return' => 1.5, 'risk_reward' => 2.8]));
     
-        //check if trade has been recorded
-        $this->assertCount(1, Trade::all());
-
-        //check if Trade performance table has new record
-        $this->assertCount(1, TradePerformance::all());
-
-        //check if balances table has new record
-        $this->assertCount(1, Balance::all());
-      
-        //deleting trade
-        $response = $this->deleteJson('/dashboardPages/tradehistory/delete/'.$trade->id);
-        
-        //check if data in related table has been deleted
-        $this->assertCount(0, Trade::all());
-        $this->assertCount(0, TradePerformance::all());
-        $this->assertCount(0, Balance::all());
-    }
 
      /** @test */ 
     public function trade_history_table_test()

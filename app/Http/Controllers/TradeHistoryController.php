@@ -130,8 +130,10 @@ class TradeHistoryController extends Controller
         if($trade->trade_img !== 'noimage.jpg'){
             Storage::delete('public/trades/'.$trade->trade_img);
         }
-
+        
         $trade->delete();
     }
+
+    
 
 }

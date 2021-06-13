@@ -110,11 +110,7 @@ class PortfolioController extends Controller
     {
         if(auth()->user()->portfolios()->count() > 1){
             $portfolio->delete();
-            $portfolio->balance()->delete();
-            $portfolio->trades()->delete();
-
-
-
+           
             if($portfolio->is_active == 1){
                 Portfolio::where([
                     ['id', '<>', $portfolio->id],
@@ -133,17 +129,14 @@ class PortfolioController extends Controller
         $portfolio = Portfolio::where([['id', $id],['user_id', auth()->id()]])
         ->withTrashed()->first();
         $portfolio->restore();
-        $portfolio->balance()->restore();
-        $portfolio->trades()->restore();
+       
     }
 
-    public function forceDelete()    
+    public function forceDelete($id)    
     {
         Portfolio::where('id', $id)->forceDelete();
-
     }
     
-
     public function toggle_is_active_portfolio(Request $request, Portfolio $portfolio)
     {     
         if(Portfolio::where('user_id', auth()->id())->count() > 1){

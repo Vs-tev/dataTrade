@@ -1,5 +1,6 @@
 <template>
   <div>
+    <undo-action-message ref="action"></undo-action-message>
     <form action="">
         <section class="dashboard_container_content p-0">
             <div class="border-bottom p-4">
@@ -224,7 +225,7 @@ import Multiselect from "vue-multiselect";
 import DatePick from "vue-date-pick";
 import ModalUpgradePlan from "../ModalUpgradePlan.vue";
 import ModalSymbol from "../ModalSymbol.vue";
-//import Chart from "../Chart.vue";
+import UndoActionMessage from "../UndoActionMessage.vue";
 
 export default {
   name: "Traderecord",
@@ -234,8 +235,7 @@ export default {
     DatePick,
     ModalUpgradePlan,
     ModalSymbol,
-
-    //Chart,
+    UndoActionMessage,
   },
 
   data() {
@@ -440,6 +440,7 @@ export default {
         .then((res) => {
           this.getPortfolioEquity();
           this.clearFileds();
+          this.$refs.action.undoMessage("Trade has been successfully recorded");
         })
         .catch((error) => {
           if (error.response.status === 402) {

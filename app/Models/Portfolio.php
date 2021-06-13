@@ -13,11 +13,6 @@ class Portfolio extends Model
 {
     use HasFactory, SoftDeletes;
 
-    public function scopeActive($query)
-    {
-        return $query->where('is_active', 1);
-    }
-
     protected $fillable = ['name', 'start_equity', 'started_at', 'currency', 'user_id', 'is_active'];
 
     protected $casts = [
@@ -71,7 +66,10 @@ class Portfolio extends Model
     public function scopeRunningTotal($query, $id){
         //running total for all portfolios used in portfolio page
          return $query = DB::table('balances')->select('action_date', 'id' , DB::raw('SUM(amount) OVER(ORDER BY action_date)as running_total'))
-        ->where([['portfolio_id', $id],['is_except', 0]])
+        ->where([
+            ['portfolio_id', $id],
+            ['is_except', 0], 
+            ])
         ->orderBy('action_date', 'DESC')
         ->when(\App\Models\Balance::where('portfolio_id', $id)->count() > 300 ?? null, function($query){
             $query->groupBy(DB::raw("DAY(action_date)"));
