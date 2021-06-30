@@ -1,87 +1,87 @@
 <template>
-     <section class="dashboard_container_content p-0">  
-          <div class="border-bottom px-4 py-3">
-                <h4 class="font-weight-normal m-0">Trade History</h4>
-                <p class="lighter font-500 mb-0">All recorded trades in one place</p>
-            </div>
-            <div class="d-md-flex flex-wrap mb-3 px-2 pt-3">
-                <div class="form-group col-12 col-lg-3 ">
-                    <label>Portfolio:</label>
-                    <multiselect v-model="selectedPortfolio" @input="change_portfolio" :options="portfolios" :searchable="false" 
-                            :close-on-select="true" class="font-sm" :allow-empty="false"  :show-labels="false" label="name" track-by="id">
-                    </multiselect>
+  <section class="dashboard_container_content p-0">  
+    <div class="border-bottom px-4 py-3">
+      <h4 class="font-weight-normal m-0">Trade History</h4>
+      <p class="lighter font-500 mb-0">All recorded trades in one place</p>
+    </div>
+      <div class="d-md-flex flex-wrap mb-3 px-2 pt-3">
+          <div class="form-group col-12 col-lg-3 ">
+              <label>Portfolio:</label>
+              <multiselect v-model="selectedPortfolio" @input="change_portfolio" :options="portfolios" :searchable="false" 
+                      :close-on-select="true" class="font-sm" :allow-empty="false"  :show-labels="false" label="name" track-by="id">
+              </multiselect>
 
-                </div>
-                 <div class="form-group col-12 col-lg-2 mt-3 mt-lg-0">
-                  <label>Sort by frame</label>
-                    <multiselect v-model="selected_frame" @input="sort_by_time_frame" :options="time_frame" :multiple="true"
-                        :close-on-select="false" :preserve-search="false" :show-labels="false"
-                         :searchable="false"
-                        :preselect-first="false">
-                        <template slot="selection" slot-scope="{ values, isOpen  }"><span
-                                class="multiselect__single"
-                                v-if="values.length &amp;&amp; !isOpen">{{ values.length }} time frames
-                                </span>
-                        </template>
-                    </multiselect>
-                </div>
-                <div class="form-group col-12 col-lg-2 mt-3 mt-lg-0">
-                    <label>Show:</label>
-                     <multiselect  v-model="sort_pl" @input="sort_by_profit" :options="sort_by" :searchable="false"
-                            :close-on-select="true" :show-labels="false" :allow-empty="false"
-                            placeholder="All">
-                    </multiselect>
-                </div>
+          </div>
+            <div class="form-group col-12 col-lg-2 mt-3 mt-lg-0">
+            <label>Sort by frame</label>
+              <multiselect v-model="selected_frame" @input="sort_by_time_frame" :options="time_frame" :multiple="true"
+                  :close-on-select="false" :preserve-search="false" :show-labels="false"
+                    :searchable="false"
+                  :preselect-first="false">
+                  <template slot="selection" slot-scope="{ values, isOpen  }"><span
+                          class="multiselect__single"
+                          v-if="values.length &amp;&amp; !isOpen">{{ values.length }} time frames
+                          </span>
+                  </template>
+              </multiselect>
+          </div>
+          <div class="form-group col-12 col-lg-2 mt-3 mt-lg-0">
+              <label>Show:</label>
+                <multiselect  v-model="sort_pl" @input="sort_by_profit" :options="sort_by" :searchable="false"
+                      :close-on-select="true" :show-labels="false" :allow-empty="false"
+                      placeholder="All">
+              </multiselect>
+          </div>
 
-                <div class="form-group col mt-3 mt-lg-0">
-                    <label for="date">Trade Date:</label>
-                    <div class="d-flex">
-                        <div>
-                            <date-pick 
-                            v-model="start_date" 
-                            @input="searchDateRange"
-                            :pickTime="true" 
-                            :format="'YYYY-MM-DD HH:mm'"
-                            :inputAttributes="{readonly: false}">
-                            <template v-slot:default="{toggle, inputValue}">
-                               <div class="toggle-calendar start_date">
-                                   <button class="flex-grow-1" @click="toggle">
-                                    {{ inputValue || "Start date" }}
-                                </button>
-                                <span v-if="inputValue" @click="on_clear_start_date" class="material-icons font-sm border rounded-circle">close</span>
-                               </div>
-                            </template>
-                        </date-pick>
-                        </div>
-                        <span class="input-group-text between_date icon-sm material-icons px-0 mx-0">more_horiz</span>
-                        <div>
-                            <date-pick 
-                            v-model="exit_date"
-                            @input="searchDateRange"
-                            :pickTime="true" 
-                            :format="'YYYY-MM-DD HH:mm'"
-                            :inputAttributes="{readonly: false}">
-                             <template v-slot:default="{toggle, inputValue}">
-                               <div class="toggle-calendar end_date">
-                                   <button class="flex-grow-1" @click="toggle">
-                                    {{ inputValue || "End date" }}
-                                </button>
-                                <span v-if="inputValue" @click="on_clear_exit_date" class="material-icons font-sm border rounded-circle">close</span>
-                               </div>
-                            </template>
-                            </date-pick>
-                        </div>
-                    </div>
-                </div>
+          <div class="form-group col mt-3 mt-lg-0">
+              <label for="date">Trade Date:</label>
+              <div class="d-flex">
+                  <div>
+                      <date-pick 
+                      v-model="start_date" 
+                      @input="searchDateRange"
+                      :pickTime="true" 
+                      :format="'YYYY-MM-DD HH:mm'"
+                      :inputAttributes="{readonly: false}">
+                      <template v-slot:default="{toggle, inputValue}">
+                          <div class="toggle-calendar start_date">
+                              <button class="flex-grow-1" @click="toggle">
+                              {{ inputValue || "Start date" }}
+                          </button>
+                          <span v-if="inputValue" @click="on_clear_start_date" class="material-icons font-sm border rounded-circle">close</span>
+                          </div>
+                      </template>
+                  </date-pick>
+                  </div>
+                  <span class="input-group-text between_date icon-sm material-icons px-0 mx-0">more_horiz</span>
+                  <div>
+                      <date-pick 
+                      v-model="exit_date"
+                      @input="searchDateRange"
+                      :pickTime="true" 
+                      :format="'YYYY-MM-DD HH:mm'"
+                      :inputAttributes="{readonly: false}">
+                        <template v-slot:default="{toggle, inputValue}">
+                          <div class="toggle-calendar end_date">
+                              <button class="flex-grow-1" @click="toggle">
+                              {{ inputValue || "End date" }}
+                          </button>
+                          <span v-if="inputValue" @click="on_clear_exit_date" class="material-icons font-sm border rounded-circle">close</span>
+                          </div>
+                      </template>
+                      </date-pick>
+                  </div>
+              </div>
+          </div>
 
-            </div>
-            <div class="d-flex col-12 px-4 pb-4">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" v-model="except_trade" @change="toggle_excepted_trade" class="custom-control-input" id="exept_trades" name="example1">
-                    <label class="custom-control-label" for="exept_trades">Show Except trades</label>
-                </div>
-            </div>
-        </section>
+      </div>
+      <div class="d-flex col-12 px-4 pb-4">
+          <div class="custom-control custom-checkbox">
+              <input type="checkbox" v-model="except_trade" @change="toggle_excepted_trade" class="custom-control-input" id="exept_trades" name="example1">
+              <label class="custom-control-label" for="exept_trades">Show Except trades</label>
+          </div>
+      </div>
+  </section>
 </template>
 <script>
 import DatePick from "vue-date-pick";

@@ -19,7 +19,7 @@ class TradeController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth','hasPortfolio']);
+        $this->middleware(['auth', 'hasPortfolio']);
     }
     /**
      * Display a listing of the resource.
@@ -31,16 +31,17 @@ class TradeController extends Controller
         return view('dashboardpages.trading.trade_record');
     }
 
-    public function tradeRecordTradesTable(){
+    public function tradeRecordTradesTable()
+    {
         $trade = new Trade;
         $trade = $trade->select('symbol', 'exit_date', 'pl_currency')
-        ->where([
-            ['portfolio_id', \App\Models\Portfolio::isactive()->first()],
-            ['user_id', auth()->id()]
+            ->where([
+                ['portfolio_id', \App\Models\Portfolio::isactive()->first()],
+                ['user_id', auth()->id()]
             ])
-        ->orderBy('exit_date', 'DESC')
-        ->limit(5)
-        ->get();
+            ->orderBy('exit_date', 'DESC')
+            ->limit(5)
+            ->get();
         return $trade;
     }
 
@@ -52,11 +53,11 @@ class TradeController extends Controller
      */
     public function store(StoreTradeRequest $request)
     {
-    
+
         if (Gate::allows('trades')) {
-           
+
             $fileNameToStore = $this->storeImg($request->file('trade_img'), 'trades');
-            
+
             $trade = Trade::create([
                 'user_id' => auth()->id(),
                 'trade_img' => $fileNameToStore,
@@ -65,16 +66,14 @@ class TradeController extends Controller
 
             //$trade_performance = $request->all();
 
-            $trade->add_to_balance($trade); 
+            $trade->add_to_balance($trade);
             $trade->add_to_trade_performance($request->all());
-    
-            if($request->input('entry_rule_id')){
+
+            if ($request->input('entry_rule_id')) {
                 $trade->add_to_used_entry_rules($request->entry_rule_id);
             }
         } else {
-            return response('Upgrade account', 402);     
+            return response('Upgrade account', 402);
         }
     }
-
- 
 }

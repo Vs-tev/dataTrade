@@ -26,6 +26,7 @@ class Trade extends Model
         'exit_date',
         'pl_currency',
         'pl_pips',
+        'fees',
         'trade_notes',
         'trade_img',
         'strategy_id',
@@ -33,32 +34,39 @@ class Trade extends Model
         'user_id',
         'portfolio_id'
     ];
-    
-    public function user(){
+
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function used_entry_rules(){
+    public function used_entry_rules()
+    {
         return $this->hasMany(Used_entry_rules::class, 'trade_id');
     }
 
-    public function balance(){
+    public function balance()
+    {
         return $this->hasOne(Balance::class);
     }
 
-    public function tradePerformance(){
+    public function tradePerformance()
+    {
         return $this->hasOne(TradePerformance::class);
     }
 
-    public function portfolio(){
+    public function portfolio()
+    {
         return $this->belongsTo(Portfolio::class);
     }
 
-    public function strategy(){
+    public function strategy()
+    {
         return $this->belongsTo(Strategy::class);
     }
 
-    public function exit_reason(){
+    public function exit_reason()
+    {
         return $this->belongsTo(ExitReason::class);
     }
 
@@ -67,21 +75,23 @@ class Trade extends Model
         'entry_date' => 'datetime: d-M-Y H:i',
     ];
 
-    public function add_to_used_entry_rules($entry_rule_id){
+    public function add_to_used_entry_rules($entry_rule_id)
+    {
         /* $rules = $request->entry_rule_id;
-        $array = explode(',', $rules);*/     
-        
+        $array = explode(',', $rules);*/
+
         $array = Str::of($entry_rule_id)->explode(',');
-        foreach($array as $item){
+        foreach ($array as $item) {
             $this->used_entry_rules()->create([
                 'trade_id' => $this->id,
                 'entry_rule_id' => $item,
                 'user_id' => auth()->id(),
-            ]);  
+            ]);
         }
     }
 
-    public function add_to_balance($trade){
+    public function add_to_balance($trade)
+    {
 
         $this->balance()->create([
             'amount' => $trade->pl_currency,
@@ -94,8 +104,8 @@ class Trade extends Model
 
     public function add_to_trade_performance($trade)
     {
-       $return_avg = TradePerformance::where('portfolio_id', \App\Models\Portfolio::isactive()->first())
-       ->avg('trade_return');
+        $return_avg = TradePerformance::where('portfolio_id', \App\Models\Portfolio::isactive()->first())
+            ->avg('trade_return');
 
         $this->tradePerformance()->create([
             'trade_return' => $trade["trade_return"],
@@ -106,27 +116,28 @@ class Trade extends Model
         ]);
     }
 
-    public function scopeDurationAvg($query, $portfolio_id, $side, $compare, $period){
-        
-        $query = $this->select(
-            DB::raw('AVG(TIMESTAMPDIFF(MINUTE, entry_date, exit_date)) as avg_duration'))
-        ->where('portfolio_id', $portfolio_id)
-        ->when($side !== 'all' ?? null, function($query) use($side){
-            $query->where('type_side', $side);
-        })
-        ->when(!is_null($compare) ?? null , function($query) use($compare){
-            $query->where('pl_currency', $compare, 0);
-        })
-        ->when($period ?? null , function($query) use($period){
-            $query->where('exit_date', '>=', $period);
-        })
-        ->get();
+    public function scopeDurationAvg($query, $portfolio_id, $side, $compare, $period)
+    {
 
-        if($query[0]->avg_duration){
+        $query = $this->select(
+            DB::raw('AVG(TIMESTAMPDIFF(MINUTE, entry_date, exit_date)) as avg_duration')
+        )
+            ->where('portfolio_id', $portfolio_id)
+            ->when($side !== 'all' ?? null, function ($query) use ($side) {
+                $query->where('type_side', $side);
+            })
+            ->when(!is_null($compare) ?? null, function ($query) use ($compare) {
+                $query->where('pl_currency', $compare, 0);
+            })
+            ->when($period ?? null, function ($query) use ($period) {
+                $query->where('exit_date', '>=', $period);
+            })
+            ->get();
+
+        if ($query[0]->avg_duration) {
             return $query[0]->avg_duration;
-        }else{
+        } else {
             return 0;
         }
-
     }
 }

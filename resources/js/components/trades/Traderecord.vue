@@ -342,8 +342,8 @@ export default {
         this.form.errors.record(error.response.data.errors);
 
         if (this.form.errors.any()) {
-          var das = Object.keys(error.response.data.errors)[0];
-          document.getElementById(das).focus();
+          var el = Object.keys(error.response.data.errors)[0];
+          document.getElementById(el).focus();
         }
       }
     },

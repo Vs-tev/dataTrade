@@ -2,9 +2,6 @@
 
 @section('content')
 
-
-{{-- backdrop container--}}
-
 <div class="main-content-container">
   
     <app-traderecord-history 
@@ -14,9 +11,6 @@
         :entryrules="{{$entryRules}}">
     </app-traderecord-history>
      
-    {{-- Trade deteils --}}
-   
-    
 </div>
 
 @endsection

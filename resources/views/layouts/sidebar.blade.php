@@ -14,8 +14,10 @@
                             account_balance_wallet</span>Portfolio</a></li>
                 <li class=""><h5 class="separator">Trading</h5></li>
 
+                <li class=""><a href="{{route('trades_import')}}" class=""><span class="material-icons material-icons-outlined">
+                    upload_file</span>Trades Import</a></li>
                 <li class=""><a href="{{route('trade_record')}}" class=""><span class="material-icons">
-                            insert_chart_outlined</span>Trade Record</a></li>
+                            insert_chart_outlined</span>Trades Record</a></li>
                 <li class=""><a href="{{route('trade_history')}}" class=""><span class="material-icons">
                             history</span>Trades History</a></li>
 

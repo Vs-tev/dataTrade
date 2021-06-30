@@ -15,7 +15,7 @@
                 <div class="d-sm-flex align-items-center pl-0 pl-sm-1 pr-sm-4 mt-3 mt-sm-0">
                     <label class="lighter pr-1">Display</label>
                     <div>
-                        <select @change="get_trades" v-model="show_per_page" class="form-control">
+                        <select @change="get_trades" v-model="show_per_page" class="form-control ">
                             <option value="10" selected="selected">10</option>
                             <option value="25">25</option>
                             <option value="50">50</option>
@@ -23,8 +23,8 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group pr-4 mt-3 mt-sm-0">
-                    <div class="dropdown ">
+                <div class="d-flex pr-4 mt-3 mt-sm-0">
+                    <div class="dropdown pr-sm-4">
                         <button type="button" class="btn btn-secondary" data-toggle="dropdown">
                             <span class="material-icons cyan mr-1">
                                 view_agenda
@@ -34,14 +34,31 @@
                         <div class="dropdown-menu dropdown-menu-right">
                             <h5 class="dropdown-header indigo">CHOOSE VIEW</h5>
                             <a class="dropdown-item" id="choose-table-view" href="#"><span
-                                    class="material-icons lighter icon-sm">
+                                    class="material-icons icon-sm">
                                     toc
                                 </span>Table</a>
                                 
                             <a class="dropdown-item" id="choose-largerow-view" href="#"><span
-                                    class="material-icons lighter icon-sm">
+                                    class="material-icons icon-sm">
                                     calendar_view_day
                                 </span>Large Row</a>
+                        </div>
+                    </div>
+                    <div class="dropdown ">
+                        <button type="button" class="btn btn-secondary" data-toggle="dropdown">
+                          <span class="material-icons-outlined icon-sm">
+                            download
+                          </span>
+                            Export
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                          <h5 class="dropdown-header indigo">OPTIONS</h5>
+                         <a class="dropdown-item" id="choose-largerow-view" :href="'/dashboardPages/tradehistory/export/' + portfolio_id ">
+                            <span class="material-icons-outlined icon-sm">
+                              insert_drive_file
+                              </span>
+                              Excel
+                            </a>
                         </div>
                     </div>
                 </div>

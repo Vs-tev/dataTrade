@@ -7621,6 +7621,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -54217,7 +54234,7 @@ var render = function() {
                         expression: "show_per_page"
                       }
                     ],
-                    staticClass: "form-control",
+                    staticClass: "form-control ",
                     on: {
                       change: [
                         function($event) {
@@ -54255,7 +54272,46 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
-          _vm._m(0)
+          _c("div", { staticClass: "d-flex pr-4 mt-3 mt-sm-0" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "dropdown " }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c("div", { staticClass: "dropdown-menu dropdown-menu-right" }, [
+                _c("h5", { staticClass: "dropdown-header indigo" }, [
+                  _vm._v("OPTIONS")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass: "dropdown-item",
+                    attrs: {
+                      id: "choose-largerow-view",
+                      href:
+                        "/dashboardPages/tradehistory/export/" +
+                        _vm.portfolio_id
+                    }
+                  },
+                  [
+                    _c(
+                      "span",
+                      { staticClass: "material-icons-outlined icon-sm" },
+                      [
+                        _vm._v(
+                          "\n                          insert_drive_file\n                          "
+                        )
+                      ]
+                    ),
+                    _vm._v(
+                      "\n                          Excel\n                        "
+                    )
+                  ]
+                )
+              ])
+            ])
+          ])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "col px-0 border-top" }, [
@@ -54300,7 +54356,7 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _vm._m(1),
+                  _vm._m(2),
                   _vm._v(" "),
                   _c("th", [
                     _c(
@@ -54362,7 +54418,7 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _vm._m(2),
+                  _vm._m(3),
                   _vm._v(" "),
                   _c("th", [
                     _c(
@@ -54421,11 +54477,11 @@ var render = function() {
                     ]
                   ),
                   _vm._v(" "),
-                  _vm._m(3)
+                  _vm._m(4)
                 ])
               ]),
               _vm._v(" "),
-              _vm.loading ? _c("tbody", [_vm._m(4)]) : _vm._e(),
+              _vm.loading ? _c("tbody", [_vm._m(5)]) : _vm._e(),
               _vm._v(" "),
               _c(
                 "tbody",
@@ -54892,7 +54948,7 @@ var render = function() {
                                 ]
                               ),
                               _vm._v(" "),
-                              _vm._m(5, true),
+                              _vm._m(6, true),
                               _vm._v(" "),
                               _c(
                                 "div",
@@ -54946,7 +55002,7 @@ var render = function() {
                               ]
                             ),
                             _vm._v(" "),
-                            _vm._m(6, true),
+                            _vm._m(7, true),
                             _vm._v(" "),
                             _c(
                               "div",
@@ -54996,7 +55052,7 @@ var render = function() {
                                 ]
                               ),
                               _vm._v(" "),
-                              _vm._m(7, true),
+                              _vm._m(8, true),
                               _vm._v(" "),
                               _c(
                                 "div",
@@ -55189,63 +55245,79 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group pr-4 mt-3 mt-sm-0" }, [
-      _c("div", { staticClass: "dropdown " }, [
+    return _c("div", { staticClass: "dropdown pr-sm-4" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-toggle": "dropdown" }
+        },
+        [
+          _c("span", { staticClass: "material-icons cyan mr-1" }, [
+            _vm._v(
+              "\n                            view_agenda\n                        "
+            )
+          ]),
+          _vm._v("\n                        View\n                    ")
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "dropdown-menu dropdown-menu-right" }, [
+        _c("h5", { staticClass: "dropdown-header indigo" }, [
+          _vm._v("CHOOSE VIEW")
+        ]),
+        _vm._v(" "),
         _c(
-          "button",
+          "a",
           {
-            staticClass: "btn btn-secondary",
-            attrs: { type: "button", "data-toggle": "dropdown" }
+            staticClass: "dropdown-item",
+            attrs: { id: "choose-table-view", href: "#" }
           },
           [
-            _c("span", { staticClass: "material-icons cyan mr-1" }, [
+            _c("span", { staticClass: "material-icons icon-sm" }, [
               _vm._v(
-                "\n                            view_agenda\n                        "
+                "\n                                toc\n                            "
               )
             ]),
-            _vm._v("\n                        View\n                    ")
+            _vm._v("Table")
           ]
         ),
         _vm._v(" "),
-        _c("div", { staticClass: "dropdown-menu dropdown-menu-right" }, [
-          _c("h5", { staticClass: "dropdown-header indigo" }, [
-            _vm._v("CHOOSE VIEW")
-          ]),
-          _vm._v(" "),
-          _c(
-            "a",
-            {
-              staticClass: "dropdown-item",
-              attrs: { id: "choose-table-view", href: "#" }
-            },
-            [
-              _c("span", { staticClass: "material-icons lighter icon-sm" }, [
-                _vm._v(
-                  "\n                                toc\n                            "
-                )
-              ]),
-              _vm._v("Table")
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "a",
-            {
-              staticClass: "dropdown-item",
-              attrs: { id: "choose-largerow-view", href: "#" }
-            },
-            [
-              _c("span", { staticClass: "material-icons lighter icon-sm" }, [
-                _vm._v(
-                  "\n                                calendar_view_day\n                            "
-                )
-              ]),
-              _vm._v("Large Row")
-            ]
-          )
-        ])
+        _c(
+          "a",
+          {
+            staticClass: "dropdown-item",
+            attrs: { id: "choose-largerow-view", href: "#" }
+          },
+          [
+            _c("span", { staticClass: "material-icons icon-sm" }, [
+              _vm._v(
+                "\n                                calendar_view_day\n                            "
+              )
+            ]),
+            _vm._v("Large Row")
+          ]
+        )
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-secondary",
+        attrs: { type: "button", "data-toggle": "dropdown" }
+      },
+      [
+        _c("span", { staticClass: "material-icons-outlined icon-sm" }, [
+          _vm._v("\n                        download\n                      ")
+        ]),
+        _vm._v("\n                        Export\n                    ")
+      ]
+    )
   },
   function() {
     var _vm = this
