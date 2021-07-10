@@ -4435,6 +4435,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Modal",
@@ -6446,8 +6447,8 @@ __webpack_require__.r(__webpack_exports__);
         this.form.errors.record(error.response.data.errors);
 
         if (this.form.errors.any()) {
-          var das = Object.keys(error.response.data.errors)[0];
-          document.getElementById(das).focus();
+          var el = Object.keys(error.response.data.errors)[0];
+          document.getElementById(el).focus();
         }
       }
     },
@@ -6794,6 +6795,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _MenuSymbol_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../MenuSymbol.vue */ "./resources/js/components/MenuSymbol.vue");
+//
 //
 //
 //
@@ -49110,9 +49112,15 @@ var render = function() {
                               on: { click: _vm.removeSelectedImg }
                             },
                             [
-                              _c("img", {
-                                attrs: { src: "/icons/remove.svg", alt: "" }
-                              })
+                              _c(
+                                "span",
+                                { staticClass: "material-icons-outlined" },
+                                [
+                                  _vm._v(
+                                    "\n                                close\n                                "
+                                  )
+                                ]
+                              )
                             ]
                           ),
                           _vm._v(" "),
@@ -52500,14 +52508,20 @@ var render = function() {
                                 on: { click: _vm.removeSelectedImg }
                               },
                               [
-                                _c("img", {
-                                  attrs: { src: "/icons/remove.svg", alt: "" },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.form.errors.clear("trade_img")
+                                _c(
+                                  "span",
+                                  {
+                                    staticClass: "material-icons-outlined",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.form.errors.clear(
+                                          "trade_img"
+                                        )
+                                      }
                                     }
-                                  }
-                                })
+                                  },
+                                  [_vm._v("close")]
+                                )
                               ]
                             ),
                             _vm._v(" "),
@@ -52841,9 +52855,17 @@ var render = function() {
               _vm.trade.trade_img && _vm.trade.trade_img !== "noimage.jpg"
                 ? _c("div", { staticClass: "img-buttons" }, [
                     _c("div", { staticClass: "remove-img" }, [
+                      _c(
+                        "span",
+                        {
+                          staticClass: "material-icons-outlined",
+                          on: { click: _vm.removeTradeImg }
+                        },
+                        [_vm._v("close")]
+                      ),
+                      _vm._v(" "),
                       _c("img", {
-                        attrs: { src: "/icons/remove.svg", alt: "" },
-                        on: { click: _vm.removeTradeImg }
+                        attrs: { src: "/icons/remove.svg", alt: "" }
                       })
                     ])
                   ])
@@ -53866,7 +53888,7 @@ var render = function() {
                       ? _c("span", { staticClass: "multiselect__single" }, [
                           _vm._v(
                             _vm._s(values.length) +
-                              " time frames\n                           "
+                              " time frames\n                        "
                           )
                         ])
                       : _vm._e()
@@ -53947,9 +53969,9 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  "\n                               " +
+                                  "\n                            " +
                                     _vm._s(inputValue || "Start date") +
-                                    "\n                           "
+                                    "\n                        "
                                 )
                               ]
                             ),
@@ -54018,9 +54040,9 @@ var render = function() {
                             },
                             [
                               _vm._v(
-                                "\n                               " +
+                                "\n                            " +
                                   _vm._s(inputValue || "End date") +
-                                  "\n                           "
+                                  "\n                        "
                               )
                             ]
                           ),

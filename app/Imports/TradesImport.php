@@ -87,7 +87,7 @@ class TradesImport implements WithValidation, ToCollection, WithHeadingRow, With
                     'pl_pips' => $row['Profit pips'],
                     'fees' => $row['Fees'],
                     'trade_notes' => $row['Commentar'],
-                    'trade_img' => 'noimage.png',
+                    'trade_img' => 'noimage.jpg',
                     'portfolio_id' => $this->portfolio_id,
                     'user_id' => $this->user_id,
                 ]);
@@ -125,7 +125,7 @@ class TradesImport implements WithValidation, ToCollection, WithHeadingRow, With
 
     public function chunkSize(): int
     {
-        return 200;
+        return 500;
     }
 
     public function getRowCount(): int

@@ -25,7 +25,8 @@
                             </div>
                               <div class="img-buttons" v-if="trade.trade_img && trade.trade_img !== 'noimage.jpg'">
                                 <div class="remove-img">
-                                    <img src="/icons/remove.svg" @click="removeTradeImg" alt="">
+                                  <span class="material-icons-outlined" @click="removeTradeImg">close</span>
+                                    <img src="/icons/remove.svg"  alt="">
                                 </div>
                               </div>
                                <img v-if="trade.trade_img !== 'noimage.jpg'" class="modal-trade-img" :src="!trade.img_mode ? '/storage/trades/' + trade.trade_img : this.new_img " alt="">

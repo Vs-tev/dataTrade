@@ -467,11 +467,12 @@ img {
     position: absolute;
     left: calc(50% - 20px);
     top: calc(50% - 20px);
-    background-color: #a7a6a64d;
+    background-color: #a7a6a6b0;
     padding: 5px;
     border-radius: 5px;
     transition: 0.2s ease;
-    z-index: 0
+    z-index: 0;
+    display:flex;
 }
 
 .js .input-file-trigger {
@@ -500,7 +501,7 @@ img {
 }
 
 .remove-img:hover {
-    background-color: #a7a6a6a9 !important;
+    background-color: #a7a6a6b2 !important;
     transition: 0.2s ease;
     cursor: pointer
 }

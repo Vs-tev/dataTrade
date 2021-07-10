@@ -46,18 +46,11 @@ class ImportTradesNotification extends Notification
                 ->line($this->event[1]);
         } else {
             return (new MailMessage)
-                ->line('Uups!')
-                ->line('Something went wrong. Check below for exactly what went wrong ')
+                ->line('Oops!')
+                ->line('Something went wrong with the trades importing. Check below for exactly what exactly happened')
                 ->line($this->event);
         }
     }
-
-    /*  public function toDatabase()
-    {
-        return [
-            'errors' => $this->event,
-        ];
-    } */
 
     /**
      * Get the array representation of the notification.
