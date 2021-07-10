@@ -34,39 +34,6 @@
                 <a href="{{route('payment_methods')}}" class="m-auto font-lg">Add Credit Card</a>
             </div>
         </div>
-
-        {{-- @can('portfolios')
-            <p>Mojem da syzdatem portfolios</p>
-        @else 
-            <P>ne moam portfolios</P>
-        @endcan
-
-        @can('strategies')
-            <p>Mojem da napraim strategies</p>
-        @else 
-            <P>ne moam strategies</P>
-        @endcan
-
-        @can('entry_rules')
-            <p>Mojem da napraim entry_rules</p>
-        @else 
-            <P>ne moam entry_rules</P>
-        @endcan
-
-        @can('exit_reasons')
-            <p>Mojem da exit_reasons</p>
-        @else 
-            <P>ne moam exit_reasons</P>
-        @endcan
-
-        @can('trades')
-            <p>Mojem da zapishem trades</p>
-        @else 
-            <P>ne moam trades</P>
-        @endcan
- --}}
-        
-
     </div>  
    
 </div>

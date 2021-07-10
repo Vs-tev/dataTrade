@@ -42,6 +42,6 @@ class CheckExcelDate implements Rule
      */
     public function message()
     {
-        return 'The dates fields must be in a date format.';
+        return 'The date field in row :attribute must be in a date format.';
     }
 }

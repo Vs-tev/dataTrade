@@ -4,10 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
 class Trade extends Model
@@ -92,7 +89,6 @@ class Trade extends Model
 
     public function add_to_balance($trade)
     {
-
         $this->balance()->create([
             'amount' => $trade->pl_currency,
             'action_date' => $trade->exit_date,
@@ -118,7 +114,6 @@ class Trade extends Model
 
     public function scopeDurationAvg($query, $portfolio_id, $side, $compare, $period)
     {
-
         $query = $this->select(
             DB::raw('AVG(TIMESTAMPDIFF(MINUTE, entry_date, exit_date)) as avg_duration')
         )

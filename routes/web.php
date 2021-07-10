@@ -95,7 +95,8 @@ Route::group(['prefix' => 'dashboardPages/traderecord'], function () {
 /* Import Trades */
 Route::group(['prefix' => 'dashboardPages/'], function () {
     Route::get('trades_import', 'TradesImportController@index')->name('trades_import');
-    Route::post('trades/import', 'TradesImportController@import');
+    Route::post('trades/import', 'TradesImportController@import')->name('importFile');
+    Route::post('trades/mark-as-read', 'TradesImportController@markNotification')->name('importNotification.markAsRead');
 });
 
 /* Trade Hstory */
