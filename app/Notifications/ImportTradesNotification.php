@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -16,9 +17,10 @@ class ImportTradesNotification extends Notification
      *
      * @return void
      */
-    public function __construct($event)
+    public function __construct($event, User $user)
     {
         $this->event = $event;
+        $this->user = $user;
     }
 
     /**
@@ -29,7 +31,11 @@ class ImportTradesNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['database', 'mail'];
+        if ($notifiable->is_notifiable == 1) {
+            return ['database', 'mail'];
+        } else {
+            return ['database'];
+        }
     }
 
     /**
@@ -40,15 +46,19 @@ class ImportTradesNotification extends Notification
      */
     public function toMail($notifiable)
     {
+
         if ($this->event[0] == 'success') {
             return (new MailMessage)
                 ->line('Great!')
                 ->line($this->event[1]);
         } else {
-            return (new MailMessage)
-                ->line('Oops!')
-                ->line('Something went wrong with the trades importing. Check below for exactly what exactly happened')
-                ->line($this->event);
+            $message = new MailMessage;
+            $message->line('Oops!');
+            $message->line('Something went wrong with the trades importing. Check below for exactly what exactly happened');
+            foreach ($this->event as $error)
+                $message->line($error);
+
+            return $message;
         }
     }
 

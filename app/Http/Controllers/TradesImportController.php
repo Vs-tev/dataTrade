@@ -26,8 +26,12 @@ class TradesImportController extends Controller
         $file = $request->file('file');
         $user = User::where('id', auth()->id())->first();
         $import = new TradesImport($request->input('portfolio'), $user);
-        Excel::import($import, $file);
-        return back()->with('message', 'The trades uploading is processing. We will inform when the trades are completly imported.');
+        try {
+            Excel::import($import, $file);
+            return back()->with('message', 'The trades uploading is processing. We will inform when the trades are completly imported.');
+        } catch (\Throwable $th) {
+            return back()->with('message', 'File format is wrong. Only \'xlsx\' files are possible.');
+        }
     }
 
     public function markNotification(Request $request)

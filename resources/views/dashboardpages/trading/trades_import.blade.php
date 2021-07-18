@@ -3,14 +3,7 @@
 @section('content')
 
 <div class="main-content-container">
-  
-   
     <div class="content-container">
-        <section class="dashboard_container_content p-0 mb-4">  
-            <div class="border-bottom px-4 py-3">
-            <h4 class="font-weight-normal m-0">Instructions </h4>
-        </div>
-        </section>
         <section class="dashboard_container_content p-0">  
             <div class="border-bottom px-4 py-3">
                 <h4 class="font-weight-normal m-0">Import Trades</h4>
@@ -60,16 +53,16 @@
                                                     </a>
                                                 </div>
                                             </div>
-                                            @if($loop->last)
+                                            @if($loop->last )
                                                 <a href="#" id="mark-all">
                                                     <a href="#" class="mark-all-as-read">Mark all as read</a>
                                                 </a>
                                             @endif
                                     @empty
-                                        There are no errors
+                                        <div class="lighter"><i>Empty</i></div>
                                     @endforelse
                                 </div>
-                               
+                              
                             @endif
                             
                         </div>
@@ -85,10 +78,24 @@
                 </div>
             </form>
         </section>
+        <section class="dashboard_container_content p-0 mb-4">  
+            <div class="border-bottom px-4 py-3">
+                <h4 class="font-weight-normal m-0">How to import? </h4>
+            </div>
+            <div class="px-4 py-3">
+                <p>- To import exsisting trades from your excel file, you need to do some preparations to upload your trades with all data that you have.</p>
+                <p>- This fields are required: <i class="text-muted"> <a href="#" data-toggle="modal" data-target="#modal-symbol"> Symbol</a> Type side, Quantity, Entry price, Exit price, Sl price, 
+                    Entry date, Exit date, Profit currency, Profit pips. </i></p>
+                <p>- Optional fields: <i class="text-muted">Time Frame, Fees, Commentar, Return(in %), Risk reward.</i></p> 
+                <p>- You have to have Heading row like the following example: </p>
+                <img src="{{ asset('storage/Excel-example.png') }}" class="w-100" alt="excel-example">
+            </div>
+        </section>
     </div>
 </div>
-
+<app-modal-symbols></app-modal-symbols>
 @endsection
+
 @section('scripts')
 <script>
     $(function() {

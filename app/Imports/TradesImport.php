@@ -32,9 +32,6 @@ class TradesImport implements WithValidation, ToCollection, WithHeadingRow, With
 {
     use SkipsFailures, SkipsErrors, RegistersEventListeners, Importable;
 
-    protected $row = 0;
-    protected $validator;
-
     public function __construct(int $portfolio_id, User $user)
     {
         $this->portfolio_id = $portfolio_id;
@@ -82,7 +79,7 @@ class TradesImport implements WithValidation, ToCollection, WithHeadingRow, With
                     'stop_loss_price' => $row['Sl price'],
                     'time_frame' => $row['Time Frame'],
                     'entry_date' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['Entry date']),
-                    'exit_date' => $row['Exit date'],
+                    'exit_date' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['Exit date']),
                     'pl_currency' => $row['Profit currency'] - $row['Fees'],
                     'pl_pips' => $row['Profit pips'],
                     'fees' => $row['Fees'],
@@ -108,7 +105,7 @@ class TradesImport implements WithValidation, ToCollection, WithHeadingRow, With
                     'portfolio_id' => $this->portfolio_id,
                 ]);
             }
-            $this->importedBy->notify(new ImportTradesNotification(array('success', 'You have ' . $this->getRowCount() . ' trades successfully imported')));
+            $this->importedBy->notify(new ImportTradesNotification(array('success', 'You have ' . $this->getRowCount() . ' trades successfully imported.'), $this->importedBy));
         } else {
             throw \Illuminate\Validation\ValidationException::withMessages(['This uploading will exceed the maximum number of trades (' . $max_trades . ' trades) for this subscription. Please upgrade your plan.']);
         }
@@ -138,7 +135,7 @@ class TradesImport implements WithValidation, ToCollection, WithHeadingRow, With
         return [
             ImportFailed::class => function (ImportFailed $event) {
                 if (!empty($event->getException())) {
-                    $this->importedBy->notify(new ImportTradesNotification($event->getException()->validator->errors()->all()));
+                    $this->importedBy->notify(new ImportTradesNotification($event->getException()->validator->errors()->all(), $this->importedBy));
                 }
             },
         ];

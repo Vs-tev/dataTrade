@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-centered  modal-lg">
         <div class="modal-content">
             <div class="modal-header border-bottom">
-                <h4 class="font-500 my-auto">Symbol</h4>
+                <h4 class="font-500 my-auto" v-html="this.$props.title ? 'Available Symbols ' : 'Symbol' "></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span class="material-icons ml-auto close-btn icon-sm">close</span>
                 </button>
@@ -58,7 +58,7 @@
 <script>
 export default {
   name: "ModalSymbol",
-
+  props: ["title"],
   data() {
     return {
       type: "forex",

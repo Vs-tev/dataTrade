@@ -34,6 +34,7 @@ Vue.component('app-plans', require('./components/plans/Plans.vue').default);
 Vue.component('user-settings', require('./components/user/UserSettings.vue').default);
 Vue.component('app-trade-analysis', require('./components/trade_analysis/TradeAnalysis.vue').default);
 Vue.component('app-trade-setup-analysis', require('./components/trading_setup_analysis/SetupAnalysis.vue').default);
+Vue.component('app-modal-symbols', require('./components/ModalSymbol.vue').default);
 
 if (document.querySelector('#app')) {
     const app = new Vue({

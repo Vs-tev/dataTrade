@@ -52,8 +52,10 @@ Route::get('/forgot-password', function () {
 
 /* User settings */
 Route::get('/user_settings', 'UserController@index')->name('user_settings');
-Route::post('/user_settings/u/{id}', 'UserController@update');
+Route::post('/user_settings/u/', 'UserController@update');
 Route::post('/user_settings/password/', 'UserController@changePassword');
+Route::post('/user_settings/notifications', 'UserController@notifiable');
+
 /*  */
 
 Route::get('/create_first_portfolio', function () {

@@ -1,10 +1,11 @@
 <template>
 <div>
-    
+    <undo-action-message ref="action"></undo-action-message>
     <div class="dashboard_container_content col-12 col-md-10 mx-auto">
         <ul class="nav nav-tabs mx-1 mx-md-4 mb-2" role="tablist"> 
             <li class="nav-item"><a href="#account" class="nav-link active font-normal" role="tab" data-toggle="tab" aria-selected="true">Account</a></li>
-            <li class="nav-item ml-0 ml-md-3"><a href="#change_password" class="nav-link font-normal mr-0" role="tab" data-toggle="tab" aria-selected="true">Change Password</a></li>
+            <li class="nav-item ml-0 ml-md-3"><a href="#change_password" class="nav-link font-normal" role="tab" data-toggle="tab" aria-selected="true">Change Password</a></li>
+            <li class="nav-item ml-0 ml-md-3"><a href="#notifications_settings" class="nav-link font-normal mr-0" role="tab" data-toggle="tab" aria-selected="true">Notifications</a></li>
         </ul>
       
         <div class="tab-content">
@@ -86,6 +87,27 @@
                     </ul>
                 </div>
             </div>
+
+            <div id="notifications_settings" class="tab-pane" role="tabpanel">
+               <div class="list-editable-items p-3 col-12 col-sm-10 col-lg-10 col-xl-8 mx-md-auto">
+                  <ul class="list-unstyled">
+                    <li>
+                        <label class="pr-4"></label>
+                        <p class="font-500 font-lg">Notifications Settings</p>
+                    </li>
+                    <li class="py-4">
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" v-model="notifiable" class="custom-control-input" id="email_notification" name="example1">
+                          <label class="custom-control-label" for="email_notification">Email notifications for trades import</label>
+                        </div>
+                    </li>
+                    <li class="pb-3">
+                        <label class="pr-4"></label>
+                        <button type="button" @click="isNotifiable" class="btn btn-primary font-500">Save Changes</button>
+                    </li>
+                  </ul>
+               </div>
+            </div>
         </div>
    
     </div>
@@ -94,11 +116,12 @@
 </template>
 <script>
 import ModalSuccess from "../ModalSuccess.vue";
+import UndoActionMessage from "../UndoActionMessage.vue";
 
 export default {
   name: "userSettings",
   props: ["user", "countries"],
-  components: { ModalSuccess },
+  components: { ModalSuccess, UndoActionMessage },
   data() {
     return {
       form: new Form({
@@ -109,8 +132,7 @@ export default {
         new_password: "",
         confirm_password: "",
       }),
-
-      text: "",
+      notifiable: this.$props.user.is_notifiable,
     };
   },
 
@@ -129,16 +151,9 @@ export default {
       data.append("email", this.user.email);
       data.append("country", this.user.country);
       axios
-        .post("/user_settings/u/" + this.user.id, data)
+        .post("/user_settings/u/", data)
         .then((res) => {
-          $("#modal-success").modal({
-            backdrop: "static",
-            keyboard: false,
-          });
-          this.text = "Profil";
-          setTimeout(function () {
-            location.reload();
-          }, 1500);
+          this.$refs.action.undoMessage("Profile has been updated");
         })
         .catch((error) => {
           this.checkResponseStatus(error);
@@ -153,11 +168,25 @@ export default {
       axios
         .post("/user_settings/password/", data)
         .then((res) => {
-          $("#modal-success").modal("show");
-          this.text = "Password";
+          this.$refs.action.undoMessage("Passwort has been updated");
           this.form.current_password = "";
           this.form.new_password = "";
           this.form.confirm_password = "";
+        })
+        .catch((error) => {
+          this.checkResponseStatus(error);
+        });
+    },
+
+    isNotifiable: function isNotifiable() {
+      let data = new FormData();
+      data.append("is_notifiable", this.notifiable);
+      axios
+        .post("/user_settings/notifications", data)
+        .then((res) => {
+          this.$refs.action.undoMessage(
+            "Notifications settings has been updated"
+          );
         })
         .catch((error) => {
           this.checkResponseStatus(error);

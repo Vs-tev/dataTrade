@@ -109,7 +109,7 @@
                         </thead>
                         <tbody v-if="loading">
                             <tr>
-                                <td colspan="10" class="text-center p-5">
+                                <td colspan="11" class="text-center p-5">
                                     <div class="spinner-border lighter"></div>
                                 </td>
                             </tr>

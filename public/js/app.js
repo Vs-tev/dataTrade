@@ -2465,6 +2465,43 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "MenuSymbol",
   data: function data() {
@@ -2609,6 +2646,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ModalSymbol",
+  props: ["title"],
   data: function data() {
     return {
       type: "forex",
@@ -6965,7 +7003,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -7990,6 +8027,29 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ModalSuccess_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../ModalSuccess.vue */ "./resources/js/components/ModalSuccess.vue");
+/* harmony import */ var _UndoActionMessage_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../UndoActionMessage.vue */ "./resources/js/components/UndoActionMessage.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -8085,11 +8145,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "userSettings",
   props: ["user", "countries"],
   components: {
-    ModalSuccess: _ModalSuccess_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    ModalSuccess: _ModalSuccess_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    UndoActionMessage: _UndoActionMessage_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
@@ -8101,7 +8163,7 @@ __webpack_require__.r(__webpack_exports__);
         new_password: "",
         confirm_password: ""
       }),
-      text: ""
+      notifiable: this.$props.user.is_notifiable
     };
   },
   methods: {
@@ -8119,15 +8181,8 @@ __webpack_require__.r(__webpack_exports__);
       data.append("name", this.user.name);
       data.append("email", this.user.email);
       data.append("country", this.user.country);
-      axios.post("/user_settings/u/" + this.user.id, data).then(function (res) {
-        $("#modal-success").modal({
-          backdrop: "static",
-          keyboard: false
-        });
-        _this.text = "Profil";
-        setTimeout(function () {
-          location.reload();
-        }, 1500);
+      axios.post("/user_settings/u/", data).then(function (res) {
+        _this.$refs.action.undoMessage("Profile has been updated");
       })["catch"](function (error) {
         _this.checkResponseStatus(error);
       });
@@ -8140,13 +8195,24 @@ __webpack_require__.r(__webpack_exports__);
       data.append("new_password", this.form.new_password);
       data.append("confirm_password", this.form.confirm_password);
       axios.post("/user_settings/password/", data).then(function (res) {
-        $("#modal-success").modal("show");
-        _this2.text = "Password";
+        _this2.$refs.action.undoMessage("Passwort has been updated");
+
         _this2.form.current_password = "";
         _this2.form.new_password = "";
         _this2.form.confirm_password = "";
       })["catch"](function (error) {
         _this2.checkResponseStatus(error);
+      });
+    },
+    isNotifiable: function isNotifiable() {
+      var _this3 = this;
+
+      var data = new FormData();
+      data.append("is_notifiable", this.notifiable);
+      axios.post("/user_settings/notifications", data).then(function (res) {
+        _this3.$refs.action.undoMessage("Notifications settings has been updated");
+      })["catch"](function (error) {
+        _this3.checkResponseStatus(error);
       });
     }
   }
@@ -45276,7 +45342,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("form", { staticClass: "dropdown-menu symbol-menu w-100" }, [
+  return _c("form", { staticClass: "dropdown-menu symbol-menu w-100 pb-0" }, [
     _c("div", { staticClass: "p-0" }, [
       _c(
         "div",
@@ -45568,7 +45634,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "py-2 m-auto" }, [
+    return _c("div", { staticClass: "py-2 text-center" }, [
       _c("h6", { staticClass: "m-auto text-muted" }, [
         _vm._v("Not found what you're looking for?")
       ])
@@ -45672,7 +45738,18 @@ var render = function() {
   return _c("div", { staticClass: "modal", attrs: { id: "modal-symbol" } }, [
     _c("div", { staticClass: "modal-dialog modal-dialog-centered  modal-lg" }, [
       _c("div", { staticClass: "modal-content" }, [
-        _vm._m(0),
+        _c("div", { staticClass: "modal-header border-bottom" }, [
+          _c("h4", {
+            staticClass: "font-500 my-auto",
+            domProps: {
+              innerHTML: _vm._s(
+                this.$props.title ? "Available Symbols " : "Symbol"
+              )
+            }
+          }),
+          _vm._v(" "),
+          _vm._m(0)
+        ]),
         _vm._v(" "),
         _c("div", { staticClass: "modal-body p-0" }, [
           _c(
@@ -45949,28 +46026,24 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header border-bottom" }, [
-      _c("h4", { staticClass: "font-500 my-auto" }, [_vm._v("Symbol")]),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [
-          _c(
-            "span",
-            { staticClass: "material-icons ml-auto close-btn icon-sm" },
-            [_vm._v("close")]
-          )
-        ]
-      )
-    ])
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [
+        _c(
+          "span",
+          { staticClass: "material-icons ml-auto close-btn icon-sm" },
+          [_vm._v("close")]
+        )
+      ]
+    )
   },
   function() {
     var _vm = this
@@ -52862,11 +52935,7 @@ var render = function() {
                           on: { click: _vm.removeTradeImg }
                         },
                         [_vm._v("close")]
-                      ),
-                      _vm._v(" "),
-                      _c("img", {
-                        attrs: { src: "/icons/remove.svg", alt: "" }
-                      })
+                      )
                     ])
                   ])
                 : _vm._e(),
@@ -55374,7 +55443,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("tr", [
-      _c("td", { staticClass: "text-center p-5", attrs: { colspan: "10" } }, [
+      _c("td", { staticClass: "text-center p-5", attrs: { colspan: "11" } }, [
         _c("div", { staticClass: "spinner-border lighter" })
       ])
     ])
@@ -55746,6 +55815,8 @@ var render = function() {
   return _c(
     "div",
     [
+      _c("undo-action-message", { ref: "action" }),
+      _vm._v(" "),
       _c(
         "div",
         { staticClass: "dashboard_container_content col-12 col-md-10 mx-auto" },
@@ -56155,6 +56226,103 @@ var render = function() {
                   ]
                 )
               ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "tab-pane",
+                attrs: { id: "notifications_settings", role: "tabpanel" }
+              },
+              [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "list-editable-items p-3 col-12 col-sm-10 col-lg-10 col-xl-8 mx-md-auto"
+                  },
+                  [
+                    _c("ul", { staticClass: "list-unstyled" }, [
+                      _vm._m(3),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "py-4" }, [
+                        _c(
+                          "div",
+                          { staticClass: "custom-control custom-checkbox" },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.notifiable,
+                                  expression: "notifiable"
+                                }
+                              ],
+                              staticClass: "custom-control-input",
+                              attrs: {
+                                type: "checkbox",
+                                id: "email_notification",
+                                name: "example1"
+                              },
+                              domProps: {
+                                checked: Array.isArray(_vm.notifiable)
+                                  ? _vm._i(_vm.notifiable, null) > -1
+                                  : _vm.notifiable
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$a = _vm.notifiable,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = null,
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        (_vm.notifiable = $$a.concat([$$v]))
+                                    } else {
+                                      $$i > -1 &&
+                                        (_vm.notifiable = $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1)))
+                                    }
+                                  } else {
+                                    _vm.notifiable = $$c
+                                  }
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "custom-control-label",
+                                attrs: { for: "email_notification" }
+                              },
+                              [_vm._v("Email notifications for trades import")]
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "pb-3" }, [
+                        _c("label", { staticClass: "pr-4" }),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary font-500",
+                            attrs: { type: "button" },
+                            on: { click: _vm.isNotifiable }
+                          },
+                          [_vm._v("Save Changes")]
+                        )
+                      ])
+                    ])
+                  ]
+                )
+              ]
             )
           ])
         ]
@@ -56197,7 +56365,7 @@ var staticRenderFns = [
           _c(
             "a",
             {
-              staticClass: "nav-link font-normal mr-0",
+              staticClass: "nav-link font-normal",
               attrs: {
                 href: "#change_password",
                 role: "tab",
@@ -56206,6 +56374,22 @@ var staticRenderFns = [
               }
             },
             [_vm._v("Change Password")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "nav-item ml-0 ml-md-3" }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link font-normal mr-0",
+              attrs: {
+                href: "#notifications_settings",
+                role: "tab",
+                "data-toggle": "tab",
+                "aria-selected": "true"
+              }
+            },
+            [_vm._v("Notifications")]
           )
         ])
       ]
@@ -56230,6 +56414,18 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("p", { staticClass: "font-500 font-lg" }, [
         _vm._v("Change Your Password:")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", [
+      _c("label", { staticClass: "pr-4" }),
+      _vm._v(" "),
+      _c("p", { staticClass: "font-500 font-lg" }, [
+        _vm._v("Notifications Settings")
       ])
     ])
   }
@@ -68708,6 +68904,7 @@ Vue.component('app-plans', __webpack_require__(/*! ./components/plans/Plans.vue 
 Vue.component('user-settings', __webpack_require__(/*! ./components/user/UserSettings.vue */ "./resources/js/components/user/UserSettings.vue")["default"]);
 Vue.component('app-trade-analysis', __webpack_require__(/*! ./components/trade_analysis/TradeAnalysis.vue */ "./resources/js/components/trade_analysis/TradeAnalysis.vue")["default"]);
 Vue.component('app-trade-setup-analysis', __webpack_require__(/*! ./components/trading_setup_analysis/SetupAnalysis.vue */ "./resources/js/components/trading_setup_analysis/SetupAnalysis.vue")["default"]);
+Vue.component('app-modal-symbols', __webpack_require__(/*! ./components/ModalSymbol.vue */ "./resources/js/components/ModalSymbol.vue")["default"]);
 
 if (document.querySelector('#app')) {
   var app = new Vue({

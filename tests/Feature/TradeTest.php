@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Imports\TradesImport;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -15,8 +16,6 @@ use App\Models\ExitReason;
 use App\Models\Strategy;
 use App\Models\Used_entry_rules;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Http\Request;
 
 class TradeTest extends TestCase
 {
@@ -30,22 +29,22 @@ class TradeTest extends TestCase
         Portfolio::factory()->create(['user_id' => 1]);
         ExitReason::factory(2)->create(['user_id' => 1]);
         Strategy::factory(2)->create(['user_id' => 1]);
-       
+
         Gate::before(function () {
             return true;
         });
     }
 
-    /** @test */ 
+    /** @test */
     public function user_can_record_trade()
     {
-       // $this->withoutExceptionHandling();
-        
+        // $this->withoutExceptionHandling();
+
         $this->actingAs($this->user);
-        
+
         EntryRules::factory()->create(['user_id' => $this->user->id]);
 
-        $response = $this->postJson('/dashboardPages/traderecord/p',[
+        $response = $this->postJson('/dashboardPages/traderecord/p', [
             'create' => true,
             'trade_return' => 2,
             'risk_reward' => 1.78,
@@ -83,14 +82,15 @@ class TradeTest extends TestCase
         $this->assertCount(1, Used_entry_rules::all());
     }
 
-    /** @test */ 
+    /** @test */
     public function user_can_update_trade()
     {
+        $this->withoutExceptionHandling();
         $this->actingAs($this->user);
 
         EntryRules::factory(2)->create(['user_id' => $this->user->id]);
 
-        $trade = $this->postJson('/dashboardPages/traderecord/p',[
+        $trade = $this->postJson('/dashboardPages/traderecord/p', [
             'create' => true,
             'trade_return' => 2,
             'risk_reward' => 1.78,
@@ -122,7 +122,7 @@ class TradeTest extends TestCase
 
         $this->assertCount(1, Trade::all());
 
-        $response = $this->postJson('/dashboardPages/tradehistory/update/'.$trade->id ,[
+        $response = $this->postJson('/dashboardPages/tradehistory/update/' . $trade->id, [
             'symbol' => 'AUD/CAD',
             'type_side' => 'sell',
             'quantity' => '3',
@@ -146,64 +146,63 @@ class TradeTest extends TestCase
         //check if used_entry_rules table has been updated
         $this->assertCount(1, Used_entry_rules::all());
         $this->assertEquals(2, Used_entry_rules::first()->entry_rule_id);
-           
+
         //check if trade_performance table has been updated
         $this->assertEquals(1.5, TradePerformance::first()->ratio);
     }
 
-    
 
-     /** @test */ 
+
+    /** @test */
     public function trade_history_table_test()
-    {       
-       // $this->withoutExceptionHandling();
+    {
+        // $this->withoutExceptionHandling();
         $this->actingAs($this->user);
         Portfolio::factory()->create(['user_id' => 1]);
-        
+
         $trade = new Trade;
 
         $trade = $trade->factory(14)->create([
             'symbol' => 'EUR/USD',
             'type_side' => 'buy',
             'exit_date' => '2021-05-01 21:34:46',
-            'user_id' => 1, 'portfolio_id' => 1, 
+            'user_id' => 1, 'portfolio_id' => 1,
             'time_frame' => '1 min',
             'pl_currency' => 20
-            ]);
+        ]);
 
         Trade::factory(16)->create([
             'symbol' => 'EUR/CAD',
             'type_side' => 'sell',
             'exit_date' => '2021-05-03 21:34:46',
-            'user_id' => 1, 
-            'portfolio_id' => 2, 
+            'user_id' => 1,
+            'portfolio_id' => 2,
             'time_frame' => '15 min',
             'pl_currency' => -20
         ]);
 
         $params = [
-        "portfolio_id" => 2,
-        "sort_pl" => "All",
-        'type_side' => 'sell',
-        "start_date" => '2021-05-02 21:34:46',
-        "end_date" => '2021-05-04 21:34:46',
-        "display" => 10,
-        "search_symbol" => 'EUR/CAD',
-        "column" => [
-          0 => null,
-          1 => "ASC",
-        ],
-        "except_trade" => false,
-        "time_frame" => [
-            0 => "15 min",
-          ]
+            "portfolio_id" => 2,
+            "sort_pl" => "All",
+            'type_side' => 'sell',
+            "start_date" => '2021-05-02 21:34:46',
+            "end_date" => '2021-05-04 21:34:46',
+            "display" => 10,
+            "search_symbol" => 'EUR/CAD',
+            "column" => [
+                0 => null,
+                1 => "ASC",
+            ],
+            "except_trade" => false,
+            "time_frame" => [
+                0 => "15 min",
+            ]
         ];
 
-        $response = $this->json('GET','/dashboardPages/tradehistory/g', $params)->assertOk();
-      
-        $data = json_decode($response->getContent(), true);
-    
-        $this->assertEquals(10, count($data['data']));
+        $response = $this->json('GET', '/dashboardPages/tradehistory/g', $params)->assertOk();
 
+        $data = json_decode($response->getContent(), true);
+
+        $this->assertEquals(10, count($data['data']));
     }
 }
