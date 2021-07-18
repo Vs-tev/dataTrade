@@ -55,6 +55,22 @@
                 </a>
             </div>
             <div class="col-md-4 pb-4 px-3 ">
+                <a href="{{route('trades_import')}}" class="dashboard_container_content dashboard-item d-flex align-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                        <path fill="#0099ff" fill-opacity="0.12"
+                            d="M0,160L120,186.7C240,213,480,267,720,240C960,213,1200,107,1320,53.3L1440,0L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z">
+                        </path>
+                    </svg>
+                    <span class="material-icons cyan icon-xl">upload_file</span>
+                    <div class="ml-4">
+                        <div  class="dark font-weight-bold m-0">
+                            <h4>Importing Trades</h4>
+                        </div>
+                        <p class="m-0 text-muted">Import From xlsx file</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 pb-4 px-3 ">
                 <a href="{{route('trade_history')}}" class="dashboard_container_content dashboard-item d-flex align-items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
                         <path fill="#ffd700" fill-opacity="0.04"

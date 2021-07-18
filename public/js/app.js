@@ -4058,6 +4058,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "RegisterFIrstPortfolio",
@@ -48410,9 +48433,11 @@ var render = function() {
                 }
               },
               [
-                _c("option", { attrs: { value: "EUR", selected: "" } }, [
-                  _vm._v("EUR")
-                ]),
+                _c(
+                  "option",
+                  { attrs: { value: "EUR", selected: "selected" } },
+                  [_vm._v("EUR")]
+                ),
                 _vm._v(" "),
                 _c("option", { attrs: { value: "USD" } }, [_vm._v("USD")]),
                 _vm._v(" "),
@@ -48529,7 +48554,11 @@ var render = function() {
                     }
                   }
                 },
-                [_vm._v("\n                    Ready to go\n                ")]
+                [
+                  _vm._v(
+                    "\n                        Ready to go\n                    "
+                  )
+                ]
               )
             ]
           )
@@ -48545,7 +48574,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "text-center mb-5" }, [
       _c("h2", { staticClass: "uppercase font-weight-bolder primary" }, [
-        _vm._v("dataTrade ")
+        _vm._v("dataTrade\n        ")
       ])
     ])
   },

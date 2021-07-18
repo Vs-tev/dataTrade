@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\ExitReason;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class ExitReasonController extends Controller
@@ -13,9 +12,9 @@ class ExitReasonController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth','hasPortfolio']);
+        $this->middleware(['auth', 'hasPortfolio']);
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -25,8 +24,8 @@ class ExitReasonController extends Controller
     {
         $exitReason = ExitReason::latest();
         $exitReason = $exitReason->withCount('trade as used_rules_count')
-        ->where('user_id', auth()->id())
-        ->get();
+            ->where('user_id', auth()->id())
+            ->get();
         return $exitReason;
     }
 
@@ -52,11 +51,13 @@ class ExitReasonController extends Controller
     {
         if (Gate::allows('exit_reasons')) {
 
-            $this->validate(request() ,[
-                'name' => [Rule::unique('exit_reasons')->where('user_id', auth()->id()),
-                'required', 'string', 'min:2', 'max:40'],
+            $this->validate(request(), [
+                'name' => [
+                    Rule::unique('exit_reasons')->where('user_id', auth()->id()),
+                    'required', 'string', 'min:2', 'max:40'
+                ],
             ]);
-                
+
             ExitReason::create(['user_id' => auth()->id(), 'name' => $request->input('name')]);
         }
     }
@@ -70,10 +71,10 @@ class ExitReasonController extends Controller
      */
     public function update(Request $request, ExitReason $ExitReason)
     {
-        $this->validate(request() ,[
-            'name' => [Rule::unique('exit_reasons')->where('user_id', auth()->id())->ignore($ExitReason->id),'required','string', 'min:2', 'max:40'],
+        $this->validate(request(), [
+            'name' => [Rule::unique('exit_reasons')->where('user_id', auth()->id())->ignore($ExitReason->id), 'required', 'string', 'min:2', 'max:40'],
         ]);
-        
+
         $ExitReason->update($request->all());
 
         return $ExitReason;
@@ -87,10 +88,10 @@ class ExitReasonController extends Controller
      */
     public function destroy(ExitReason $ExitReason)
     {
-        if(auth()->user()->id !== $ExitReason->user_id){
+        if (auth()->user()->id !== $ExitReason->user_id) {
             return redirect('/')->with('error', 'Unauthorize Page');
-        } 
-      
+        }
+
         $ExitReason->delete();
     }
 }
